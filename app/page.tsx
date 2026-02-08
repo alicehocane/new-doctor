@@ -26,9 +26,7 @@ const COMMON_DISEASES = [
   { name: 'Bruxismo' },
   { name: 'Síndrome metabólico' },
   { name: 'Dolor de muelas' },
-  { name: 'Obesidad' },
-  { name: 'Trastorno obsesivo compulsivo (TOC)' },
-  { name: 'Infección dental' }
+  { name: 'Obesidad' }
 ];
 
 export default function HomePage() {
