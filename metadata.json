@@ -1,0 +1,5 @@
+{
+  "name": "MediBusca Admin Uploader",
+  "description": "A specialized utility to upload and transform doctor JSON records into Supabase.",
+  "requestFramePermissions": []
+}
