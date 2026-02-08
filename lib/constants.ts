@@ -48,7 +48,7 @@ export const COMMON_SPECIALTIES = [
   "Audiólogo", "Cardiólogo", "Cardiólogo pediátrico", "Cirujano bariatra", "Cirujano cardiovascular", 
   "Cirujano cardiovascular y torácico", "Cirujano de la mano", "Cirujano estético y cosmético", 
   "Cirujano general", "Cirujano maxilofacial", "Cirujano oncólogo", "Cirujano pediátrico", 
-  "Cirujano plástico", "Cirujano torácico", "Cirujano vascular", "Dentista-Odontólogo", 
+  "Cirujano plástico", "Cirujano torácico", "Cirujano vascular", "Dentista - Odontólogo", 
   "Dermatólogo", "Dermatólogo pediátrico", "Diabetólogo", "Endocrinólogo", "Endocrinólogo pediátrico", 
   "Endoscopista", "Enfermero", "Especialidad en Medicina del Enfermo Pediátrico en Estado Crítico", 
   "Especialista en Medicina Crítica y Terapia Intensiva", "Especialista en Medicina del Deporte", 
@@ -72,7 +72,7 @@ export const COMMON_SPECIALTIES = [
 ].sort();
 
 export const POPULAR_SPECIALTIES = [
-  "Dentista-Odontólogo",
+  "Dentista - Odontólogo",
   "Psicólogo",
   "Pediatra",
   "Médico general",
