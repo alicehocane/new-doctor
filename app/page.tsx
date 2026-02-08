@@ -248,7 +248,7 @@ export default function HomePage() {
              overflow-x-auto snap-x snap-mandatory no-scrollbar
              -mx-6 px-6 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista'].map((spec) => (
+            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista', 'Traumatólogo', 'Oftalmólogo', 'Cardiólogo'].map((spec) => (
               <Link 
                 key={spec} 
                 href={`/especialidad/${spec.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}
