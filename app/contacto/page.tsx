@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, MapPin, Send, MessageSquare } from 'lucide-react';
+import { Send, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 
 export default function ContactPage() {
+  // Form State
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -9,6 +10,33 @@ export default function ContactPage() {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+
+  // FAQ State
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  // FAQ Data
+  const faqs = [
+    {
+      question: "¿Cómo puedo agendar una cita?",
+      answer: "Busca al médico por especialidad o nombre en nuestro buscador. En su perfil, selecciona el horario disponible y sigue los pasos. Recibirás una confirmación por correo inmediatamente."
+    },
+    {
+      question: "¿Tiene algún costo usar MediBusca?",
+      answer: "No. Para los pacientes, buscar médicos y agendar citas es 100% gratuito. No hay cargos ocultos ni comisiones por reservar."
+    },
+    {
+      question: "Soy médico, ¿cómo puedo unirme?",
+      answer: "Nos encantaría tenerte. Visita la sección 'Para Médicos' en el menú principal o escríbenos directamente a través de este formulario seleccionando el asunto 'Afiliación'."
+    },
+    {
+      question: "¿Cómo cancelo o reagendo mi cita?",
+      answer: "Puedes gestionar tus citas desde el enlace que enviamos a tu correo de confirmación o iniciando sesión en tu cuenta de usuario en la sección 'Mis Citas'."
+    },
+    {
+      question: "¿Dónde están ubicadas sus oficinas?",
+      answer: "Nuestras oficinas centrales están en Ciudad de México, sin embargo, somos una plataforma digital y no ofrecemos atención presencial a pacientes en nuestras oficinas corporativas."
+    }
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,58 +58,60 @@ export default function ContactPage() {
           Contacto.
         </h1>
         <p className="text-xl text-[#86868b] max-w-xl mx-auto font-medium leading-relaxed">
-          Estamos aquí para ayudarte. Envíanos tus dudas, comentarios o sugerencias.
+          Estamos aquí para ayudarte. Resuelve tus dudas rápidamente o envíanos un mensaje.
         </p>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16">
         
-        {/* Contact Info */}
-        <div className="space-y-10">
+        {/* Left Column: FAQs (Replaced previous static info) */}
+        <div className="space-y-8">
           <div>
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">Información de contacto</h2>
-            <p className="text-[#86868b] leading-relaxed">
-              Si tienes problemas con la plataforma, quieres reportar información incorrecta o eres un doctor interesado en unirte a MediBusca, utiliza el formulario o nuestros canales directos.
+            <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center shrink-0">
+                    <HelpCircle className="w-5 h-5 text-[#0071e3]" />
+                </div>
+                <h2 className="text-2xl font-bold text-[#1d1d1f]">Preguntas Frecuentes</h2>
+            </div>
+            <p className="text-[#86868b] leading-relaxed mb-8">
+              Antes de enviarnos un mensaje, revisa las preguntas más comunes de nuestros usuarios. Es posible que encuentres tu respuesta aquí mismo.
             </p>
           </div>
 
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center shrink-0">
-                <Mail className="w-5 h-5 text-[#0071e3]" />
+          <div className="space-y-3">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index} 
+                className="border border-gray-200 rounded-xl overflow-hidden bg-[#f5f5f7]/50"
+              >
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="w-full flex items-center justify-between p-4 text-left hover:bg-[#f5f5f7] transition-colors"
+                >
+                  <span className={`font-medium text-sm ${openIndex === index ? 'text-[#0071e3]' : 'text-[#1d1d1f]'}`}>
+                    {faq.question}
+                  </span>
+                  {openIndex === index ? (
+                    <ChevronUp className="w-4 h-4 text-[#86868b]" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-[#86868b]" />
+                  )}
+                </button>
+                
+                {openIndex === index && (
+                  <div className="px-4 pb-4 pt-0">
+                    <p className="text-sm text-[#86868b] leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
               </div>
-              <div>
-                <h3 className="font-semibold text-[#1d1d1f]">Correo Electrónico</h3>
-                <p className="text-[#86868b]">contacto@medibusca.com</p>
-                <p className="text-[#86868b]">soporte@medibusca.com</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5 text-[#0071e3]" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-[#1d1d1f]">Oficinas</h3>
-                <p className="text-[#86868b]">Ciudad de México, México.</p>
-                <span className="text-xs text-[#86868b] block mt-1">(Atención presencial solo con cita)</span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center shrink-0">
-                <MessageSquare className="w-5 h-5 text-[#0071e3]" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-[#1d1d1f]">Soporte</h3>
-                <p className="text-[#86868b]">Lunes a Viernes: 9:00 AM - 6:00 PM</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Form */}
-        <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm">
+        {/* Right Column: Contact Form */}
+        <div className="bg-white p-8 rounded-[30px] border border-slate-200 shadow-sm h-fit">
           <h2 className="text-2xl font-bold text-[#1d1d1f] mb-8">Envíanos un mensaje</h2>
           
           {submitted ? (
