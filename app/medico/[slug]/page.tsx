@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, Loader2, Share2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, Loader2, Share2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock, Activity } from 'lucide-react';
 import { Link } from 'wouter';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../../lib/constants';
 
@@ -84,6 +84,41 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
     if (params.slug) fetchDoctorAndRelated();
   }, [params.slug]);
 
+  // SEO Head Management
+  useEffect(() => {
+    if (doctor) {
+        // 1. Set Page Title
+        const pageTitle = doctor.seo_metadata?.meta_title || `${doctor.full_name} - ${doctor.specialties[0] || 'Doctor'} | MediBusca`;
+        document.title = pageTitle;
+
+        // 2. Set Meta Description
+        const metaDescContent = doctor.seo_metadata?.meta_description || 
+             `Agenda una cita con ${doctor.full_name}, especialista en ${doctor.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`;
+        
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', metaDescContent);
+
+        // 3. Set Keywords
+        if (doctor.seo_metadata?.keywords) {
+            let metaKeywords = document.querySelector('meta[name="keywords"]');
+            if (!metaKeywords) {
+                metaKeywords = document.createElement('meta');
+                metaKeywords.setAttribute('name', 'keywords');
+                document.head.appendChild(metaKeywords);
+            }
+            metaKeywords.setAttribute('content', doctor.seo_metadata.keywords);
+        }
+    }
+    
+    // Cleanup: We don't remove tags as moving to another page usually overwrites them, 
+    // but good practice might reset title if needed.
+  }, [doctor]);
+
   if (loading) {
     return <div className="min-h-screen flex justify-center items-center bg-[#f5f5f7]"><Loader2 className="animate-spin text-[#86868b] w-8 h-8" /></div>;
   }
@@ -130,10 +165,12 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
       {/* Schema.org JSON-LD (Physician) */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(doctor.schema_data) }}
-      />
+      {doctor.schema_data && (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(doctor.schema_data) }}
+        />
+      )}
       {/* Schema.org JSON-LD (FAQPage) */}
       <script
         type="application/ld+json"
@@ -183,7 +220,19 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
                 </div>
               )}
 
-              {/* Description */}
+              {/* Sub Specialties */}
+              {doctor.medical_profile?.sub_specialties && doctor.medical_profile.sub_specialties.length > 0 && (
+                <div className="flex flex-wrap gap-2 items-center">
+                    <Activity className="w-4 h-4 text-[#86868b]" />
+                    {doctor.medical_profile.sub_specialties.map((sub, i) => (
+                        <span key={i} className="text-[14px] text-[#1d1d1f] font-medium bg-slate-100 px-2 py-0.5 rounded text-slate-700">
+                        {sub}
+                        </span>
+                    ))}
+                </div>
+              )}
+
+              {/* Description from SEO Metadata or Fallback */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
                 {doctor.seo_metadata?.meta_description || 'Especialista médico certificado dedicado a brindar la mejor atención a sus pacientes.'}
               </p>
