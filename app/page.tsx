@@ -40,16 +40,16 @@ export default function HomePage() {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // SEO
-  // useEffect(() => {
-  //   document.title = "MediBusca - Encuentra Doctores y Especialistas en México";
-  //   let metaDesc = document.querySelector('meta[name="description"]');
-  //   if (!metaDesc) {
-  //       metaDesc = document.createElement('meta');
-  //       metaDesc.setAttribute('name', 'description');
-  //       document.head.appendChild(metaDesc);
-  //   }
-  //   metaDesc.setAttribute('content', "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas. Agenda citas, revisa opiniones y contacta directamente.");
-  // }, []);
+  useEffect(() => {
+    document.title = "MediBusca - Encuentra Doctores y Especialistas en México";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas. Agenda citas, revisa opiniones y contacta directamente.");
+  }, []);
 
   useEffect(() => {
     // Close suggestions if clicked outside
