@@ -31,7 +31,7 @@ const COMMON_DISEASES = [
 
 export default function HomePage() {
   const [, setLocation] = useLocation();
-  const [city, setCity] = useState(ALL_CITIES[0]);
+  const [city, setCity] = useState('Ciudad de México');
   const [specialty, setSpecialty] = useState('');
   
   // Autocomplete state
