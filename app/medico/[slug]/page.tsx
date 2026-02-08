@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, Loader2, Share2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock, Activity } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, Loader2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock, Activity, ChevronLeft } from 'lucide-react';
 import { Link } from 'wouter';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../../lib/constants';
 
@@ -512,22 +512,39 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
         </div>
       </section>
 
-      {/* Mobile Sticky Bottom Action Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-slate-200 p-4 pb-8 z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-        <div className="flex gap-3">
-          {doctor.contact_info.phones?.slice(0, 1).map((phone, idx) => (
-            <a 
-              key={idx}
-              href={`tel:${phone}`} 
-              className="flex-1 flex items-center justify-center gap-2 h-12 bg-[#0071e3] text-white rounded-full font-semibold text-[17px] active:scale-95 transition-transform"
-            >
-              <Phone className="w-5 h-5 fill-current" />
-              Llamar
-            </a>
-          ))}
-          <button className="w-12 h-12 flex items-center justify-center bg-[#f5f5f7] rounded-full text-[#1d1d1f] active:scale-95">
-             <Share2 className="w-5 h-5" />
+      {/* MOBILE ACTION DOCK */}
+      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[200]">
+        <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2.5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10">
+          <button 
+            onClick={() => window.history.back()}
+            className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+            aria-label="Volver"
+          >
+            <ChevronLeft className="w-5 h-5" />
           </button>
+          
+          <div className="flex-1 text-center px-3 overflow-hidden">
+            <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-white/50 mb-0.5 truncate">
+              {doctor.specialties[0]}
+            </span>
+            <span className="block text-[13px] font-bold text-white tracking-tight leading-none truncate">
+              {doctor.full_name}
+            </span>
+          </div>
+
+          {doctor.contact_info.phones?.[0] ? (
+            <a 
+                href={`tel:${doctor.contact_info.phones[0]}`}
+                className="w-12 h-12 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                aria-label="Llamar"
+            >
+                <Phone className="w-5 h-5 fill-current" />
+            </a>
+          ) : (
+             <button disabled className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white/20 cursor-not-allowed">
+                <Phone className="w-5 h-5" />
+             </button>
+          )}
         </div>
       </div>
     </div>
