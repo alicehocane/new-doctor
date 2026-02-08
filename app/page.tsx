@@ -111,7 +111,7 @@ export default function HomePage() {
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tighter text-[#1d1d1f] leading-[1.05]">
             Salud, <br className="md:hidden" /> simplificada.
           </h1>
-          <p className="text-xl md:text-2xl text-[#86868b] max-w-lg mx-auto font-medium leading-relaxed">
+          <p className="text-xl md:text-2xl text-secondary max-w-lg mx-auto font-medium leading-relaxed">
             Encuentra al especialista ideal para ti, rápido y seguro.
           </p>
           
@@ -124,12 +124,15 @@ export default function HomePage() {
                 bg-white/70 backdrop-blur-xl border border-white/40
                 rounded-[24px] shadow-lg
               "
+              role="search"
             >
               
               {/* City Select */}
               <div className="relative md:w-1/3 h-14 bg-white/50 rounded-2xl hover:bg-white transition-colors group flex items-center px-4">
-                <MapPin className="w-5 h-5 text-[#86868b] mr-2 shrink-0" />
+                <MapPin className="w-5 h-5 text-secondary mr-2 shrink-0" aria-hidden="true" />
+                <label htmlFor="city-select" className="sr-only">Selecciona tu ciudad</label>
                 <select 
+                  id="city-select"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] appearance-none cursor-pointer"
@@ -138,25 +141,28 @@ export default function HomePage() {
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
-                <ChevronRight className="w-3 h-3 text-[#86868b] absolute right-4 rotate-90" />
+                <ChevronRight className="w-3 h-3 text-secondary absolute right-4 rotate-90" aria-hidden="true" />
               </div>
 
               {/* Specialty Input */}
               <div className="relative flex-1 h-14 bg-white/50 rounded-2xl hover:bg-white transition-colors flex items-center px-4">
-                <Stethoscope className="w-5 h-5 text-[#86868b] mr-2 shrink-0" />
+                <Stethoscope className="w-5 h-5 text-secondary mr-2 shrink-0" aria-hidden="true" />
+                <label htmlFor="specialty-input" className="sr-only">Especialidad médica</label>
                 <input 
+                  id="specialty-input"
                   type="text" 
                   value={specialty}
                   onChange={handleSpecialtyChange}
                   onFocus={() => specialty.length > 0 && setShowSuggestions(true)}
                   placeholder="Especialidad (ej. Cardiólogo)" 
-                  className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] placeholder-[#86868b]"
+                  className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] placeholder-gray-500"
                   autoComplete="off"
                 />
               </div>
 
               <button 
                 type="submit" 
+                aria-label="Buscar doctores"
                 className="
                    h-14 md:w-auto px-8
                    bg-[#0071e3] hover:bg-[#0077ED] active:scale-95
@@ -233,7 +239,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex justify-between items-end mb-8 md:mb-12">
             <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] tracking-tight">
-              Explora por <span className="text-[#86868b]">especialidad.</span>
+              Explora por <span className="text-secondary">especialidad.</span>
             </h2>
             <Link href="/especialidades" className="text-[#0071e3] hover:underline text-[15px] font-medium hidden md:block">
                Ver todas
@@ -277,7 +283,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24 bg-white w-full border-t border-slate-100">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-12 tracking-tight">
-            Busca por <span className="text-[#86868b]">enfermedad o síntoma.</span>
+            Busca por <span className="text-secondary">enfermedad o síntoma.</span>
           </h2>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -292,7 +298,7 @@ export default function HomePage() {
                   "
                >
                  <span className="font-medium text-[15px]">{item.name}</span>
-                 <ArrowUpRight className="w-4 h-4 text-[#86868b] group-hover:text-white transition-colors" />
+                 <ArrowUpRight className="w-4 h-4 text-secondary group-hover:text-white transition-colors" />
                </Link>
             ))}
           </div>
@@ -308,7 +314,7 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] tracking-tight">
               Encuentra Doctores y Especialistas Verificados con MediBusca
             </h2>
-            <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg text-secondary leading-relaxed max-w-3xl mx-auto">
               MediBusca ayuda a los pacientes a encontrar información precisa y actualizada sobre doctores, especialistas y clínicas en múltiples ciudades. Explora perfiles de doctores, especialidades y detalles de clínicas, y conecta directamente con los doctores para consultas o dudas.
             </p>
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 inline-flex items-start gap-3 text-left max-w-2xl">
@@ -326,19 +332,19 @@ export default function HomePage() {
             <div className="space-y-5">
               <h3 className="text-xl font-semibold text-[#1d1d1f]">Qué Ofrece MediBusca</h3>
               <ul className="space-y-4">
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                   Información verificada de doctores para todas las especialidades
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                   Perfiles detallados de doctores incluyendo información de clínicas
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                   Información sobre enfermedades y áreas de tratamiento
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                   Conexión directa con doctores vía teléfono o WhatsApp
                 </li>
@@ -349,15 +355,15 @@ export default function HomePage() {
             <div className="space-y-5">
               <h3 className="text-xl font-semibold text-[#1d1d1f]">Cómo Funciona</h3>
               <ul className="space-y-4">
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#1d1d1f] text-white text-xs font-bold shrink-0 mt-0.5">1</span>
                   Busca doctores por especialidad, enfermedad o ciudad
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#1d1d1f] text-white text-xs font-bold shrink-0 mt-0.5">2</span>
                   Revisa perfiles de doctores e información de clínicas
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#1d1d1f] text-white text-xs font-bold shrink-0 mt-0.5">3</span>
                   Conecta directamente con el doctor para consultas o dudas
                 </li>
@@ -368,19 +374,19 @@ export default function HomePage() {
             <div className="space-y-5">
               <h3 className="text-xl font-semibold text-[#1d1d1f]">Por Qué los Pacientes Confían en MediBusca</h3>
               <ul className="space-y-4">
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <Check className="w-5 h-5 text-green-600 shrink-0" />
                   Información de doctores pública y verificada
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <Check className="w-5 h-5 text-green-600 shrink-0" />
                   Listados transparentes y precisos
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <Check className="w-5 h-5 text-green-600 shrink-0" />
                   Los pacientes conectan directamente sin intermediarios
                 </li>
-                <li className="flex items-start gap-3 text-[#86868b] text-[15px] leading-relaxed">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
                   <Check className="w-5 h-5 text-green-600 shrink-0" />
                   Sin cargos ocultos ni servicios extra
                 </li>
@@ -392,7 +398,7 @@ export default function HomePage() {
           {/* Disclaimer */}
           <div className="border-t border-slate-200 pt-10 text-center md:text-left">
             <h4 className="text-xs font-bold text-[#1d1d1f] mb-2 uppercase tracking-wider">Aviso Importante</h4>
-            <p className="text-xs text-[#86868b] leading-relaxed max-w-4xl">
+            <p className="text-xs text-secondary leading-relaxed max-w-4xl">
               <strong>Renuncia:</strong> MediBusca es un directorio médico informativo. No ofrecemos consejo médico, diagnóstico, tratamiento ni reserva de citas. El contenido proporcionado aquí es solo para fines informativos y no sustituye el consejo médico profesional.
             </p>
           </div>
