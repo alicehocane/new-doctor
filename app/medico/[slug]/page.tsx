@@ -162,15 +162,37 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
     }))
   };
 
+  // Safe construction of Physician Schema
+  // We prioritize our database fields to ensure critical fields like 'address' are present
+  // even if the stored schema_data is incomplete.
+  const physicianSchema = {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    ...(doctor.schema_data || {}), // Spread existing schema data first
+    "name": doctor.full_name,
+    "image": "https://medibusca.com/icon-512.png", // Valid image URL required
+    "medicalSpecialty": doctor.specialties.map(s => ({
+      "@type": "MedicalSpecialty",
+      "name": s
+    })),
+    // Force address from reliable contact_info
+    "address": doctor.contact_info.locations && doctor.contact_info.locations.length > 0 ? {
+        "@type": "PostalAddress",
+        "streetAddress": doctor.contact_info.locations[0].address,
+        "addressLocality": doctor.cities[0] || "",
+        "addressCountry": "MX"
+    } : undefined,
+    // Force telephone
+    "telephone": doctor.contact_info.phones?.[0] || undefined
+  };
+
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
       {/* Schema.org JSON-LD (Physician) */}
-      {doctor.schema_data && (
-        <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(doctor.schema_data) }}
-        />
-      )}
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }}
+      />
       {/* Schema.org JSON-LD (FAQPage) */}
       <script
         type="application/ld+json"
