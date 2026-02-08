@@ -28,25 +28,7 @@ const COMMON_DISEASES = [
   { name: 'Dolor de muelas' },
   { name: 'Obesidad' },
   { name: 'Trastorno obsesivo compulsivo (TOC)' },
-  { name: 'Infección dental' },
-  { name: 'Sobrepeso' },
-  { name: 'Fracturas de dientes' },
-  { name: 'Desgaste dental' },
-  { name: 'Ataques de pánico' },
-  { name: 'Bullying (acoso escolar)' },
-  { name: 'Pérdida de dientes' },
-  { name: 'Dientes desalineados' },
-  { name: 'Dientes apiñados' },
-  { name: 'Estrés laboral' },
-  { name: 'Angustia' },
-  { name: 'Enfermedad periodontal - piorrea' },
-  { name: 'Lesiones deportivas' },
-  { name: 'Trastorno de ansiedad' },
-  { name: 'Trastorno de ansiedad generalizada' },
-  { name: 'Gastritis' },
-  { name: 'Colon irritable' },
-  { name: 'Virus del papiloma humano (VPH)' },
-  { name: 'Diabetes gestacional' }
+  { name: 'Infección dental' }
 ];
 
 export default function HomePage() {
