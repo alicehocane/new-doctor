@@ -171,14 +171,14 @@ export const SitemapGenerator: React.FC = () => {
       setStatus('Fetching Articles from Database...');
       const { data: articles, error: articlesError } = await supabase
         .from('articles')
-        .select('slug, published_at, published_at');
+        .select('slug, updated_at, published_at');
       
       if (articlesError) throw articlesError;
       
       if (articles && articles.length > 0) {
         const articleUrls = articles.map((article: any) => ({
             loc: `${SITE_URL}/enciclopedia/${article.slug}`,
-            lastmod: article.published_at || article.published_at || new Date().toISOString(),
+            lastmod: article.updated_at || article.published_at || new Date().toISOString(),
             changefreq: 'weekly',
             priority: '0.7'
         }));
