@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { FileCode, Download, Loader2, AlertCircle, CheckCircle, Globe, Layers } from 'lucide-react';
+import { FileCode, Download, Loader2, AlertCircle, CheckCircle, Globe, Layers, FileText, Info } from 'lucide-react';
 import { ALL_CITIES, COMMON_SPECIALTIES, ALL_DISEASES } from '../lib/constants';
 
 const SITE_URL = 'https://medibusca.com';
@@ -115,7 +115,7 @@ export const SitemapGenerator: React.FC = () => {
       const diseaseUrls = ALL_DISEASES.map(disease => ({
         loc: `${SITE_URL}/enfermedad/${slugify(disease)}`,
         changefreq: 'weekly',
-        priority: '0.9'
+        priority: '0.8'
       }));
       files.push({
         filename: 'sitemap-diseases.xml',
@@ -133,7 +133,7 @@ export const SitemapGenerator: React.FC = () => {
             citySpecUrls.push({
                   loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`,
                   changefreq: 'monthly',
-                  priority: '0.8'
+                  priority: '0.9'
               });
           });
       });
@@ -171,16 +171,16 @@ export const SitemapGenerator: React.FC = () => {
       setStatus('Fetching Articles from Database...');
       const { data: articles, error: articlesError } = await supabase
         .from('articles')
-        .select('slug, updated_at, published_at');
+        .select('slug, published_at');
       
       if (articlesError) throw articlesError;
       
       if (articles && articles.length > 0) {
         const articleUrls = articles.map((article: any) => ({
             loc: `${SITE_URL}/enciclopedia/${article.slug}`,
-            lastmod: article.updated_at || article.published_at || new Date().toISOString(),
+            lastmod: article.published_at || new Date().toISOString(),
             changefreq: 'weekly',
-            priority: '0.7'
+            priority: '0.9'
         }));
         
         files.push({
@@ -241,7 +241,7 @@ export const SitemapGenerator: React.FC = () => {
             loc: `${SITE_URL}/medico/${doc.slug}`,
             lastmod: doc.updated_at || new Date().toISOString(),
             changefreq: 'monthly',
-            priority: '0.6'
+            priority: '0.5'
         }));
 
         const doctorChunks = chunkArray(doctorUrls, MAX_URLS_PER_SITEMAP);
@@ -276,6 +276,20 @@ export const SitemapGenerator: React.FC = () => {
           type: 'Index'
       });
 
+      // --- 7. Robots.txt ---
+      setStatus('Generating Robots.txt...');
+      const robotsTxt = `User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: ${SITE_URL}/sitemap-index.xml
+`;
+      files.push({
+          filename: 'robots.txt',
+          content: robotsTxt,
+          type: 'Config'
+      });
+
       setGeneratedMaps(files);
       setStatus(`Complete! Generated ${files.length} files handling ${allDoctors.length} doctors.`);
 
@@ -287,7 +301,8 @@ export const SitemapGenerator: React.FC = () => {
   };
 
   const downloadFile = (filename: string, content: string) => {
-    const blob = new Blob([content], { type: 'text/xml' });
+    const type = filename.endsWith('.xml') ? 'text/xml' : 'text/plain';
+    const blob = new Blob([content], { type });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -351,27 +366,64 @@ export const SitemapGenerator: React.FC = () => {
                     <CheckCircle className="w-6 h-6" />
                     <span className="font-semibold text-lg">Generation Successful</span>
                 </div>
+
+                {/* Instructions */}
+                <div className="mb-8 bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-900">
+                    <div className="flex items-start gap-3">
+                        <Info className="w-5 h-5 shrink-0 mt-0.5" />
+                        <div>
+                            <p className="font-bold mb-2">Instructions to Install:</p>
+                            <ol className="list-decimal list-inside space-y-1">
+                                <li>Create a folder named <code>public</code> in your project root directory.</li>
+                                <li>Download <strong>all</strong> files listed below.</li>
+                                <li>Move the downloaded files into the <code>public</code> folder.</li>
+                                <li>Deploy your project.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
                 
                 <div className="space-y-6">
-                    {/* Index File Highlight */}
-                    <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg flex items-center justify-between">
-                         <div className="flex items-center gap-3">
-                            <Globe className="w-5 h-5 text-indigo-600" />
-                            <div>
-                                <p className="font-bold text-indigo-900">sitemap-index.xml</p>
-                                <p className="text-xs text-indigo-700">Submit this file to Google Search Console</p>
+                    {/* Index & Config Highlight */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                        {/* Index */}
+                        <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <Globe className="w-5 h-5 text-indigo-600" />
+                                <div>
+                                    <p className="font-bold text-indigo-900">sitemap-index.xml</p>
+                                    <p className="text-xs text-indigo-700">Submit to Google</p>
+                                </div>
                             </div>
-                         </div>
-                         <button
-                            onClick={() => downloadFile('sitemap-index.xml', generatedMaps[0].content)}
-                            className="bg-white text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors border border-indigo-200"
-                        >
-                            Download
-                        </button>
+                            <button
+                                onClick={() => downloadFile('sitemap-index.xml', generatedMaps.find(f => f.filename === 'sitemap-index.xml')?.content || '')}
+                                className="bg-white text-indigo-600 hover:bg-indigo-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors border border-indigo-200"
+                            >
+                                Download
+                            </button>
+                        </div>
+                        {/* Robots */}
+                        <div className="p-4 bg-slate-100 border border-slate-300 rounded-lg flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <FileText className="w-5 h-5 text-slate-600" />
+                                <div>
+                                    <p className="font-bold text-slate-900">robots.txt</p>
+                                    <p className="text-xs text-slate-700">Crawler Instructions</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => downloadFile('robots.txt', generatedMaps.find(f => f.filename === 'robots.txt')?.content || '')}
+                                className="bg-white text-slate-600 hover:bg-slate-200 px-3 py-1.5 rounded-md text-sm font-medium transition-colors border border-slate-300"
+                            >
+                                Download
+                            </button>
+                        </div>
                     </div>
 
                     {/* Sub-sitemaps Groups */}
-                    {Object.entries(groupedFiles).filter(([type]) => type !== 'Index').map(([type, files]) => (
+                    {Object.entries(groupedFiles)
+                        .filter(([type]) => type !== 'Index' && type !== 'Config')
+                        .map(([type, files]) => (
                         <div key={type}>
                             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{type} Sitemaps</h3>
                             <div className="grid gap-2">
