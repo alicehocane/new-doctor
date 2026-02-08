@@ -268,10 +268,10 @@ export const DoctorUploader: React.FC = () => {
                 <table className="w-full text-sm text-left">
                   <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-medium">
                     <tr>
-                      <th className="px-4 py-3">Raw Name -> Full Name</th>
+                      <th className="px-4 py-3">Raw Name &rarr; Full Name</th>
                       <th className="px-4 py-3">Slug</th>
-                      <th className="px-4 py-3">Raw Specialty -> Array</th>
-                      <th className="px-4 py-3">Raw License -> Array</th>
+                      <th className="px-4 py-3">Raw Specialty &rarr; Array</th>
+                      <th className="px-4 py-3">Raw License &rarr; Array</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
