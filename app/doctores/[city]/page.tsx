@@ -49,6 +49,20 @@ export default function CityPage({ params }: { params: { city: string } }) {
   const cityName = getCanonicalCity(params.city);
   const citySlug = params.city;
 
+  // SEO
+  useEffect(() => {
+    if (cityName) {
+        document.title = `Doctores en ${cityName} | MediBusca`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', `Encuentra los mejores doctores y especialistas en ${cityName}. Revisa perfiles, ubicaciones y contacta para agendar tu cita.`);
+    }
+  }, [cityName]);
+
   useEffect(() => {
     async function fetchInitial() {
         setLoading(true);

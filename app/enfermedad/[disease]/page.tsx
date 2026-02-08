@@ -161,6 +161,18 @@ export default function DiseasePage({ params }: { params: { disease: string } })
     causes: ['Factores genéticos', 'Factores ambientales', 'Estilo de vida', 'Condiciones preexistentes']
   };
 
+  // SEO
+  useEffect(() => {
+    document.title = `Tratamiento para ${diseaseName} - Especialistas y Causas | MediBusca`;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`);
+  }, [diseaseName]);
+
   useEffect(() => {
     async function fetchInitial() {
         setLoading(true);
@@ -417,7 +429,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                                     <span className="px-2.5 py-1 bg-[#0071e3]/10 text-[#0071e3] text-[10px] font-bold uppercase tracking-wider rounded-lg">
                                         Artículo
                                     </span>
-                                    <span className="text-[11px] text-[#86868b] flex items-center gap-1 ml-auto">
+                                    <span className="text-[11px] text-[#86868b] flex items-center gap-1 ml-auto shrink-0">
                                         <Clock className="w-3 h-3" /> {article.read_time}
                                     </span>
                                 </div>

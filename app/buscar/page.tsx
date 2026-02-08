@@ -14,6 +14,18 @@ export default function SearchPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   
+  // SEO
+  useEffect(() => {
+    document.title = "Buscar Doctores y Especialistas | MediBusca";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Busca doctores por nombre, especialidad o ciudad. Encuentra el especialista médico ideal cerca de ti.");
+  }, []);
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {

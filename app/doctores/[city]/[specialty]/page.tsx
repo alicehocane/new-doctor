@@ -63,6 +63,20 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
 
+  // SEO
+  useEffect(() => {
+    if (cityName && searchTerm) {
+        document.title = `${searchTerm}s en ${cityName} | MediBusca`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', `Lista de los mejores ${searchTerm.toLowerCase()}s en ${cityName}. Consulta opiniones, direcciones y teléfonos de consultorios.`);
+    }
+  }, [cityName, searchTerm]);
+
   useEffect(() => {
     async function fetchInitial() {
         setLoading(true);

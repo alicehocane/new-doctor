@@ -117,6 +117,20 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en México.`;
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || ['Diagnóstico general', 'Tratamiento especializado', 'Seguimiento de padecimientos', 'Consultas preventivas'];
 
+  // SEO
+  useEffect(() => {
+    if (searchTerm) {
+        document.title = `${searchTerm}s en México | MediBusca`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', `Encuentra a los mejores ${searchTerm.toLowerCase()}s verificados en México. Información sobre padecimientos, tratamientos y contacto directo.`);
+    }
+  }, [searchTerm]);
+
   useEffect(() => {
     async function fetchInitial() {
         setLoading(true);

@@ -59,6 +59,18 @@ export default function HomePage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  // SEO
+  useEffect(() => {
+    document.title = "MediBusca - Encuentra Doctores y Especialistas en México";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas. Agenda citas, revisa opiniones y contacta directamente.");
+  }, []);
+
   useEffect(() => {
     // Close suggestions if clicked outside
     function handleClickOutside(event: MouseEvent) {
@@ -254,7 +266,7 @@ export default function HomePage() {
              overflow-x-auto snap-x snap-mandatory no-scrollbar
              -mx-6 px-6 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {['Dentista-Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista'].map((spec) => (
+            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista'].map((spec) => (
               <Link 
                 key={spec} 
                 href={`/especialidad/${spec.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}

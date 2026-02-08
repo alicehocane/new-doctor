@@ -84,6 +84,18 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
   // Try to find exact match in constants, fallback to formatted name
   const exactDiseaseName = ALL_DISEASES.find(d => slugify(d) === diseaseSlug) || diseaseName;
 
+  // SEO
+  useEffect(() => {
+    document.title = `Tratamiento para ${diseaseName} en ${cityName} | MediBusca`;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', `Encuentra doctores especialistas en ${diseaseName} en ${cityName}. Agenda tu cita con expertos verificados.`);
+  }, [diseaseName, cityName]);
+
   useEffect(() => {
     async function fetchInitial() {
         setLoading(true);

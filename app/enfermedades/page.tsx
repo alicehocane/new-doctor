@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Activity, ArrowRight, Search, Plus, MapPin, Stethoscope } from 'lucide-react';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
@@ -18,6 +18,18 @@ const PAGE_SIZE = 12;
 export default function DiseasesIndexPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  // SEO
+  useEffect(() => {
+    document.title = "Diccionario de Enfermedades y Padecimientos | MediBusca";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Busca doctores por enfermedad o síntoma. Guía completa de padecimientos y los especialistas que los tratan.");
+  }, []);
 
   // Filter diseases based on search query
   const filteredDiseases = ALL_DISEASES.filter(d => 

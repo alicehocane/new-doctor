@@ -15,6 +15,18 @@ export default function EncyclopediaIndexPage() {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
+  // SEO
+  useEffect(() => {
+    document.title = "Enciclopedia Médica y Artículos de Salud | MediBusca";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Biblioteca de salud de MediBusca. Artículos verificados sobre bienestar, prevención y medicina escritos por expertos.");
+  }, []);
+
   // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {

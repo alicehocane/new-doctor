@@ -14,6 +14,20 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
     window.scrollTo(0, 0);
   }, [params.slug]);
 
+  // SEO
+  useEffect(() => {
+    if (article) {
+        document.title = `${article.title} | Enciclopedia MediBusca`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', article.excerpt || `Lee sobre ${article.title} en la Enciclopedia Médica de MediBusca.`);
+    }
+  }, [article]);
+
   useEffect(() => {
     async function fetchData() {
         setLoading(true);

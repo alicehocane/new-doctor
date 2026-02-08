@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Stethoscope, ArrowRight, Activity, MapPin, Plus } from 'lucide-react';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
@@ -24,6 +24,18 @@ const TOP_SPECIALTIES = [
 
 export default function SpecialtiesIndexPage() {
   const [visibleCount, setVisibleCount] = useState(40); // Increased to cover popular list initially
+
+  // SEO
+  useEffect(() => {
+    document.title = "Especialidades Médicas - Directorio Completo | MediBusca";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud.");
+  }, []);
 
   const normalize = (str: string) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   
