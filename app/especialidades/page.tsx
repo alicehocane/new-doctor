@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Stethoscope, ArrowRight, Activity, MapPin, Plus } from 'lucide-react';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 
 const COMMON_DISEASES = [
   { name: 'Diabetes', category: 'Endocrinología' },
@@ -19,11 +19,15 @@ const COMMON_DISEASES = [
 ];
 
 const TOP_SPECIALTIES = [
-  'Ginecólogo', 'Pediatra', 'Dermatólogo', 'Cardiólogo', 'Traumatólogo', 'Psicólogo'
+  'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista'
+];
+
+const TOP_CITIES = [
+  'Ciudad de México', 'Guadalajara', 'Monterrey'
 ];
 
 export default function SpecialtiesIndexPage() {
-  const [visibleCount, setVisibleCount] = useState(40); // Increased to cover popular list initially
+  const [visibleCount, setVisibleCount] = useState(20); // Increased to cover popular list initially
 
   // SEO
   useEffect(() => {
@@ -153,7 +157,7 @@ export default function SpecialtiesIndexPage() {
                 Especialistas por ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {POPULAR_CITIES.map((city) => (
+                {TOP_CITIES.map((city) => (
                     <div key={city} className="space-y-4">
                         <h3 className="font-bold text-lg text-[#1d1d1f] border-b border-slate-100 pb-3">
                             {city}
