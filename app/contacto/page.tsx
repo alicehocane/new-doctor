@@ -14,27 +14,27 @@ export default function ContactPage() {
   // FAQ State
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  // FAQ Data
+  // FAQ Data - UPDATED for Directory Logic
   const faqs = [
     {
-      question: "¿Cómo puedo agendar una cita?",
-      answer: "Busca al médico por especialidad o nombre en nuestro buscador. En su perfil, selecciona el horario disponible y sigue los pasos. Recibirás una confirmación por correo inmediatamente."
+      question: "¿Cómo agendo una cita con un médico?",
+      answer: "MediBusca es un directorio de conexión. Nosotros te facilitamos el teléfono, WhatsApp y dirección del especialista para que tú los contactes y agendes tu cita directamente con ellos sin intermediarios."
     },
     {
-      question: "¿Tiene algún costo usar MediBusca?",
-      answer: "No. Para los pacientes, buscar médicos y agendar citas es 100% gratuito. No hay cargos ocultos ni comisiones por reservar."
+      question: "¿Tiene algún costo para los pacientes?",
+      answer: "No. Buscar médicos y acceder a su información de contacto es 100% gratuito. No cobramos tarifas por uso ni comisiones."
     },
     {
-      question: "Soy médico, ¿cómo puedo unirme?",
-      answer: "Nos encantaría tenerte. Visita la sección 'Para Médicos' en el menú principal o escríbenos directamente a través de este formulario seleccionando el asunto 'Afiliación'."
+      question: "¿Cómo puedo cancelar o cambiar una cita?",
+      answer: "Dado que la cita se agenda directamente con el especialista o su consultorio, cualquier cambio o cancelación debes gestionarlo contactándolos directamente a ellos."
     },
     {
-      question: "¿Cómo cancelo o reagendo mi cita?",
-      answer: "Puedes gestionar tus citas desde el enlace que enviamos a tu correo de confirmación o iniciando sesión en tu cuenta de usuario en la sección 'Mis Citas'."
+      question: "Soy médico, ¿cómo puedo aparecer en el directorio?",
+      answer: "Nos encantaría tenerte. Visita la sección 'Para Médicos' en el menú principal o escríbenos a través de este formulario seleccionando el asunto 'Afiliación'."
     },
     {
-      question: "¿Dónde están ubicadas sus oficinas?",
-      answer: "Nuestras oficinas centrales están en Ciudad de México, sin embargo, somos una plataforma digital y no ofrecemos atención presencial a pacientes en nuestras oficinas corporativas."
+      question: "La información de un doctor es incorrecta, ¿qué hago?",
+      answer: "Si encuentras un número o dirección desactualizada, por favor envíanos un mensaje usando el formulario de esta página para que nuestro equipo lo verifique y corrija de inmediato."
     }
   ];
 
@@ -58,13 +58,13 @@ export default function ContactPage() {
           Contacto.
         </h1>
         <p className="text-xl text-[#86868b] max-w-xl mx-auto font-medium leading-relaxed">
-          Estamos aquí para ayudarte. Resuelve tus dudas rápidamente o envíanos un mensaje.
+          Estamos aquí para ayudarte. Resuelve tus dudas sobre la plataforma o envíanos un mensaje.
         </p>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16">
         
-        {/* Left Column: FAQs (Replaced previous static info) */}
+        {/* Left Column: FAQs */}
         <div className="space-y-8">
           <div>
             <div className="flex items-center gap-3 mb-6">
@@ -74,7 +74,7 @@ export default function ContactPage() {
                 <h2 className="text-2xl font-bold text-[#1d1d1f]">Preguntas Frecuentes</h2>
             </div>
             <p className="text-[#86868b] leading-relaxed mb-8">
-              Antes de enviarnos un mensaje, revisa las preguntas más comunes de nuestros usuarios. Es posible que encuentres tu respuesta aquí mismo.
+              Revisa nuestras dudas más comunes. Recuerda que MediBusca conecta pacientes con doctores, pero no administramos las agendas médicas.
             </p>
           </div>
 
