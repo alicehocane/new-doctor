@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function PrivacyPage() {
+  // SEO
+  useEffect(() => {
+    document.title = "Aviso de Privacidad | MediBusca";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Consulta nuestro aviso de privacidad. En MediBusca nos tomamos en serio la protección de tus datos personales y la transparencia en su uso.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-white py-12 md:py-20 animate-in fade-in slide-in-from-bottom-4">
       <div className="max-w-3xl mx-auto px-6">

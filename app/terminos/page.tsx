@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function TermsPage() {
+  // SEO
+  useEffect(() => {
+    document.title = "Términos y Condiciones de Uso | MediBusca";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Lee los términos y condiciones para el uso de la plataforma MediBusca. Información legal sobre el servicio de directorio médico.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-white py-12 md:py-20 animate-in fade-in slide-in-from-bottom-4">
       <div className="max-w-3xl mx-auto px-6">

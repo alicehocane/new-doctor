@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link } from 'wouter';
 import { ShieldCheck, Heart, Search, Users } from 'lucide-react';
 
 export default function AboutPage() {
+  // SEO
+  useEffect(() => {
+    document.title = "Sobre MediBusca - Nuestra Misión y Valores";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Conoce más sobre MediBusca, la plataforma líder para encontrar doctores en México. Nuestra misión es conectar pacientes con especialistas verificados de forma rápida y segura.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
@@ -76,9 +89,9 @@ export default function AboutPage() {
           <p className="text-[#86868b] max-w-xl mx-auto mb-8">
             Únete a la red médica de más rápido crecimiento y permite que más pacientes te encuentren.
           </p>
-          <a href="/contacto" className="inline-block bg-[#0071e3] text-white px-8 py-3 rounded-full font-medium hover:bg-[#0077ED] transition-colors shadow-sm active:scale-95">
+          <Link href="/contacto" className="inline-block bg-[#0071e3] text-white px-8 py-3 rounded-full font-medium hover:bg-[#0077ED] transition-colors shadow-sm active:scale-95">
             Contáctanos para registrarte
-          </a>
+          </Link>
         </div>
 
       </div>
