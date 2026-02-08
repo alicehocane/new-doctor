@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Switch, Router } from 'wouter';
+import React from 'react';
+import { Route, Switch, Router, Link } from 'wouter';
 import RootLayout from './app/layout';
 import HomePage from './app/page';
 import AdminUploadPage from './app/admin/upload/page';
@@ -19,34 +19,9 @@ import ContactPage from './app/contacto/page';
 import EncyclopediaIndexPage from './app/enciclopedia/page';
 import ArticlePage from './app/enciclopedia/[slug]/page';
 
-// Hook for hash-based routing (e.g., /#/buscar)
-// This avoids "SecurityError: Failed to execute 'pushState'" in sandboxed environments
-const useHashLocation = () => {
-  const [loc, setLoc] = useState(() => {
-    // Return path only (strip query string for wouter matching)
-    const hash = window.location.hash.replace(/^#/, "") || "/";
-    return hash.split('?')[0]; 
-  });
-
-  useEffect(() => {
-    const handler = () => {
-      const hash = window.location.hash.replace(/^#/, "") || "/";
-      setLoc(hash.split('?')[0]);
-    };
-    window.addEventListener("hashchange", handler);
-    return () => window.removeEventListener("hashchange", handler);
-  }, []);
-
-  const navigate = (to: string) => {
-    window.location.hash = to;
-  };
-
-  return [loc, navigate] as [string, (to: string) => void];
-};
-
 const App = () => {
   return (
-    <Router hook={useHashLocation}>
+    <Router>
       <RootLayout>
         <Switch>
           {/* Static Routes */}
@@ -129,9 +104,9 @@ const App = () => {
               <h1 className="text-4xl font-bold text-slate-300">404</h1>
               <p className="text-slate-500 mt-2">Página no encontrada</p>
               <p className="text-xs text-slate-400 mt-4">Ruta actual no coincide con ninguna página.</p>
-              <a href="#/" className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-sky-600 transition-colors">
+              <Link href="/" className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-sky-600 transition-colors">
                 Volver al inicio
-              </a>
+              </Link>
             </div>
           </Route>
         </Switch>
