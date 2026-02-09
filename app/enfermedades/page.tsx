@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Activity, ArrowRight, Search, Plus, MapPin, Stethoscope, ShieldCheck, BookOpen } from 'lucide-react';
-import { POPULAR_CITIES, POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
+import { POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -12,6 +12,16 @@ const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
+
+
+const FEATURED_CITIES = [
+  'Mérida',
+  'Puebla',
+  'San Luis Potosí',
+  'Tijuana',
+  'Toluca',
+  'Zapopan'
+];
 
 const PAGE_SIZE = 12;
 
@@ -146,7 +156,6 @@ export default function DiseasesIndexPage() {
         <section className="mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
             <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
-                    <Stethoscope className="w-6 h-6 text-[#0071e3]" />
                     Encuentra doctores por su especialidad
                 </h2>
                 <p className="text-[#86868b] text-lg leading-relaxed max-w-3xl">
@@ -185,7 +194,7 @@ export default function DiseasesIndexPage() {
                 Encuentra tratamiento en tu ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {POPULAR_CITIES.map((city) => (
+                {FEATURED_CITIES.map((city) => (
                     <div key={city} className="space-y-3">
                         <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
                             {city}
