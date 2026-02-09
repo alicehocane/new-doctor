@@ -79,9 +79,40 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
   // Get only the first category for display
   const primaryCategory = article.category.split(',')[0].trim();
 
+  // Schema Markup
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": article.title,
+    "description": article.excerpt,
+    "image": article.image_url ? [article.image_url] : ["https://medibusca.com/icon-512.png"],
+    "datePublished": article.published_at,
+    "dateModified": article.published_at, 
+    "author": {
+      "@type": "Person",
+      "name": article.author,
+      "jobTitle": article.author_role
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "MediBusca",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://medibusca.com/icon-512.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://medibusca.com/enciclopedia/${article.slug}`
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white pb-20">
         
+        {/* Schema */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+
         {/* Sticky Navigation Bar */}
         <div className="sticky top-[48px] md:top-[52px] z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200 transition-all">
             <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">

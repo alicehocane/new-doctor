@@ -30,6 +30,7 @@ export default function RootLayout({
               <Link href="/especialidades" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Especialidades</Link>
               <Link href="/enfermedades" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Padecimientos</Link>
               <Link href="/enciclopedia" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Enciclopedia</Link>
+              <Link href="/admin/upload" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Admin</Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -69,17 +70,60 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="bg-[#f5f5f7] border-t border-slate-200 text-secondary py-12 mt-auto">
-           <div className="max-w-5xl mx-auto px-6 text-xs leading-relaxed space-y-2">
-             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <p>&copy; {new Date().getFullYear()} MediBusca.</p>
-                <nav className="flex flex-wrap gap-4" aria-label="Enlaces legales">
-                  <Link href="/nosotros" className="cursor-pointer hover:underline transition-colors hover:text-[#1d1d1f]">Nosotros</Link>
-                  <Link href="/contacto" className="cursor-pointer hover:underline transition-colors hover:text-[#1d1d1f]">Contacto</Link>
-                  <Link href="/privacidad" className="cursor-pointer hover:underline transition-colors hover:text-[#1d1d1f]">Privacidad</Link>
-                  <Link href="/terminos" className="cursor-pointer hover:underline transition-colors hover:text-[#1d1d1f]">Términos</Link>
-                </nav>
+        <footer className="bg-[#f5f5f7] border-t border-slate-200 text-[#86868b] py-16 mt-auto text-[13px]">
+           <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+             
+             <div className="space-y-4">
+               <Link href="/" className="text-[17px] font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors block">MediBusca</Link>
+               <p className="leading-relaxed">
+                 MediBusca es una plataforma informativa de salud. Ayudamos a las personas a encontrar médicos, especialidades y contenido médico claro y confiable.
+               </p>
+               <div className="bg-white border border-slate-200 p-3 rounded-lg">
+                 <p className="font-medium text-[#1d1d1f] text-xs">
+                   No brindamos atención médica ni realizamos diagnósticos o tratamientos.
+                 </p>
+               </div>
              </div>
+
+             <div className="space-y-4">
+               <h3 className="font-semibold text-[#1d1d1f]">Enlaces importantes</h3>
+               <ul className="space-y-3">
+                 <li><Link href="/nosotros" className="hover:text-[#0071e3] hover:underline transition-colors">Sobre nosotros</Link></li>
+                 <li><Link href="/privacidad" className="hover:text-[#0071e3] hover:underline transition-colors">Política de privacidad</Link></li>
+                 <li><Link href="/terminos" className="hover:text-[#0071e3] hover:underline transition-colors">Términos y condiciones</Link></li>
+                 <li><Link href="/contacto" className="hover:text-[#0071e3] hover:underline transition-colors">Contacto</Link></li>
+               </ul>
+             </div>
+
+             <div className="space-y-4">
+               <h3 className="font-semibold text-[#1d1d1f]">Para pacientes</h3>
+               <ul className="space-y-3">
+                 <li><Link href="/buscar" className="hover:text-[#0071e3] hover:underline transition-colors">Buscar médicos por ciudad</Link></li>
+                 <li><Link href="/especialidades" className="hover:text-[#0071e3] hover:underline transition-colors">Buscar por especialidad</Link></li>
+                 <li><Link href="/enfermedades" className="hover:text-[#0071e3] hover:underline transition-colors">Explorar enfermedades y síntomas</Link></li>
+                 <li><Link href="/buscar" className="hover:text-[#0071e3] hover:underline transition-colors">Conectar con doctores</Link></li>
+               </ul>
+             </div>
+
+             <div className="space-y-6">
+               <div className="space-y-2">
+                 <h3 className="font-semibold text-[#1d1d1f]">Compromiso con la información</h3>
+                 <p className="leading-relaxed text-xs">
+                   El contenido de MediBusca es educativo y no reemplaza la consulta médica profesional. Siempre consulta a un médico calificado ante cualquier problema de salud.
+                 </p>
+               </div>
+               <div className="space-y-2">
+                 <h3 className="font-semibold text-[#1d1d1f]">Transparencia y confianza</h3>
+                 <p className="leading-relaxed text-xs">
+                   MediBusca respeta la privacidad de los usuarios y no solicita información médica personal. La información publicada se revisa con fines educativos y puede actualizarse con el tiempo.
+                 </p>
+               </div>
+             </div>
+
+           </div>
+
+           <div className="max-w-6xl mx-auto px-6 border-t border-slate-200 pt-8">
+             <p>&copy; {new Date().getFullYear()} MediBusca. Todos los derechos reservados.</p>
            </div>
         </footer>
     </div>
