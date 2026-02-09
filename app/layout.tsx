@@ -30,7 +30,6 @@ export default function RootLayout({
               <Link href="/especialidades" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Especialidades</Link>
               <Link href="/enfermedades" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Padecimientos</Link>
               <Link href="/enciclopedia" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Enciclopedia</Link>
-              <Link href="/admin/upload" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Admin</Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -58,7 +57,6 @@ export default function RootLayout({
               <Link href="/especialidades" className="py-2 border-b border-slate-100">Especialidades</Link>
               <Link href="/enfermedades" className="py-2 border-b border-slate-100">Padecimientos</Link>
               <Link href="/enciclopedia" className="py-2 border-b border-slate-100">Enciclopedia</Link>
-              <Link href="/admin/upload" className="py-2 text-slate-500">Admin</Link>
             </nav>
           </div>
         </header>
