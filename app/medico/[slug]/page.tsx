@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, Loader2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock, Activity, ChevronLeft } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, Loader2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
 import { Link } from 'wouter';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../../lib/constants';
 
@@ -478,7 +478,7 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
          </div>
       </div>
 
-      
+
       {/* SEO Cross-Linking Section (Optimized) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200 mt-8">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
