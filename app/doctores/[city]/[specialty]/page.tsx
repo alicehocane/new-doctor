@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { MapPin, CheckCircle, Loader2, Plus, Phone, User, ArrowRight, Search } from 'lucide-react';
+import { MapPin, CheckCircle, Loader2, Plus, Phone, User, ArrowRight, Search, ShieldCheck } from 'lucide-react';
 import { Link } from 'wouter';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES } from '../../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
 
 const PAGE_SIZE = 20;
-
-const SPECIALTY_DESCRIPTIONS: Record<string, string> = {
-  'Alergólogo': 'Un alergólogo es un médico capacitado para determinar si tus síntomas son causados por una alergia y encontrar el tratamiento adecuado.',
-  'Anestesiólogo': 'Un anestesiólogo es un médico responsable de administrar anestesia y controlar el dolor y las funciones vitales durante las cirugías.',
-  'Angiólogo': 'Un angiólogo es un especialista médico que diagnostica y trata enfermedades del sistema circulatorio, incluyendo venas, arterias y vasos linfáticos.',
-  'Cardiólogo': 'Un cardiólogo es un especialista que se ocupa del diagnóstico y tratamiento de las enfermedades del corazón y los vasos sanguíneos.',
-  'Dermatólogo': 'Un dermatólogo es un médico especializado en el cuidado y tratamiento de enfermedades de la piel, el cabello y las uñas.',
-  'Pediatra': 'Un pediatra es un médico que supervisa la salud física, mental y emocional de bebés, niños y adolescentes.',
-  'Gastroenterólogo': 'Un gastroenterólogo es un especialista en la salud del sistema digestivo, incluyendo esófago, estómago e intestinos.',
-};
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -69,6 +59,10 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
 
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
+  
+  // Get conditions for dynamic text
+  const conditions = SPECIALTY_CONDITIONS[searchTerm] || [];
+  const conditionText = conditions.slice(0, 2).join(', ').toLowerCase() || 'tus síntomas';
 
   // SEO
   useEffect(() => {
@@ -263,6 +257,68 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
                 </button>
             </div>
         )}
+
+        {/* NEW: Dynamic Informational Section */}
+        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
+          <div className="max-w-4xl mx-auto space-y-16">
+            
+            {/* 1. How to Choose */}
+            <div className="text-center space-y-6">
+               <h2 className="text-3xl font-bold text-[#1d1d1f]">Cómo elegir el {searchTerm} adecuado para ti</h2>
+               <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
+                 Encontrar atención médica no debería ser difícil. En <span className="text-[#1d1d1f] font-medium">{cityName}</span>, contamos con expertos en {searchTerm} listos para ayudarte. Ya sea que busques tratamiento para {conditionText}, o una revisión general, aquí puedes ver perfiles verificados de forma gratuita.
+               </p>
+            </div>
+
+            {/* 2. What you should know */}
+            <div>
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Lo que debes saber</h3>
+                <div className="grid md:grid-cols-3 gap-8">
+                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
+                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
+                            <ShieldCheck className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2">Sin costos ocultos</h4>
+                        <p className="text-[#86868b] text-sm leading-relaxed">MediBusca no te cobra nada por buscar o contactar a un especialista.</p>
+                    </div>
+                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
+                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
+                            <Phone className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2">Contacto directo</h4>
+                        <p className="text-[#86868b] text-sm leading-relaxed">Hablas directamente con el consultorio del doctor para agendar tu cita.</p>
+                    </div>
+                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
+                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
+                            <CheckCircle className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2">Perfiles reales</h4>
+                        <p className="text-[#86868b] text-sm leading-relaxed">Verificamos que los especialistas sean profesionales certificados en {cityName}.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 3. FAQs */}
+            <div>
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Preguntas Frecuentes sobre {searchTerm}</h3>
+                <div className="space-y-4">
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Qué hace un {searchTerm}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">{description}</p>
+                    </div>
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cuánto dura una consulta?</h4>
+                        <p className="text-[#86868b] leading-relaxed">Por lo general, una consulta dura entre 30 y 60 minutos. Esto puede variar dependiendo del especialista que elijas en {cityName}.</p>
+                    </div>
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cómo contacto a un doctor en MediBusca?</h4>
+                        <p className="text-[#86868b] leading-relaxed">Solo haz clic en el botón "Llamar" o "Ver Perfil". Te conectarás de inmediato con el consultorio para pedir informes o agendar.</p>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        </section>
 
         {/* Nearby Cities Section */}
         <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
