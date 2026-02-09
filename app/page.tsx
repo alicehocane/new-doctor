@@ -103,8 +103,46 @@ export default function HomePage() {
     }
   };
 
+  // Schema Markup
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "MediBusca",
+    "url": "https://medibusca.com",
+    "logo": "https://medibusca.com/icon-512.png",
+    "description": "Plataforma informativa de salud y directorio médico en México.",
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "contacto@medibusca.com"
+    }
+  };
+
+  // Updated WebSite schema: Removed potentialAction (SearchAction) as we no longer 
+  // support a query-parameter based search result page (e.g. ?term=xyz).
+  // This prevents schema errors in Google Search Console.
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "MediBusca",
+    "url": "https://medibusca.com",
+    "description": "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas.",
+    "publisher": {
+        "@type": "Organization",
+        "name": "MediBusca",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://medibusca.com/icon-512.png"
+        }
+    }
+  };
+
   return (
     <div className="flex flex-col font-sans overflow-x-hidden">
+      {/* Schemas */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+
       {/* Hero Section */}
       <section className="relative py-20 px-6 md:py-32">
         <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
@@ -115,38 +153,39 @@ export default function HomePage() {
             Encuentra al especialista ideal para ti, rápido y seguro.
           </p>
           
-          {/* Search Form - Apple Glass Style */}
-          <div className="mt-12 mx-auto max-w-2xl relative" ref={wrapperRef}>
+          {/* Search Form - Modern Pill Style */}
+          <div className="mt-12 mx-auto max-w-3xl relative" ref={wrapperRef}>
             <form 
               onSubmit={handleSearch} 
               className="
-                flex flex-col md:flex-row gap-3 p-2
-                bg-white/70 backdrop-blur-xl border border-white/40
-                rounded-[24px] shadow-lg
+                flex flex-col md:flex-row gap-2 p-2
+                bg-white border border-slate-200/60
+                rounded-[2rem] shadow-2xl shadow-slate-200/50
+                items-center
               "
               role="search"
             >
               
               {/* City Select */}
-              <div className="relative md:w-1/3 h-14 bg-white/50 rounded-2xl hover:bg-white transition-colors group flex items-center px-4">
-                <MapPin className="w-5 h-5 text-secondary mr-2 shrink-0" aria-hidden="true" />
+              <div className="relative w-full md:w-1/3 h-14 bg-[#f5f5f7] rounded-[1.5rem] hover:bg-[#e8e8ed] transition-colors group flex items-center px-5">
+                <MapPin className="w-5 h-5 text-secondary mr-3 shrink-0" aria-hidden="true" />
                 <label htmlFor="city-select" className="sr-only">Selecciona tu ciudad</label>
                 <select 
                   id="city-select"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] appearance-none cursor-pointer"
+                  className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] appearance-none cursor-pointer pr-4"
                 >
                   {ALL_CITIES.map(c => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
-                <ChevronRight className="w-3 h-3 text-secondary absolute right-4 rotate-90" aria-hidden="true" />
+                <ChevronRight className="w-3 h-3 text-secondary absolute right-4 rotate-90 pointer-events-none" aria-hidden="true" />
               </div>
 
               {/* Specialty Input */}
-              <div className="relative flex-1 h-14 bg-white/50 rounded-2xl hover:bg-white transition-colors flex items-center px-4">
-                <Stethoscope className="w-5 h-5 text-secondary mr-2 shrink-0" aria-hidden="true" />
+              <div className="relative flex-1 w-full h-14 bg-[#f5f5f7] rounded-[1.5rem] hover:bg-[#e8e8ed] transition-colors flex items-center px-5">
+                <Stethoscope className="w-5 h-5 text-secondary mr-3 shrink-0" aria-hidden="true" />
                 <label htmlFor="specialty-input" className="sr-only">Especialidad médica</label>
                 <input 
                   id="specialty-input"
@@ -164,9 +203,9 @@ export default function HomePage() {
                 type="submit" 
                 aria-label="Buscar doctores"
                 className="
-                   h-14 md:w-auto px-8
+                   h-14 w-full md:w-auto px-8
                    bg-[#0071e3] hover:bg-[#0077ED] active:scale-95
-                   text-white font-medium text-[15px] rounded-2xl 
+                   text-white font-medium text-[15px] rounded-[1.5rem]
                    transition-all shadow-md flex items-center justify-center
                 "
               >
