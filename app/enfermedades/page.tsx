@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { Activity, ArrowRight, Search, Plus, MapPin, Stethoscope } from 'lucide-react';
+import { Activity, ArrowRight, Search, Plus, MapPin, Stethoscope, ShieldCheck, BookOpen } from 'lucide-react';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
 
 const slugify = (text: string) => {
@@ -77,6 +77,14 @@ export default function DiseasesIndexPage() {
              />
         </div>
 
+        {/* Guide Section */}
+        <div className="max-w-4xl mx-auto text-center mb-16 animate-in fade-in slide-in-from-bottom-5">
+            <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-4">Tu guía para encontrar al especialista adecuado</h2>
+            <p className="text-[#86868b] text-lg leading-relaxed max-w-3xl mx-auto">
+                A veces sabemos dónde nos duele, pero no sabemos qué doctor puede ayudarnos. En esta sección, puedes buscar por síntomas o padecimientos comunes. Haz clic en cualquier malestar para aprender qué es y encontrar expertos verificados en tu ciudad. En MediBusca, te conectamos directamente con el doctor, sin cobrar comisiones.
+            </p>
+        </div>
+
         {/* Grid */}
         {visibleDiseases.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-in fade-in slide-in-from-bottom-6">
@@ -136,10 +144,16 @@ export default function DiseasesIndexPage() {
         
         {/* Popular Specialties Section (SEO) */}
         <section className="mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
-            <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
-                <Stethoscope className="w-6 h-6 text-[#0071e3]" />
-                Explora por especialidad médica
-            </h2>
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
+                    <Stethoscope className="w-6 h-6 text-[#0071e3]" />
+                    Encuentra doctores por su especialidad
+                </h2>
+                <p className="text-[#86868b] text-lg leading-relaxed max-w-3xl">
+                    Si ya sabes qué tipo de doctor necesitas, como un pediatra para tus hijos o un dentista para una revisión, búscalo aquí. Tenemos una lista completa de especialistas listos para atenderte.
+                </p>
+            </div>
+            
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
                 {POPULAR_SPECIALTIES.map((spec) => (
                     <Link 
@@ -203,9 +217,30 @@ export default function DiseasesIndexPage() {
             </div>
         </section>
 
-        <div className="mt-20 text-center text-[#86868b] text-sm animate-in fade-in slide-in-from-bottom-8 border-t border-slate-200 pt-8">
-            <p>La información mostrada es solo de referencia y no sustituye un diagnóstico médico profesional.</p>
-        </div>
+        {/* Professional Trust & Disclaimer */}
+        <section className="mt-20 pt-12 border-t border-slate-200/60 pb-12 animate-in fade-in slide-in-from-bottom-8">
+            <div className="bg-white rounded-[24px] p-8 md:p-10 border border-slate-200 flex flex-col md:flex-row gap-8 items-start shadow-sm">
+                <div className="w-14 h-14 bg-blue-50 text-[#0071e3] rounded-2xl flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-7 h-7" />
+                </div>
+                <div>
+                    <h3 className="text-xl font-bold text-[#1d1d1f] mb-3">Información en la que puedes confiar</h3>
+                    <p className="text-[#86868b] leading-relaxed mb-6 text-lg">
+                        Todas las condiciones listadas aquí vienen con guías informativas. Recuerda que esta información es solo una guía y no reemplaza la visita al médico. Siempre consulta a un profesional para un diagnóstico preciso.
+                    </p>
+                    <div className="flex flex-wrap gap-6">
+                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f]">
+                            <BookOpen className="w-5 h-5 text-[#0071e3]" />
+                            Guías educativas
+                        </div>
+                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f]">
+                            <MapPin className="w-5 h-5 text-[#0071e3]" />
+                            Doctores locales
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
       </div>
     </div>
