@@ -1,330 +1,248 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, ShieldCheck, Clock, Phone, UserCheck, Star, HeartPulse } from 'lucide-react';
-import { useLocation, Link } from 'wouter';
-import { POPULAR_CITIES, ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../../lib/constants';
+import React, { useState, useEffect } from 'react';
+import { DoctorUploader } from '../../../components/DoctorUploader';
+import { ArticleUploader } from '../../../components/ArticleUploader';
+import { SitemapGenerator } from '../../../components/SitemapGenerator';
+import { Database, BookOpen, Lock, LogOut, Loader2, AlertCircle, Shield, Globe } from 'lucide-react';
+import { supabase } from '../../../lib/supabase';
 
-export default function SearchPage() {
-  const [, setLocation] = useLocation();
-  const [city, setCity] = useState('Ciudad de México');
-  const [specialty, setSpecialty] = useState('');
-  
-  // Autocomplete State
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  
-  // SEO
+export default function AdminUploadPage() {
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'doctors' | 'articles' | 'sitemaps'>('doctors');
+
+  // Login Form State
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+
   useEffect(() => {
-    document.title = "Buscar Doctores y Especialistas | MediBusca";
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', "Busca doctores por nombre, especialidad o ciudad. Encuentra el especialista médico ideal cerca de ti.");
+    // Check for existing session on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [wrapperRef]);
-
-  const slugify = (text: string) => {
-    return text.toString().toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/\-\-+/g, '-')
-      .replace(/^-+/, '')
-      .replace(/-+$/, '');
-  };
-
-  const handleSpecialtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setSpecialty(val);
-
-    if (val.length > 0) {
-      const filtered = COMMON_SPECIALTIES.filter(s => 
-        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(
-          val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        )
-      );
-      setSuggestions(filtered);
-      setShowSuggestions(true);
-    } else {
-      setShowSuggestions(false);
-    }
-  };
-
-  const handleSelectSuggestion = (suggestion: string) => {
-    setSpecialty(suggestion);
-    setShowSuggestions(false);
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (city && specialty.trim()) {
-      const citySlug = slugify(city);
-      const specialtyTerm = slugify(specialty.trim());
-      setLocation(`/doctores/${citySlug}/${specialtyTerm}`);
+    setLoginLoading(true);
+    setLoginError(null);
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+      // Session updates automatically via onAuthStateChange
+    } catch (err: any) {
+      setLoginError(err.message || 'Error al iniciar sesión');
+    } finally {
+      setLoginLoading(false);
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
-      
-      {/* Header */}
-      <div className="w-full max-w-2xl text-left md:text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight mb-3">
-          Buscar.
-        </h1>
-        <p className="text-xl md:text-2xl text-[#86868b] font-medium leading-relaxed">
-          Encuentra médicos verificados.
-        </p>
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
       </div>
+    );
+  }
 
-      {/* Search Container */}
-      <div 
-        className="w-full max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100"
-        ref={wrapperRef}
-      >
-        <form onSubmit={handleSearch} className="space-y-4">
-          
-            {/* City Selector - iOS style input */}
-            <div className="relative bg-white rounded-2xl h-[60px] flex items-center px-4 shadow-sm">
-                <div className="bg-[#0071e3]/10 w-8 h-8 rounded-full flex items-center justify-center mr-3 shrink-0">
-                   <MapPin className="w-4 h-4 text-[#0071e3]" />
-                </div>
-                <div className="flex-1 relative">
-                    <label className="text-[11px] font-semibold text-[#86868b] uppercase tracking-wide absolute top-[-6px] left-0">Ciudad</label>
-                    <select 
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        className="w-full bg-transparent border-none outline-none text-[17px] font-medium text-[#1d1d1f] appearance-none cursor-pointer pt-3"
-                    >
-                        {ALL_CITIES.map(c => (
-                            <option key={c} value={c}>{c}</option>
-                        ))}
-                    </select>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#d2d2d7] rotate-90" />
+  // --- LOGIN VIEW ---
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-8">
+            <div className="mx-auto h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4">
+                <Shield className="h-8 w-8 text-indigo-600" />
             </div>
-
-            {/* Specialty Input */}
-            <div className="relative bg-white rounded-2xl h-[60px] flex items-center px-4 shadow-sm">
-                <div className="bg-[#0071e3]/10 w-8 h-8 rounded-full flex items-center justify-center mr-3 shrink-0">
-                    <Search className="w-4 h-4 text-[#0071e3]" />
-                </div>
-                <div className="flex-1 relative">
-                    <label className="text-[11px] font-semibold text-[#86868b] uppercase tracking-wide absolute top-[-6px] left-0">Especialidad</label>
-                    <input 
-                        type="text" 
-                        value={specialty}
-                        onChange={handleSpecialtyChange}
-                        onFocus={() => { setShowSuggestions(true); }}
-                        placeholder="Ej. Pediatra" 
-                        className="w-full bg-transparent border-none outline-none text-[17px] text-[#1d1d1f] placeholder-[#d2d2d7] font-medium pt-3"
-                        autoComplete="off"
-                    />
-                </div>
-                {/* Search Button (Internal) */}
-                <button 
-                    type="submit"
-                    disabled={!specialty.trim()}
-                    className={`
-                      h-10 w-10 flex items-center justify-center rounded-full transition-all duration-300 ml-2
-                      ${specialty.trim() ? 'bg-[#0071e3] text-white hover:bg-[#0077ED]' : 'bg-[#f5f5f7] text-[#d2d2d7] cursor-not-allowed'}
-                    `}
-                   >
-                     <ArrowRight className="w-5 h-5" />
-                </button>
-            </div>
-
-          {/* Autocomplete Dropdown */}
-          {showSuggestions && suggestions.length > 0 && (
-            <div className="mt-2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-              <ul className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
-                {suggestions.map((suggestion) => (
-                  <li 
-                    key={suggestion}
-                    onClick={() => handleSelectSuggestion(suggestion)}
-                    className="px-6 py-4 hover:bg-[#f5f5f7] cursor-pointer text-[17px] text-[#1d1d1f] transition-colors flex items-center gap-3"
-                  >
-                    <Stethoscope className="w-4 h-4 text-[#86868b]" />
-                    {suggestion}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </form>
-
-        {/* Tags */}
-        <div className="mt-12">
-          <p className="text-xs font-semibold text-[#86868b] mb-4 uppercase tracking-wide">Populares</p>
-          <div className="flex flex-wrap gap-2">
-             {['Angiólogo', 'Cardiólogo', 'Dermatólogo', 'Pediatra'].map((spec) => (
-               <Link 
-                key={spec} 
-                href={`/especialidad/${slugify(spec)}`}
-                className="px-4 py-2 bg-white rounded-full text-[14px] font-medium text-[#1d1d1f] shadow-sm hover:text-[#0071e3] transition-colors cursor-pointer"
-               >
-                 {spec}
-               </Link>
-             ))}
-          </div>
+            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                Admin Access
+            </h2>
+            <p className="mt-2 text-slate-500">
+                MediBusca Database Management
+            </p>
         </div>
 
+        <div className="w-full max-w-md bg-white py-10 px-8 shadow-xl rounded-2xl border border-slate-100">
+          <form className="space-y-6" onSubmit={handleLogin}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-semibold text-slate-700">
+                Email Address
+              </label>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm text-slate-900"
+                  placeholder="admin@medibusca.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700">
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all sm:text-sm text-slate-900"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            {loginError && (
+              <div className="rounded-lg bg-red-50 p-4 flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+                <div className="text-sm text-red-700 font-medium">{loginError}</div>
+              </div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={loginLoading}
+                className={`
+                    w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white 
+                    bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all
+                    active:scale-[0.98]
+                    ${loginLoading ? 'opacity-75 cursor-not-allowed' : ''}
+                `}
+              >
+                {loginLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <p className="mt-8 text-center text-xs text-slate-400">
+          Protected System. Authorized Personnel Only.
+        </p>
+      </div>
+    );
+  }
+
+  // --- DASHBOARD VIEW (Authenticated) ---
+  return (
+    <div className="min-h-screen bg-slate-50 pb-12">
+      {/* Admin Header */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+                <div className="flex items-center gap-3">
+                    <div className="bg-indigo-600 p-1.5 rounded-lg">
+                        <Shield className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="font-bold text-slate-900 tracking-tight">Admin Dashboard</span>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                    <span className="text-sm text-slate-500 hidden sm:block">{session.user.email}</span>
+                    <button 
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
       </div>
 
-      {/* Popular Diseases by City (SEO Cross-Linking) */}
-        <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
-             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
-                <MapPin className="w-6 h-6 text-[#0071e3]" />
-                Encuentra tratamiento en tu ciudad
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {POPULAR_CITIES.map((city) => (
-                    <div key={city} className="space-y-3">
-                        <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
-                            {city}
-                        </h3>
-                        <ul className="space-y-2.5">
-                            {/* Show top 5 diseases for each city */}
-                            {ALL_DISEASES.slice(0, 5).map((disease) => (
-                                <li key={disease}>
-                                    <Link 
-                                        href={`/enfermedad/${slugify(disease)}/${slugify(city)}`}
-                                        className="text-[14px] text-[#86868b] hover:text-[#0071e3] hover:underline flex items-center gap-2 transition-colors"
-                                    >
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
-                                        {disease} en {city}
-                                    </Link>
-                                </li>
-                            ))}
-                            <li>
-                                <Link 
-                                    href={`/doctores/${slugify(city)}`}
-                                    className="text-[13px] font-medium text-[#0071e3] hover:underline mt-1 inline-block"
-                                >
-                                    Ver todos en {city}
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                ))}
-            </div>
-        </section>
-
-
-
-      {/* SEO Content Section */}
-      <section className="w-full max-w-4xl mt-24 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#1d1d1f] tracking-tight mb-4">
-            Encuentra tu especialista ideal en segundos
-          </h2>
-          <p className="text-lg text-[#86868b] max-w-2xl mx-auto leading-relaxed">
-            MediBusca es el directorio médico más completo y confiable. Conectamos a pacientes con doctores verificados de manera directa y segura.
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+            Database Management
+          </h1>
+          <p className="mt-2 text-lg text-slate-600">
+            Import doctors, publish articles, or generate sitemaps.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-              <ShieldCheck className="w-6 h-6" />
+        {/* Tab Switcher */}
+        <div className="flex justify-center mb-8">
+            <div className="bg-white p-1 rounded-xl shadow-sm border border-slate-200 flex flex-wrap gap-1">
+                <button
+                    onClick={() => setActiveTab('doctors')}
+                    className={`
+                        flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all
+                        ${activeTab === 'doctors' 
+                            ? 'bg-indigo-600 text-white shadow-sm' 
+                            : 'text-slate-600 hover:bg-slate-50'
+                        }
+                    `}
+                >
+                    <Database className="w-4 h-4" />
+                    Doctors Import
+                </button>
+                <button
+                    onClick={() => setActiveTab('articles')}
+                    className={`
+                        flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all
+                        ${activeTab === 'articles' 
+                            ? 'bg-indigo-600 text-white shadow-sm' 
+                            : 'text-slate-600 hover:bg-slate-50'
+                        }
+                    `}
+                >
+                    <BookOpen className="w-4 h-4" />
+                    Articles
+                </button>
+                <button
+                    onClick={() => setActiveTab('sitemaps')}
+                    className={`
+                        flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all
+                        ${activeTab === 'sitemaps' 
+                            ? 'bg-indigo-600 text-white shadow-sm' 
+                            : 'text-slate-600 hover:bg-slate-50'
+                        }
+                    `}
+                >
+                    <Globe className="w-4 h-4" />
+                    Sitemaps
+                </button>
             </div>
-            <h3 className="font-semibold text-[#1d1d1f] text-lg mb-2">100% Verificados</h3>
-            <p className="text-[#86868b] text-sm leading-relaxed">
-              Validamos las cédulas profesionales de cada médico para garantizar tu seguridad y tranquilidad.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-              <Phone className="w-6 h-6" />
-            </div>
-            <h3 className="font-semibold text-[#1d1d1f] text-lg mb-2">Contacto Directo</h3>
-            <p className="text-[#86868b] text-sm leading-relaxed">
-              Sin intermediarios ni comisiones. Llama directamente al consultorio o envía un mensaje.
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 bg-blue-50 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-              <UserCheck className="w-6 h-6" />
-            </div>
-            <h3 className="font-semibold text-[#1d1d1f] text-lg mb-2">Perfiles Completos</h3>
-            <p className="text-[#86868b] text-sm leading-relaxed">
-              Revisa experiencia, enfermedades que tratan, ubicación exacta y horarios antes de agendar.
-            </p>
-          </div>
         </div>
 
-        <div className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
-                <HeartPulse className="w-6 h-6 text-[#0071e3]" />
-                ¿Cómo usar el buscador médico?
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-bold text-sm">1</span>
-                  <div>
-                    <strong className="text-[#1d1d1f] block mb-1">Selecciona tu ubicación</strong>
-                    <p className="text-[#86868b] text-sm">Elige la ciudad donde deseas recibir atención médica. Cubrimos las principales ciudades de México.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-bold text-sm">2</span>
-                  <div>
-                    <strong className="text-[#1d1d1f] block mb-1">Escribe la especialidad o síntoma</strong>
-                    <p className="text-[#86868b] text-sm">¿Buscas un cardiólogo o tienes dolor de espalda? Nuestro buscador inteligente te sugerirá las mejores opciones.</p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-bold text-sm">3</span>
-                  <div>
-                    <strong className="text-[#1d1d1f] block mb-1">Compara y contacta</strong>
-                    <p className="text-[#86868b] text-sm">Explora los perfiles y usa los botones de "Llamar" para agendar tu cita inmediatamente.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div className="space-y-6">
-               <h3 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
-                <Star className="w-6 h-6 text-[#0071e3]" />
-                ¿Por qué elegir MediBusca?
-              </h3>
-              <div className="prose text-[#86868b] text-sm leading-relaxed">
-                <p className="mb-4">
-                  En un mundo donde la información de salud abunda pero no siempre es confiable, MediBusca se destaca por su compromiso con la calidad y la verificación.
-                </p>
-                <p className="mb-4">
-                  Nuestra plataforma está diseñada para simplificar el proceso de encontrar atención médica. Ya no necesitas navegar por múltiples sitios o directorios desactualizados. Aquí encuentras:
-                </p>
-                <ul className="list-disc pl-5 space-y-2 mb-4">
-                  <li>Especialistas certificados por consejos médicos.</li>
-                  <li>Ubicaciones geolocalizadas para encontrar el consultorio más cercano.</li>
-                  <li>Información clara sobre padecimientos y tratamientos.</li>
-                </ul>
-                <p>
-                  Únete a miles de pacientes que ya han encontrado a su médico de confianza a través de nuestra plataforma.
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {activeTab === 'doctors' && <DoctorUploader />}
+            {activeTab === 'articles' && <ArticleUploader />}
+            {activeTab === 'sitemaps' && <SitemapGenerator />}
         </div>
-      </section>
+      </div>
     </div>
   );
 }
