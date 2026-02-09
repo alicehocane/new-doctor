@@ -468,6 +468,17 @@ export default function DoctorProfile({ params }: { params: { slug: string } }) 
         </section>
       )}
 
+      {/* Disclaimer Note - NEW */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-3">
+            <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+            <p className="text-xs text-slate-500 leading-relaxed">
+              <strong>Descargo de responsabilidad:</strong> Este perfil es informativo. MediBusca no ofrece atención médica ni reemplaza la consulta profesional.
+            </p>
+         </div>
+      </div>
+
+      
       {/* SEO Cross-Linking Section (Optimized) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200 mt-8">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
