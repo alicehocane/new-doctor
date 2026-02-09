@@ -3,396 +3,12 @@ import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
 import { MapPin, Loader2, User, Phone, CheckCircle, ArrowRight, AlertCircle, Stethoscope, Plus, Search, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight } from 'lucide-react';
 import { Link } from 'wouter';
-import { POPULAR_CITIES, ALL_DISEASES } from '../../../lib/constants';
+import { POPULAR_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../lib/constants';
 
 const PAGE_SIZE = 20;
 
 // Curated list of top cities for SEO sections to avoid keyword stuffing
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
-
-// Mapping of disease slugs to their primary specialty
-const DISEASE_MAPPING: Record<string, string> = {
-  'diabetes': 'Endocrinólogo',
-  'hipertension': 'Cardiólogo',
-  'acne': 'Dermatólogo',
-  'ansiedad': 'Psiquiatra',
-  'dolor-de-espalda': 'Traumatólogo',
-  'embarazo': 'Ginecólogo',
-  'gastritis': 'Gastroenterólogo',
-  'migrana': 'Neurólogo',
-  'alergias': 'Alergólogo',
-  'varices': 'Angiólogo',
-  'calculos-renales': 'Urólogo',
-  'gripe': 'Médico General',
-  'artritis': 'Reumatólogo',
-  'cancer': 'Oncólogo',
-  'obesidad': 'Bariatra',
-  'asma': 'Neumólogo',
-  'depresion': 'Psiquiatra',
-  'fracturas': 'Traumatólogo',
-  'cataratas': 'Oftalmólogo',
-  'caries': 'Dentista',
-  'infeccion-urinaria': 'Urólogo',
-  'psoriasis': 'Dermatólogo',
-  'hipotiroidismo': 'Endocrinólogo',
-  'arritmia': 'Cardiólogo',
-  'osteoporosis': 'Reumatólogo',
-  'menopausia': 'Ginecólogo',
-  'hemorroides': 'Proctólogo',
-  'apendicitis': 'Cirujano General',
-  'insomnio': 'Psiquiatra'
-};
-
-// Data for SEO Section
-const DISEASE_DETAILS: Record<string, { symptoms: string[], causes: string[] }> = {
-  'Ansiedad': {
-    symptoms: ['Nerviosismo persistente', 'Sensación de peligro inminente', 'Aumento del ritmo cardíaco', 'Sudoración y temblores'],
-    causes: ['Factores genéticos', 'Estrés acumulado', 'Traumas infantiles', 'Desequilibrios químicos en el cerebro']
-  },
-  'Depresión': {
-    symptoms: ['Tristeza profunda y constante', 'Pérdida de interés en actividades', 'Cambios en el apetito', 'Dificultad para dormir'],
-    causes: ['Bioquímica cerebral', 'Eventos traumáticos', 'Antecedentes familiares', 'Enfermedades crónicas']
-  },
-  'Duelo': {
-    symptoms: ['Sensación de vacío', 'Shock emocional', 'Llanto frecuente', 'Retraimiento social'],
-    causes: ['Pérdida de un ser querido', 'Ruptura significativa', 'Cambios drásticos de vida']
-  },
-  'Estrés': {
-    symptoms: ['Tensión muscular', 'Irritabilidad', 'Dolores de cabeza', 'Dificultad para concentrarse'],
-    causes: ['Presión laboral o académica', 'Problemas financieros', 'Relaciones interpersonales difíciles']
-  },
-  'Codependencia': {
-    symptoms: ['Necesidad excesiva de aprobación', 'Dificultad para establecer límites', 'Descuidar necesidades propias por otros', 'Miedo al abandono'],
-    causes: ['Dinámicas familiares disfuncionales', 'Baja autoestima', 'Historia de abuso o negligencia']
-  },
-  'Hipertensión': {
-    symptoms: ['Dolor de cabeza intenso', 'Visión borrosa', 'Zumbido en los oídos', 'Dolor en el pecho'],
-    causes: ['Consumo excesivo de sal', 'Sedentarismo', 'Obesidad', 'Factores hereditarios']
-  },
-  'Caries': {
-    symptoms: ['Dolor al masticar', 'Sensibilidad a lo dulce/caliente', 'Manchas oscuras en los dientes', 'Agujeros visibles'],
-    causes: ['Mala higiene bucal', 'Consumo frecuente de azúcares', 'Bacterias en la placa dental']
-  },
-  'Estrés postraumático': {
-    symptoms: ['Flashbacks o recuerdos vívidos', 'Pesadillas recurrentes', 'Evitación de lugares asociados', 'Hipervigilancia'],
-    causes: ['Exposición a eventos violentos', 'Accidentes graves', 'Catástrofes naturales']
-  },
-  'Trastorno de conducta': {
-    symptoms: ['Agresión a personas o animales', 'Destrucción de propiedad', 'Engaño o robo', 'Violación grave de normas'],
-    causes: ['Factores neurobiológicos', 'Entorno familiar inestable', 'Maltrato infantil']
-  },
-  'Diabetes': {
-    symptoms: ['Aumento de la sed (polidipsia)', 'Ganas frecuentes de orinar', 'Cansancio extremo', 'Visión borrosa'],
-    causes: ['Resistencia a la insulina', 'Factores genéticos', 'Sobrepeso', 'Páncreas ineficiente']
-  },
-  'Dislipidemia': {
-    symptoms: ['Generalmente asintomática', 'Mareos ocasionales', 'Xantomas (depósitos de grasa en piel)', 'Fatiga'],
-    causes: ['Dieta alta en grasas saturadas', 'Sedentarismo', 'Tabaquismo', 'Genética']
-  },
-  'Depresión en adolescentes': {
-    symptoms: ['Irritabilidad extrema', 'Bajo rendimiento escolar', 'Sentimientos de inutilidad', 'Aislamiento de amigos'],
-    causes: ['Cambios hormonales', 'Presión social y académica', 'Conflictos familiares']
-  },
-  'Bruxismo': {
-    symptoms: ['Dolor en la mandíbula', 'Dientes desgastados o planos', 'Dolor de cabeza al despertar', 'Sensibilidad dental'],
-    causes: ['Estrés y ansiedad', 'Maloclusión dental', 'Trastornos del sueño']
-  },
-  'Síndrome metabólico': {
-    symptoms: ['Gran circunferencia de cintura', 'Niveles altos de azúcar', 'Fatiga', 'Presión arterial elevada'],
-    causes: ['Resistencia a la insulina', 'Obesidad abdominal', 'Inactividad física']
-  },
-  'Dolor de muelas': {
-    symptoms: ['Dolor punzante', 'Inflamación de las encías', 'Mal aliento', 'Fiebre leve'],
-    causes: ['Caries profundas', 'Abscesos dentales', 'Fracturas dentales']
-  },
-  'Obesidad': {
-    symptoms: ['Aumento de masa corporal (IMC > 30)', 'Dificultad respiratoria al esfuerzo', 'Sudoración excesiva', 'Dolor articular'],
-    causes: ['Ingesta calórica excesiva', 'Falta de actividad física', 'Factores metabólicos', 'Genética']
-  },
-  'Trastorno obsesivo compulsivo (TOC)': {
-    symptoms: ['Pensamientos intrusivos y repetitivos', 'Necesidad de orden excesivo', 'Rituales de limpieza', 'Verificación constante'],
-    causes: ['Química cerebral alterada', 'Genética', 'Factores ambientales']
-  },
-  'Infección dental': {
-    symptoms: ['Dolor severo y persistente', 'Inflamación de mejilla o ganglios', 'Sabor amargo en la boca', 'Sensibilidad a la presión'],
-    causes: ['Caries no tratadas', 'Enfermedad periodontal', 'Trauma dental']
-  },
-  'Sobrepeso': {
-    symptoms: ['Ropa que ya no queda', 'Cansancio más rápido de lo habitual', 'Ligero aumento de grasa abdominal'],
-    causes: ['Dieta desequilibrada', 'Baja actividad física', 'Metabolismo lento']
-  },
-  'Fracturas de dientes': {
-    symptoms: ['Dolor agudo al morder', 'Sensibilidad a temperaturas extremas', 'Bordes ásperos en la lengua'],
-    causes: ['Golpes o traumas', 'Masticar objetos duros', 'Dientes debilitados por caries']
-  },
-  'Desgaste dental': {
-    symptoms: ['Dientes más cortos o amarillentos', 'Bordes transparentes', 'Sensibilidad al frío'],
-    causes: ['Bruxismo', 'Consumo de alimentos ácidos', 'Cepillado demasiado agresivo']
-  },
-  'Ataques de pánico': {
-    symptoms: ['Sensación de muerte inminente', 'Palpitaciones fuertes', 'Falta de aire', 'Escalofríos'],
-    causes: ['Estrés intenso', 'Predisposición genética', 'Cambios en la función cerebral']
-  },
-  'Bullying (acoso escolar)': {
-    symptoms: ['Miedo de ir a la escuela', 'Lesiones físicas inexplicables', 'Pérdida de pertenencias', 'Cambios de humor'],
-    causes: ['Dinámicas de poder social', 'Falta de supervisión', 'Problemas de conducta en el agresor']
-  },
-  'Pérdida de dientes': {
-    symptoms: ['Espacios vacíos en la encía', 'Dificultad para hablar o masticar', 'Desplazamiento de dientes vecinos'],
-    causes: ['Periodontitis avanzada', 'Traumatismos', 'Falta de higiene'],
-  },
-  'Dientes desalineados': {
-    symptoms: ['Dificultad para limpiar entre dientes', 'Mordida incómoda', 'Problemas de pronunciación'],
-    causes: ['Genética', 'Uso prolongado de chupón/biberón', 'Pérdida prematura de dientes de leche']
-  },
-  'Dientes apiñados': {
-    symptoms: ['Dientes montados unos sobre otros', 'Inflamación de encías en zonas de difícil acceso', 'Desgaste desigual'],
-    causes: ['Mandíbula pequeña', 'Dientes demasiado grandes para el espacio disponible']
-  },
-  'Estrés laboral': {
-    symptoms: ['Agotamiento mental', 'Cinismo hacia el trabajo', 'Falta de productividad', 'Insomnio'],
-    causes: ['Carga excesiva de trabajo', 'Falta de control sobre tareas', 'Ambiente laboral hostil']
-  },
-  'Angustia': {
-    symptoms: ['Opresión en el pecho', 'Nudo en la garganta', 'Inquietud constante', 'Miedo indefinido'],
-    causes: ['Incertidumbre futura', 'Conflictos internos', 'Situaciones de crisis']
-  },
-  'Enfermedad periodontal - piorrea': {
-    symptoms: ['Encías que sangran fácilmente', 'Mal aliento persistente', 'Dientes flojos', 'Encías retraídas'],
-    causes: ['Placa bacteriana acumulada', 'Tabaquismo', 'Diabetes no controlada']
-  },
-  'Lesiones deportivas': {
-    symptoms: ['Dolor repentino', 'Hinchazón e inflamación', 'Incapacidad de mover la articulación'],
-    causes: ['Entrenamiento inadecuado', 'Accidentes durante el juego', 'Falta de calentamiento']
-  },
-  'Trastorno de ansiedad generalizada': {
-    symptoms: ['Preocupación excesiva por todo', 'Tensión muscular', 'Fatiga', 'Problemas para dormir'],
-    causes: ['Diferencias en la química cerebral', 'Genética', 'Ambiente estresante']
-  },
-  'Gastritis': {
-    symptoms: ['Ardor en el estómago', 'Náuseas y vómitos', 'Sensación de llenura tras comer poco'],
-    causes: ['Infección por H. pylori', 'Uso excesivo de analgésicos (AINEs)', 'Consumo excesivo de alcohol', 'Estrés']
-  },
-  'Colon irritable': {
-    symptoms: ['Dolor abdominal y cólicos', 'Hinchazón (gases)', 'Diarrea o estreñimiento alternado'],
-    causes: ['Contracciones musculares en el intestino', 'Anomalías nerviosas digestivas', 'Estrés', 'Sensibilidad alimentaria']
-  },
-  'Virus del papiloma humano (VPH)': {
-    symptoms: ['Verrugas genitales', 'A veces asintomático', 'Cambios en el tejido del cuello uterino'],
-    causes: ['Contacto sexual con persona infectada', 'Sistema inmunológico debilitado']
-  },
-  'Diabetes gestacional': {
-    symptoms: ['A menudo asintomática', 'Sed inusual', 'Fatiga'],
-    causes: ['Cambios hormonales del embarazo', 'Sobrepeso previo al embarazo']
-  },
-  'Miomas uterinos': {
-    symptoms: ['Sangrado menstrual abundante', 'Periodos que duran más de una semana', 'Presión o dolor pélvico'],
-    causes: ['Factores genéticos', 'Hormonas (estrógeno y progesterona)', 'Factores de crecimiento']
-  },
-  'Embarazo': {
-    symptoms: ['Ausencia de menstruación', 'Náuseas matutinas', 'Sensibilidad en los senos', 'Fatiga'],
-    causes: ['Fertilización de un óvulo por un espermatozoide']
-  },
-  'Trastornos de la personalidad': {
-    symptoms: ['Patrones de pensamiento inflexibles', 'Dificultades en relaciones sociales', 'Comportamientos impulsivos'],
-    causes: ['Genética', 'Traumas infantiles', 'Entorno social']
-  },
-  'Menopausia': {
-    symptoms: ['Sofocos (calores)', 'Sudores nocturnos', 'Sequedad vaginal', 'Cambios de humor'],
-    causes: ['Disminución natural de hormonas reproductivas con la edad']
-  },
-  'Ciática': {
-    symptoms: ['Dolor que irradia desde la espalda a la pierna', 'Entumecimiento', 'Hormigueo'],
-    causes: ['Hernia de disco', 'Estenosis espinal', 'Compresión del nervio ciático']
-  },
-  'TDAH': {
-    symptoms: ['Dificultad para mantener la atención', 'Hiperactividad', 'Impulsividad', 'Desorganización'],
-    causes: ['Genética', 'Factores ambientales durante el desarrollo', 'Diferencias en la estructura cerebral']
-  },
-  'Depresión crónica (Distimia)': {
-    symptoms: ['Estado de ánimo bajo por más de 2 años', 'Baja autoestima', 'Falta de energía', 'Sentimientos de desesperanza'],
-    causes: ['Química cerebral', 'Antecedentes familiares', 'Situaciones de vida estresantes']
-  },
-  'Conducta agresiva': {
-    symptoms: ['Uso de la fuerza física', 'Insultos constantes', 'Hostilidad'],
-    causes: ['Problemas de regulación emocional', 'Modelado de conducta en el hogar', 'Trastornos mentales subyacentes']
-  },
-  'Embarazo de alto riesgo': {
-    symptoms: ['Dolor abdominal severo', 'Sangrado vaginal', 'Mareos extremos'],
-    causes: ['Edad materna avanzada', 'Condiciones preexistentes (diabetes, hipertensión)', 'Embarazo múltiple']
-  },
-  'Desnutrición': {
-    symptoms: ['Pérdida de peso extrema', 'Debilidad', 'Piel seca', 'Cicatrización lenta'],
-    causes: ['Falta de acceso a alimentos nutritivos', 'Trastornos de absorción', 'Trastornos alimentarios']
-  },
-  'Endometriosis': {
-    symptoms: ['Dolor pélvico severo durante el periodo', 'Dolor durante las relaciones sexuales', 'Infertilidad'],
-    causes: ['Menstruación retrógrada', 'Transformación de células embrionarias', 'Genética']
-  },
-  'Insuficiencia cardíaca': {
-    symptoms: ['Falta de aire al hacer esfuerzo', 'Hinchazón en piernas y tobillos', 'Fatiga persistente'],
-    causes: ['Enfermedad de las arterias coronarias', 'Presión arterial alta', 'Ataques cardíacos previos']
-  },
-  'Amenaza de aborto': {
-    symptoms: ['Sangrado vaginal leve', 'Cólicos abdominales', 'Dolor lumbar'],
-    causes: ['Anomalías cromosómicas', 'Infecciones', 'Problemas hormonales']
-  },
-  'Adicciones': {
-    symptoms: ['Incapacidad para dejar de consumir', 'Síndrome de abstinencia', 'Descuido de responsabilidades'],
-    causes: ['Genética', 'Presión social', 'Uso de sustancias como mecanismo de escape']
-  },
-  'Apendicitis': {
-    symptoms: ['Dolor repentino en el lado inferior derecho del abdomen', 'Fiebre', 'Náuseas y vómitos'],
-    causes: ['Obstrucción en el revestimiento del apéndice por heces o tumores']
-  },
-  'Comportamiento suicida': {
-    symptoms: ['Hablar sobre querer morir', 'Regalar pertenencias', 'Búsqueda de métodos letales'],
-    causes: ['Depresión severa', 'Trauma no resuelto', 'Abuso de sustancias']
-  },
-  'Faringitis': {
-    symptoms: ['Dolor de garganta', 'Dificultad para tragar', 'Amígdalas rojas o inflamadas'],
-    causes: ['Infecciones virales (resfriado)', 'Infecciones bacterianas (estreptococo)', 'Alergias']
-  },
-  'Asma': {
-    symptoms: ['Dificultad para respirar', 'Opresión en el pecho', 'Sibilancias (silbidos)', 'Tos nocturna'],
-    causes: ['Alergias', 'Contaminación ambiental', 'Genética', 'Infecciones respiratorias']
-  },
-  'Gingivitis': {
-    symptoms: ['Encías rojas e inflamadas', 'Sangrado al cepillarse', 'Mal aliento'],
-    causes: ['Higiene bucal deficiente', 'Acumulación de placa bacteriana']
-  },
-  'Abdomen agudo': {
-    symptoms: ['Dolor abdominal intenso y súbito', 'Rigidez de la pared abdominal', 'Vómitos'],
-    causes: ['Apendicitis', 'Perforación de úlcera', 'Obstrucción intestinal']
-  },
-  'Hernia de disco': {
-    symptoms: ['Dolor de espalda', 'Debilidad en extremidades', 'Hormigueo en piernas o brazos'],
-    causes: ['Desgaste por la edad', 'Levantamiento de objetos pesados', 'Lesiones físicas']
-  },
-  'Neumonía': {
-    symptoms: ['Tos con flema', 'Fiebre y escalofríos', 'Dificultad para respirar'],
-    causes: ['Infección por bacterias, virus u hongos']
-  },
-  'Reflujo gastroesofágico': {
-    symptoms: ['Acidez estomacal (pirosis)', 'Regurgitación de alimentos', 'Dolor en el pecho'],
-    causes: ['Debilidad del esfínter esofágico inferior', 'Obesidad', 'Tabaquismo']
-  },
-  'Osteoporosis': {
-    symptoms: ['Fracturas fáciles', 'Pérdida de estatura', 'Postura encorvada'],
-    causes: ['Disminución de masa ósea', 'Baja ingesta de calcio', 'Cambios hormonales (menopausia)']
-  },
-  'Anorexia nerviosa': {
-    symptoms: ['Pérdida de peso extrema', 'Miedo intenso a engordar', 'Imagen corporal distorsionada'],
-    causes: ['Factores biológicos', 'Presión social estética', 'Problemas psicológicos']
-  },
-  'Cáncer de piel': {
-    symptoms: ['Cambios en un lunar', 'Bulto perlado en la piel', 'Lesión que no sana'],
-    causes: ['Exposición excesiva al sol', 'Uso de camas de bronceado', 'Genética']
-  }
-};
-
-// Extended mapping for "Specialties that treat X" section (1-to-many)
-const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
- 'Ansiedad': ['Psicólogo', 'Psiquiatra'],
-  'Depresión': ['Psicólogo', 'Psiquiatra'],
-  'Duelo': ['Psicólogo'],
-  'Estrés': ['Psicólogo'],
-  'Codependencia': ['Psicólogo'],
-  'Hipertensión': ['Cardiólogo', 'Internista'],
-  'Caries': ['Dentista - Odontólogo'],
-  'Estrés postraumático': ['Psicólogo', 'Psiquiatra'],
-  'Trastorno de conducta': ['Psiquiatra', 'Psicólogo'],
-  'Diabetes': ['Endocrinólogo', 'Diabetólogo', 'Internista'],
-  'Dislipidemia': ['Internista', 'Endocrinólogo', 'Cardiólogo'],
-  'Depresión en adolescentes': ['Psiquiatra infantil', 'Psicólogo'],
-  'Bruxismo': ['Dentista - Odontólogo', 'Fisioterapeuta'],
-  'Síndrome metabólico': ['Endocrinólogo', 'Internista', 'Nutriólogo clínico'],
-  'Dolor de muelas': ['Dentista - Odontólogo'],
-  'Obesidad': ['Especialista en Obesidad y Delgadez', 'Nutriólogo clínico', 'Endocrinólogo'],
-  'Trastorno obsesivo compulsivo (TOC)': ['Psiquiatra', 'Psicólogo'],
-  'Infección dental': ['Dentista - Odontólogo'],
-  'Sobrepeso': ['Nutriólogo clínico', 'Especialista en Obesidad y Delgadez'],
-  'Fracturas de dientes': ['Dentista - Odontólogo', 'Cirujano maxilofacial'],
-  'Desgaste dental': ['Dentista - Odontólogo'],
-  'Ataques de pánico': ['Psicólogo', 'Psiquiatra'],
-  'Bullying (acoso escolar)': ['Psicólogo', 'Psicopedagogo'],
-  'Pérdida de dientes': ['Dentista - Odontólogo'],
-  'Dientes desalineados': ['Dentista - Odontólogo'],
-  'Dientes apiñados': ['Dentista - Odontólogo'],
-  'Estrés laboral': ['Psicólogo'],
-  'Angustia': ['Psicólogo', 'Psiquiatra'],
-  'Enfermedad periodontal - piorrea': ['Dentista - Odontólogo'],
-  'Lesiones deportivas': ['Especialista en Medicina del Deporte', 'Traumatólogo', 'Fisioterapeuta'],
-  'Trastorno de ansiedad': ['Psicólogo', 'Psiquiatra'],
-  'Trastorno de ansiedad generalizada': ['Psicólogo', 'Psiquiatra'],
-  'Gastritis': ['Gastroenterólogo', 'Internista'],
-  'Colon irritable': ['Gastroenterólogo', 'Internista'],
-  'Virus del papiloma humano (VPH)': ['Ginecólogo', 'Urólogo', 'Dermatólogo'],
-  'Diabetes gestacional': ['Ginecólogo', 'Endocrinólogo'],
-  'Miomas uterinos': ['Ginecólogo'],
-  'Embarazo': ['Ginecólogo'],
-  'Trastornos de la personalidad': ['Psiquiatra', 'Psicólogo'],
-  'Menopausia': ['Ginecólogo', 'Endocrinólogo'],
-  'Ciática': ['Traumatólogo', 'Ortopedista', 'Fisioterapeuta'],
-  'Trastorno de hiperactividad y déficit de atención (TDAH)': ['Neurólogo pediatra', 'Psiquiatra infantil', 'Psicopedagogo'],
-  'Depresión crónica': ['Psiquiatra', 'Psicólogo'],
-  'Conducta agresiva': ['Psicólogo', 'Psiquiatra'],
-  'Embarazo de alto riesgo': ['Ginecólogo'],
-  'Desnutrición': ['Nutriólogo clínico', 'Pediatra'],
-  'Endometriosis': ['Ginecólogo'],
-  'Insuficiencia cardíaca': ['Cardiólogo'],
-  'Amenaza de aborto': ['Ginecólogo'],
-  'Adicciones': ['Psiquiatra', 'Psicólogo'],
-  'Apendicitis': ['Cirujano general'],
-  'Comportamiento suicida': ['Psiquiatra', 'Psicólogo'],
-  'Síndrome de pinzamiento del hombro': ['Traumatólogo', 'Ortopedista', 'Fisioterapeuta'],
-  'Faringitis': ['Otorrinolaringólogo', 'Médico general'],
-  'Diabetes tipo 2': ['Endocrinólogo', 'Diabetólogo', 'Internista'],
-  'Sangrado uterino disfuncional': ['Ginecólogo'],
-  'Asma': ['Neumólogo', 'Alergólogo'],
-  'Gingivitis': ['Dentista - Odontólogo'],
-  'Maltrato psicológico y abandono infantil': ['Psicólogo', 'Pediatra'],
-  'Abdomen agudo': ['Cirujano general', 'Urgenciólogo'],
-  'Desorden de ansiedad por separación': ['Psiquiatra infantil', 'Psicólogo'],
-  'Hernia de disco': ['Traumatólogo', 'Neurocirujano'],
-  'Tendinitis del manguito de los rotadores': ['Traumatólogo', 'Fisioterapeuta'],
-  'Fobia específica o simple': ['Psicólogo'],
-  'Hernia inguinal': ['Cirujano general'],
-  'Neumonía': ['Neumólogo', 'Internista'],
-  'Colecistitis aguda': ['Cirujano general'],
-  'Cataratas': ['Oftalmólogo'],
-  'Reflujo gastroesofágico': ['Gastroenterólogo', 'Internista'],
-  'Diverticulitis': ['Gastroenterólogo', 'Cirujano general'],
-  'Enfermedad articular degenerativa': ['Reumatólogo', 'Ortopedista'],
-  'Tendinitis': ['Traumatólogo', 'Fisioterapeuta'],
-  'Radiculopatía lumbar': ['Traumatólogo', 'Neurocirujano'],
-  'Depresión neurótica (distimia)': ['Psiquiatra', 'Psicólogo'],
-  'Infertibilidad': ['Ginecólogo', 'Urólogo'],
-  'Rinitis alérgica': ['Alergólogo', 'Otorrinolaringólogo'],
-  'Cálculos biliares': ['Cirujano general', 'Gastroenterólogo'],
-  'Periodontitis': ['Dentista - Odontólogo'],
-  'Manchas en dientes': ['Dentista - Odontólogo'],
-  'Absceso dental': ['Dentista - Odontólogo'],
-  'Dolor abdominal': ['Gastroenterólogo', 'Médico general'],
-  'Miopía': ['Oftalmólogo', 'Optometrista'],
-  'Osteoporosis': ['Reumatólogo', 'Endocrinólogo', 'Internista'],
-  'Diente retenido': ['Dentista - Odontólogo', 'Cirujano maxilofacial'],
-  'Lesión de Ligamentarias de Rodilla': ['Traumatólogo', 'Ortopedista'],
-  'Contractura cervical': ['Fisioterapeuta', 'Ortopedista'],
-  'Lesiones de cartílago articular': ['Traumatólogo', 'Ortopedista'],
-  'Anorexia nerviosa': ['Psiquiatra', 'Nutriólogo clínico', 'Psicólogo'],
-  'Asma pediátrico': ['Neumólogo pediatra', 'Pediatra'],
-  'Trastornos de la articulación temporomandibular': ['Dentista - Odontólogo', 'Cirujano maxilofacial'],
-  'Lesiones de Menisco': ['Traumatólogo', 'Ortopedista'],
-  'Luto': ['Psicólogo'],
-  'Dermatitis atópica': ['Dermatólogo', 'Alergólogo'],
-  'Astigmatismo': ['Oftalmólogo', 'Optometrista'],
-  'Depresión grave': ['Psiquiatra', 'Psicólogo'],
-  'Colecistitis crónica': ['Cirujano general'],
-  'Hernia hiatal': ['Gastroenterólogo', 'Cirujano general'],
-  'Faringitis bacteriana': ['Otorrinolaringólogo', 'Infectólogo'],
-  'Sensibilidad dentaria': ['Dentista - Odontólogo']
-};
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -402,10 +18,6 @@ const slugify = (text: string) => {
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
-};
-
-const formatDiseaseName = (slug: string) => {
-  return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
@@ -428,20 +40,9 @@ export default function DiseasePage({ params }: { params: { disease: string } })
   const [hasMore, setHasMore] = useState(true);
   
   const diseaseSlug = params.disease;
-  const diseaseName = formatDiseaseName(diseaseSlug);
-  const targetSpecialty = DISEASE_MAPPING[diseaseSlug];
   
-  // Try to find exact match in constants, fallback to formatted name
-  const exactDiseaseName = ALL_DISEASES.find(d => slugify(d) === diseaseSlug) || diseaseName;
-  
-  // Get related specialties list, falling back to just the primary specialty if no detailed list exists
-  const relatedSpecialties = DISEASE_RELATED_SPECIALTIES[diseaseSlug] || (targetSpecialty ? [targetSpecialty] : []);
-
-  // Get dynamic details or fallbacks
-  const details = DISEASE_DETAILS[diseaseSlug] || {
-    symptoms: ['Los síntomas varían según el paciente', 'Malestar general', 'Cambios en la salud física o mental'],
-    causes: ['Factores genéticos', 'Factores ambientales', 'Estilo de vida', 'Condiciones preexistentes']
-  };
+  // Use helper to get all disease info
+  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
 
   // SEO
   useEffect(() => {
@@ -470,7 +71,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
             query = query.contains('specialties', [targetSpecialty]);
         } else {
              // Fallback strategy: Search by disease tag in medical_profile
-            query = query.contains('medical_profile', { diseases_treated: [exactDiseaseName] });
+            query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
         }
 
         const { data } = await query.range(0, PAGE_SIZE - 1);
@@ -481,7 +82,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
         }
 
         // 2. Fetch Related Articles
-        const searchTerm = exactDiseaseName || diseaseName;
+        const searchTerm = diseaseName;
         const { data: articlesData } = await supabase
             .from('articles')
             .select('*')
@@ -496,7 +97,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
         setLoading(false);
     }
     if (params.disease) fetchInitial();
-  }, [params.disease, targetSpecialty, exactDiseaseName, diseaseName]);
+  }, [params.disease, targetSpecialty, diseaseName]);
 
   const loadMore = async () => {
     if (loadingMore || !hasMore) return;
@@ -511,7 +112,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
     if (targetSpecialty) {
         query = query.contains('specialties', [targetSpecialty]);
     } else {
-        query = query.contains('medical_profile', { diseases_treated: [exactDiseaseName] });
+        query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
     }
 
     const { data } = await query.range(from, to);
@@ -534,7 +135,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
     "@context": "https://schema.org",
     "@type": "MedicalCondition",
     "name": diseaseName,
-    "alternateName": exactDiseaseName,
     "description": `Información sobre síntomas, causas y especialistas para ${diseaseName}.`,
     "possibleTreatment": targetSpecialty ? {
       "@type": "MedicalTherapy",
