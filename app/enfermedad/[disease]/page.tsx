@@ -429,7 +429,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
   
   const diseaseSlug = params.disease;
   const diseaseName = formatDiseaseName(diseaseSlug);
-  const targetSpecialty = DISEASE_RELATED_SPECIALTIES[diseaseSlug];
+  const targetSpecialty = DISEASE_MAPPING[diseaseSlug];
   
   // Try to find exact match in constants, fallback to formatted name
   const exactDiseaseName = ALL_DISEASES.find(d => slugify(d) === diseaseSlug) || diseaseName;
