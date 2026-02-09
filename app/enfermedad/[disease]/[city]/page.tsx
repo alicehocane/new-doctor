@@ -3,44 +3,9 @@ import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
 import { MapPin, Loader2, Plus, Phone, User, CheckCircle, ArrowRight, Stethoscope, Search } from 'lucide-react';
 import { Link } from 'wouter';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES } from '../../../../lib/constants';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 
 const PAGE_SIZE = 20;
-
-// Mapping of disease slugs to their primary specialty
-const DISEASE_MAPPING: Record<string, string> = {
-  'diabetes': 'Endocrinólogo',
-  'hipertension': 'Cardiólogo',
-  'acne': 'Dermatólogo',
-  'ansiedad': 'Psiquiatra',
-  'dolor-de-espalda': 'Traumatólogo',
-  'embarazo': 'Ginecólogo',
-  'gastritis': 'Gastroenterólogo',
-  'migrana': 'Neurólogo',
-  'alergias': 'Alergólogo',
-  'varices': 'Angiólogo',
-  'calculos-renales': 'Urólogo',
-  'gripe': 'Médico General',
-  'artritis': 'Reumatólogo',
-  'cancer': 'Oncólogo',
-  'obesidad': 'Bariatra',
-  'asma': 'Neumólogo',
-  'depresion': 'Psiquiatra',
-  'fracturas': 'Traumatólogo',
-  'cataratas': 'Oftalmólogo',
-  'caries': 'Dentista',
-  'infeccion-urinaria': 'Urólogo',
-  'psoriasis': 'Dermatólogo',
-  'hipotiroidismo': 'Endocrinólogo',
-  'arritmia': 'Cardiólogo',
-  'osteoporosis': 'Reumatólogo',
-  'menopausia': 'Ginecólogo',
-  'hemorroides': 'Proctólogo',
-  'apendicitis': 'Cirujano General',
-  'insomnio': 'Psiquiatra'
-};
-
-const formatDisease = (str: string) => str.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -76,13 +41,10 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
   
   const diseaseSlug = params.disease;
   const citySlug = params.city;
-  const diseaseName = formatDisease(diseaseSlug);
   const cityName = getCanonicalCity(citySlug);
   
-  const targetSpecialty = DISEASE_MAPPING[diseaseSlug];
-
-  // Try to find exact match in constants, fallback to formatted name
-  const exactDiseaseName = ALL_DISEASES.find(d => slugify(d) === diseaseSlug) || diseaseName;
+  // Use helper to get disease info
+  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(diseaseSlug);
 
   // SEO
   useEffect(() => {
@@ -109,7 +71,7 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
             query = query.contains('specialties', [targetSpecialty]);
         } else {
              // Fallback strategy: Search by disease tag in medical_profile
-            query = query.contains('medical_profile', { diseases_treated: [exactDiseaseName] });
+            query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
         }
 
         const { data } = await query.range(0, PAGE_SIZE - 1);
@@ -121,7 +83,7 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
         setLoading(false);
     }
     if (params.disease && params.city) fetchInitial();
-  }, [params.disease, params.city, targetSpecialty, cityName, exactDiseaseName]);
+  }, [params.disease, params.city, targetSpecialty, cityName, diseaseName]);
 
   const loadMore = async () => {
     if (loadingMore || !hasMore) return;
@@ -136,7 +98,7 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
     if (targetSpecialty) {
         query = query.contains('specialties', [targetSpecialty]);
     } else {
-        query = query.contains('medical_profile', { diseases_treated: [exactDiseaseName] });
+        query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
     }
 
     const { data } = await query.range(from, to);
@@ -337,19 +299,20 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
                 {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).flatMap((c, i) => {
                      // Get a sliding window of diseases so each city shows different ones
-                     const start = (i * 3) % Object.keys(DISEASE_MAPPING).length;
-                     const cityDiseases = Object.keys(DISEASE_MAPPING)
-                        .filter(d => d !== diseaseSlug)
+                     const allDiseases = ALL_DISEASES; // Use ALL_DISEASES from constants
+                     const start = (i * 3) % allDiseases.length;
+                     const cityDiseases = allDiseases
+                        .filter(d => d !== diseaseName)
                         .slice(start, start + 3);
                      
                      return cityDiseases.map(d => ({city: c, disease: d}));
                 }).map((item, idx) => (
                      <Link 
                         key={idx}
-                        href={`/enfermedad/${item.disease}/${slugify(item.city)}`}
+                        href={`/enfermedad/${slugify(item.disease)}/${slugify(item.city)}`}
                         className="text-[13px] text-[#86868b] hover:text-[#0071e3] hover:underline truncate transition-colors"
                      >
-                        {formatDisease(item.disease)} en {item.city}
+                        {item.disease} en {item.city}
                      </Link>
                 ))}
             </div>
