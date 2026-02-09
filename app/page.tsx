@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, AlertCircle, ShieldCheck, Heart, Users, BookOpen } from 'lucide-react';
+import { Search, MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, AlertCircle } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
 import { ALL_CITIES, POPULAR_CITIES, COMMON_SPECIALTIES } from '../lib/constants';
 
@@ -96,11 +96,11 @@ export default function HomePage() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const queryParams = new URLSearchParams();
-    if (city) queryParams.set('city', city);
-    if (specialty.trim()) queryParams.set('term', specialty.trim());
-    
-    setLocation(`/buscar/resultados?${queryParams.toString()}`);
+    if (city && specialty.trim()) {
+      const citySlug = slugify(city);
+      const specialtyTerm = specialty.trim(); 
+      setLocation(`/doctores/${citySlug}/${encodeURIComponent(specialtyTerm)}`);
+    }
   };
 
   // Schema Markup
@@ -118,13 +118,10 @@ export default function HomePage() {
     }
   };
 
-
   return (
     <div className="flex flex-col font-sans overflow-x-hidden">
-      {/* Schemas */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-
       {/* Hero Section */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <section className="relative py-20 px-6 md:py-32">
         <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
           <h1 className="text-5xl md:text-7xl font-semibold tracking-tighter text-[#1d1d1f] leading-[1.05]">
@@ -134,39 +131,38 @@ export default function HomePage() {
             Encuentra al especialista ideal para ti, rápido y seguro.
           </p>
           
-          {/* Search Form - Modern Pill Style */}
-          <div className="mt-12 mx-auto max-w-3xl relative" ref={wrapperRef}>
+          {/* Search Form - Apple Glass Style */}
+          <div className="mt-12 mx-auto max-w-2xl relative" ref={wrapperRef}>
             <form 
               onSubmit={handleSearch} 
               className="
-                flex flex-col md:flex-row gap-2 p-2
-                bg-white border border-slate-200/60
-                rounded-[2rem] shadow-2xl shadow-slate-200/50
-                items-center
+                flex flex-col md:flex-row gap-3 p-2
+                bg-white/70 backdrop-blur-xl border border-white/40
+                rounded-[24px] shadow-lg
               "
               role="search"
             >
               
               {/* City Select */}
-              <div className="relative w-full md:w-1/3 h-14 bg-[#f5f5f7] rounded-[1.5rem] hover:bg-[#e8e8ed] transition-colors group flex items-center px-5">
-                <MapPin className="w-5 h-5 text-secondary mr-3 shrink-0" aria-hidden="true" />
+              <div className="relative md:w-1/3 h-14 bg-white/50 rounded-2xl hover:bg-white transition-colors group flex items-center px-4">
+                <MapPin className="w-5 h-5 text-secondary mr-2 shrink-0" aria-hidden="true" />
                 <label htmlFor="city-select" className="sr-only">Selecciona tu ciudad</label>
                 <select 
                   id="city-select"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] appearance-none cursor-pointer pr-4"
+                  className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-[15px] appearance-none cursor-pointer"
                 >
                   {ALL_CITIES.map(c => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>
-                <ChevronRight className="w-3 h-3 text-secondary absolute right-4 rotate-90 pointer-events-none" aria-hidden="true" />
+                <ChevronRight className="w-3 h-3 text-secondary absolute right-4 rotate-90" aria-hidden="true" />
               </div>
 
               {/* Specialty Input */}
-              <div className="relative flex-1 w-full h-14 bg-[#f5f5f7] rounded-[1.5rem] hover:bg-[#e8e8ed] transition-colors flex items-center px-5">
-                <Stethoscope className="w-5 h-5 text-secondary mr-3 shrink-0" aria-hidden="true" />
+              <div className="relative flex-1 h-14 bg-white/50 rounded-2xl hover:bg-white transition-colors flex items-center px-4">
+                <Stethoscope className="w-5 h-5 text-secondary mr-2 shrink-0" aria-hidden="true" />
                 <label htmlFor="specialty-input" className="sr-only">Especialidad médica</label>
                 <input 
                   id="specialty-input"
@@ -184,9 +180,9 @@ export default function HomePage() {
                 type="submit" 
                 aria-label="Buscar doctores"
                 className="
-                   h-14 w-full md:w-auto px-8
+                   h-14 md:w-auto px-8
                    bg-[#0071e3] hover:bg-[#0077ED] active:scale-95
-                   text-white font-medium text-[15px] rounded-[1.5rem]
+                   text-white font-medium text-[15px] rounded-2xl 
                    transition-all shadow-md flex items-center justify-center
                 "
               >
@@ -325,193 +321,102 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* NEW: SEO / Informational Content Section (Full Spanish Content Update) */}
+      {/* NEW: SEO / Informational Content Section */}
       <section className="py-16 md:py-24 bg-[#f5f5f7] w-full border-t border-slate-200">
-        <div className="max-w-5xl mx-auto px-6 space-y-20">
+        <div className="max-w-5xl mx-auto px-6 space-y-16">
           
-          {/* Main Intro */}
+          {/* Intro */}
           <div className="text-center space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight">
-              MediBusca
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] tracking-tight">
+              Encuentra Doctores y Especialistas Verificados con MediBusca
             </h2>
-            <p className="text-xl md:text-2xl text-[#1d1d1f] font-semibold">
-              Encuentra médicos, especialidades e información médica en un solo lugar
-            </p>
             <p className="text-lg text-secondary leading-relaxed max-w-3xl mx-auto">
-              MediBusca es una plataforma informativa de salud que ayuda a las personas a encontrar médicos, especialidades y contenido médico claro. Nuestro objetivo es facilitar el primer paso cuando surge una duda de salud.
+              MediBusca ayuda a los pacientes a encontrar información precisa y actualizada sobre doctores, especialistas y clínicas en múltiples ciudades. Explora perfiles de doctores, especialidades y detalles de clínicas, y conecta directamente con los doctores para consultas o dudas.
             </p>
-            
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 inline-block text-left max-w-2xl shadow-sm">
-                <p className="text-secondary text-sm font-medium leading-relaxed">
-                  <span className="text-[#1d1d1f] font-bold block mb-1">Nota Importante:</span>
-                  No ofrecemos tratamientos médicos ni consultas en línea. MediBusca existe para orientar, informar y conectar a los pacientes con profesionales de la salud reales.
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 inline-flex items-start gap-3 text-left max-w-2xl">
+                <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <p className="text-amber-800 text-sm font-medium">
+                  MediBusca no proporciona servicios médicos ni gestiona citas. Los pacientes contactan a los doctores directamente.
                 </p>
             </div>
           </div>
 
-          {/* Grid 1: What It Does & Who It's For */}
-          <div className="grid md:grid-cols-2 gap-12">
+          {/* 3 Columns Info */}
+          <div className="grid md:grid-cols-3 gap-12">
+            
+            {/* What MediBusca Offers */}
             <div className="space-y-5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
-                  <Search className="w-5 h-5" />
-                </div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f]">Qué hace MediBusca</h3>
-              </div>
-              <p className="text-secondary text-lg leading-relaxed">
-                Buscar un médico puede ser confuso. Muchas personas no saben qué especialista necesitan o por dónde empezar. MediBusca organiza la información médica para que el proceso sea más simple y claro.
-              </p>
-              <ul className="space-y-3 pt-2">
-                <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Buscar médicos por ciudad
+              <h3 className="text-xl font-semibold text-[#1d1d1f]">Qué Ofrece MediBusca</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
+                  Información verificada de doctores para todas las especialidades
                 </li>
-                <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Explorar especialidades médicas
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
+                  Perfiles detallados de doctores incluyendo información de clínicas
                 </li>
-                <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Conocer enfermedades y síntomas
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
+                  Información sobre enfermedades y áreas de tratamiento
                 </li>
-                <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Contactar médicos cuando el contacto está disponible
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
+                  Conexión directa con doctores vía teléfono o WhatsApp
                 </li>
               </ul>
             </div>
 
+            {/* How It Works */}
             <div className="space-y-5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
-                  <Heart className="w-5 h-5" />
-                </div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f]">Pensado para pacientes y familias</h3>
-              </div>
-              <p className="text-secondary text-lg leading-relaxed">
-                MediBusca está creado para personas comunes. No necesitas conocimientos médicos para usar la plataforma. Explicamos los temas de salud con palabras sencillas.
-              </p>
-              <p className="text-secondary text-lg leading-relaxed">
-                Organizamos a los médicos por especialidad para ayudarte a entender quién puede atender tu caso. Nuestro objetivo es ahorrar tiempo y reducir la confusión cuando aparece un problema de salud.
-              </p>
+              <h3 className="text-xl font-semibold text-[#1d1d1f]">Cómo Funciona</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#1d1d1f] text-white text-xs font-bold shrink-0 mt-0.5">1</span>
+                  Busca doctores por especialidad, enfermedad o ciudad
+                </li>
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#1d1d1f] text-white text-xs font-bold shrink-0 mt-0.5">2</span>
+                  Revisa perfiles de doctores e información de clínicas
+                </li>
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#1d1d1f] text-white text-xs font-bold shrink-0 mt-0.5">3</span>
+                  Conecta directamente con el doctor para consultas o dudas
+                </li>
+              </ul>
             </div>
+
+            {/* Why Patients Trust MediBusca */}
+            <div className="space-y-5">
+              <h3 className="text-xl font-semibold text-[#1d1d1f]">Por Qué los Pacientes Confían en MediBusca</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <Check className="w-5 h-5 text-green-600 shrink-0" />
+                  Información de doctores pública y verificada
+                </li>
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <Check className="w-5 h-5 text-green-600 shrink-0" />
+                  Listados transparentes y precisos
+                </li>
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <Check className="w-5 h-5 text-green-600 shrink-0" />
+                  Los pacientes conectan directamente sin intermediarios
+                </li>
+                <li className="flex items-start gap-3 text-secondary text-[15px] leading-relaxed">
+                  <Check className="w-5 h-5 text-green-600 shrink-0" />
+                  Sin cargos ocultos ni servicios extra
+                </li>
+              </ul>
+            </div>
+
           </div>
 
-          {/* Grid 2: Information & Direct Connection */}
-          <div className="grid md:grid-cols-2 gap-12 border-t border-slate-200 pt-12">
-             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                <h3 className="text-xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                  <BookOpen className="w-6 h-6 text-[#0071e3]" />
-                  Información médica fácil de entender
-                </h3>
-                <p className="text-secondary mb-4 leading-relaxed">
-                  Nuestra enciclopedia médica cubre una amplia variedad de enfermedades, síntomas y temas de salud. Cada artículo explica:
-                </p>
-                <ul className="space-y-2 text-secondary text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="block w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span> Qué es la enfermedad
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="block w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span> Síntomas más comunes
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="block w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span> Posibles causas
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="block w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span> Cuándo acudir al médico
-                  </li>
-                </ul>
-                <p className="text-xs text-[#86868b] mt-6 italic">
-                  El contenido es solo educativo. No reemplaza la consulta médica.
-                </p>
-             </div>
-
-             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                <h3 className="text-xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                  <Users className="w-6 h-6 text-[#0071e3]" />
-                  Conecta con médicos de forma directa
-                </h3>
-                <p className="text-secondary mb-4 leading-relaxed">
-                  Algunos perfiles de médicos en MediBusca incluyen opciones de contacto directo. Cuando está disponible, puedes comunicarte con el médico por WhatsApp u otro medio indicado.
-                </p>
-                <div className="bg-[#f5f5f7] rounded-xl p-4 mt-4">
-                  <p className="text-sm font-medium text-[#1d1d1f]">
-                    MediBusca no gestiona citas, pagos ni consultas médicas. La comunicación se realiza directamente entre el paciente y el profesional.
-                  </p>
-                </div>
-             </div>
-          </div>
-
-          {/* Trust Section */}
-          <div className="space-y-8">
-            <h2 className="text-3xl font-bold text-[#1d1d1f] text-center">Por qué confiar en MediBusca</h2>
-            <div className="grid md:grid-cols-4 gap-6">
-              {[
-                "No vendemos tratamientos médicos",
-                "No realizamos diagnósticos",
-                "No solicitamos historial médico",
-                "No reemplazamos al médico"
-              ].map((text, i) => (
-                <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
-                  <ShieldCheck className="w-8 h-8 text-[#0071e3] mx-auto mb-3" />
-                  <p className="font-semibold text-[#1d1d1f]">{text}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-center text-secondary max-w-3xl mx-auto text-lg">
-              MediBusca se basa en la transparencia y la responsabilidad. Nuestra función es informar, orientar y conectar. Respetamos la privacidad de los usuarios y no pedimos datos médicos sensibles.
+          {/* Disclaimer */}
+          <div className="border-t border-slate-200 pt-10 text-center md:text-left">
+            <h4 className="text-xs font-bold text-[#1d1d1f] mb-2 uppercase tracking-wider">Aviso Importante</h4>
+            <p className="text-xs text-secondary leading-relaxed max-w-4xl">
+              <strong>Renuncia:</strong> MediBusca es un directorio médico informativo. No ofrecemos consejo médico, diagnóstico, tratamiento ni reserva de citas. El contenido proporcionado aquí es solo para fines informativos y no sustituye el consejo médico profesional.
             </p>
-          </div>
-
-          {/* Responsibility & Audience */}
-          <div className="grid md:grid-cols-2 gap-12 border-t border-slate-200 pt-12">
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-[#1d1d1f]">Una plataforma de salud responsable</h3>
-              <p className="text-secondary leading-relaxed">
-                La información médica debe ser clara y honesta. Por eso MediBusca sigue principios de responsabilidad médica:
-              </p>
-              <ul className="space-y-2 text-secondary">
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Usa lenguaje claro y sencillo</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Distingue información de consejo médico</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Recomienda siempre consultar a un profesional</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Respeta la ética médica</li>
-              </ul>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-[#1d1d1f]">Para quién es MediBusca</h3>
-              <p className="text-secondary leading-relaxed">MediBusca es útil para:</p>
-              <ul className="space-y-2 text-secondary">
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Pacientes que buscan orientación médica</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Familias que necesitan encontrar especialistas</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Personas que desean conocer médicos por ciudad o especialidad</li>
-                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Usuarios que prefieren informarse antes de contactar a un doctor</li>
-              </ul>
-              <p className="text-sm font-semibold text-[#0071e3] mt-2">No es necesario registrarse para acceder al contenido.</p>
-            </div>
-          </div>
-
-          {/* Footer Disclaimer & Links */}
-          <div className="bg-[#1d1d1f] text-white rounded-3xl p-8 md:p-12 text-center space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">Aviso médico importante</h3>
-              <p className="text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                La información publicada en MediBusca es solo educativa. No sustituye la consulta, el diagnóstico ni el tratamiento médico profesional. Siempre consulta a un médico calificado ante cualquier problema de salud. En caso de emergencia, llama a los servicios de emergencia de tu país.
-              </p>
-            </div>
-            
-            <div className="border-t border-slate-700 pt-8">
-              <h4 className="text-lg font-bold mb-6">Empieza a explorar MediBusca</h4>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/buscar" className="bg-white text-[#1d1d1f] px-6 py-3 rounded-full font-semibold hover:bg-slate-200 transition-colors">
-                  Busca médicos por ciudad
-                </Link>
-                <Link href="/especialidades" className="bg-[#333] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#444] transition-colors border border-slate-600">
-                  Explora especialidades
-                </Link>
-                <Link href="/enfermedades" className="bg-[#333] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#444] transition-colors border border-slate-600">
-                  Infórmate sobre enfermedades
-                </Link>
-              </div>
-              <p className="text-slate-400 text-sm mt-8">
-                MediBusca te ayuda a tomar decisiones informadas sobre tu salud.
-              </p>
-            </div>
           </div>
 
         </div>
