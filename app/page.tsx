@@ -123,7 +123,6 @@ export default function HomePage() {
     <div className="flex flex-col font-sans overflow-x-hidden">
       {/* Schemas */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
 
       {/* Hero Section */}
       <section className="relative py-20 px-6 md:py-32">
