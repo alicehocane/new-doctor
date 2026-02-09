@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
-import { MapPin, Loader2, Plus, CheckCircle, Phone, User, Stethoscope, ArrowRight, Search, ShieldCheck, HeartPulse, ChevronDown } from 'lucide-react';
+import { MapPin, Loader2, Plus, CheckCircle, Phone, User, Stethoscope, ArrowRight, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle } from 'lucide-react';
 import { Link } from 'wouter';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES } from '../../../lib/constants';
 
@@ -38,6 +38,28 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
   });
 };
 
+const CITY_MEDICAL_ZONES: Record<string, { title: string, description: string }[]> = {
+  'guadalajara': [
+    { title: 'Puerta de Hierro', description: 'Reconocida por sus hospitales de alta especialidad.' },
+    { title: 'Providencia y Country Club', description: 'Cuenta con clínicas de vanguardia con fácil acceso.' },
+    { title: 'Zona Centro y Chapultepec', description: 'Amplia gama de médicos generales y especialistas con gran experiencia.' }
+  ],
+  'ciudad-de-mexico': [
+    { title: 'Roma - Condesa', description: 'Consultorios modernos y accesibles en el corazón de la ciudad.' },
+    { title: 'Zona de Hospitales Tlalpan', description: 'Área de referencia con institutos nacionales de salud.' },
+    { title: 'Polanco', description: 'Servicios médicos exclusivos y tecnología avanzada.' }
+  ],
+  'monterrey': [
+    { title: 'San Pedro Garza García', description: 'Hospitales de clase mundial y especialistas certificados.' },
+    { title: 'Zona Obispado', description: 'Tradición médica con alta concentración de clínicas.' },
+    { title: 'Centro', description: 'Accesibilidad a servicios de salud generales y especializados.' }
+  ],
+  'puebla': [
+    { title: 'Angelópolis', description: 'Zona moderna con hospitales privados de alto nivel.' },
+    { title: 'Zona Esmeralda', description: 'Clínicas especializadas y consultorios privados.' }
+  ]
+};
+
 export default function CityPage({ params }: { params: { city: string } }) {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,6 +70,36 @@ export default function CityPage({ params }: { params: { city: string } }) {
   
   const cityName = getCanonicalCity(params.city);
   const citySlug = params.city;
+  const medicalZones = CITY_MEDICAL_ZONES[citySlug] || [];
+
+  // FAQs for SEO
+  const faqs = [
+    {
+      question: `¿Cómo puedo contactar a un doctor en ${cityName} a través de MediBusca?`,
+      answer: "Es muy sencillo. Solo elige un especialista, revisa su perfil verificado y utiliza el botón de 'Llamar' para comunicarte directamente con su consultorio. No necesitas crear una cuenta ni realizar pagos adicionales por el uso de la plataforma."
+    },
+    {
+      question: "¿MediBusca cobra alguna comisión por agendar una cita?",
+      answer: "No. MediBusca es una plataforma informativa 100% gratuita para los pacientes. La relación es directa entre tú y el doctor; nosotros solo facilitamos la conexión segura."
+    },
+    {
+      question: `¿Qué tipos de especialistas médicos puedo encontrar en ${cityName}?`,
+      answer: `Contamos con una extensa red que incluye cardiólogos, ginecólogos, pediatras, psicólogos y más, ubicados en las zonas médicas más importantes de ${cityName}.`
+    }
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
+    }))
+  };
 
   // SEO
   useEffect(() => {
@@ -59,7 +111,7 @@ export default function CityPage({ params }: { params: { city: string } }) {
             metaDesc.setAttribute('name', 'description');
             document.head.appendChild(metaDesc);
         }
-        metaDesc.setAttribute('content', `Encuentra los mejores doctores y especialistas en ${cityName}. Revisa perfiles, ubicaciones y contacta para agendar tu cita.`);
+        metaDesc.setAttribute('content', `Encuentra los mejores doctores y especialistas en ${cityName} sin intermediarios. Revisa perfiles verificados y contacta directamente.`);
     }
   }, [cityName]);
 
@@ -122,6 +174,9 @@ export default function CityPage({ params }: { params: { city: string } }) {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Inject FAQ Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
         {/* Breadcrumb */}
@@ -281,24 +336,27 @@ export default function CityPage({ params }: { params: { city: string } }) {
         </div>
       </section>
 
-      {/* NEW: Informational Sections (Why & How) */}
+      {/* NEW: Informational Sections (Transparency & How) */}
       <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
             
-            {/* Why Choose {City} */}
+            {/* Mission / Transparency */}
             <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
                         <HeartPulse className="w-5 h-5 text-[#0071e3]" />
                     </div>
-                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">¿Por qué elegir {cityName} para tu salud?</h2>
+                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Encuentra Especialistas en {cityName} sin Costo</h2>
                 </div>
                 <div className="prose text-[#86868b] leading-relaxed">
+                    <p className="font-medium text-[#1d1d1f] mb-3">
+                        Sin intermediarios ni comisiones ocultas.
+                    </p>
                     <p>
-                        {cityName} se ha consolidado como uno de los centros de salud más importantes del país, ofreciendo una combinación de tecnología médica de vanguardia y especialistas altamente capacitados.
+                        En MediBusca, nuestra misión es facilitar el acceso a la salud. No somos una plataforma de reservas ni cobramos por agendar. Ofrecemos un directorio verificado de doctores en {cityName} para que puedas contactarlos directamente por teléfono o a través de su perfil profesional. 
                     </p>
                     <p className="mt-4">
-                        Los pacientes eligen {cityName} por la calidad de sus hospitales certificados, la disponibilidad de tratamientos avanzados y la atención personalizada que brindan los profesionales de la salud en la región.
+                        Información transparente, gratuita y actualizada para tu bienestar.
                     </p>
                 </div>
             </div>
@@ -334,6 +392,46 @@ export default function CityPage({ params }: { params: { city: string } }) {
                         </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+      </section>
+
+      {/* NEW: Medical Zones Section */}
+      {medicalZones.length > 0 && (
+        <section className="py-16 bg-white border-t border-slate-200">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="flex items-center gap-3 mb-8">
+                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                        <Building className="w-5 h-5 text-[#0071e3]" />
+                    </div>
+                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Zonas médicas destacadas en {cityName}</h2>
+                </div>
+                <div className="grid md:grid-cols-3 gap-6">
+                    {medicalZones.map((zone, idx) => (
+                        <div key={idx} className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 hover:border-[#0071e3]/20 transition-colors">
+                            <h3 className="font-bold text-[#1d1d1f] text-lg mb-2">{zone.title}</h3>
+                            <p className="text-[#86868b] text-sm leading-relaxed">{zone.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+      )}
+
+      {/* NEW: FAQ Section (Rich Snippets) */}
+      <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
+        <div className="max-w-4xl mx-auto px-6">
+            <div className="flex items-center gap-3 mb-8 justify-center">
+                <HelpCircle className="w-6 h-6 text-[#0071e3]" />
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f]">Preguntas Frecuentes</h2>
+            </div>
+            <div className="space-y-4">
+                {faqs.map((faq, idx) => (
+                    <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                        <h3 className="text-lg font-bold text-[#1d1d1f] mb-3">{faq.question}</h3>
+                        <p className="text-[#86868b] leading-relaxed">{faq.answer}</p>
+                    </div>
+                ))}
             </div>
         </div>
       </section>
