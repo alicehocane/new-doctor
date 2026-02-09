@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Stethoscope, ArrowRight, Activity, MapPin, Plus, Search, Phone } from 'lucide-react';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 
 const COMMON_DISEASES = [
   { name: 'Diabetes', category: 'Endocrinología' },
@@ -16,6 +16,13 @@ const COMMON_DISEASES = [
   { name: 'Varices', category: 'Angiología' },
   { name: 'Obesidad', category: 'Bariatría' },
   { name: 'Asma', category: 'Neumología' }
+];
+
+const FEATURED_CITIES = [
+  'Ciudad de México',
+  'Guadalajara',
+  'Monterrey',
+  'Puebla'
 ];
 
 const TOP_SPECIALTIES = [
@@ -220,7 +227,7 @@ export default function SpecialtiesIndexPage() {
                 Especialistas por ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {POPULAR_CITIES.map((city) => (
+                {FEATURED_CITIES.map((city) => (
                     <div key={city} className="space-y-4">
                         <h3 className="font-bold text-lg text-[#1d1d1f] border-b border-slate-100 pb-3 flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-[#0071e3]" aria-label={`Ubicación ${city}`} role="img" />
