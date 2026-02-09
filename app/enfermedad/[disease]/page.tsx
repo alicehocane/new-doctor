@@ -247,12 +247,35 @@ export default function DiseasePage({ params }: { params: { disease: string } })
     setLoadingMore(false);
   };
 
+  // Schema Markup
+  const medicalConditionSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalCondition",
+    "name": diseaseName,
+    "alternateName": exactDiseaseName,
+    "description": `Información sobre síntomas, causas y especialistas para ${diseaseName}.`,
+    "possibleTreatment": targetSpecialty ? {
+      "@type": "MedicalTherapy",
+      "name": `Consulta con ${targetSpecialty}`
+    } : undefined,
+    "signOrSymptom": details.symptoms.map(s => ({
+      "@type": "MedicalSymptom",
+      "name": s
+    })),
+    "riskFactor": details.causes.map(c => ({
+      "@type": "MedicalRiskFactor",
+      "name": c
+    }))
+  };
+
   if (loading) {
     return <div className="flex justify-center py-20 min-h-screen bg-[#f5f5f7]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
   }
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalConditionSchema) }} />
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
         {/* Breadcrumb */}

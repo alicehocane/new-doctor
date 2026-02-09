@@ -180,12 +180,24 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
     setLoadingMore(false);
   };
 
+  // Schema Markup
+  const medicalSpecialtySchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalSpecialty",
+    "name": searchTerm,
+    "description": description,
+    "url": `https://medibusca.com/especialidad/${params.specialty}`
+  };
+
   if (loading) {
     return <div className="flex justify-center py-20 min-h-screen bg-[#f5f5f7]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
   }
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalSpecialtySchema) }} />
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
         {/* Breadcrumb */}
