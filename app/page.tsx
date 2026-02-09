@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, AlertCircle } from 'lucide-react';
+import { Search, MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, AlertCircle, ShieldCheck, Heart, Users, BookOpen } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
 import { ALL_CITIES, POPULAR_CITIES, COMMON_SPECIALTIES } from '../lib/constants';
 
