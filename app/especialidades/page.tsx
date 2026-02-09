@@ -21,8 +21,7 @@ const COMMON_DISEASES = [
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
-  'Monterrey',
-  'Puebla'
+  'Monterrey'
 ];
 
 const TOP_SPECIALTIES = [
