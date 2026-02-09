@@ -1364,7 +1364,7 @@ export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
   'Enfermedad pulmonar intersticial difusa': ['Neumólogo']
 };
 
-export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES).sort();
+export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
 export const getDiseaseInfo = (slug: string) => {
   // 1. Try exact match from constants by looking at slugified keys
