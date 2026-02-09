@@ -30,7 +30,7 @@ const TOP_SPECIALTIES = [
 ];
 
 export default function SpecialtiesIndexPage() {
-  const [visibleCount, setVisibleCount] = useState(40); // Increased to cover popular list initially
+  const [visibleCount, setVisibleCount] = useState(20); // Increased to cover popular list initially
 
   // SEO
   useEffect(() => {
