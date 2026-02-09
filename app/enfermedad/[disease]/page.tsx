@@ -10,6 +10,39 @@ const PAGE_SIZE = 20;
 // Curated list of top cities for SEO sections to avoid keyword stuffing
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
 
+// Mapping of disease slugs to their primary specialty
+const DISEASE_MAPPING: Record<string, string> = {
+  'diabetes': 'Endocrinólogo',
+  'hipertension': 'Cardiólogo',
+  'acne': 'Dermatólogo',
+  'ansiedad': 'Psiquiatra',
+  'dolor-de-espalda': 'Traumatólogo',
+  'embarazo': 'Ginecólogo',
+  'gastritis': 'Gastroenterólogo',
+  'migrana': 'Neurólogo',
+  'alergias': 'Alergólogo',
+  'varices': 'Angiólogo',
+  'calculos-renales': 'Urólogo',
+  'gripe': 'Médico General',
+  'artritis': 'Reumatólogo',
+  'cancer': 'Oncólogo',
+  'obesidad': 'Bariatra',
+  'asma': 'Neumólogo',
+  'depresion': 'Psiquiatra',
+  'fracturas': 'Traumatólogo',
+  'cataratas': 'Oftalmólogo',
+  'caries': 'Dentista',
+  'infeccion-urinaria': 'Urólogo',
+  'psoriasis': 'Dermatólogo',
+  'hipotiroidismo': 'Endocrinólogo',
+  'arritmia': 'Cardiólogo',
+  'osteoporosis': 'Reumatólogo',
+  'menopausia': 'Ginecólogo',
+  'hemorroides': 'Proctólogo',
+  'apendicitis': 'Cirujano General',
+  'insomnio': 'Psiquiatra'
+};
+
 // Data for SEO Section
 const DISEASE_DETAILS: Record<string, { symptoms: string[], causes: string[] }> = {
   'Ansiedad': {
@@ -260,7 +293,7 @@ const DISEASE_DETAILS: Record<string, { symptoms: string[], causes: string[] }> 
 
 // Extended mapping for "Specialties that treat X" section (1-to-many)
 const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
-  'Ansiedad': ['Psicólogo', 'Psiquiatra'],
+ 'Ansiedad': ['Psicólogo', 'Psiquiatra'],
   'Depresión': ['Psicólogo', 'Psiquiatra'],
   'Duelo': ['Psicólogo'],
   'Estrés': ['Psicólogo'],
@@ -396,7 +429,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
   
   const diseaseSlug = params.disease;
   const diseaseName = formatDiseaseName(diseaseSlug);
-  const targetSpecialty = DISEASE_RELATED_SPECIALTIES[diseaseSlug];
+  const targetSpecialty = DISEASE_MAPPING[diseaseSlug];
   
   // Try to find exact match in constants, fallback to formatted name
   const exactDiseaseName = ALL_DISEASES.find(d => slugify(d) === diseaseSlug) || diseaseName;
