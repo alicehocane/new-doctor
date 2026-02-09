@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, ShieldCheck, Clock, Phone, UserCheck, Star, HeartPulse } from 'lucide-react';
+import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, ShieldCheck, Clock, Phone, UserCheck, Star, HeartPulse, Activity } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
 import { POPULAR_CITIES, ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../../lib/constants';
 
@@ -23,7 +23,7 @@ export default function SearchPage() {
         metaDesc.setAttribute('name', 'description');
         document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', "Busca doctores por nombre, especialidad o ciudad. Encuentra el especialista médico ideal cerca de ti.");
+    metaDesc.setAttribute('content', "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.");
   }, []);
 
   useEffect(() => {
@@ -51,12 +51,17 @@ export default function SearchPage() {
     setSpecialty(val);
 
     if (val.length > 0) {
-      const filtered = COMMON_SPECIALTIES.filter(s => 
-        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(
-          val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        )
+      const normalizedVal = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      const filteredSpecs = COMMON_SPECIALTIES.filter(s => 
+        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
       );
-      setSuggestions(filtered);
+
+      const filteredDiseases = ALL_DISEASES.filter(d => 
+        d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
+      );
+
+      setSuggestions([...filteredSpecs, ...filteredDiseases].slice(0, 10));
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
@@ -72,8 +77,16 @@ export default function SearchPage() {
     e.preventDefault();
     if (city && specialty.trim()) {
       const citySlug = slugify(city);
-      const specialtyTerm = slugify(specialty.trim());
-      setLocation(`/doctores/${citySlug}/${specialtyTerm}`);
+      const termSlug = slugify(specialty.trim());
+      
+      // Check if term matches a known disease to route correctly
+      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
+
+      if (isDisease) {
+        setLocation(`/enfermedad/${termSlug}/${citySlug}`);
+      } else {
+        setLocation(`/doctores/${citySlug}/${termSlug}`);
+      }
     }
   };
 
@@ -129,7 +142,7 @@ export default function SearchPage() {
                         value={specialty}
                         onChange={handleSpecialtyChange}
                         onFocus={() => { setShowSuggestions(true); }}
-                        placeholder="Ej. Pediatra" 
+                        placeholder="Especialidad o Padecimiento" 
                         className="w-full bg-transparent border-none outline-none text-[17px] text-[#1d1d1f] placeholder-[#d2d2d7] font-medium pt-3"
                         autoComplete="off"
                     />
@@ -151,16 +164,23 @@ export default function SearchPage() {
           {showSuggestions && suggestions.length > 0 && (
             <div className="mt-2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
               <ul className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
-                {suggestions.map((suggestion) => (
-                  <li 
-                    key={suggestion}
-                    onClick={() => handleSelectSuggestion(suggestion)}
-                    className="px-6 py-4 hover:bg-[#f5f5f7] cursor-pointer text-[17px] text-[#1d1d1f] transition-colors flex items-center gap-3"
-                  >
-                    <Stethoscope className="w-4 h-4 text-[#86868b]" />
-                    {suggestion}
-                  </li>
-                ))}
+                {suggestions.map((suggestion) => {
+                  const isDisease = ALL_DISEASES.includes(suggestion);
+                  return (
+                    <li 
+                      key={suggestion}
+                      onClick={() => handleSelectSuggestion(suggestion)}
+                      className="px-6 py-4 hover:bg-[#f5f5f7] cursor-pointer text-[17px] text-[#1d1d1f] transition-colors flex items-center gap-3"
+                    >
+                      {isDisease ? (
+                        <Activity className="w-4 h-4 text-[#0071e3]" />
+                      ) : (
+                        <Stethoscope className="w-4 h-4 text-[#86868b]" />
+                      )}
+                      {suggestion}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}

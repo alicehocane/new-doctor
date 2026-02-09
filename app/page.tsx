@@ -1,32 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, AlertCircle, ShieldCheck, Heart, Users, BookOpen } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
-import { ALL_CITIES, POPULAR_CITIES, COMMON_SPECIALTIES } from '../lib/constants';
+import { ALL_CITIES, POPULAR_CITIES, COMMON_SPECIALTIES, ALL_DISEASES } from '../lib/constants';
 
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
   'Monterrey',
   'Puebla'
-];
-
-const COMMON_DISEASES = [
-  { name: 'Ansiedad' },
-  { name: 'Depresión' },
-  { name: 'Duelo' },
-  { name: 'Estrés' },
-  { name: 'Codependencia' },
-  { name: 'Hipertensión' },
-  { name: 'Caries' },
-  { name: 'Estrés postraumático' },
-  { name: 'Trastorno de conducta' },
-  { name: 'Diabetes' },
-  { name: 'Dislipidemia' },
-  { name: 'Depresión en adolescentes' },
-  { name: 'Bruxismo' },
-  { name: 'Síndrome metabólico' },
-  { name: 'Dolor de muelas' },
-  { name: 'Obesidad' }
 ];
 
 export default function HomePage() {
@@ -77,12 +58,18 @@ export default function HomePage() {
     setSpecialty(val);
 
     if (val.length > 0) {
-      const filtered = COMMON_SPECIALTIES.filter(s => 
-        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(
-          val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        )
+      const normalizedVal = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      const filteredSpecs = COMMON_SPECIALTIES.filter(s => 
+        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
       );
-      setSuggestions(filtered);
+
+      const filteredDiseases = ALL_DISEASES.filter(d => 
+        d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
+      );
+
+      // Prioritize specialties, then diseases. Limit total suggestions.
+      setSuggestions([...filteredSpecs, ...filteredDiseases].slice(0, 10));
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
@@ -98,8 +85,16 @@ export default function HomePage() {
     e.preventDefault();
     if (city && specialty.trim()) {
       const citySlug = slugify(city);
-      const specialtyTerm = slugify(specialty.trim()); 
-      setLocation(`/doctores/${citySlug}/${specialtyTerm}`);
+      const termSlug = slugify(specialty.trim()); 
+      
+      // Check if term matches a known disease to route correctly
+      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
+
+      if (isDisease) {
+        setLocation(`/enfermedad/${termSlug}/${citySlug}`);
+      } else {
+        setLocation(`/doctores/${citySlug}/${termSlug}`);
+      }
     }
   };
 
@@ -147,7 +142,7 @@ export default function HomePage() {
             Salud, <br className="md:hidden" /> simplificada.
           </h1>
           <p className="text-lg md:text-2xl text-secondary max-w-lg mx-auto font-medium leading-relaxed">
-            Encuentra al especialista ideal para ti, rápido y seguro.
+            Encuentra al especialista ideal o tratamiento para tu padecimiento, rápido y seguro.
           </p>
           
           {/* Search Form - Modern Pill Style */}
@@ -181,15 +176,15 @@ export default function HomePage() {
 
               {/* Specialty Input */}
               <div className="relative w-full md:flex-1 h-14 bg-[#f5f5f7] rounded-xl md:rounded-[1.5rem] hover:bg-[#e8e8ed] transition-colors flex items-center px-5">
-                <Stethoscope className="w-5 h-5 text-secondary mr-3 shrink-0" aria-hidden="true" />
-                <label htmlFor="specialty-input" className="sr-only">Especialidad médica</label>
+                <Search className="w-5 h-5 text-secondary mr-3 shrink-0" aria-hidden="true" />
+                <label htmlFor="specialty-input" className="sr-only">Especialidad o Padecimiento</label>
                 <input 
                   id="specialty-input"
                   type="text" 
                   value={specialty}
                   onChange={handleSpecialtyChange}
                   onFocus={() => specialty.length > 0 && setShowSuggestions(true)}
-                  placeholder="Especialidad (ej. Cardiólogo)" 
+                  placeholder="Especialidad (ej. Cardiólogo) o Padecimiento (ej. Diabetes)" 
                   className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-base placeholder-gray-500"
                   autoComplete="off"
                 />
@@ -213,16 +208,23 @@ export default function HomePage() {
             {showSuggestions && suggestions.length > 0 && (
               <div className="absolute top-full left-0 right-0 mt-3 px-2 z-50">
                  <ul className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden divide-y divide-slate-100 max-h-60 overflow-y-auto">
-                  {suggestions.map((suggestion) => (
-                    <li 
-                      key={suggestion}
-                      onClick={() => handleSelectSuggestion(suggestion)}
-                      className="px-6 py-4 hover:bg-[#0071e3] hover:text-white cursor-pointer text-[#1d1d1f] font-medium text-[15px] transition-colors flex items-center gap-3"
-                    >
-                      <Search className="w-4 h-4 opacity-50" />
-                      {suggestion}
-                    </li>
-                  ))}
+                  {suggestions.map((suggestion) => {
+                    const isDisease = ALL_DISEASES.includes(suggestion);
+                    return (
+                      <li 
+                        key={suggestion}
+                        onClick={() => handleSelectSuggestion(suggestion)}
+                        className="px-6 py-4 hover:bg-[#0071e3] hover:text-white cursor-pointer text-[#1d1d1f] font-medium text-[15px] transition-colors flex items-center gap-3 group"
+                      >
+                        {isDisease ? (
+                          <Activity className="w-4 h-4 opacity-50 group-hover:text-white" />
+                        ) : (
+                          <Stethoscope className="w-4 h-4 opacity-50 group-hover:text-white" />
+                        )}
+                        {suggestion}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}
@@ -322,20 +324,25 @@ export default function HomePage() {
           </h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {COMMON_DISEASES.map((item) => (
+            {ALL_DISEASES.slice(0, 36).map((disease) => (
                <Link 
-                  key={item.name}
-                  href={`/enfermedad/${slugify(item.name)}`}
+                  key={disease}
+                  href={`/enfermedad/${slugify(disease)}`}
                   className="
                     group flex items-center justify-between p-4 px-6
                     bg-[#f5f5f7] rounded-xl md:rounded-2xl hover:bg-[#0071e3] hover:text-white
                     transition-all duration-300 cursor-pointer border border-transparent hover:border-blue-500/10
                   "
                >
-                 <span className="font-medium text-sm md:text-[15px]">{item.name}</span>
-                 <ArrowUpRight className="w-4 h-4 text-secondary group-hover:text-white transition-colors" />
+                 <span className="font-medium text-sm md:text-[15px] truncate">{disease}</span>
+                 <ArrowUpRight className="w-4 h-4 text-secondary group-hover:text-white transition-colors shrink-0" />
                </Link>
             ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/enfermedades" className="text-[#0071e3] hover:underline text-[15px] font-medium">
+               Ver todos los padecimientos
+            </Link>
           </div>
         </div>
       </section>
