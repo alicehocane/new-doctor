@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { MapPin, Loader2, Plus, Phone, User, CheckCircle, ArrowRight, Stethoscope, Search } from 'lucide-react';
+import { MapPin, Loader2, Plus, Phone, User, CheckCircle, ArrowRight, Stethoscope, Search, ShieldCheck, Activity, HelpCircle, Info } from 'lucide-react';
 import { Link } from 'wouter';
 import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 
@@ -44,7 +44,7 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
 
   // SEO
   useEffect(() => {
@@ -260,6 +260,96 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
             </div>
         )}
 
+        {/* NEW: SEO / Informational Content Section */}
+        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
+          <div className="max-w-4xl mx-auto space-y-16">
+            
+            {/* 1. Intro */}
+            <div className="text-center space-y-6">
+               <h2 className="text-3xl font-bold text-[#1d1d1f]">
+                 {diseaseName} en {cityName}: Encuentra apoyo hoy
+               </h2>
+               <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
+                 Vivir en una ciudad tan grande como {cityName} puede ser un desafío. La {diseaseName.toLowerCase()} es una condición que requiere atención, pero cuando los síntomas persisten, es momento de buscar ayuda profesional. En MediBusca, te conectamos con expertos listos para ayudarte de forma gratuita y directa.
+               </p>
+            </div>
+
+            {/* 2. Symptoms */}
+            <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-3 justify-center mb-6">
+                    <Activity className="w-6 h-6 text-[#0071e3]" />
+                    ¿Cómo saber si necesitas ayuda para {diseaseName}?
+                </h3>
+                <p className="text-[#86868b] text-center leading-relaxed max-w-2xl mx-auto mb-8">
+                    La {diseaseName.toLowerCase()} afecta a cada persona de manera diferente. Algunos síntomas comunes que los especialistas en {cityName} pueden ayudarte a manejar incluyen:
+                </p>
+                <div className="grid sm:grid-cols-2 gap-4">
+                    {details.symptoms.map((symptom, i) => (
+                        <div key={i} className="flex items-center gap-3 bg-[#f5f5f7] p-4 rounded-xl">
+                            <div className="w-2 h-2 rounded-full bg-[#0071e3] shrink-0"></div>
+                            <span className="text-[#1d1d1f] font-medium">{symptom}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* 3. Why Choose MediBusca */}
+            <div>
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">¿Por qué elegir MediBusca para tu salud?</h3>
+                <div className="grid md:grid-cols-3 gap-8">
+                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 text-center hover:shadow-md transition-shadow">
+                        <div className="w-12 h-12 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <ShieldCheck className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">Sin costos ocultos</h4>
+                        <p className="text-[#86868b] text-sm leading-relaxed">No somos una agencia de citas ni cobramos comisiones por contactar a los doctores.</p>
+                    </div>
+                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 text-center hover:shadow-md transition-shadow">
+                        <div className="w-12 h-12 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <Phone className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">Contacto directo</h4>
+                        <p className="text-[#86868b] text-sm leading-relaxed">Hablas directamente con el consultorio para preguntar disponibilidad y precios.</p>
+                    </div>
+                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 text-center hover:shadow-md transition-shadow">
+                        <div className="w-12 h-12 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <CheckCircle className="w-6 h-6" />
+                        </div>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">Perfiles verificados</h4>
+                        <p className="text-[#86868b] text-sm leading-relaxed">Te mostramos especialistas con cédula profesional y experiencia real en {cityName}.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* 4. FAQs */}
+            <div>
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                    <HelpCircle className="w-6 h-6 text-[#0071e3]" />
+                    Preguntas Frecuentes
+                </h3>
+                <div className="grid gap-6">
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo contacto a un especialista en {diseaseName} en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">Simplemente elige al profesional que prefieras de nuestra lista y haz clic en el botón "Llamar". La conexión es inmediata con su consultorio.</p>
+                    </div>
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Necesito una cuenta para usar MediBusca?</h4>
+                        <p className="text-[#86868b] leading-relaxed">No. Puedes navegar por todas nuestras especialidades y ver los datos de contacto de los doctores sin registrarte.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Disclaimer */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
+                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-900/80">
+                    <strong>Aviso Importante:</strong> La información aquí presentada es de carácter educativo. Para diagnóstico y tratamiento de {diseaseName}, siempre consulta directamente a un profesional de la salud.
+                </div>
+            </div>
+
+          </div>
+        </section>
+
         {/* Nearby Cities Section */}
         <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
@@ -286,34 +376,6 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
                     >
                         {diseaseName} en {city}
                     </Link>
-                ))}
-            </div>
-        </section>
-
-        {/* Other Popular Diseases in Major Cities (Cross-linking) */}
-        <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 pb-12">
-            <h3 className="text-lg font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                <Search className="w-5 h-5 text-[#86868b]" />
-                Otros padecimientos en ciudades principales
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
-                {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).flatMap((c, i) => {
-                     // Get a sliding window of diseases so each city shows different ones
-                     const allDiseases = ALL_DISEASES; // Use ALL_DISEASES from constants
-                     const start = (i * 3) % allDiseases.length;
-                     const cityDiseases = allDiseases
-                        .filter(d => d !== diseaseName)
-                        .slice(start, start + 3);
-                     
-                     return cityDiseases.map(d => ({city: c, disease: d}));
-                }).map((item, idx) => (
-                     <Link 
-                        key={idx}
-                        href={`/enfermedad/${slugify(item.disease)}/${slugify(item.city)}`}
-                        className="text-[13px] text-[#86868b] hover:text-[#0071e3] hover:underline truncate transition-colors"
-                     >
-                        {item.disease} en {item.city}
-                     </Link>
                 ))}
             </div>
         </section>
