@@ -98,8 +98,8 @@ export default function HomePage() {
     e.preventDefault();
     if (city && specialty.trim()) {
       const citySlug = slugify(city);
-      const specialtyTerm = specialty.trim(); 
-      setLocation(`/doctores/${citySlug}/${encodeURIComponent(specialtyTerm)}`);
+      const specialtyTerm = slugify(specialty.trim()); 
+      setLocation(`/doctores/${citySlug}/${specialtyTerm}`);
     }
   };
 
@@ -290,7 +290,7 @@ export default function HomePage() {
             {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista', 'Traumatólogo', 'Oftalmólogo', 'Cardiólogo'].map((spec) => (
               <Link 
                 key={spec} 
-                href={`/especialidad/${spec.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}
+                href={`/especialidad/${slugify(spec)}`}
                 className="
                   snap-center shrink-0 w-[140px] md:w-auto aspect-square
                   flex flex-col items-center justify-center gap-3

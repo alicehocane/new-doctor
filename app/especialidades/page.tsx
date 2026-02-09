@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Stethoscope, ArrowRight, Activity, MapPin, Plus } from 'lucide-react';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 
 const COMMON_DISEASES = [
   { name: 'Diabetes', category: 'Endocrinología' },
@@ -22,12 +22,8 @@ const TOP_SPECIALTIES = [
   'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista'
 ];
 
-const TOP_CITIES = [
-  'Ciudad de México', 'Guadalajara', 'Monterrey'
-];
-
 export default function SpecialtiesIndexPage() {
-  const [visibleCount, setVisibleCount] = useState(20); // Increased to cover popular list initially
+  const [visibleCount, setVisibleCount] = useState(40); // Increased to cover popular list initially
 
   // SEO
   useEffect(() => {
@@ -41,8 +37,6 @@ export default function SpecialtiesIndexPage() {
     metaDesc.setAttribute('content', "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud.");
   }, []);
 
-  const normalize = (str: string) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  
   const slugify = (text: string) => {
     return text.toString().toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -81,7 +75,7 @@ export default function SpecialtiesIndexPage() {
             {sortedSpecialties.slice(0, visibleCount).map((spec) => (
             <Link 
                 key={spec} 
-                href={`/especialidad/${normalize(spec)}`}
+                href={`/especialidad/${slugify(spec)}`}
                 className="
                     group flex items-center justify-between p-6 
                     bg-white border border-slate-200 rounded-[20px] 
@@ -157,7 +151,7 @@ export default function SpecialtiesIndexPage() {
                 Especialistas por ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {TOP_CITIES.map((city) => (
+                {POPULAR_CITIES.map((city) => (
                     <div key={city} className="space-y-4">
                         <h3 className="font-bold text-lg text-[#1d1d1f] border-b border-slate-100 pb-3">
                             {city}

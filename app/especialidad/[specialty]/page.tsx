@@ -224,11 +224,18 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
 
   // Helper to find the matching canonical specialty name
   const getCanonicalSpecialty = (input: string) => {
+    // Try to find exact match by slug (handles dentista-odontologo -> Dentista - Odontólogo)
+    const targetSlug = slugify(input);
+    const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
+    
+    if (found) return found;
+
+    // Fallback: match normalized string if slug match fails (for legacy or partial inputs)
     const normalizedInput = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const found = COMMON_SPECIALTIES.find(s => 
+    const foundFallback = COMMON_SPECIALTIES.find(s => 
         s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
     );
-    return found || input;
+    return foundFallback || input;
   };
 
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
