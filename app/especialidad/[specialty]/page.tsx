@@ -356,20 +356,24 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                 Encuentra {searchTerm}s en las principales ciudades de México
             </h2>
             <div className="flex flex-wrap gap-3 md:gap-4">
-                {POPULAR_CITIES.map((city) => (
-                    <Link 
-                        key={city}
-                        href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                        className="
-                            inline-flex items-center px-6 py-4
-                            bg-[#f5f5f7] rounded-full
-                            text-[#1d1d1f] font-medium text-[15px]
-                            hover:bg-[#e8e8ed] transition-colors
-                        "
-                    >
-                        {searchTerm} en {city}
-                    </Link>
-                ))}
+                {POPULAR_CITIES
+                    .slice(0, 8) // Limit to 8 records for a cleaner look
+                    .map((city) => (
+                        <Link 
+                            key={city}
+                            href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
+                            className="
+                                inline-flex items-center gap-2.5 px-6 py-4
+                                bg-[#e8e8ed] rounded-full
+                                text-[#1d1d1f] font-medium text-[15px]
+                                hover:bg-[#d2d2d7] transition-all group
+                            "
+                        >
+                            {/* Integrated Search Icon */}
+                            {searchTerm} en {city}
+                        </Link>
+                    ))
+                }
             </div>
         </section>
 
