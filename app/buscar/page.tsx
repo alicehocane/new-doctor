@@ -338,7 +338,6 @@ export default function SearchPage() {
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
-                <HeartPulse className="w-6 h-6 text-[#0071e3]" />
                 ¿Cómo usar el buscador médico?
               </h3>
               <ul className="space-y-4">
@@ -368,7 +367,6 @@ export default function SearchPage() {
 
             <div className="space-y-6">
                <h3 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
-                <Star className="w-6 h-6 text-[#0071e3]" />
                 ¿Por qué elegir MediBusca?
               </h3>
               <div className="prose text-[#86868b] text-sm leading-relaxed">
