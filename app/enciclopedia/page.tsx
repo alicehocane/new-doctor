@@ -104,8 +104,66 @@ export default function EncyclopediaIndexPage() {
     setDebouncedQuery('');
   };
 
+  // Schema Markup - Google Friendly
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Enciclopedia",
+        "item": "https://medibusca.com/enciclopedia"
+      }
+    ]
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "Enciclopedia Médica y Artículos de Salud | MediBusca",
+    "description": "Biblioteca de salud de MediBusca. Artículos verificados sobre bienestar, prevención y medicina escritos por expertos.",
+    "url": "https://medibusca.com/enciclopedia",
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
+        }
+    },
+    "specialty": {
+        "@type": "MedicalSpecialty",
+        "name": "General Medical Practice"
+    }
+  };
+
+  const itemListSchema = articles.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Artículos Médicos Recientes",
+    "itemListElement": articles.map((article, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://medibusca.com/enciclopedia/${article.slug}`,
+      "name": article.title
+    }))
+  } : null;
+
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      {itemListSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      )}
+
       {/* Hero */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 text-center">
