@@ -97,39 +97,41 @@ export default function SearchPage() {
     }
   };
 
-  // Schema Markup - Unified Graph
-  const schemaData = {
+  // Schema Markup - Separated for clarity
+  // Note: Rich Results Test tool typically ONLY shows Breadcrumbs as a "Valid Item" 
+  // because "WebPage" is not a Rich Result type (like Recipe or JobPosting). 
+  // However, this schema is valid and helps Google understand the page context.
+  
+  const medicalWebPageSchema = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://medibusca.com/buscar",
-        "url": "https://medibusca.com/buscar",
-        "name": "Buscar Doctores y Especialistas | MediBusca",
-        "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
-        "isPartOf": {
-            "@type": "WebSite",
-            "@id": "https://medibusca.com/#website",
-            "url": "https://medibusca.com",
-            "name": "MediBusca"
+    "@type": "MedicalWebPage",
+    "name": "Buscador Médico MediBusca",
+    "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
+    "url": "https://medibusca.com/buscar",
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
         }
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
       },
       {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Inicio",
-            "item": "https://medibusca.com"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Buscar",
-            "item": "https://medibusca.com/buscar"
-          }
-        ]
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Buscar",
+        "item": "https://medibusca.com/buscar"
       }
     ]
   };
@@ -137,8 +139,9 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
       
-      {/* Schema Scripts */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
+      {/* Schema Scripts - Injected Separately */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="w-full max-w-2xl text-left md:text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
