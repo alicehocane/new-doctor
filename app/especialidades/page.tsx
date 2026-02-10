@@ -25,7 +25,7 @@ const FEATURED_CITIES = [
 ];
 
 const TOP_SPECIALTIES = [
-  'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista'
+  'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista', 'Traumatólogo', 'Oftalmólogo', 'Cardiólogo'
 ];
 
 export default function SpecialtiesIndexPage() {
