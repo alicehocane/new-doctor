@@ -345,9 +345,7 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
                                 hover:bg-[#e8e8ed] transition-colors group
                             "
                         >
-                            {/* Consistent search icon inside the button */}
-                            <Search className="w-4 h-4 text-[#86868b] group-hover:text-[#0071e3] transition-colors" />
-                            <span>{searchTerm} en {city}</span>
+                            {searchTerm} en {city}
                         </Link>
                     ))
                 }
