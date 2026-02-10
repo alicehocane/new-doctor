@@ -910,7 +910,6 @@ export default function CityPage({ params }: { params: { city: string } }) {
             {/* Other Cities */}
             <div>
                 <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-[#86868b]" />
                     Explora doctores en otras ciudades populares
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -926,7 +925,8 @@ export default function CityPage({ params }: { params: { city: string } }) {
                                 transition-all duration-300
                             "
                         >
-                            {city}
+                          <MapPin className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                           <span> {city}</span>
                             <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity -ml-1 group-hover:ml-0" />
                         </Link>
                     ))}
