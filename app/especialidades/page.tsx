@@ -13,7 +13,7 @@ const COMMON_DISEASES = [
   { name: 'Gastritis', category: 'Gastroenterología' },
   { name: 'Migraña', category: 'Neurología' },
   { name: 'Alergias', category: 'Alergología' },
-  { name: 'Varices', category: 'Angiología' },
+  { name: 'Varicela', category: 'Médico General' },
   { name: 'Obesidad', category: 'Bariatría' },
   { name: 'Asma', category: 'Neumología' }
 ];
