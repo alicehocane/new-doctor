@@ -5,7 +5,7 @@ import { MapPin, Loader2, User, Phone, CheckCircle, ArrowRight, AlertCircle, Ste
 import { Link } from 'wouter';
 import { POPULAR_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../lib/constants';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 20;
 
 // Curated list of top cities for SEO sections to avoid keyword stuffing
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
@@ -66,9 +66,9 @@ export default function DiseasePage({ params }: { params: { disease: string } })
         // 1. Fetch Doctors
         let query = supabase.from('doctors').select('*');
 
-        if (targetSpecialty) {
-             // Primary strategy: Filter by specialty if mapped
-            query = query.contains('specialties', [targetSpecialty]);
+        if (relatedSpecialties.length > 0) {
+             // Use OVERLAPS to find doctors with ANY of the related specialties
+            query = query.overlaps('specialties', relatedSpecialties);
         } else {
              // Fallback strategy: Search by disease tag in medical_profile
             query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
@@ -97,7 +97,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
         setLoading(false);
     }
     if (params.disease) fetchInitial();
-  }, [params.disease, targetSpecialty, diseaseName]);
+  }, [params.disease, relatedSpecialties, diseaseName]);
 
   const loadMore = async () => {
     if (loadingMore || !hasMore) return;
@@ -109,8 +109,8 @@ export default function DiseasePage({ params }: { params: { disease: string } })
 
     let query = supabase.from('doctors').select('*');
 
-    if (targetSpecialty) {
-        query = query.contains('specialties', [targetSpecialty]);
+    if (relatedSpecialties.length > 0) {
+        query = query.overlaps('specialties', relatedSpecialties);
     } else {
         query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
     }
@@ -232,7 +232,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                            {doc.specialties.slice(0, 3).map(s => (
                                <span key={s} className={`
                                  px-2.5 py-1 text-[11px] md:text-xs font-bold rounded-lg uppercase tracking-wide
-                                 ${s === targetSpecialty ? 'bg-[#0071e3]/10 text-[#0071e3]' : 'bg-[#f5f5f7] text-[#86868b]'}
+                                 ${relatedSpecialties.includes(s) ? 'bg-[#0071e3]/10 text-[#0071e3]' : 'bg-[#f5f5f7] text-[#86868b]'}
                                `}>
                                   {s}
                                </span>
@@ -310,6 +310,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
           </div>
         )}
 
+        
         {/* Related Articles Section */}
         {relatedArticles.length > 0 && (
             <section className="mt-20 mb-12 animate-in fade-in slide-in-from-bottom-8">
