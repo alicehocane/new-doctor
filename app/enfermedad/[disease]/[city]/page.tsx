@@ -351,7 +351,6 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
             {/* 2. Symptoms */}
             <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-3 justify-center mb-6">
-                    <Activity className="w-6 h-6 text-[#0071e3]" />
                     ¿Cómo saber si necesitas ayuda para {diseaseName}?
                 </h3>
                 <p className="text-[#86868b] text-center leading-relaxed max-w-2xl mx-auto mb-8">
@@ -398,7 +397,6 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
             {/* 4. FAQs */}
             <div>
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
-                    <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes
                 </h3>
                 <div className="grid gap-6">
