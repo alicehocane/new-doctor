@@ -438,8 +438,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                     {/* Symptoms */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                             </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
                         </div>
                         <ul className="space-y-3">
@@ -455,8 +453,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                     {/* Causes */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                             </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
                         </div>
                          <ul className="space-y-3">
