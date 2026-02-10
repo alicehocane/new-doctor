@@ -5,7 +5,7 @@ import { MapPin, Loader2, Plus, User, Phone, CheckCircle, ArrowRight, Stethoscop
 import { Link } from 'wouter';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../lib/constants';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 12;
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -384,7 +384,7 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                 Búsquedas populares en otras ciudades
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
-                {POPULAR_SPECIALTIES.slice(0, 6).flatMap((city, cIdx) => 
+                {POPULAR_CITIES.slice(0, 6).flatMap((city, cIdx) => 
                     // Pick different specialties for each city to create variety
                     POPULAR_SPECIALTIES.slice((cIdx % 3), (cIdx % 3) + 3).map(spec => ({
                         city,
