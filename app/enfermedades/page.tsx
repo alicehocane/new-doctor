@@ -15,12 +15,9 @@ const slugify = (text: string) => {
 
 
 const FEATURED_CITIES = [
-  'Mérida',
-  'Puebla',
-  'San Luis Potosí',
-  'Tijuana',
-  'Toluca',
-  'Zapopan'
+  'Ciudad de México',
+  'Guadalajara',
+  'Monterrey'
 ];
 
 const PAGE_SIZE = 12;
@@ -190,7 +187,6 @@ export default function DiseasesIndexPage() {
         {/* Popular Diseases by City (SEO Cross-Linking) */}
         <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
              <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
-                <MapPin className="w-6 h-6 text-[#0071e3]" />
                 Encuentra tratamiento en tu ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
