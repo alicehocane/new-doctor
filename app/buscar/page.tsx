@@ -97,30 +97,39 @@ export default function SearchPage() {
     }
   };
 
-  // Schema Markup
-  const webPageSchema = {
+  // Schema Markup - Unified Graph
+  const schemaData = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Buscar Doctores y Especialistas",
-    "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
-    "url": "https://medibusca.com/buscar"
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    "@graph": [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Inicio",
-        "item": "https://medibusca.com"
+        "@type": "WebPage",
+        "@id": "https://medibusca.com/buscar",
+        "url": "https://medibusca.com/buscar",
+        "name": "Buscar Doctores y Especialistas | MediBusca",
+        "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
+        "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://medibusca.com/#website",
+            "url": "https://medibusca.com",
+            "name": "MediBusca"
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Buscar",
-        "item": "https://medibusca.com/buscar"
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Inicio",
+            "item": "https://medibusca.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Buscar",
+            "item": "https://medibusca.com/buscar"
+          }
+        ]
       }
     ]
   };
@@ -129,8 +138,7 @@ export default function SearchPage() {
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
       
       {/* Schema Scripts */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
 
       {/* Header */}
       <div className="w-full max-w-2xl text-left md:text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
