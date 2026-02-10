@@ -3,16 +3,9 @@ import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
 import { MapPin, CheckCircle, Loader2, Plus, Phone, User, ArrowRight, Search, ShieldCheck } from 'lucide-react';
 import { Link } from 'wouter';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
 
 const PAGE_SIZE = 12;
-
-const FEATURED_CITIES = [
-  'Ciudad de México',
-  'Guadalajara',
-  'Monterrey',
-  'Puebla'
-];
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -338,7 +331,7 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
             </p>
             
             <div className="flex flex-wrap gap-3 md:gap-4">
-                {FEATURED_CITIES
+                {POPULAR_CITIES
                     .filter(c => slugify(c) !== slugify(params.city))
                     .slice(0, 8)
                     .map((city) => (
