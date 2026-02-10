@@ -380,7 +380,6 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
         {/* Other Popular Specialties in Cities */}
         <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
             <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                <Search className="w-5 h-5 text-[#86868b]" />
                 Búsquedas populares en otras ciudades
             </h3>
             <div className="flex flex-wrap gap-x-3 gap-y-3">
@@ -403,7 +402,7 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                 ))}
             </div>
         </section>
-        
+
       </div>
     </div>
   );
