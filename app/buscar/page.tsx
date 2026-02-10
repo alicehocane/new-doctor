@@ -97,9 +97,41 @@ export default function SearchPage() {
     }
   };
 
+  // Schema Markup
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Buscar Doctores y Especialistas",
+    "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
+    "url": "https://medibusca.com/buscar"
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Buscar",
+        "item": "https://medibusca.com/buscar"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
       
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
       {/* Header */}
       <div className="w-full max-w-2xl text-left md:text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <h1 className="text-4xl md:text-6xl font-semibold tracking-tight mb-3">
