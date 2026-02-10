@@ -383,34 +383,27 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                 <Search className="w-5 h-5 text-[#86868b]" />
                 Búsquedas populares en otras ciudades
             </h3>
-            
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-x-3 gap-y-3">
                 {POPULAR_CITIES.slice(0, 6).flatMap((city, cIdx) => 
-                    // Pick different specialties for each city to create variety
                     POPULAR_SPECIALTIES.slice((cIdx % 3), (cIdx % 3) + 3).map(spec => ({
                         city,
                         spec
                     }))
                 )
-                .slice(0, 12) // Limit the total number of "chips" to 12
+                .slice(0, 10) // Limits the total "chips" to 10 records
                 .map((item, idx) => (
                     <Link 
                         key={idx}
                         href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
-                        className="
-                            flex items-center gap-2 px-4 py-2
-                            bg-[#e8e8ed] rounded-full
-                            text-[#1d1d1f] font-medium text-[14px] md:text-[13px]
-                            hover:bg-[#d2d2d7] hover:text-[#0071e3] transition-all group
-                        "
+                        className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                     >
-                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0071e3] transition-colors" />
+                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                         <span>{item.spec} en {item.city}</span>
                     </Link>
                 ))}
             </div>
         </section>
-
+        
       </div>
     </div>
   );
