@@ -116,12 +116,86 @@ export default function DiseaseCityPage({ params }: { params: { disease: string,
     setLoadingMore(false);
   };
 
+  // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Padecimientos",
+        "item": "https://medibusca.com/enfermedades"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": diseaseName,
+        "item": `https://medibusca.com/enfermedad/${diseaseSlug}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": `${diseaseName} en ${cityName}`,
+        "item": `https://medibusca.com/enfermedad/${diseaseSlug}/${citySlug}`
+      }
+    ]
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": `Tratamiento para ${diseaseName} en ${cityName} | MediBusca`,
+    "description": `Encuentra doctores especialistas en ${diseaseName} en ${cityName}. Agenda tu cita con expertos verificados.`,
+    "url": `https://medibusca.com/enfermedad/${diseaseSlug}/${citySlug}`,
+    "specialty": targetSpecialty ? {
+        "@type": "MedicalSpecialty",
+        "name": targetSpecialty
+    } : undefined,
+    "contentLocation": {
+        "@type": "City",
+        "name": cityName
+    },
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
+        }
+    }
+  };
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `Especialistas en ${diseaseName} en ${cityName}`,
+    "itemListElement": doctors.map((doc, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://medibusca.com/medico/${doc.slug}`,
+      "name": doc.full_name
+    }))
+  };
+
   if (loading) {
     return <div className="flex justify-center py-20 min-h-screen bg-[#f5f5f7]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
   }
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      {doctors.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      )}
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
         {/* Breadcrumb: Inicio / Padecimientos / [Disease] / [City] */}
