@@ -333,19 +333,19 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
             <div className="flex flex-wrap gap-3 md:gap-4">
                 {POPULAR_CITIES
                     .filter(c => slugify(c) !== slugify(params.city))
-                    .slice(0, 8) // Limit to exactly 8 records
+                    .slice(0, 8)
                     .map((city) => (
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
                             className="
-                                inline-flex items-center gap-2 px-6 py-4
-                                bg-[#f5f5f7] rounded-full
+                                inline-flex items-center gap-2.5 px-6 py-4
+                                bg-[#e8e8ed] rounded-full
                                 text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#e8e8ed] transition-colors group
+                                hover:bg-[#d2d2d7] hover:shadow-sm transition-all group
                             "
                         >
-                            {searchTerm} en {city}
+                        {searchTerm} en {city}
                         </Link>
                     ))
                 }
