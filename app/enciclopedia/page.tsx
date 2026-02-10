@@ -395,7 +395,6 @@ export default function EncyclopediaIndexPage() {
 
                 <div className="bg-white p-8 rounded-[24px] shadow-sm border border-slate-100 mb-16 animate-in fade-in slide-in-from-bottom-8">
                      <h3 className="text-xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                         <ShieldCheck className="w-6 h-6 text-[#0071e3]" />
                          Por qué MediBusca es confiable
                      </h3>
                      <div className="grid sm:grid-cols-2 gap-6">
