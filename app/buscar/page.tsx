@@ -242,6 +242,7 @@ export default function SearchPage() {
                 href={`/especialidad/${slugify(spec)}`}
                 className="px-4 py-2 bg-white rounded-full text-[14px] font-medium text-[#1d1d1f] shadow-sm hover:text-[#0071e3] transition-colors cursor-pointer"
                >
+                 <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0071e3]" />
                  {spec}
                </Link>
              ))}
