@@ -222,7 +222,6 @@ export default function SpecialtiesIndexPage() {
         {/* Popular Specialties by City Section */}
         <section className="mt-20 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
              <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-10 flex items-center gap-3">
-                <MapPin className="w-7 h-7 text-[#0071e3]" aria-hidden="true" />
                 Especialistas por ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
