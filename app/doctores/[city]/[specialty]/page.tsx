@@ -331,27 +331,32 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
             </p>
             
             <div className="flex flex-wrap gap-3 md:gap-4">
-                {POPULAR_CITIES.filter(c => slugify(c) !== slugify(params.city)).map((city) => (
-                    <Link 
-                        key={city}
-                        href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                        className="
-                            inline-flex items-center px-6 py-4
-                            bg-[#f5f5f7] rounded-full
-                            text-[#1d1d1f] font-medium text-[15px]
-                            hover:bg-[#e8e8ed] transition-colors
-                        "
-                    >
-                        {searchTerm} en {city}
-                    </Link>
-                ))}
+                {POPULAR_CITIES
+                    .filter(c => slugify(c) !== slugify(params.city))
+                    .slice(0, 8) // Limit to exactly 8 records
+                    .map((city) => (
+                        <Link 
+                            key={city}
+                            href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
+                            className="
+                                inline-flex items-center gap-2 px-6 py-4
+                                bg-[#f5f5f7] rounded-full
+                                text-[#1d1d1f] font-medium text-[15px]
+                                hover:bg-[#e8e8ed] transition-colors group
+                            "
+                        >
+                            {/* Consistent search icon inside the button */}
+                            <Search className="w-4 h-4 text-[#86868b] group-hover:text-[#0071e3] transition-colors" />
+                            <span>{searchTerm} en {city}</span>
+                        </Link>
+                    ))
+                }
             </div>
         </section>
 
         {/* Other Specialties in {City} */}
         <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
             <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                <Search className="w-5 h-5 text-[#86868b]" />
                 Otras especialidades en {cityName}
             </h3>
             <div className="flex flex-wrap gap-x-3 gap-y-3">
