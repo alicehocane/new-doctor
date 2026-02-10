@@ -5,7 +5,7 @@ import { MapPin, Loader2, Plus, CheckCircle, Phone, User, Stethoscope, ArrowRigh
 import { Link } from 'wouter';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES } from '../../../lib/constants';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;
 
 // Filter Common Specialties to create a local popular list if needed, or just use slice
@@ -579,13 +579,69 @@ export default function CityPage({ params }: { params: { city: string } }) {
     ? COMMON_SPECIALTIES 
     : COMMON_SPECIALTIES.slice(0, INITIAL_SPECIALTIES_COUNT);
 
+  // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": `Doctores en ${cityName}`,
+        "item": `https://medibusca.com/doctores/${citySlug}`
+      }
+    ]
+  };
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": `Doctores en ${cityName} | MediBusca`,
+    "description": `Encuentra los mejores doctores y especialistas en ${cityName} sin intermediarios. Revisa perfiles verificados y contacta directamente.`,
+    "url": `https://medibusca.com/doctores/${citySlug}`,
+    "contentLocation": {
+        "@type": "City",
+        "name": cityName
+    },
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
+        }
+    }
+  };
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": `Doctores en ${cityName}`,
+    "itemListElement": doctors.map((doc, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://medibusca.com/medico/${doc.slug}`,
+      "name": doc.full_name
+    }))
+  };
+
   if (loading) {
     return <div className="flex justify-center py-20 min-h-screen bg-[#f5f5f7]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
   }
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
-      {/* Inject FAQ Schema */}
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      {doctors.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      )}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
