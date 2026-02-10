@@ -64,8 +64,45 @@ export default function SpecialtiesIndexPage() {
     setVisibleCount(prev => prev + 24);
   };
 
+  // Schema Markup - Separate Tags
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Especialidades",
+        "item": "https://medibusca.com/especialidades"
+      }
+    ]
+  };
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Especialidades Médicas Populares",
+    "description": "Lista de las especialidades médicas más buscadas en México.",
+    "itemListElement": TOP_SPECIALTIES.map((spec, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": spec,
+      "url": `https://medibusca.com/especialidad/${slugify(spec)}`
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
         
         {/* Header */}
