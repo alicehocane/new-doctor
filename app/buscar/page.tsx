@@ -97,24 +97,13 @@ export default function SearchPage() {
     }
   };
 
-  // Schema Markup - Separated for clarity
-  // Note: Rich Results Test tool typically ONLY shows Breadcrumbs as a "Valid Item" 
-  // because "WebPage" is not a Rich Result type (like Recipe or JobPosting). 
-  // However, this schema is valid and helps Google understand the page context.
-  
-  const medicalWebPageSchema = {
+  // Schema Markup
+  const webPageSchema = {
     "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": "Buscador Médico MediBusca",
+    "@type": "WebPage",
+    "name": "Buscar Doctores y Especialistas",
     "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
-    "url": "https://medibusca.com/buscar",
-    "audience": {
-        "@type": "Patient",
-        "geographicArea": {
-            "@type": "Country",
-            "name": "Mexico"
-        }
-    }
+    "url": "https://medibusca.com/buscar"
   };
 
   const breadcrumbSchema = {
@@ -139,8 +128,8 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
       
-      {/* Schema Scripts - Injected Separately */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
