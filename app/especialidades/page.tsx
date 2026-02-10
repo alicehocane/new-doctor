@@ -25,7 +25,7 @@ const FEATURED_CITIES = [
 ];
 
 const TOP_SPECIALTIES = [
-  'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista', 'Traumatólogo', 'Oftalmólogo', 'Cardiólogo'
+  'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista'
 ];
 
 export default function SpecialtiesIndexPage() {
@@ -89,7 +89,7 @@ export default function SpecialtiesIndexPage() {
     "@type": "ItemList",
     "name": "Especialidades Médicas Populares",
     "description": "Lista de las especialidades médicas más buscadas en México.",
-    "itemListElement": TOP_SPECIALTIES.map((spec, index) => ({
+    "itemListElement": POPULAR_SPECIALTIES.map((spec, index) => ({
       "@type": "ListItem",
       "position": index + 1,
       "name": spec,
