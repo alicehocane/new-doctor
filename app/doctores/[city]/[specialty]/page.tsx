@@ -351,19 +351,22 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
         {/* Other Specialties in {City} */}
         <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
             <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                <Search className="w-5 h-5 text-[#86868b]" />
                 Otras especialidades en {cityName}
             </h3>
-            <div className="flex flex-wrap gap-x-4 gap-y-3">
+            <div className="flex flex-wrap gap-x-3 gap-y-3">
                 {POPULAR_SPECIALTIES
-                    .filter(s => s !== searchTerm) // Remove current specialty
-                    .slice(0, 7)                   // Only take the first 7 results
+                    .filter(s => s !== searchTerm)
+                    .slice(0, 7)
                     .map((spec, idx) => (
                         <Link 
                             key={idx}
                             href={`/doctores/${slugify(params.city)}/${slugify(spec)}`}
-                            className="text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-1.5 rounded-full hover:bg-[#e8e8ed] transition-colors"
+                            className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                         >
-                            {spec} en {cityName}
+                            {/* The Icon inside the record */}
+                            <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                            <span>{spec} en {cityName}</span>
                         </Link>
                     ))
                 }
