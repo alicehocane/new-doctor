@@ -935,18 +935,18 @@ export default function CityPage({ params }: { params: { city: string } }) {
 
             {/* Popular Searches SEO Text Links */}
             <div>
-                 <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-[#86868b]" />
+                 <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
                     Búsquedas populares en {cityName}
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2">
+                <div className="flex flex-wrap gap-x-3 gap-y-3">
                     {GLOBAL_POPULAR_SPECIALTIES.map((spec, idx) => (
                         <Link 
                             key={idx}
                             href={`/doctores/${citySlug}/${slugify(spec)}`}
-                            className="text-[13px] text-[#86868b] hover:text-[#0071e3] hover:underline truncate transition-colors"
+                            className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                         >
-                            {spec} en {cityName}
+                          <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                          <span>{spec} en {cityName}</span>  
                         </Link>
                     ))}
                 </div>
