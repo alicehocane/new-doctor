@@ -274,7 +274,6 @@ export default function SearchPage() {
             </div>
             <div className="bg-white rounded-[40px] p-10 shadow-xl shadow-slate-200/50 border border-slate-100">
                  <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 flex items-center gap-3">
-                    <HeartPulse className="w-8 h-8 text-[#0071e3]" />
                     Guía de búsqueda
                  </h3>
                  <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-100">
