@@ -315,7 +315,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
             <section className="mt-20 mb-12 animate-in fade-in slide-in-from-bottom-8">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
-                        <BookOpen className="w-6 h-6 text-[#0071e3]" />
                         Guías y Artículos sobre {diseaseName}
                     </h2>
                     <Link href="/enciclopedia" className="text-[#0071e3] font-medium hover:underline text-sm hidden md:block">
@@ -361,35 +360,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                     </Link>
                 </div>
             </section>
-        )}
-
-        {/* Specialties that treat {Disease} Section */}
-        {relatedSpecialties.length > 0 && (
-          <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
-            <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
-                <Stethoscope className="w-6 h-6 text-[#0071e3]" />
-                Especialidades que tratan {diseaseName}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {relatedSpecialties.map((spec) => (
-                    <Link 
-                        key={spec} 
-                        href={`/especialidad/${slugify(spec)}`}
-                        className="
-                           group flex items-center justify-between p-5
-                           bg-white border border-[#d2d2d7]/60 rounded-xl
-                           hover:border-[#0071e3] hover:shadow-md
-                           transition-all duration-300 cursor-pointer
-                        "
-                    >
-                        <span className="font-medium text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors">
-                            {spec}
-                        </span>
-                        <ArrowRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors" />
-                    </Link>
-                ))}
-            </div>
-          </section>
         )}
 
         {/* NEW: SEO / Informational Content Section */}
@@ -479,6 +449,36 @@ export default function DiseasePage({ params }: { params: { disease: string } })
 
             </div>
         </section>
+
+
+        {/* Specialties that treat {Disease} Section */}
+        {relatedSpecialties.length > 0 && (
+          <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
+                Especialidades que tratan {diseaseName}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {relatedSpecialties.map((spec) => (
+                    <Link 
+                        key={spec} 
+                        href={`/especialidad/${slugify(spec)}`}
+                        className="
+                           group flex items-center justify-between p-5
+                           bg-white border border-[#d2d2d7]/60 rounded-xl
+                           hover:border-[#0071e3] hover:shadow-md
+                           transition-all duration-300 cursor-pointer
+                        "
+                    >
+                        <span className="font-medium text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors">
+                            {spec}
+                        </span>
+                        <ArrowRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors" />
+                    </Link>
+                ))}
+            </div>
+          </section>
+        )}
+
 
         {/* Cities Section (Specialty Focused) - LIMIT TO TOP CITIES */}
         {relatedSpecialties.length > 0 ? (
