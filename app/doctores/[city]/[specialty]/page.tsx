@@ -354,12 +354,14 @@ export default function CitySpecialtyPage({ params }: { params: { city: string, 
                 <Search className="w-5 h-5 text-[#86868b]" />
                 Otras especialidades en {cityName}
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
+            {/* Changed to grid-cols-1 by default, md:grid-cols-2 for tablet */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
                 {POPULAR_SPECIALTIES.filter(s => s !== searchTerm).map((spec, idx) => (
-                     <Link 
+                    <Link 
                         key={idx}
                         href={`/doctores/${slugify(params.city)}/${slugify(spec)}`}
-                        className="text-[13px] text-[#86868b] hover:text-[#0071e3] hover:underline truncate transition-colors"
+                        {/* Removed 'truncate', increased font size slightly for tap-ability */}
+                        className="text-[15px] md:text-[13px] text-[#86868b] hover:text-[#0071e3] py-1 border-b border-[#d2d2d7]/10 md:border-none"
                     >
                         {spec} en {cityName}
                     </Link>
