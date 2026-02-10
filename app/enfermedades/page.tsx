@@ -56,8 +56,65 @@ export default function DiseasesIndexPage() {
     setVisibleCount(PAGE_SIZE); // Reset pagination on new search
   };
 
+  // Schema Markup - Separate Tags for Google Compatibility
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Padecimientos",
+        "item": "https://medibusca.com/enfermedades"
+      }
+    ]
+  };
+
+  const medicalWebPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "Diccionario de Enfermedades y Padecimientos | MediBusca",
+    "description": "Busca doctores por enfermedad o síntoma. Guía completa de padecimientos y los especialistas que los tratan.",
+    "url": "https://medibusca.com/enfermedades",
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
+        }
+    },
+    "specialty": {
+        "@type": "MedicalSpecialty",
+        "name": "General Medical Practice"
+    }
+  };
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Enfermedades y Síntomas Comunes",
+    "description": "Lista de padecimientos frecuentes en México.",
+    "itemListElement": ALL_DISEASES.slice(0, 20).map((disease, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": disease,
+      "url": `https://medibusca.com/enfermedad/${slugify(disease)}`
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
         
         {/* Header */}
