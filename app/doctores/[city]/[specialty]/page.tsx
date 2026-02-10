@@ -5,7 +5,7 @@ import { MapPin, CheckCircle, Loader2, Plus, Phone, User, ArrowRight, Search, Sh
 import { Link } from 'wouter';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 12;
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
