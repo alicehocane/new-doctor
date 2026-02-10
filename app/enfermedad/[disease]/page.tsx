@@ -439,7 +439,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
                              <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <Activity className="w-5 h-5 text-[#0071e3]" />
                              </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
                         </div>
@@ -457,7 +456,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
                              <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
                              </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
                         </div>
@@ -487,7 +485,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
 
                      <div className="space-y-3">
                         <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                             <Info className="w-5 h-5 text-[#86868b]" />
                              Cuándo contactar a un Doctor
                         </h3>
                          <div className="space-y-3 text-[#86868b] leading-relaxed text-[15px]">
