@@ -2,7 +2,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, ShieldCheck, Clock, Phone, UserCheck, Star, HeartPulse, Activity } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
-import { POPULAR_CITIES, ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../../lib/constants';
+import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../../lib/constants';
+
+
+const FEATURED_CITIES = [
+  'Ciudad de México',
+  'Guadalajara',
+  'Monterrey'
+];
 
 export default function SearchPage() {
   const [, setLocation] = useLocation();
@@ -207,11 +214,10 @@ export default function SearchPage() {
       {/* Popular Diseases by City (SEO Cross-Linking) */}
         <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
              <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
-                <MapPin className="w-6 h-6 text-[#0071e3]" />
-                Encuentra tratamiento en tu ciudad
+                Si quieres, puedo adaptarla para un sitio web de salud, una landing page o un encabezado de sección.
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {POPULAR_CITIES.map((city) => (
+                {FEATURED_CITIES.map((city) => (
                     <div key={city} className="space-y-3">
                         <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
                             {city}
