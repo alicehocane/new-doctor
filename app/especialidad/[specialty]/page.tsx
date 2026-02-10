@@ -362,7 +362,6 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                 <div className="grid md:grid-cols-2 gap-12 pt-8 border-t border-[#f5f5f7]">
                      <div className="space-y-3">
                         <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                            <Info className="w-5 h-5 text-[#86868b]" />
                             ¿Cuándo consultar a un especialista?
                         </h3>
                         <p className="text-[#86868b] leading-relaxed text-[15px]">
@@ -372,7 +371,6 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
 
                      <div className="space-y-3">
                         <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                             <Stethoscope className="w-5 h-5 text-[#86868b]" />
                              Encuentra especialistas en {searchTerm}
                         </h3>
                         <p className="text-[#86868b] leading-relaxed text-[15px]">
