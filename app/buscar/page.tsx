@@ -97,15 +97,7 @@ export default function SearchPage() {
     }
   };
 
-  // Schema Markup
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Buscar Doctores y Especialistas",
-    "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
-    "url": "https://medibusca.com/buscar"
-  };
-
+  // Schema Markup - Separated Scripts for Maximum Google Compatibility
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -125,12 +117,27 @@ export default function SearchPage() {
     ]
   };
 
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "Buscar Doctores y Especialistas | MediBusca",
+    "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
+    "url": "https://medibusca.com/buscar",
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
+        }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
       
-      {/* Schema Scripts */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      {/* Schema Scripts - Injected Separately */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       {/* Header */}
       <div className="w-full max-w-2xl text-left md:text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
