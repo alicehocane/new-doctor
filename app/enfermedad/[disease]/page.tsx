@@ -529,30 +529,6 @@ export default function DiseasePage({ params }: { params: { disease: string } })
             </section>
         )}
 
-        {/* Disease in Cities Section (Updated to use new Route) - LIMIT TO TOP CITIES */}
-        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-[#86868b]" />
-                Encuentra tratamiento para {diseaseName} en tu ciudad
-            </h2>
-            <div className="flex flex-wrap gap-3">
-                {TOP_CITIES.map((city) => (
-                    <Link 
-                        key={city}
-                        href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
-                        className="
-                            px-4 py-2 bg-white rounded-lg border border-slate-200
-                            text-sm font-medium text-[#1d1d1f] 
-                            hover:border-[#0071e3] hover:text-[#0071e3] 
-                            transition-colors
-                        "
-                    >
-                        {diseaseName} en {city}
-                    </Link>
-                ))}
-            </div>
-        </section>
-
       </div>
     </div>
   );
