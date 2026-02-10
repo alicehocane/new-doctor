@@ -5,7 +5,7 @@ import { MapPin, Loader2, User, Phone, CheckCircle, ArrowRight, AlertCircle, Ste
 import { Link } from 'wouter';
 import { POPULAR_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../lib/constants';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 20;
 
 // Curated list of top cities for SEO sections to avoid keyword stuffing
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
@@ -315,6 +315,7 @@ export default function DiseasePage({ params }: { params: { disease: string } })
             <section className="mt-20 mb-12 animate-in fade-in slide-in-from-bottom-8">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
+                        <BookOpen className="w-6 h-6 text-[#0071e3]" />
                         Guías y Artículos sobre {diseaseName}
                     </h2>
                     <Link href="/enciclopedia" className="text-[#0071e3] font-medium hover:underline text-sm hidden md:block">
@@ -360,6 +361,35 @@ export default function DiseasePage({ params }: { params: { disease: string } })
                     </Link>
                 </div>
             </section>
+        )}
+
+        {/* Specialties that treat {Disease} Section */}
+        {relatedSpecialties.length > 0 && (
+          <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
+                <Stethoscope className="w-6 h-6 text-[#0071e3]" />
+                Especialidades que tratan {diseaseName}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {relatedSpecialties.map((spec) => (
+                    <Link 
+                        key={spec} 
+                        href={`/especialidad/${slugify(spec)}`}
+                        className="
+                           group flex items-center justify-between p-5
+                           bg-white border border-[#d2d2d7]/60 rounded-xl
+                           hover:border-[#0071e3] hover:shadow-md
+                           transition-all duration-300 cursor-pointer
+                        "
+                    >
+                        <span className="font-medium text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors">
+                            {spec}
+                        </span>
+                        <ArrowRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors" />
+                    </Link>
+                ))}
+            </div>
+          </section>
         )}
 
         {/* NEW: SEO / Informational Content Section */}
@@ -450,84 +480,85 @@ export default function DiseasePage({ params }: { params: { disease: string } })
             </div>
         </section>
 
-
-        {/* Specialties that treat {Disease} Section */}
-        {relatedSpecialties.length > 0 && (
-            <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
-                <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-2 flex items-center gap-2">
-                    Especialidades que tratan {diseaseName}
+        {/* Cities Section (Specialty Focused) - LIMIT TO TOP CITIES */}
+        {relatedSpecialties.length > 0 ? (
+          relatedSpecialties.map((spec) => (
+             <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-8 tracking-tight">
+                    {spec.startsWith('Medicina') || spec.includes('Cirujano') 
+                        ? `Encuentra especialistas en ${spec} en las principales ciudades`
+                        : `Encuentra ${spec}s en las principales ciudades`
+                    }
                 </h2>
-                <p className="text-[#86868b] mb-8 max-w-2xl text-[17px]">
-                    Dependiendo de tus síntomas y la etapa de la condición, diferentes enfoques médicos pueden ser necesarios para un tratamiento integral de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>.
-                </p>
-                
-                <div className="flex flex-wrap gap-3">
-                    {relatedSpecialties.slice(0, 8).map((spec) => (
+                <div className="flex flex-wrap gap-3 md:gap-4">
+                    {TOP_CITIES.map((city) => (
                         <Link 
-                            key={spec} 
-                            href={`/especialidad/${slugify(spec)}`}
-                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group"
+                            key={city}
+                            href={`/doctores/${slugify(city)}/${slugify(spec)}`}
+                            className="
+                                inline-flex items-center px-6 py-3.5
+                                bg-white border border-[#d2d2d7]/60 rounded-full
+                                text-[#1d1d1f] font-medium text-[15px]
+                                hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
+                                active:scale-[0.98] transition-all duration-200
+                                shadow-sm hover:shadow-md
+                            "
                         >
-                            <Search className="w-4 h-4 text-[#86868b] group-hover:text-[#0066cc]" />
-                            <span>{spec}</span>
-                            <ArrowRight className="w-3.5 h-3.5 text-[#86868b]/50 group-hover:translate-x-0.5 transition-transform" />
+                            {spec} en {city}
                         </Link>
                     ))}
                 </div>
             </section>
-        )}
-
-        {/* Cities Section (Specialty Focused) */}
-        {relatedSpecialties.length > 0 ? (
-            relatedSpecialties.slice(0, 3).map((spec) => ( // Limiting to top 3 specialties to avoid page bloat
-                <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                        {spec.startsWith('Medicina') || spec.includes('Cirujano') 
-                            ? `Expertos en ${spec} cerca de ti`
-                            : `Mejores ${spec}s por ciudad`
-                        }
-                    </h2>
-                    <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
-                        La atención local es clave para el seguimiento de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>. Encuentra consultorios equipados y especialistas certificados en las principales ciudades.
-                    </p>
-
-                    <div className="flex flex-wrap gap-3">
-                        {TOP_CITIES.slice(0, 8).map((city) => (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
-                            >
-                                <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
-                                <span>{spec} en {city}</span>
-                            </Link>
-                        ))}
-                    </div>
-                </section>
-            ))
+          ))
         ) : (
-            /* Fallback: General Doctor Search */
             <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-8 tracking-tight">
                     Encuentra especialistas en las principales ciudades
                 </h2>
-                <p className="text-[#86868b] mb-8 text-[17px]">
-                    Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                    {TOP_CITIES.slice(0, 8).map((city) => (
+                <div className="flex flex-wrap gap-3 md:gap-4">
+                    {TOP_CITIES.map((city) => (
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}`}
-                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                            className="
+                                inline-flex items-center px-6 py-3.5
+                                bg-white border border-[#d2d2d7]/60 rounded-full
+                                text-[#1d1d1f] font-medium text-[15px]
+                                hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
+                                active:scale-[0.98] transition-all duration-200
+                                shadow-sm hover:shadow-md
+                            "
                         >
-                            <MapPin className="w-4 h-4 text-[#86868b]" />
-                            <span>Doctores en {city}</span>
+                            Doctores en {city}
                         </Link>
                     ))}
                 </div>
             </section>
         )}
+
+        {/* Disease in Cities Section (Updated to use new Route) - LIMIT TO TOP CITIES */}
+        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
+             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-[#86868b]" />
+                Encuentra tratamiento para {diseaseName} en tu ciudad
+            </h2>
+            <div className="flex flex-wrap gap-3">
+                {TOP_CITIES.map((city) => (
+                    <Link 
+                        key={city}
+                        href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
+                        className="
+                            px-4 py-2 bg-white rounded-lg border border-slate-200
+                            text-sm font-medium text-[#1d1d1f] 
+                            hover:border-[#0071e3] hover:text-[#0071e3] 
+                            transition-colors
+                        "
+                    >
+                        {diseaseName} en {city}
+                    </Link>
+                ))}
+            </div>
+        </section>
 
       </div>
     </div>
