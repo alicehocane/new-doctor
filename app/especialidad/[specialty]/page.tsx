@@ -329,9 +329,6 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                     {/* What they do */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <BookOpen className="w-5 h-5 text-[#0071e3]" />
-                             </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">¿Qué hace un {searchTerm}?</h3>
                         </div>
                         <p className="text-[#86868b] leading-relaxed">
@@ -342,9 +339,6 @@ export default function SpecialtyPage({ params }: { params: { specialty: string 
                     {/* Conditions Managed */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
-                             </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Padecimientos Tratados</h3>
                         </div>
                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
