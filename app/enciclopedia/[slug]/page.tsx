@@ -6,6 +6,9 @@ import { Article } from '../../../types';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
+
+export const revalidate = 3600;
+
 // Generate Metadata
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: article } = await supabase

@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
+export const revalidate = 3600;
 const PAGE_SIZE = 12;
 
 const slugify = (text: string) => {

@@ -7,6 +7,8 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 
+export const revalidate = 3600;
+
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;
 

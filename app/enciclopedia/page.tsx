@@ -5,8 +5,7 @@ import { Article } from '../../types';
 import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
 import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600;
 
 const PAGE_SIZE = 9;
 

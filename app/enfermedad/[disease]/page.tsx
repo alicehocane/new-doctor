@@ -7,6 +7,8 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, getDiseaseInfo } from '../../../lib/constants';
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
+export const revalidate = 3600;
+
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
 

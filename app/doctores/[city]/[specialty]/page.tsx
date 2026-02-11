@@ -7,7 +7,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 const PAGE_SIZE = 12;
 
