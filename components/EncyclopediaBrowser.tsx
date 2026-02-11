@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import { BookOpen, Clock, ChevronRight, Bookmark, Loader2, Search, X, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Article } from '../types';
-export const revalidate = 3600;
+
 const PAGE_SIZE = 9;
 
 interface EncyclopediaBrowserProps {
