@@ -3,13 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { DoctorUploader } from '../../../components/DoctorUploader';
 import { ArticleUploader } from '../../../components/ArticleUploader';
 import { SitemapGenerator } from '../../../components/SitemapGenerator';
-import { Database, BookOpen, Lock, LogOut, Loader2, AlertCircle, Shield, Globe } from 'lucide-react';
+import { DataTools } from '../../../components/DataTools';
+import { Database, BookOpen, Lock, LogOut, Loader2, AlertCircle, Shield, Globe, Wrench } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 
 export default function AdminUploadPage() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'doctors' | 'articles' | 'sitemaps'>('doctors');
+  const [activeTab, setActiveTab] = useState<'doctors' | 'articles' | 'sitemaps' | 'tools'>('doctors');
 
   // Login Form State
   const [email, setEmail] = useState('');
@@ -234,6 +235,19 @@ export default function AdminUploadPage() {
                     <Globe className="w-4 h-4" />
                     Sitemaps
                 </button>
+                <button
+                    onClick={() => setActiveTab('tools')}
+                    className={`
+                        flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all
+                        ${activeTab === 'tools' 
+                            ? 'bg-indigo-600 text-white shadow-sm' 
+                            : 'text-slate-600 hover:bg-slate-50'
+                        }
+                    `}
+                >
+                    <Wrench className="w-4 h-4" />
+                    Data Tools
+                </button>
             </div>
         </div>
 
@@ -241,6 +255,7 @@ export default function AdminUploadPage() {
             {activeTab === 'doctors' && <DoctorUploader />}
             {activeTab === 'articles' && <ArticleUploader />}
             {activeTab === 'sitemaps' && <SitemapGenerator />}
+            {activeTab === 'tools' && <DataTools />}
         </div>
       </div>
     </div>
