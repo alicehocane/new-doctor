@@ -1,65 +1,89 @@
-import React, { useState, PropsWithChildren } from 'react';
-import { Link, useLocation } from 'wouter';
-import { Menu, X } from 'lucide-react';
+import React from 'react';
+import Link from 'next/link';
+import { Metadata, Viewport } from 'next';
+import SiteHeader from '../components/SiteHeader';
+import './globals.css';
+
+// 1. Viewport Configuration (Replaces <meta name="viewport" ... />)
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#f5f5f7',
+};
+
+// 2. SEO Metadata (Replaces all <meta> and <link> tags)
+export const metadata: Metadata = {
+  // Base URL is required for OpenGraph images and Canonical links to work correctly
+  metadataBase: new URL('https://medibusca.com'),
+
+  title: {
+    default: 'MediBusca',
+    template: '%s | MediBusca', // Keeps "MediBusca" appended on other pages
+  },
+  description: 'MediBusca - Directorio Médico en México. Encuentra doctores, especialistas y clínicas.',
+  keywords: ['médicos', 'directorio médico', 'doctores', 'salud', 'citas médicas', 'especialistas', 'enciclopedia médica', 'clínica', 'hospital'],
+  authors: [{ name: 'MediBusca' }],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: '/', // This auto-generates the canonical link based on metadataBase
+  },
+
+  // Open Graph (Facebook / WhatsApp)
+  openGraph: {
+    type: 'website',
+    url: 'https://medibusca.com/',
+    title: 'MediBusca - Encuentra tu médico ideal',
+    description: 'Accede a la red más completa de médicos y especialistas. Información de salud confiable y citas en línea.',
+    siteName: 'MediBusca',
+    images: [
+      {
+        url: '/og-image.png', // Ensure this image exists in your public/ folder
+        width: 1200,
+        height: 630,
+        alt: 'MediBusca Preview',
+      },
+    ],
+  },
+
+  // Twitter Card
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MediBusca - Directorio Médico',
+    description: 'Accede a la red más completa de médicos y especialistas.',
+    images: ['/og-image.png'],
+  },
+
+  // Favicons (Ensure these files are in your public/ folder)
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
+    other: [
+      { rel: 'manifest', url: '/site.webmanifest' }
+    ]
+  },
+};
 
 export default function RootLayout({
   children,
-}: PropsWithChildren) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [location] = useLocation();
-
-  // Close menu when route changes
-  React.useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location]);
-
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-[#f5f5f7]">
-        {/* Apple Style Sticky Header */}
-        <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50 transition-all duration-300">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 h-[48px] md:h-[52px] flex items-center justify-between">
-            
-            {/* Logo */}
-            <Link href="/" className="text-xl font-semibold tracking-tight text-[#1d1d1f] flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity" aria-label="MediBusca Inicio">
-              MediBusca
-            </Link>
-
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex gap-8 text-[12px] font-normal text-[#1d1d1f]/80" aria-label="Navegación principal">
-              <Link href="/buscar" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Buscar</Link>
-              <Link href="/especialidades" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Especialidades</Link>
-              <Link href="/enfermedades" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Padecimientos</Link>
-              <Link href="/enciclopedia" className="hover:text-primary hover:opacity-100 transition-all cursor-pointer">Enciclopedia</Link>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden text-[#1d1d1f] p-2 -mr-2 rounded-full hover:bg-slate-100 transition-colors"
-              aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
-
-          {/* Mobile Navigation Dropdown */}
-          <div 
-            id="mobile-menu"
-            className={`
-            md:hidden absolute top-full left-0 w-full bg-white border-b border-slate-200 shadow-xl
-            transition-all duration-300 ease-in-out overflow-hidden
-            ${isMenuOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0'}
-          `}>
-            <nav className="flex flex-col px-6 py-4 space-y-4 text-[17px] font-medium text-[#1d1d1f]" aria-label="Navegación móvil">
-              <Link href="/buscar" className="py-2 border-b border-slate-100">Buscar</Link>
-              <Link href="/especialidades" className="py-2 border-b border-slate-100">Especialidades</Link>
-              <Link href="/enfermedades" className="py-2 border-b border-slate-100">Padecimientos</Link>
-              <Link href="/enciclopedia" className="py-2 border-b border-slate-100">Enciclopedia</Link>
-            </nav>
-          </div>
-        </header>
+    <html lang="es">
+      <body className="min-h-screen flex flex-col font-sans bg-[#f5f5f7] antialiased selection:bg-[#0071e3]/20 selection:text-[#0071e3]">
+        
+        <SiteHeader />
 
         {/* Spacer for sticky header */}
         <div className="h-[48px] md:h-[52px]"></div>
@@ -124,6 +148,7 @@ export default function RootLayout({
              <p>&copy; {new Date().getFullYear()} MediBusca. Todos los derechos reservados.</p>
            </div>
         </footer>
-    </div>
+      </body>
+    </html>
   );
 }
