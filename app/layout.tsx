@@ -1,8 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
 import SiteHeader from '../components/SiteHeader';
 import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 // 1. Viewport Configuration (Replaces <meta name="viewport" ... />)
 export const viewport: Viewport = {
@@ -80,7 +87,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className={inter.variable}>
       <body className="min-h-screen flex flex-col font-sans bg-[#f5f5f7] antialiased selection:bg-[#0071e3]/20 selection:text-[#0071e3]">
         
         <SiteHeader />
