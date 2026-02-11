@@ -3,12 +3,10 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
+    request: { headers: request.headers },
   })
 
-  // 1. FAIL-SAFE: If env vars are missing, don't crash the site
+  // 1. FAIL-SAFE: If keys are missing in this branch/preview, just skip auth
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return response;
   }
@@ -19,32 +17,26 @@ export async function middleware(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       {
         cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value
-          },
+          get(name: string) { return request.cookies.get(name)?.value },
           set(name: string, value: string, options: CookieOptions) {
             request.cookies.set({ name, value, ...options })
-            response = NextResponse.next({
-              request: { headers: request.headers },
-            })
+            response = NextResponse.next({ request: { headers: request.headers } })
             response.cookies.set({ name, value, ...options })
           },
           remove(name: string, options: CookieOptions) {
             request.cookies.set({ name, value: '', ...options })
-            response = NextResponse.next({
-              request: { headers: request.headers },
-            })
+            response = NextResponse.next({ request: { headers: request.headers } })
             response.cookies.set({ name, value: '', ...options })
           },
         },
       }
     )
-
-    // This refreshes the session safely
+    
+    // This part often crashes if the connection is unstable
     await supabase.auth.getUser()
   } catch (e) {
-    // If auth fails for any reason, just continue to the page
-    console.error("Middleware Auth Error:", e);
+    // If it fails, we still let the user see the page
+    console.error("Middleware Error:", e);
   }
 
   return response
@@ -52,13 +44,9 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - site.webmanifest, robots.txt, sitemap.xml (Public folder files)
+    /* * Added extra safety: ignore EVERYTHING with a dot (files) 
+     * to prevent the 401 site.webmanifest error
      */
-    '/((?!_next/static|_next/image|favicon.ico|site.webmanifest|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|site.webmanifest|robots.txt|sitemap.xml|.*\\..*$).*)',
   ],
 }
