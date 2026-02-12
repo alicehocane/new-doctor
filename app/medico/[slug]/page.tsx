@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function DoctorProfile({ params }: { params: { slug: string } }) {
+export default async function DoctorProfile({ params, searchParams }: { params: { slug: string },searchParams: { context?: string } }) {
   // 1. Fetch Main Doctor Data
   const { data: currentDoctor } = await supabase
     .from('doctors')
