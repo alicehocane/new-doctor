@@ -3,11 +3,10 @@ import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
 import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
-
-export const revalidate = 3600;
 
 const PAGE_SIZE = 12;
 
@@ -88,6 +87,13 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+
+  // Logic to prevent Thin Content indexing
+  // If no doctors are found AND the specialty is not in our known list (meaning it's likely gibberish or a typo), return 404.
+  const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
+  if (doctors.length === 0 && !isKnownSpecialty) {
+    notFound();
+  }
 
   // Schema
   const breadcrumbSchema = {
