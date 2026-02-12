@@ -3,11 +3,10 @@ import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
 import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
-
-export const revalidate = 3600;
 
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;
@@ -79,6 +78,13 @@ export default async function CityPage({ params }: { params: { city: string } })
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+
+  // Logic to prevent Thin Content indexing
+  // If no doctors are found AND the city is not in our known list, return 404.
+  const isKnownCity = ALL_CITIES.includes(cityName);
+  if (doctors.length === 0 && !isKnownCity) {
+    notFound();
+  }
 
   // FAQs
   const faqs = [
