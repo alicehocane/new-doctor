@@ -3,11 +3,11 @@ import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
 import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucide-react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, getDiseaseInfo } from '../../../../lib/constants';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
-export const revalidate = 3600;
 const PAGE_SIZE = 12;
 
 const slugify = (text: string) => {
@@ -63,6 +63,16 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+
+  // Logic to prevent Thin Content indexing
+  // If no doctors are found AND (disease is unknown OR city is unknown), return 404.
+  // This prevents URL manipulation like /enfermedad/foobar/fake-city from generating indexable pages.
+  const isKnownCity = ALL_CITIES.includes(cityName);
+  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
+
+  if (doctors.length === 0 && (!isKnownCity || !isKnownDisease)) {
+    notFound();
+  }
 
   // Schema Markup
   const breadcrumbSchema = {
