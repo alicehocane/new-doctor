@@ -143,7 +143,14 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   };
 
   // Build state slug for breadcrumb and back link
-  const mainCity = doctor.cities[0] || '';
+  let mainCity = doctor.cities[0] || '';
+  // AUTOMATICALLY ADAPTS TO ANY CITY SENT IN URL
+  if (searchParams.context) {
+    const contextCity = doctor.cities.find(c => slugify(c) === searchParams.context);
+    if (contextCity) {
+      mainCity = contextCity; // Swaps to the correct city automatically
+    }
+  }
   const mainStateSlug = mainCity ? getStateForCity(mainCity) : '';
   const mainCitySlug = slugify(mainCity);
 
