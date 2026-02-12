@@ -10,7 +10,7 @@ const PAGE_SIZE = 9;
 
 interface EncyclopediaBrowserProps {
   initialArticles: Article[];
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function EncyclopediaBrowser({ initialArticles, children }: EncyclopediaBrowserProps) {
