@@ -5,7 +5,7 @@ import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, 
 import Link from 'next/link'; 
 import { notFound } from 'next/navigation'; 
 import { Metadata } from 'next';
-import { POPULAR_SPECIALTIES, slugify, getStateForCity } from '../../../lib/constants';
+import { POPULAR_SPECIALTIES, slugify, getStateForCity } from '@/lib/constants';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: doctor } = await supabase

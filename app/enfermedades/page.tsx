@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, MapPin, ShieldCheck, BookOpen } from 'lucide-react';
-import { POPULAR_SPECIALTIES, ALL_DISEASES, slugify, getStateForCity } from '../../lib/constants';
+import { POPULAR_SPECIALTIES, ALL_DISEASES, slugify, getStateForCity } from '@/lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 

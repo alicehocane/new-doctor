@@ -5,7 +5,7 @@ import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, STATE_TO_CITIES, slugify } from '../../../../../lib/constants';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, STATE_TO_CITIES, slugify } from '@/lib/constants';
 import CityDoctorList from '../../../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;

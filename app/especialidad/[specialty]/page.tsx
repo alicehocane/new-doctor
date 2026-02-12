@@ -5,7 +5,7 @@ import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck } from 'l
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, slugify, getStateForCity } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, slugify, getStateForCity } from '@/lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;

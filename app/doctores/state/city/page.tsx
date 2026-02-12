@@ -5,7 +5,7 @@ import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCir
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { ALL_CITIES, COMMON_SPECIALTIES, STATE_TO_CITIES, slugify } from '../../../../lib/constants';
+import { ALL_CITIES, COMMON_SPECIALTIES, STATE_TO_CITIES, slugify } from '@/lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
