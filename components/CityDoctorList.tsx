@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MapPin, Phone, User, CheckCircle, Loader2, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Doctor } from '../types';
+import { slugify } from '@/lib/constants';
 
 const PAGE_SIZE = 12;
 
