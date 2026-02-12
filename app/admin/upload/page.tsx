@@ -4,7 +4,7 @@ import { DoctorUploader } from '../../../components/DoctorUploader';
 import { ArticleUploader } from '../../../components/ArticleUploader';
 import { SitemapGenerator } from '../../../components/SitemapGenerator';
 import { Database, BookOpen, Lock, LogOut, Loader2, AlertCircle, Shield, Globe } from 'lucide-react';
-import { supabase } from '../../../lib/supabaseAdmin';
+import { supabase } from '../../../lib/supabase';
 
 export default function AdminUploadPage() {
   const [session, setSession] = useState<any>(null);
