@@ -273,6 +273,54 @@ export const SPECIALTY_CONDITIONS: Record<string, string[]> = {
   'Analista clínico': ['Pruebas de glucosa', 'Hemogramas', 'Exámenes de orina y heces']
 };
 
+
+export const STATE_TO_CITIES: Record<string, string[]> = {
+  "aguascalientes": ["Aguascalientes"],
+  "baja-california": ["Ensenada", "Mexicali", "Tijuana"],
+  "baja-california-sur": ["Cabo San Lucas", "La Paz"],
+  "campeche": ["Campeche", "Ciudad del Carmen"],
+  "chiapas": ["San Cristóbal", "Tapachula", "Tuxtla Gutiérrez"],
+  "chihuahua": ["Chihuahua", "Ciudad Juárez", "Nuevo Casas Grandes"],
+  "ciudad-de-mexico": [
+    "Benito Juárez", "Buenavista", "Coyoacán", "Cuauhtémoc", 
+    "Gustavo A. Madero", "Iztacalco", "Iztapalapa", "Magdalena Contreras", "Tlalpan", "Ciudad de México"
+  ],
+  "coahuila": ["Ciudad Acuña", "Monclova", "Saltillo", "Torreón"],
+  "colima": ["Colima", "Manzanillo"],
+  "durango": ["Durango", "Gómez Palacio"],
+  "estado-de-mexico": [
+    "Chalco", "Chicoloapan", "Chimalhuacán", "Ciudad López Mateos", 
+    "Ciudad Nicolás Romero", "Cuautitlán Izcalli", "Ecatepec de Morelos", 
+    "Huixquilucan", "Ixtapaluca", "Metepec", "Naucalpan", "Nezahualcóyotl", 
+    "Ojo de Agua", "San Francisco Coacalco", "San Pablo de las Salinas", 
+    "Tlalnepantla", "Toluca"
+  ],
+  "guanajuato": ["Guanajuato", "Irapuato", "León", "Salamanca"],
+  "guerrero": ["Acapulco", "Chilpancingo"],
+  "hidalgo": ["Pachuca"],
+  "jalisco": ["Guadalajara", "Puerto Vallarta", "Tlaquepaque", "Tonalá", "Zapopan", "Zapotlanejo"],
+  "michoacan": ["La Piedad", "Morelia", "Uruapan", "Zamora"],
+  "morelos": ["Cuautla", "Cuernavaca", "Jiutepec"],
+  "nayarit": ["Tepic"],
+  "nuevo-leon": [
+    "Apodaca", "Cadereyta Jiménez", "Ciudad Apodaca", "Ciudad Benito Juárez", 
+    "García", "General Escobedo", "Guadalupe", "Linares", "Monterrey", 
+    "San Nicolás", "San Pedro Garza Garcia", "Santa Catarina"
+  ],
+  "oaxaca": ["Oaxaca"],
+  "puebla": ["Puebla", "Tehuacán"],
+  "queretaro": ["Juriquilla", "Querétaro", "San Juan del Río"],
+  "quintana-roo": ["Cancún"],
+  "san-luis-potosi": ["San Luis Potosí", "Soledad"],
+  "sinaloa": ["Culiacán", "Mazatlán"],
+  "sonora": ["Ciudad Obregón", "Guaymas", "Hermosillo", "Miramar", "Nogales", "San Luis Río Colorado"],
+  "tabasco": ["Villahermosa"],
+  "tamaulipas": ["Ciudad Madero", "Ciudad Victoria", "Matamoros", "Nuevo Laredo", "Reynosa"],
+  "veracruz": ["Coatzacoalcos", "Minatitlán", "Poza Rica", "Veracruz", "Xalapa"],
+  "yucatan": ["Mérida"],
+  "zacatecas": ["Fresnillo", "Zacatecas"]
+};
+
 // Utility to normalize strings for URLs
 export const slugify = (text: string) => {
   return text.toString().toLowerCase()
