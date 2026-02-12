@@ -1,12 +1,12 @@
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor } from '../../../types';
+import { Doctor } from '@/types';
 import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, slugify, getStateForCity } from '@/lib/constants';
-import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
+import SpecialtyDoctorList from '@/components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;
 

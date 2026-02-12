@@ -1,6 +1,6 @@
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor } from '../../../../../types';
+import { Doctor } from '@/types';
 import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';

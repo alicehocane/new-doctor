@@ -1,6 +1,6 @@
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '../../../types';
+import { Doctor, Article } from '@/types';
 import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
 import Link from 'next/link'; 
 import { notFound } from 'next/navigation'; 

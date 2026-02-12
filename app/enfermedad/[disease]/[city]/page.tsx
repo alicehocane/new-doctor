@@ -1,12 +1,12 @@
 import React from 'react';
-import { supabase } from '../../../../lib/supabase';
-import { Doctor } from '../../../../types';
+import { supabase } from '@/lib/supabase';
+import { Doctor } from '@/types';
 import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
-import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '@/lib/constants';
+import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, MapPin, Search, Phone } from 'lucide-react';
 import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, slugify, getStateForCity } from '@/lib/constants';
-import SpecialtiesList from '../../components/SpecialtiesList';
+import SpecialtiesList from '@/components/SpecialtiesList';
 import { Metadata } from 'next';
 
 const COMMON_DISEASES = [

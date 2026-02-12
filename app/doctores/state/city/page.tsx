@@ -1,12 +1,12 @@
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor } from '../../../../types';
+import { Doctor } from '@/types';
 import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { ALL_CITIES, COMMON_SPECIALTIES, STATE_TO_CITIES, slugify } from '@/lib/constants';
-import CityDoctorList from '../../../../components/CityDoctorList';
+import CityDoctorList from '@/components/CityDoctorList';
 
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;

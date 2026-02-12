@@ -1,8 +1,8 @@
 import React from 'react';
 import { Activity, Search, ShieldCheck, CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
-import { Article } from '../../types';
-import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
+import { supabase } from '@/lib/supabase';
+import { Article } from '@/types';
+import EncyclopediaBrowser from '@/components/EncyclopediaBrowser';
 import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';

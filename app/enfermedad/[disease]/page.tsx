@@ -1,12 +1,12 @@
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '../../../types';
+import { Doctor, Article } from '@/types';
 import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify, getStateForCity } from '@/lib/constants';
-import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
+import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];

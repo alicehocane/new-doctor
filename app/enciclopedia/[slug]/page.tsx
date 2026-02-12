@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Clock, ChevronLeft, User, Share2, Bookmark, ArrowRight, BookOpen } from 'lucide-react';
-import { supabase } from '../../../lib/supabase';
-import { Article } from '../../../types';
+import { supabase } from '@/lib/supabase';
+import { Article } from '@/types';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
