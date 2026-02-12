@@ -1,46 +1,30 @@
 
 export const POPULAR_CITIES = [
-  'Acapulco',
-  'Aguascalientes',
-  'Cancún',
-  'Chihuahua',
-  'Ciudad Juárez',
-  'Ciudad de México',
-  'Cuernavaca',
-  'Culiacán',
-  'Ecatepec de Morelos',
-  'Guadalajara',
-  'Hermosillo',
-  'León',
-  'Mazatlán',
-  'Mérida',
-  'Mexicali',
-  'Monterrey',
-  'Morelia',
-  'Naucalpan',
-  'Puebla'
+  'Aguascalientes', 'Chihuahua', 'Ciudad Juárez', 'Ciudad de México',
+  'Cuernavaca', 'Ecatepec de Morelos', 'Guadalajara', 'Gustavo A. Madero',
+  'Iztapalapa', 'León', 'Mexicali', 'Monterrey', 'Mérida', 'Puebla',
+  'San Luis Potosí', 'Tijuana', 'Toluca', 'Zapopan'
 ];
 
 export const ALL_CITIES = [
-  'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 'Benito Juárez', 'Buenavista',
-  'Cabo San Lucas', 'Cadereyta Jiménez', 'Campeche', 'Cancún', 'Celaya', 'Chalco',
-  'Chetumal', 'Chicoloapan', 'Chihuahua', 'Chilpancingo', 'Chimalhuacán', 'Cholula',
-  'Ciudad Acuña', 'Ciudad Benito Juárez', 'Ciudad de México', 'Ciudad del Carmen', 'Ciudad Juárez', 'Ciudad López Mateos',
-  'Ciudad Madero', 'Ciudad Nicolás Romero', 'Ciudad Obregón', 'Ciudad Victoria', 'Coatzacoalcos', 'Colima',
-  'Coyoacán', 'Cuautitlán Izcalli', 'Cuautla', 'Cuauhtémoc', 'Cuernavaca', 'Culiacán',
-  'Durango', 'Ecatepec de Morelos', 'Ensenada', 'Fresnillo', 'García', 'General Escobedo',
-  'Gómez Palacio', 'Guadalajara', 'Guadalupe', 'Guanajuato', 'Guaymas', 'Gustavo A. Madero',
-  'Hermosillo', 'Huixquilucan', 'Irapuato', 'Ixtacalco', 'Ixtapaluca', 'Iztapalapa',
-  'Jiutepec', 'Juriquilla', 'La Paz', 'La Piedad', 'León', 'Linares',
-  'Magdalena Contreras', 'Manzanillo', 'Matamoros', 'Mazatlán', 'Mérida', 'Metepec',
-  'Mexicali', 'Minatitlán', 'Miramar', 'Monclova', 'Monterrey', 'Morelia',
-  'Naucalpan', 'Nezahualcóyotl', 'Nogales', 'Nuevo Casas Grandes', 'Nuevo Laredo', 'Oaxaca',
-  'Ojo de Agua', 'Pachuca', 'Playa del Carmen', 'Poza Rica', 'Puebla', 'Puerto Vallarta',
-  'Querétaro', 'Reynosa', 'Salamanca', 'Saltillo', 'San Cristóbal de las Casas', 'San Francisco Coacalco',
-  'San Juan del Río', 'San Luis Potosí', 'San Luis Río Colorado', 'San Nicolás de los Garza', 'San Pablo de las Salinas', 'San Pedro Garza Garcia',
-  'Santa Catarina', 'Soledad de Graciano Sánchez', 'Tapachula', 'Tehuacán', 'Tepic', 'Tijuana',
-  'Tlalnepantla', 'Tlalpan', 'Tlaquepaque', 'Toluca', 'Tonalá', 'Torreón',
-  'Tulum', 'Tuxtla Gutiérrez', 'Uruapan', 'Veracruz', 'Villahermosa', 'Xalapa',
+  'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 
+  'Benito Juárez', 'Buenavista', 'Cabo San Lucas', 'Cadereyta Jiménez', 'Campeche', 'Cancún', 
+  'Chalco', 'Chicoloapan', 'Chihuahua', 'Chilpancingo', 'Chimalhuacán', 'Ciudad Acuña', 
+  'Ciudad Apodaca', 'Ciudad Benito Juárez', 'Ciudad de México', 'Ciudad del Carmen', 'Ciudad Juárez', 
+  'Ciudad López Mateos', 'Ciudad Madero', 'Ciudad Nicolás Romero', 'Ciudad Obregón', 'Ciudad Victoria', 
+  'Coatzacoalcos', 'Colima', 'Coyoacán', 'Cuautitlán Izcalli', 'Cuautla', 'Cuauhtémoc', 
+  'Cuernavaca', 'Culiacán', 'Durango', 'Ecatepec de Morelos', 'Ensenada', 'Fresnillo', 
+  'García', 'General Escobedo', 'Gómez Palacio', 'Guadalajara', 'Guadalupe', 'Guanajuato', 'Guaymas', 
+  'Gustavo A. Madero', 'Hermosillo', 'Huixquilucan', 'Irapuato', 'Ixtacalco', 
+  'Ixtapaluca', 'Iztapalapa', 'Jiutepec', 'Juriquilla', 'La Paz', 'La Piedad', 'León', 
+  'Linares', 'Magdalena Contreras', 'Manzanillo', 'Matamoros', 'Mazatlán', 'Metepec', 'Mérida', 
+  'Mexicali', 'Minatitlán', 'Miramar', 'Monclova', 'Monterrey', 'Morelia', 
+  'Naucalpan', 'Nezahualcóyotl', 'Nogales', 'Nuevo Casas Grandes', 'Nuevo Laredo', 
+  'Oaxaca', 'Ojo de Agua', 'Pachuca', 'Poza Rica', 'Puebla', 'Puerto Vallarta', 
+  'Querétaro', 'Reynosa', 'Salamanca', 'Saltillo', 'San Cristóbal', 'San Francisco Coacalco', 
+  'San Juan del Río', 'San Luis Potosí', 'San Luis Río Colorado', 'San Nicolás', 'San Pablo de las Salinas', 
+  'San Pedro Garza Garcia', 'Santa Catarina', 'Soledad', 'Tapachula', 'Tehuacán', 'Tepic', 'Tijuana', 'Tlalnepantla', 'Tlalpan', 'Tlaquepaque', 'Toluca', 
+  'Tonalá', 'Torreón', 'Tuxtla Gutiérrez', 'Uruapan', 'Veracruz', 'Villahermosa', 'Xalapa', 
   'Zacatecas', 'Zamora', 'Zapopan', 'Zapotlanejo'
 ].sort();
 
@@ -289,8 +273,8 @@ export const SPECIALTY_CONDITIONS: Record<string, string[]> = {
   'Analista clínico': ['Pruebas de glucosa', 'Hemogramas', 'Exámenes de orina y heces']
 };
 
-// Reusing the slugify from your code for internal consistency in constants
-const slugify = (text: string) => {
+// Utility to normalize strings for URLs
+export const slugify = (text: string) => {
   return text.toString().toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/\s+/g, '-')
@@ -299,6 +283,20 @@ const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
+
+// Reverse map for quick lookup: citySlug -> stateSlug
+export const CITY_TO_STATE: Record<string, string> = {};
+Object.entries(STATE_TO_CITIES).forEach(([state, cities]) => {
+  cities.forEach(city => {
+    CITY_TO_STATE[slugify(city)] = state;
+  });
+});
+
+export const getStateForCity = (cityNameOrSlug: string): string => {
+  const slug = slugify(cityNameOrSlug);
+  return CITY_TO_STATE[slug] || 'mexico'; // default fallback
+};
+
 
 // Data for SEO Section & Mapping
 export const DISEASE_DETAILS: Record<string, { symptoms: string[], causes: string[] }> = {

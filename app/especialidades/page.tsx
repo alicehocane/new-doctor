@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, MapPin, Search, Phone } from 'lucide-react';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, slugify, getStateForCity } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 
@@ -33,16 +33,6 @@ const TOP_SPECIALTIES = [
 export const metadata: Metadata = {
   title: "Especialidades Médicas - Directorio Completo | MediBusca",
   description: "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud.",
-};
-
-const slugify = (text: string) => {
-  return text.toString().toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
 };
 
 export default function SpecialtiesIndexPage() {
@@ -202,36 +192,39 @@ export default function SpecialtiesIndexPage() {
                 Especialistas por ciudad
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {FEATURED_CITIES.map((city) => (
-                    <div key={city} className="space-y-4">
-                        <h3 className="font-bold text-lg text-[#1d1d1f] border-b border-slate-100 pb-3 flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-[#0071e3]" />
-                            {city}
-                        </h3>
-                        <div className="grid grid-cols-1 gap-2">
-                            {TOP_SPECIALTIES.map((spec) => (
+                {FEATURED_CITIES.map((city) => {
+                    const stateSlug = getStateForCity(city);
+                    return (
+                        <div key={city} className="space-y-4">
+                            <h3 className="font-bold text-lg text-[#1d1d1f] border-b border-slate-100 pb-3 flex items-center gap-2">
+                                <MapPin className="w-4 h-4 text-[#0071e3]" />
+                                {city}
+                            </h3>
+                            <div className="grid grid-cols-1 gap-2">
+                                {TOP_SPECIALTIES.map((spec) => (
+                                    <Link 
+                                        key={`${city}-${spec}`}
+                                        href={`/doctores/${stateSlug}/${slugify(city)}/${slugify(spec)}`}
+                                        className="
+                                            flex items-center justify-between group
+                                            text-[15px] text-[#86868b] hover:text-[#0071e3] 
+                                            transition-colors py-1
+                                        "
+                                    >
+                                        <span>{spec}</span>
+                                        <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0" />
+                                    </Link>
+                                ))}
                                 <Link 
-                                    key={`${city}-${spec}`}
-                                    href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                    className="
-                                        flex items-center justify-between group
-                                        text-[15px] text-[#86868b] hover:text-[#0071e3] 
-                                        transition-colors py-1
-                                    "
+                                    href={`/doctores/${stateSlug}/${slugify(city)}`}
+                                    className="text-sm font-semibold text-[#0071e3] hover:underline mt-2 inline-block"
                                 >
-                                    <span>{spec}</span>
-                                    <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0" />
+                                    Ver todos en {city}
                                 </Link>
-                            ))}
-                             <Link 
-                                href={`/doctores/${slugify(city)}`}
-                                className="text-sm font-semibold text-[#0071e3] hover:underline mt-2 inline-block"
-                            >
-                                Ver todos en {city}
-                            </Link>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </section>
       </div>

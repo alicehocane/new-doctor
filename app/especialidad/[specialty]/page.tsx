@@ -3,22 +3,12 @@ import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
 import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, slugify, getStateForCity } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
-export const revalidate = 3600;
 const PAGE_SIZE = 12;
-
-const slugify = (text: string) => {
-  return text.toString().toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
-};
 
 const getCanonicalSpecialty = (input: string) => {
     // Try to find exact match by slug
@@ -73,6 +63,13 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+
+  // Logic to prevent Thin Content indexing
+  // If no doctors are found AND the specialty is not in our known list, return 404.
+  const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
+  if (doctors.length === 0 && !isKnownSpecialty) {
+    notFound();
+  }
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -248,20 +245,23 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
             <div className="flex flex-wrap gap-3 md:gap-4">
                 {POPULAR_CITIES
                     .slice(0, 8) 
-                    .map((city) => (
-                        <Link 
-                            key={city}
-                            href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                            className="
-                                inline-flex items-center gap-2.5 px-6 py-4
-                                bg-[#e8e8ed] rounded-full
-                                text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#d2d2d7] transition-all group
-                            "
-                        >
-                            {searchTerm} en {city}
-                        </Link>
-                    ))
+                    .map((city) => {
+                        const stateSlug = getStateForCity(city);
+                        return (
+                            <Link 
+                                key={city}
+                                href={`/doctores/${stateSlug}/${slugify(city)}/${slugify(searchTerm)}`}
+                                className="
+                                    inline-flex items-center gap-2.5 px-6 py-4
+                                    bg-[#e8e8ed] rounded-full
+                                    text-[#1d1d1f] font-medium text-[15px]
+                                    hover:bg-[#d2d2d7] transition-all group
+                                "
+                            >
+                                {searchTerm} en {city}
+                            </Link>
+                        );
+                    })
                 }
             </div>
         </section>
@@ -279,16 +279,19 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     }))
                 )
                 .slice(0, 10) 
-                .map((item, idx) => (
-                    <Link 
-                        key={idx}
-                        href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
-                        className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
-                    >
-                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
-                        <span>{item.spec} en {item.city}</span>
-                    </Link>
-                ))}
+                .map((item, idx) => {
+                    const stateSlug = getStateForCity(item.city);
+                    return (
+                        <Link 
+                            key={idx}
+                            href={`/doctores/${stateSlug}/${slugify(item.city)}/${slugify(item.spec)}`}
+                            className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                        >
+                            <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                            <span>{item.spec} en {item.city}</span>
+                        </Link>
+                    );
+                })}
             </div>
         </section>
 

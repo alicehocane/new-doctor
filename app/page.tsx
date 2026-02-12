@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck } from 'lucide-react';
 import { Metadata } from 'next';
-import { ALL_DISEASES } from '../lib/constants';
+import { ALL_DISEASES, slugify, getStateForCity } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 
 const FEATURED_CITIES = [
@@ -15,16 +15,6 @@ const FEATURED_CITIES = [
 export const metadata: Metadata = {
   title: "MediBusca - Encuentra Doctores y Especialistas en México",
   description: "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas. Agenda citas, revisa opiniones y contacta directamente.",
-};
-
-const slugify = (text: string) => {
-  return text.toString().toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
 };
 
 export default function HomePage() {
@@ -95,28 +85,32 @@ export default function HomePage() {
             overflow-x-auto snap-x snap-mandatory no-scrollbar 
             -mx-4 px-4 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {FEATURED_CITIES.map((city) => (
-              <Link 
-                key={city} 
-                href={`/doctores/${slugify(city)}`}
-                className="
-                  snap-center shrink-0 w-[260px] md:w-auto
-                  group p-6 md:p-8 bg-[#f5f5f7] rounded-[24px] 
-                  transition-all duration-300 hover:bg-[#ededf0] hover:scale-[1.02] 
-                  flex flex-col justify-between h-[180px] md:h-[220px] cursor-pointer
-                "
-              >
-                <div className="bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-[#0071e3] mb-4">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[#1d1d1f] leading-tight">{city}</h3>
-                  <div className="flex items-center gap-1 text-[#0071e3] text-sm font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                    Ver doctores <ChevronRight className="w-3 h-3" />
+            {FEATURED_CITIES.map((city) => {
+              const stateSlug = getStateForCity(city);
+              const citySlug = slugify(city);
+              return (
+                <Link 
+                  key={city} 
+                  href={`/doctores/${stateSlug}/${citySlug}`}
+                  className="
+                    snap-center shrink-0 w-[260px] md:w-auto
+                    group p-6 md:p-8 bg-[#f5f5f7] rounded-[24px] 
+                    transition-all duration-300 hover:bg-[#ededf0] hover:scale-[1.02] 
+                    flex flex-col justify-between h-[180px] md:h-[220px] cursor-pointer
+                  "
+                >
+                  <div className="bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-[#0071e3] mb-4">
+                    <MapPin className="w-5 h-5" />
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <div>
+                    <h3 className="text-lg md:text-xl font-semibold text-[#1d1d1f] leading-tight">{city}</h3>
+                    <div className="flex items-center gap-1 text-[#0071e3] text-sm font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                      Ver doctores <ChevronRight className="w-3 h-3" />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

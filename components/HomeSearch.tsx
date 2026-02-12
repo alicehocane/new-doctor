@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, MapPin, ChevronRight, Stethoscope, Activity } from 'lucide-react';
-import { ALL_CITIES, ALL_DISEASES, COMMON_SPECIALTIES } from '../lib/constants';
+import { ALL_CITIES, ALL_DISEASES, COMMON_SPECIALTIES, slugify, getStateForCity } from '../lib/constants';
 
 export default function HomeSearch() {
   const router = useRouter();
@@ -24,16 +24,6 @@ export default function HomeSearch() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [wrapperRef]);
-
-  const slugify = (text: string) => {
-    return text.toString().toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/\-\-+/g, '-')
-      .replace(/^-+/, '')
-      .replace(/-+$/, '');
-  };
 
   const handleSpecialtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -67,13 +57,14 @@ export default function HomeSearch() {
     if (city && specialty.trim()) {
       const citySlug = slugify(city);
       const termSlug = slugify(specialty.trim()); 
+      const stateSlug = getStateForCity(city);
       
       const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
 
       if (isDisease) {
         router.push(`/enfermedad/${termSlug}/${citySlug}`);
       } else {
-        router.push(`/doctores/${citySlug}/${termSlug}`);
+        router.push(`/doctores/${stateSlug}/${citySlug}/${termSlug}`);
       }
     }
   };
