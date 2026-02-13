@@ -98,7 +98,7 @@ export default async function CityHubPage({ params }: { params: { state: string,
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://medibusca.com" },
-          { "@type": "ListItem", "position": 2, "name": "Información Médica", "item": "https://medibusca.com/buscar" },
+          { "@type": "ListItem", "position": 2, "name": "Información Médica", "item": "https://medibusca.com/informacion-medica" },
           { "@type": "ListItem", "position": 3, "name": cityName, "item": `https://medibusca.com/doctores/${stateSlug}/${paramSlug}` }
         ]
       };
@@ -125,7 +125,7 @@ export default async function CityHubPage({ params }: { params: { state: string,
                 <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1 flex-wrap">
                     <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
                     <span className="mx-2 text-[#d2d2d7]">/</span>
-                    <span className="text-[#86868b]">Información Médica</span>
+                    <Link href="/informacion-medica" className="hover:text-[#0071e3] transition-colors">Información Médica</Link>
                     <span className="mx-2 text-[#d2d2d7]">/</span>
                     <span className="text-[#1d1d1f] capitalize">{cityName}</span>
                 </nav>
