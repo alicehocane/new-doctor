@@ -186,7 +186,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalConditionSchema) }} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
         
         {/* 1️⃣ Header */}
         <header className="space-y-6 animate-in fade-in slide-in-from-bottom-2">
