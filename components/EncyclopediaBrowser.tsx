@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -11,9 +12,11 @@ const PAGE_SIZE = 9;
 interface EncyclopediaBrowserProps {
   initialArticles: Article[];
   children?: React.ReactNode;
+  title?: string;
+  description?: string;
 }
 
-export default function EncyclopediaBrowser({ initialArticles, children }: EncyclopediaBrowserProps) {
+export default function EncyclopediaBrowser({ initialArticles, children, title, description }: EncyclopediaBrowserProps) {
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [loading, setLoading] = useState(false); // Loading for search
   const [loadingMore, setLoadingMore] = useState(false);
@@ -112,10 +115,10 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 text-center">
             <h1 className="text-4xl md:text-6xl font-semibold text-[#1d1d1f] tracking-tight mb-6">
-                Enciclopedia Médica.
+                {title || "Enciclopedia Médica."}
             </h1>
             <p className="text-xl text-[#86868b] max-w-2xl mx-auto font-normal leading-relaxed mb-10">
-                Información verificada, guías de bienestar y artículos escritos por especialistas para ayudarte a tomar mejores decisiones sobre tu salud.
+                {description || "Información verificada, guías de bienestar y artículos escritos por especialistas para ayudarte a tomar mejores decisiones sobre tu salud."}
             </p>
 
             {/* Search Bar */}
@@ -210,7 +213,7 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
                 <section>
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-2xl font-semibold text-[#1d1d1f]">
-                            {isSearchActive ? 'Resultados de búsqueda' : 'Artículos Recientes'}
+                            {isSearchActive ? 'Resultados de búsqueda' : 'Guías Médicas Destacadas'}
                         </h2>
                         {isSearchActive && (
                              <span className="text-sm text-[#86868b]">{articles.length} resultados encontrados</span>
