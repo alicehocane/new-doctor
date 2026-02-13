@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, CheckCircle, Activity, MapPin } from 'lucide-react';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, CheckCircle, Activity, MapPin, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -129,10 +129,10 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
       {/* 1️⃣ Hero Section */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-4xl mx-auto px-6 py-16 md:py-24 text-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
             
-            {/* Breadcrumb */}
-            <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center justify-center animate-in fade-in slide-in-from-bottom-1">
+            {/* Breadcrumb - Left Aligned Legacy Style */}
+            <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1 flex-wrap">
                 <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
                 <span className="mx-2 text-[#d2d2d7]">/</span>
                 <Link href="/especialidades" className="hover:text-[#0071e3] transition-colors">Especialidades</Link>
@@ -140,16 +140,16 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                 <span className="text-[#1d1d1f] capitalize">{searchTerm}</span>
             </nav>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-[#1d1d1f] mb-6 tracking-tight animate-in fade-in slide-in-from-bottom-2">
+            <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-6 tracking-tight animate-in fade-in slide-in-from-bottom-2">
                 Todo sobre {searchTerm}
             </h1>
-            <p className="text-xl text-[#86868b] leading-relaxed max-w-3xl mx-auto font-normal animate-in fade-in slide-in-from-bottom-3">
+            <p className="text-xl text-[#86868b] leading-relaxed max-w-3xl font-normal animate-in fade-in slide-in-from-bottom-3">
                 La {searchTerm.toLowerCase()} es una especialidad médica fundamental. En esta página encontrarás información sobre los servicios que brinda un {searchTerm.toLowerCase()}, los padecimientos más comunes que trata, consejos de prevención y cómo encontrar especialistas en tu ciudad.
             </p>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-16 space-y-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
 
         {/* 2️⃣ Section: ¿Qué Hace un Especialista? */}
         <section className="animate-in fade-in slide-in-from-bottom-4">
@@ -185,12 +185,14 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* 3️⃣ Section: Padecimientos Comunes */}
         <section className="animate-in fade-in slide-in-from-bottom-5">
-             <div className="mb-8 text-center md:text-left">
-                <h2 className="text-3xl font-bold text-[#1d1d1f] mb-3 flex items-center gap-3 justify-center md:justify-start">
-                    <Activity className="w-7 h-7 text-[#0071e3]" />
-                    Problemas de Salud que Atiende
-                </h2>
-                <p className="text-lg text-[#86868b]">Los {searchTerm.toLowerCase()}s diagnostican y tratan una amplia variedad de condiciones, entre las más frecuentes:</p>
+             <div className="mb-8">
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
+                        <Activity className="w-5 h-5" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-[#1d1d1f]">Problemas de Salud que Atiende</h2>
+                </div>
+                <p className="text-lg text-[#86868b] max-w-3xl">Los {searchTerm.toLowerCase()}s diagnostican y tratan una amplia variedad de condiciones, entre las más frecuentes:</p>
              </div>
              
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -212,15 +214,15 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* 4️⃣ Section: Prevención y Cuidados */}
         <section className="bg-blue-50 rounded-[32px] p-8 md:p-12 border border-blue-100 animate-in fade-in slide-in-from-bottom-6">
-            <div className="max-w-3xl">
-                <h2 className="text-3xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-3">
+            <div className="max-w-4xl">
+                <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-3">
                     <ShieldCheck className="w-7 h-7 text-[#0071e3]" />
                     Prevención y Cuidados
                 </h2>
                 <p className="text-lg text-[#1d1d1f]/80 leading-relaxed mb-8">
                     La prevención es clave para la salud relacionada con {searchTerm.toLowerCase()}. Seguir recomendaciones básicas puede evitar complicaciones futuras.
                 </p>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid sm:grid-cols-2 gap-6">
                     <div className="bg-white p-6 rounded-2xl shadow-sm">
                         <h4 className="font-bold text-[#1d1d1f] mb-2 flex items-center gap-2">
                             <Info className="w-4 h-4 text-[#0071e3]" /> Revisiones Periódicas
@@ -243,9 +245,9 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* 5️⃣ Section: Local Doctor Listings */}
         <section className="pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-7">
-            <div className="text-center mb-10">
-                <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">Encuentra {searchTerm}s en tu Ciudad</h2>
-                <p className="text-lg text-[#86868b] max-w-2xl mx-auto leading-relaxed">
+            <div className="mb-10">
+                <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Encuentra {searchTerm}s en tu Ciudad</h2>
+                <p className="text-lg text-[#86868b] max-w-3xl leading-relaxed">
                     Una vez informado sobre la especialidad, puedes consultar {searchTerm.toLowerCase()}s en tu ciudad. Esta sección conecta a los usuarios con especialistas locales verificados.
                 </p>
             </div>
@@ -253,9 +255,9 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
             <SpecialtyDoctorList initialDoctors={doctors} specialty={searchTerm} />
             
             {/* City Links */}
-            <div className="mt-12 text-center">
+            <div className="mt-12">
                 <p className="text-sm font-semibold text-[#86868b] uppercase tracking-wide mb-4">Búsquedas Frecuentes</p>
-                <div className="flex flex-wrap gap-3 justify-center">
+                <div className="flex flex-wrap gap-3">
                     {POPULAR_CITIES.slice(0, 8).map((city) => {
                         const stateSlug = getStateForCity(city);
                         return (
