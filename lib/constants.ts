@@ -281,7 +281,7 @@ export const STATE_TO_CITIES: Record<string, string[]> = {
   "campeche": ["Campeche", "Ciudad del Carmen"],
   "chiapas": ["San Cristóbal", "Tapachula", "Tuxtla Gutiérrez"],
   "chihuahua": ["Chihuahua", "Ciudad Juárez", "Nuevo Casas Grandes"],
-  "cdmx": [
+  "ciudad-de-mexico": [
     "Benito Juárez", "Buenavista", "Coyoacán", "Cuauhtémoc", 
     "Gustavo A. Madero", "Iztacalco", "Iztapalapa", "Magdalena Contreras", "Tlalpan", "Ciudad de México"
   ],
