@@ -1,22 +1,65 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, MapPin, ShieldCheck, BookOpen } from 'lucide-react';
-import { POPULAR_SPECIALTIES, ALL_DISEASES, slugify, getStateForCity } from '../../lib/constants';
+import { ArrowRight, MapPin, ShieldCheck, BookOpen, Activity, AlertCircle, HeartPulse, Brain, Info } from 'lucide-react';
+import { ALL_DISEASES, slugify, getStateForCity } from '../../lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
+import { supabase } from '../../lib/supabase';
 
 export const metadata: Metadata = {
-  title: "Diccionario de Padecimientos y Enfermedades | MediBusca",
-  description: "Busca doctores por padecimiento o síntoma. Guía completa de enfermedades y los especialistas que los tratan.",
+  title: "Padecimientos y Condiciones Médicas | MediBusca",
+  description: "Conoce los padecimientos y condiciones de salud más frecuentes. Aprende sobre sus síntomas, causas y tratamientos recomendados.",
 };
 
-const FEATURED_CITIES = [
-  'Ciudad de México',
-  'Guadalajara',
-  'Monterrey'
+const FEATURED_CONDITIONS = [
+  { 
+    name: 'Ansiedad', 
+    description: 'Trastorno emocional común que afecta la salud mental y física; aprende a reconocer sus síntomas y opciones de tratamiento.',
+    icon: Brain
+  },
+  { 
+    name: 'Diabetes', 
+    description: 'Enfermedad crónica que altera la forma en que el cuerpo maneja el azúcar en la sangre; conoce sus tipos y cuidados.',
+    icon: Activity
+  },
+  { 
+    name: 'Hipertensión', 
+    description: 'Condición de presión arterial elevada que puede causar complicaciones cardiovasculares; descubre prevención y tratamiento.',
+    icon: HeartPulse
+  },
+  { 
+    name: 'Dolor de cabeza', 
+    description: 'Identifica las causas más comunes del dolor de cabeza, migrañas y cómo aliviarlos de forma segura.',
+    icon: AlertCircle
+  },
+  { 
+    name: 'Obesidad', 
+    description: 'Acumulación anormal o excesiva de grasa que puede ser perjudicial para la salud.',
+    icon: Activity
+  },
+  { 
+    name: 'Gastritis', 
+    description: 'Inflamación del revestimiento del estómago que causa dolor y malestar digestivo.',
+    icon: Info
+  }
 ];
 
-export default function DiseasesIndexPage() {
+const CITY_HUBS = [
+  'Ciudad de México',
+  'Guadalajara',
+  'Monterrey',
+  'Puebla'
+];
+
+export default async function DiseasesIndexPage() {
+  
+  // Fetch recent articles for the "Related Guides" section
+  const { data: articles } = await supabase
+    .from('articles')
+    .select('title, slug, category')
+    .limit(3)
+    .order('published_at', { ascending: false });
+
   // Schema Markup
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -37,18 +80,19 @@ export default function DiseasesIndexPage() {
     ]
   };
 
-  const medicalWebPageSchema = {
+  const collectionSchema = {
     "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": "Diccionario de Padecimientos y Enfermedades | MediBusca",
-    "description": "Busca doctores por padecimiento o síntoma. Guía completa de enfermedades y los especialistas que los tratan.",
-    "url": "https://medibusca.com/padecimientos",
-    "audience": {
-        "@type": "Patient",
-        "geographicArea": {
-            "@type": "Country",
-            "name": "Mexico"
-        }
+    "@type": "CollectionPage",
+    "name": "Padecimientos y Condiciones Médicas",
+    "description": "Guía completa de padecimientos, síntomas y tratamientos médicos.",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": FEATURED_CONDITIONS.map((cond, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": cond.name,
+        "url": `https://medibusca.com/padecimientos/${slugify(cond.name)}`
+      }))
     }
   };
 
@@ -56,130 +100,153 @@ export default function DiseasesIndexPage() {
     <div className="min-h-screen bg-[#f5f5f7]">
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
 
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
         
-        {/* Header */}
+        {/* 1️⃣ Header Section */}
         <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-2">
-          <h1 className="text-4xl md:text-5xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
-            Busca por padecimiento.
+          <h1 className="text-4xl md:text-6xl font-bold text-[#1d1d1f] mb-6 tracking-tight">
+            Padecimientos y Condiciones Médicas
           </h1>
-          <p className="text-xl text-[#86868b] max-w-2xl mx-auto font-normal leading-relaxed">
-            Encuentra al especialista indicado según tus síntomas o enfermedad diagnosticada.
+          <p className="text-xl text-[#86868b] max-w-3xl mx-auto font-normal leading-relaxed">
+            Conoce los padecimientos y condiciones de salud más frecuentes. Aprende sobre sus síntomas, causas y tratamientos recomendados, y encuentra especialistas en tu ciudad si necesitas atención profesional.
           </p>
         </div>
 
-        {/* Client Component for Interactive List */}
-        <DiseaseList allDiseases={ALL_DISEASES}>
-            {/* Guide Section (Passed as children to appear between search and grid) */}
-            <div className="max-w-4xl mx-auto text-center mb-16 animate-in fade-in slide-in-from-bottom-5">
-                <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-4">Tu guía para encontrar al especialista adecuado</h2>
-                <p className="text-[#86868b] text-lg leading-relaxed max-w-3xl mx-auto">
-                    A veces sabemos dónde nos duele, pero no sabemos qué doctor puede ayudarnos. En esta sección, puedes buscar por síntomas o padecimientos comunes. Haz clic en cualquier malestar para aprender qué es y encontrar expertos verificados en tu ciudad. En MediBusca, te conectamos directamente con el doctor, sin cobrar comisiones.
-                </p>
-            </div>
-        </DiseaseList>
-        
-        {/* Popular Specialties Section (SEO) */}
-        <section className="mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
-            <div className="mb-8">
-                <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
-                    Encuentra doctores por su especialidad
-                </h2>
-                <p className="text-[#86868b] text-lg leading-relaxed max-w-3xl">
-                    Si ya sabes qué tipo de doctor necesitas, como un pediatra para tus hijos o un dentista para una revisión, búscalo aquí. Tenemos una lista completa de especialistas listos para atenderte.
-                </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                {POPULAR_SPECIALTIES.map((spec) => (
+        {/* 2️⃣ Featured Conditions */}
+        <section className="mb-20 animate-in fade-in slide-in-from-bottom-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-8 flex items-center gap-3">
+                <Activity className="w-6 h-6 text-[#0071e3]" />
+                Condiciones de Salud Relevantes
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {FEATURED_CONDITIONS.map((cond) => (
                     <Link 
-                        key={spec}
-                        href={`/especialidad/${slugify(spec)}`}
+                        key={cond.name}
+                        href={`/padecimientos/${slugify(cond.name)}`}
                         className="
-                            flex items-center justify-center px-4 py-3
-                            bg-white border border-slate-200 rounded-xl
-                            text-sm font-medium text-[#1d1d1f] text-center
-                            hover:border-[#0071e3] hover:text-[#0071e3]
-                            transition-colors shadow-sm
+                            group flex flex-col p-6 bg-white border border-slate-200 rounded-[24px]
+                            hover:border-[#0071e3] hover:shadow-lg transition-all duration-300
+                            cursor-pointer h-full
                         "
                     >
-                        {spec}
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 rounded-full bg-[#f5f5f7] text-[#1d1d1f] flex items-center justify-center group-hover:bg-[#0071e3] group-hover:text-white transition-colors">
+                                <cond.icon className="w-5 h-5" />
+                            </div>
+                            <h3 className="font-bold text-xl text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors">
+                                {cond.name}
+                            </h3>
+                        </div>
+                        <p className="text-sm text-[#86868b] leading-relaxed flex-1">
+                            {cond.description}
+                        </p>
+                        <div className="mt-4 flex items-center text-sm font-medium text-[#0071e3] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+                            Leer más <ArrowRight className="w-4 h-4 ml-1" />
+                        </div>
                     </Link>
                 ))}
             </div>
-            <div className="mt-6 text-center md:text-left">
-                <Link href="/especialidades" className="text-[#0071e3] hover:underline text-sm font-medium inline-flex items-center gap-1">
-                    Ver todas las especialidades <ArrowRight className="w-3 h-3" />
-                </Link>
+        </section>
+
+        {/* 3️⃣ Identification Guide */}
+        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mb-20 shadow-sm animate-in fade-in slide-in-from-bottom-5">
+            <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Cómo Saber Qué Condición Puedes Tener?</h2>
+                    <p className="text-lg text-[#86868b] leading-relaxed">
+                        Conocer los síntomas y signos de cada padecimiento te permite tomar decisiones informadas sobre tu salud. Antes de buscar tratamiento, revisa nuestros artículos para identificar la condición correcta.
+                    </p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-6">
+                    <Link href="/padecimientos/ansiedad" className="block bg-[#f5f5f7] p-5 rounded-2xl hover:bg-[#e8e8ed] transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-purple-500"></div> Ansiedad
+                        </h4>
+                        <p className="text-sm text-[#86868b]">Nerviosismo, insomnio, palpitaciones y preocupación constante.</p>
+                    </Link>
+                    <Link href="/padecimientos/diabetes" className="block bg-[#f5f5f7] p-5 rounded-2xl hover:bg-[#e8e8ed] transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-blue-500"></div> Diabetes
+                        </h4>
+                        <p className="text-sm text-[#86868b]">Sed constante, fatiga extrema, visión borrosa y pérdida de peso.</p>
+                    </Link>
+                    <Link href="/padecimientos/hipertension" className="block bg-[#f5f5f7] p-5 rounded-2xl hover:bg-[#e8e8ed] transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-red-500"></div> Hipertensión
+                        </h4>
+                        <p className="text-sm text-[#86868b]">Dolor de cabeza matutino, mareos, zumbido en oídos.</p>
+                    </Link>
+                </div>
             </div>
         </section>
 
-        {/* Popular Diseases by City (SEO Cross-Linking) */}
-        <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
-             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
-                Encuentra tratamiento en tu ciudad
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {FEATURED_CITIES.map((city) => {
+        {/* 4️⃣ Local Treatment */}
+        <section className="mb-20 border-t border-slate-200 pt-16 animate-in fade-in slide-in-from-bottom-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                <div className="max-w-2xl">
+                    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">Encuentra Tratamiento en Tu Ciudad</h2>
+                    <p className="text-lg text-[#86868b] leading-relaxed">
+                        Una vez que comprendas tu padecimiento, consulta nuestros listados de doctores y especialistas en tu ciudad para recibir atención confiable y cercana.
+                    </p>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {CITY_HUBS.map((city) => {
                     const stateSlug = getStateForCity(city);
                     return (
-                        <div key={city} className="space-y-3">
-                            <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
-                                {city}
-                            </h3>
-                            <ul className="space-y-2.5">
-                                {/* Show top 5 diseases for each city */}
-                                {ALL_DISEASES.slice(0, 5).map((disease) => (
-                                    <li key={disease}>
-                                        <Link 
-                                            href={`/padecimientos/${slugify(disease)}/${slugify(city)}`}
-                                            className="text-[14px] text-[#86868b] hover:text-[#0071e3] hover:underline flex items-center gap-2 transition-colors"
-                                        >
-                                            <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
-                                            {disease} en {city}
-                                        </Link>
-                                    </li>
-                                ))}
-                                <li>
-                                    <Link 
-                                        href={`/doctores/${stateSlug}/${slugify(city)}`}
-                                        className="text-[13px] font-medium text-[#0071e3] hover:underline mt-1 inline-block"
-                                    >
-                                        Ver todos en {city}
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
+                        <Link 
+                            key={city}
+                            href={`/doctores/${stateSlug}/${slugify(city)}`}
+                            className="
+                                group flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl
+                                hover:border-[#0071e3] hover:shadow-md transition-all
+                            "
+                        >
+                            <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f] group-hover:bg-[#0071e3] group-hover:text-white transition-colors">
+                                <MapPin className="w-5 h-5" />
+                            </div>
+                            <span className="font-semibold text-[#1d1d1f]">{city}</span>
+                        </Link>
                     );
                 })}
             </div>
         </section>
 
-        {/* Professional Trust & Disclaimer */}
-        <section className="mt-20 pt-12 border-t border-slate-200/60 pb-12 animate-in fade-in slide-in-from-bottom-8">
-            <div className="bg-white rounded-[24px] p-8 md:p-10 border border-slate-200 flex flex-col md:flex-row gap-8 items-start shadow-sm">
-                <div className="w-14 h-14 bg-blue-50 text-[#0071e3] rounded-2xl flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-7 h-7" />
+        {/* 5️⃣ Related Guides */}
+        {articles && articles.length > 0 && (
+            <section className="mb-20 animate-in fade-in slide-in-from-bottom-6">
+                <h2 className="text-3xl font-bold text-[#1d1d1f] mb-8 flex items-center gap-3">
+                    <BookOpen className="w-7 h-7 text-[#0071e3]" />
+                    Aprende Más Sobre Cada Padecimiento
+                </h2>
+                <div className="grid md:grid-cols-3 gap-6">
+                    {articles.map((article: any) => (
+                        <Link key={article.slug} href={`/enciclopedia/${article.slug}`}>
+                            <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:shadow-lg transition-all h-full flex flex-col justify-between group">
+                                <div>
+                                    <span className="text-xs font-bold text-[#0071e3] uppercase tracking-wide mb-2 block">
+                                        {article.category?.split(',')[0] || 'Guía Médica'}
+                                    </span>
+                                    <h3 className="font-bold text-lg text-[#1d1d1f] mb-2 group-hover:text-[#0071e3] transition-colors">{article.title}</h3>
+                                </div>
+                                <span className="text-sm font-medium text-[#86868b] flex items-center gap-1 mt-4">
+                                    Leer artículo <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                            </div>
+                        </Link>
+                    ))}
                 </div>
-                <div>
-                    <h3 className="text-xl font-bold text-[#1d1d1f] mb-3">Información en la que puedes confiar</h3>
-                    <p className="text-[#86868b] leading-relaxed mb-6 text-lg">
-                        Todas las condiciones listadas aquí vienen con guías informativas. Recuerda que esta información es solo una guía y no reemplaza la visita al médico. Siempre consulta a un profesional para un diagnóstico preciso.
-                    </p>
-                    <div className="flex flex-wrap gap-6">
-                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f]">
-                            <BookOpen className="w-5 h-5 text-[#0071e3]" />
-                            Guías educativas
-                        </div>
-                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f]">
-                            <MapPin className="w-5 h-5 text-[#0071e3]" />
-                            Doctores locales
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </section>
+        )}
+
+        {/* 6️⃣ Full Search List */}
+        <section className="pt-16 border-t border-slate-200">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Diccionario Completo de Padecimientos</h2>
+            <DiseaseList allDiseases={ALL_DISEASES} />
         </section>
 
       </div>
