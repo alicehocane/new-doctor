@@ -62,7 +62,8 @@ export default function HomeSearch() {
       const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
 
       if (isDisease) {
-        router.push(`/enfermedad/${termSlug}/${citySlug}`);
+        // Updated to /padecimientos
+        router.push(`/padecimientos/${termSlug}/${citySlug}`);
       } else {
         router.push(`/doctores/${stateSlug}/${citySlug}/${termSlug}`);
       }

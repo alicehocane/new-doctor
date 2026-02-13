@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, MapPin, Search, Phone } from 'lucide-react';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, slugify, getStateForCity } from '@/lib/constants';
-import SpecialtiesList from '@/components/SpecialtiesList';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, slugify, getStateForCity } from '../../lib/constants';
+import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 
 const COMMON_DISEASES = [
@@ -147,7 +147,7 @@ export default function SpecialtiesIndexPage() {
                         <Activity className="w-7 h-7 text-[#0071e3]" />
                         Padecimientos frecuentes
                     </h2>
-                    <Link href="/enfermedades" className="text-[#0071e3] hover:underline text-[15px] font-medium inline-flex items-center gap-1 shrink-0 h-fit">
+                    <Link href="/padecimientos" className="text-[#0071e3] hover:underline text-[15px] font-medium inline-flex items-center gap-1 shrink-0 h-fit">
                         Ver todos los padecimientos <ArrowRight className="w-4 h-4" />
                     </Link>
                 </div>
@@ -172,7 +172,7 @@ export default function SpecialtiesIndexPage() {
                 {COMMON_DISEASES.map((disease) => (
                     <Link
                         key={disease.name}
-                        href={`/enfermedad/${slugify(disease.name)}`}
+                        href={`/padecimientos/${slugify(disease.name)}`}
                         className="
                             flex flex-col p-4 bg-white border border-slate-200 rounded-xl
                             hover:border-[#0071e3] hover:shadow-md transition-all duration-300

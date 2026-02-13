@@ -64,10 +64,8 @@ export default function SearchForm() {
       const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
 
       if (isDisease) {
-        // Disease pages maintain their own structure or can be updated too.
-        // For now keeping /enfermedad structure separate as requested in other prompts, 
-        // but city drilldown in disease can now use state if needed.
-        router.push(`/enfermedad/${termSlug}/${citySlug}`);
+        // Updated to /padecimientos
+        router.push(`/padecimientos/${termSlug}/${citySlug}`);
       } else {
         // Updated routing for doctors
         router.push(`/doctores/${stateSlug}/${citySlug}/${termSlug}`);

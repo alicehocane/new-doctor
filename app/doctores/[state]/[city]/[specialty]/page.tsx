@@ -1,11 +1,11 @@
 import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor } from '@/types';
+import { supabase } from '../../../../../lib/supabase';
+import { Doctor } from '../../../../../types';
 import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, STATE_TO_CITIES, slugify } from '@/lib/constants';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, STATE_TO_CITIES, slugify } from '../../../../../lib/constants';
 import CityDoctorList from '../../../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
@@ -51,6 +51,12 @@ export default async function CitySpecialtyPage({ params }: { params: { state: s
   const cityName = citiesInState.find(c => slugify(c) === citySlug);
   if (!cityName) notFound();
 
+  // REDIRECT Logic: If citySlug == stateSlug, redirect to flattened URL
+  // e.g. /doctores/ciudad-de-mexico/ciudad-de-mexico/cardiologo -> /doctores/ciudad-de-mexico/cardiologo
+  if (citySlug === stateSlug) {
+      redirect(`/doctores/${stateSlug}/${specialtySlug}`);
+  }
+
   const stateName = stateSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   const decodedSpecialty = decodeURIComponent(specialtySlug);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
@@ -71,6 +77,7 @@ export default async function CitySpecialtyPage({ params }: { params: { state: s
     notFound();
   }
 
+  // UPDATED BREADCRUMB: Topic -> Location
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -84,19 +91,19 @@ export default async function CitySpecialtyPage({ params }: { params: { state: s
       {
         "@type": "ListItem",
         "position": 2,
-        "name": stateName,
-        "item": `https://medibusca.com/doctores/${stateSlug}`
+        "name": "Especialidades",
+        "item": "https://medibusca.com/especialidades"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": cityName,
-        "item": `https://medibusca.com/doctores/${stateSlug}/${citySlug}`
+        "name": searchTerm,
+        "item": `https://medibusca.com/especialidad/${specialtySlug}`
       },
       {
         "@type": "ListItem",
         "position": 4,
-        "name": `${searchTerm}`,
+        "name": cityName,
         "item": `https://medibusca.com/doctores/${stateSlug}/${citySlug}/${specialtySlug}`
       }
     ]
@@ -108,14 +115,15 @@ export default async function CitySpecialtyPage({ params }: { params: { state: s
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
+        {/* UPDATED VISUAL BREADCRUMB */}
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center flex-wrap animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href={`/doctores/${stateSlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{stateName}</Link>
+            <Link href="/especialidades" className="hover:text-[#0071e3] transition-colors">Especialidades</Link>
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href={`/doctores/${stateSlug}/${citySlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{cityName}</Link>
+            <Link href={`/especialidad/${specialtySlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{searchTerm}</Link>
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <span className="text-[#1d1d1f] capitalize">{searchTerm}</span>
+            <span className="text-[#1d1d1f] capitalize">{cityName}</span>
         </nav>
 
         <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">

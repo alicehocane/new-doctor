@@ -277,7 +277,7 @@ export const SPECIALTY_CONDITIONS: Record<string, string[]> = {
 export const STATE_TO_CITIES: Record<string, string[]> = {
   "aguascalientes": ["Aguascalientes"],
   "baja-california": ["Ensenada", "Mexicali", "Tijuana"],
-  "baja-california-sur": ["Cabo San Lucas", "La Paz"],
+  "baja-california-sur": ["Cabo San Lucas", "La Paz", "San José del Cabo"],
   "campeche": ["Campeche", "Ciudad del Carmen"],
   "chiapas": ["San Cristóbal", "Tapachula", "Tuxtla Gutiérrez"],
   "chihuahua": ["Chihuahua", "Ciudad Juárez", "Nuevo Casas Grandes"],
@@ -295,27 +295,28 @@ export const STATE_TO_CITIES: Record<string, string[]> = {
     "Ojo de Agua", "San Francisco Coacalco", "San Pablo de las Salinas", 
     "Tlalnepantla", "Toluca"
   ],
-  "guanajuato": ["Guanajuato", "Irapuato", "León", "Salamanca"],
-  "guerrero": ["Acapulco", "Chilpancingo"],
-  "hidalgo": ["Pachuca"],
+  "guanajuato": ["Celaya", "Guanajuato", "Irapuato", "León", "Salamanca"],
+  "guerrero": ["Acapulco", "Chilpancingo", "Zihuatanejo"],
+  "hidalgo": ["Pachuca", "Tulancingo"],
   "jalisco": ["Guadalajara", "Puerto Vallarta", "Tlaquepaque", "Tonalá", "Zapopan", "Zapotlanejo"],
   "michoacan": ["La Piedad", "Morelia", "Uruapan", "Zamora"],
   "morelos": ["Cuautla", "Cuernavaca", "Jiutepec"],
-  "nayarit": ["Tepic"],
+  "nayarit": ["Tepic", "Bahía de Banderas"],
   "nuevo-leon": [
-    "Apodaca", "Cadereyta Jiménez", "Ciudad Apodaca", "Ciudad Benito Juárez", 
-    "García", "General Escobedo", "Guadalupe", "Linares", "Monterrey", 
-    "San Nicolás", "San Pedro Garza Garcia", "Santa Catarina"
+    "Apodaca", "Cadereyta Jiménez", "García", "General Escobedo", 
+    "Guadalupe", "Linares", "Monterrey", "San Nicolás de los Garza", 
+    "San Pedro Garza García", "Santa Catarina"
   ],
-  "oaxaca": ["Oaxaca"],
-  "puebla": ["Puebla", "Tehuacán"],
+  "oaxaca": ["Oaxaca", "Salina Cruz"],
+  "puebla": ["Puebla", "Tehuacán"], // Fixed trailing space
   "queretaro": ["Juriquilla", "Querétaro", "San Juan del Río"],
-  "quintana-roo": ["Cancún"],
-  "san-luis-potosi": ["San Luis Potosí", "Soledad"],
-  "sinaloa": ["Culiacán", "Mazatlán"],
-  "sonora": ["Ciudad Obregón", "Guaymas", "Hermosillo", "Miramar", "Nogales", "San Luis Río Colorado"],
+  "quintana-roo": ["Cancún", "Cozumel", "Playa del Carmen", "Chetumal"],
+  "san-luis-potosi": ["San Luis Potosí", "Soledad de Graciano Sánchez"],
+  "sinaloa": ["Culiacán", "Mazatlán", "Los Mochis"],
+  "sonora": ["Ciudad Obregón", "Guaymas", "Hermosillo", "Nogales", "San Luis Río Colorado"],
   "tabasco": ["Villahermosa"],
-  "tamaulipas": ["Ciudad Madero", "Ciudad Victoria", "Matamoros", "Nuevo Laredo", "Reynosa"],
+  "tamaulipas": ["Ciudad Madero", "Ciudad Victoria", "Matamoros", "Nuevo Laredo", "Reynosa", "Tampico"],
+  "tlaxcala": ["Tlaxcala", "Apizaco"], // Added missing state
   "veracruz": ["Coatzacoalcos", "Minatitlán", "Poza Rica", "Veracruz", "Xalapa"],
   "yucatan": ["Mérida"],
   "zacatecas": ["Fresnillo", "Zacatecas"]

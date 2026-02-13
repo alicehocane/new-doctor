@@ -1,13 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { Clock, ChevronLeft, User, Share2, Bookmark, ArrowRight, BookOpen } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { Article } from '@/types';
+import { supabase } from '../../../lib/supabase';
+import { Article } from '../../../types';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-
-
-export const revalidate = 3600;
 
 // Generate Metadata
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
@@ -64,6 +61,31 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const primaryCategory = article.category.split(',')[0].trim();
 
   // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Enciclopedia",
+        "item": "https://medibusca.com/enciclopedia"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": article.title,
+        "item": `https://medibusca.com/enciclopedia/${article.slug}`
+      }
+    ]
+  };
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -95,6 +117,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     <div className="min-h-screen bg-white pb-20">
         
         {/* Schema */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
         {/* Sticky Navigation Bar */}

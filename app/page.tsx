@@ -171,7 +171,7 @@ export default function HomePage() {
             {ALL_DISEASES.slice(0, 36).map((disease) => (
                <Link 
                   key={disease}
-                  href={`/enfermedad/${slugify(disease)}`}
+                  href={`/padecimientos/${slugify(disease)}`}
                   className="
                     group flex items-center justify-between p-4 px-6
                     bg-[#f5f5f7] rounded-xl md:rounded-2xl hover:bg-[#0071e3] hover:text-white
@@ -184,7 +184,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Link href="/enfermedades" className="text-[#0071e3] hover:underline text-[15px] font-medium">
+            <Link href="/padecimientos" className="text-[#0071e3] hover:underline text-[15px] font-medium">
                Ver todos los padecimientos
             </Link>
           </div>
@@ -370,7 +370,7 @@ export default function HomePage() {
                 <Link href="/especialidades" className="bg-[#333] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#444] transition-colors border border-slate-600">
                   Explora especialidades
                 </Link>
-                <Link href="/enfermedades" className="bg-[#333] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#444] transition-colors border border-slate-600">
+                <Link href="/padecimientos" className="bg-[#333] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#444] transition-colors border border-slate-600">
                   Infórmate sobre enfermedades
                 </Link>
               </div>
