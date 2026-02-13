@@ -298,6 +298,6 @@ export default async function CityHubPage({ params }: { params: { state: string,
       );
   }
 
-  // Not found if neither city nor specialty (or invalid state context)
+  // Not found if neither city nor specialty (or invalid state contexts)
   notFound();
 }
