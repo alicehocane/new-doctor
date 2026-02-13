@@ -1,12 +1,12 @@
 import React from 'react';
 import { supabase } from '../../lib/supabase';
-import { Doctor, Article } from '../../types';
+import { Doctor, Article } from '@/types';
 import { MapPin, Search, ShieldCheck, Activity, Building, BookOpen, ArrowRight, Stethoscope } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { STATE_TO_CITIES, slugify, COMMON_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
-import CityDoctorList from '../../components/CityDoctorList';
+import { STATE_TO_CITIES, slugify, COMMON_SPECIALTIES, ALL_DISEASES } from '@/lib/constants';
+import CityDoctorList from '@/components/CityDoctorList';
 
 const PAGE_SIZE = 8; // Reduced size for hub view
 const POPULAR_SPECIALTIES_DISPLAY = 12;
