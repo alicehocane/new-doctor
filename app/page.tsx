@@ -117,7 +117,7 @@ export default function HomePage() {
           {/* Quick Stats Bar */}
           <div className="grid grid-cols-3 gap-4 md:gap-12 pt-8 md:pt-12 max-w-3xl mx-auto border-t border-slate-100 mt-12">
              <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">200+</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">90+</p>
                 <p className="text-xs md:text-sm text-[#86868b] font-medium">Especialidades</p>
              </div>
              <div className="text-center border-l border-slate-100">
