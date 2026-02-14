@@ -250,7 +250,6 @@ export default async function CityPage({ params }: { params: { city: string } })
             <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                        <HeartPulse className="w-5 h-5 text-[#0071e3]" />
                     </div>
                     <h2 className="text-2xl font-semibold text-[#1d1d1f]">Encuentra Especialistas en {cityName} sin Costo</h2>
                 </div>
@@ -270,7 +269,6 @@ export default async function CityPage({ params }: { params: { city: string } })
             <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                        <Search className="w-5 h-5 text-[#0071e3]" />
                     </div>
                     <h2 className="text-2xl font-semibold text-[#1d1d1f]">Cómo encontrar doctor en {cityName}</h2>
                 </div>

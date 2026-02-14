@@ -209,7 +209,6 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                 <div className="grid md:grid-cols-2 gap-12 pt-8 border-t border-[#f5f5f7]">
                      <div className="space-y-3">
                         <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                            <Info className="w-5 h-5 text-[#86868b]" />
                             ¿Cuándo consultar a un especialista?
                         </h3>
                         <p className="text-[#86868b] leading-relaxed text-[15px]">
@@ -230,7 +229,6 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
                 {/* Disclaimer */}
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4">
-                    <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <div className="text-sm text-amber-900/80">
                         <strong>Aviso Legal:</strong> El contenido mostrado es únicamente informativo y no sustituye el consejo, diagnóstico o tratamiento médico profesional. Siempre busque el consejo de su médico u otro proveedor de salud calificado.
                     </div>
