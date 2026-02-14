@@ -121,41 +121,43 @@ export const DoctorUploader: React.FC = () => {
   };
 
   const startUpload = async () => {
-    if (!isSupabaseConfigured()) {
-        setError("Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
-        return;
-    }
+  if (!isSupabaseConfigured()) {
+    setError("Supabase is not configured.");
+    return;
+  }
 
-    setUploadStatus('uploading');
-    let successCount = 0;
+  setUploadStatus('uploading');
+  const BATCH_SIZE = 50; // Adjust based on record complexity
+  const total = rawRecords.length;
+  let processed = 0;
+
+  // Process in chunks
+  for (let i = 0; i < total; i += BATCH_SIZE) {
+    const chunk = rawRecords.slice(i, i + BATCH_SIZE);
     
-    // Process one by one to give granular feedback and isolate errors
-    // In a production environment with massive datasets, you might batch these in groups of 10-50
-    for (let i = 0; i < rawRecords.length; i++) {
-      const raw = rawRecords[i];
+    // Transform the entire chunk at once
+    const payloads = chunk.map(rec => transformRecord(rec));
+
+    try {
+      const { error: dbError } = await supabase
+        .from('doctors')
+        .upsert(payloads, { onConflict: 'slug' });
+
+      if (dbError) throw dbError;
+
+      // Add a summary log for the batch or individual logs
+      addLog(`Batch ${i/BATCH_SIZE + 1}`, 'success', `Upserted ${payloads.length} records`);
       
-      try {
-        const payload = transformRecord(raw);
-
-        const { error: dbError } = await supabase
-          .from('doctors')
-          .upsert(payload, { onConflict: 'slug' });
-
-        if (dbError) {
-          throw dbError;
-        }
-
-        addLog(raw.slug, 'success', 'Upserted successfully');
-        successCount++;
-      } catch (err: any) {
-        addLog(raw.slug, 'error', err.message || 'Unknown error');
-      }
-
-      setProgress({ current: i + 1, total: rawRecords.length });
+      processed += payloads.length;
+      setProgress({ current: processed, total });
+    } catch (err: any) {
+      addLog(`Batch Error`, 'error', err.message || 'Unknown error');
+      // Optional: if a batch fails, you could retry individually here
     }
+  }
 
-    setUploadStatus('completed');
-  };
+  setUploadStatus('completed');
+};
 
   // --- Render Helpers ---
 
