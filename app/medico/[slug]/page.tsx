@@ -169,7 +169,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* Header Profile */}
       <div className="bg-white border-b border-slate-200/50">
-        <div className="max-w-5xl mx-auto px-6 py-10 md:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           
           {/* Breadcrumb */}
           <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1">
