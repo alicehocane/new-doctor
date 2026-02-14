@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, Activity } from 'lucide-react';
-import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES, slugify, getStateForCity } from '../lib/constants';
+import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../lib/constants';
 
 export default function SearchForm() {
   const router = useRouter();
@@ -15,6 +15,16 @@ export default function SearchForm() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const slugify = (text: string) => {
+    return text.toString().toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -58,17 +68,14 @@ export default function SearchForm() {
     if (city && specialty.trim()) {
       const citySlug = slugify(city);
       const termSlug = slugify(specialty.trim());
-      const stateSlug = getStateForCity(city);
       
       // Check if term matches a known disease to route correctly
       const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
 
       if (isDisease) {
-        // Updated to /padecimientos
-        router.push(`/padecimientos/${termSlug}/${citySlug}`);
+        router.push(`/enfermedad/${termSlug}/${citySlug}`);
       } else {
-        // Updated routing for doctors
-        router.push(`/doctores/${stateSlug}/${citySlug}/${termSlug}`);
+        router.push(`/doctores/${citySlug}/${termSlug}`);
       }
     }
   };

@@ -1,70 +1,134 @@
-import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '@/types';
-import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search } from 'lucide-react';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify, getStateForCity } from '@/lib/constants';
-import DiseaseDoctorList from '@/components/DiseaseDoctorList';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../../../lib/supabase';
+import { Doctor, Article } from '../../../types';
+import { MapPin, Loader2, User, Phone, CheckCircle, ArrowRight, AlertCircle, Stethoscope, Plus, Search, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight } from 'lucide-react';
+import { Link } from 'wouter';
+import { POPULAR_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../lib/constants';
 
 const PAGE_SIZE = 12;
+
+// Curated list of top cities for SEO sections to avoid keyword stuffing
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
+
+const slugify = (text: string) => {
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
   return [...doctors].sort((a, b) => {
+    // Check if valid phone exists (non-empty string)
     const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
     const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
+    
     if (aHas === bHas) return 0;
     return aHas ? -1 : 1;
   });
 };
 
-// --- Metadata ---
-
-export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
-  const { name: diseaseName } = getDiseaseInfo(params.disease);
+export default function DiseasePage({ params }: { params: { disease: string } }) {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   
-  return {
-    title: `Tratamiento para ${diseaseName} - Especialistas y Causas | MediBusca`,
-    description: `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`,
-  };
-}
-
-// --- Server Component ---
-
-export default async function DiseasePage({ params }: { params: { disease: string } }) {
   const diseaseSlug = params.disease;
+  
+  // Use helper to get all disease info
   const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
 
-  // 1. Fetch Initial Doctors
-  let query = supabase.from('doctors').select('*');
+  // SEO
+  useEffect(() => {
+    document.title = `Tratamiento para ${diseaseName} - Especialistas y Causas | MediBusca`;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`);
+  }, [diseaseName]);
 
-  if (targetSpecialty) {
-      query = query.contains('specialties', [targetSpecialty]);
-  } else {
-      query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
-  }
+  useEffect(() => {
+    async function fetchInitial() {
+        setLoading(true);
+        setPage(0);
+        setHasMore(true);
+        setDoctors([]);
 
-  const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+        // 1. Fetch Doctors
+        let query = supabase.from('doctors').select('*');
 
-  // Logic to prevent Thin Content indexing
-  // If no doctors are found AND the disease is not in our known list, return 404.
-  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
-  if (doctors.length === 0 && !isKnownDisease) {
-    notFound();
-  }
+        if (targetSpecialty) {
+             // Primary strategy: Filter by specialty if mapped
+            query = query.contains('specialties', [targetSpecialty]);
+        } else {
+             // Fallback strategy: Search by disease tag in medical_profile
+            query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
+        }
 
-  // 2. Fetch Related Articles
-  const { data: articlesData } = await supabase
-    .from('articles')
-    .select('*')
-    .or(`title.ilike.%${diseaseName}%,category.ilike.%${diseaseName}%,excerpt.ilike.%${diseaseName}%`)
-    .order('published_at', { ascending: false })
-    .limit(3);
-  
-  const relatedArticles = articlesData as Article[] || [];
+        const { data } = await query.range(0, PAGE_SIZE - 1);
+            
+        if (data) {
+            setDoctors(sortDoctorsByPhone(data as Doctor[]));
+            if (data.length < PAGE_SIZE) setHasMore(false);
+        }
+
+        // 2. Fetch Related Articles
+        const searchTerm = diseaseName;
+        const { data: articlesData } = await supabase
+            .from('articles')
+            .select('*')
+            .or(`title.ilike.%${searchTerm}%,category.ilike.%${searchTerm}%,excerpt.ilike.%${searchTerm}%`)
+            .order('published_at', { ascending: false })
+            .limit(3);
+        
+        if (articlesData) {
+            setRelatedArticles(articlesData as Article[]);
+        }
+
+        setLoading(false);
+    }
+    if (params.disease) fetchInitial();
+  }, [params.disease, targetSpecialty, diseaseName]);
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    
+    const nextPage = page + 1;
+    const from = nextPage * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    let query = supabase.from('doctors').select('*');
+
+    if (targetSpecialty) {
+        query = query.contains('specialties', [targetSpecialty]);
+    } else {
+        query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
+    }
+
+    const { data } = await query.range(from, to);
+
+    if (data) {
+        if (data.length > 0) {
+            const sortedNew = sortDoctorsByPhone(data as Doctor[]);
+            setDoctors(prev => [...prev, ...sortedNew]);
+            setPage(nextPage);
+        }
+        if (data.length < PAGE_SIZE) {
+            setHasMore(false);
+        }
+    }
+    setLoadingMore(false);
+  };
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -138,6 +202,10 @@ export default async function DiseasePage({ params }: { params: { disease: strin
     }))
   };
 
+  if (loading) {
+    return <div className="flex justify-center py-20 min-h-screen bg-[#f5f5f7]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
+  }
+
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
       {/* Schema Scripts */}
@@ -179,7 +247,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         </div>
 
         {/* Show alert ONLY if NO specialty mapped AND NO doctors found via fallback */}
-        {!targetSpecialty && doctors.length === 0 && (
+        {!targetSpecialty && doctors.length === 0 && !loading && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8 text-amber-800 flex gap-3 animate-in fade-in">
                 <AlertCircle className="w-5 h-5 shrink-0" />
                 <div>
@@ -192,12 +260,113 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
         )}
 
-        {/* Doctor Grid (Client Component) */}
-        <DiseaseDoctorList 
-            initialDoctors={doctors} 
-            diseaseName={diseaseName} 
-            targetSpecialty={targetSpecialty} 
-        />
+        {/* Doctor Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          {doctors.map((doc, idx) => (
+              <div 
+                key={doc.id} 
+                className={`
+                  bg-white p-6 rounded-[24px] shadow-sm hover:shadow-lg hover:-translate-y-0.5
+                  transition-all duration-300 border border-transparent hover:border-[#0071e3]/20
+                  flex flex-col justify-between animate-in fade-in slide-in-from-bottom-4
+                `}
+                style={{ animationDelay: `${idx * 50}ms` }}
+              >
+                  {/* Content */}
+                  <div className="flex-1 min-w-0 mb-5">
+                      <div className="flex justify-between items-start gap-3">
+                         <Link href={`/medico/${doc.slug}`} className="flex-1">
+                            <h2 className="text-lg md:text-xl font-bold text-[#1d1d1f] leading-snug hover:text-[#0071e3] transition-colors tracking-tight cursor-pointer">
+                                {doc.full_name}
+                            </h2>
+                         </Link>
+                         {doc.license_numbers.length > 0 && (
+                             <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-1" />
+                         )}
+                      </div>
+                      
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mt-3 mb-4">
+                           {doc.specialties.slice(0, 3).map(s => (
+                               <span key={s} className={`
+                                 px-2.5 py-1 text-[11px] md:text-xs font-bold rounded-lg uppercase tracking-wide
+                                 ${s === targetSpecialty ? 'bg-[#0071e3]/10 text-[#0071e3]' : 'bg-[#f5f5f7] text-[#86868b]'}
+                               `}>
+                                  {s}
+                               </span>
+                           ))}
+                      </div>
+
+                      {/* Location */}
+                      <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-sm font-medium text-[#86868b]">
+                           {doc.cities.map((c, i) => (
+                               <span key={i} className="flex items-center gap-1.5">
+                                  <MapPin className="w-4 h-4 text-[#86868b]/70" /> {c}
+                               </span>
+                           ))}
+                      </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-4 border-t border-slate-100">
+                      <Link 
+                        href={`/medico/${doc.slug}`}
+                        className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#f5f5f7] text-[#1d1d1f] rounded-xl font-medium text-sm hover:bg-[#e5e5ea] transition-colors active:scale-95"
+                      >
+                        <User className="w-4 h-4" />
+                        Ver Perfil
+                      </Link>
+                      
+                      {doc.contact_info.phones?.[0] ? (
+                        <a 
+                          href={`tel:${doc.contact_info.phones[0]}`}
+                          className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#0071e3] text-white rounded-xl font-medium text-sm hover:bg-[#0077ED] transition-colors active:scale-95"
+                        >
+                          <Phone className="w-4 h-4" />
+                          Llamar
+                        </a>
+                      ) : (
+                        <button disabled className="flex-1 flex items-center justify-center gap-2 h-10 bg-slate-100 text-slate-400 rounded-xl font-medium text-sm cursor-not-allowed">
+                           <Phone className="w-4 h-4" />
+                           Llamar
+                        </button>
+                      )}
+                  </div>
+              </div>
+          ))}
+          
+          {doctors.length === 0 && targetSpecialty && (
+            <div className="col-span-full py-20 text-center text-[#86868b]">
+               <div className="w-16 h-16 bg-[#f5f5f7] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Stethoscope className="w-8 h-8 text-[#d2d2d7]" />
+               </div>
+               <p className="text-lg">No encontramos doctores verificados para {diseaseName} en este momento.</p>
+               <Link href="/especialidades" className="text-[#0071e3] mt-2 inline-block font-medium hover:underline">
+                 Ver todas las especialidades
+               </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Load More */}
+        {hasMore && doctors.length > 0 && (
+          <div className="pt-12 flex justify-center">
+              <button 
+                  onClick={loadMore} 
+                  disabled={loadingMore}
+                  className="
+                    flex items-center gap-2 px-8 py-3.5 
+                    bg-white border border-[#d2d2d7] rounded-full 
+                    font-medium text-[#1d1d1f] text-[15px]
+                    hover:bg-[#f5f5f7] hover:border-[#86868b] transition-all 
+                    disabled:opacity-50 active:scale-95 shadow-sm
+                  "
+              >
+                  {loadingMore ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                    Ver más doctores
+              </button>
+          </div>
+        )}
 
         {/* Related Articles Section */}
         {relatedArticles.length > 0 && (
@@ -251,7 +420,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </section>
         )}
 
-        {/* Informational Content Section */}
+        {/* NEW: SEO / Informational Content Section */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
             <div className="max-w-4xl mx-auto space-y-12">
                 
@@ -269,9 +438,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     {/* Symptoms */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <Activity className="w-5 h-5 text-[#0071e3]" />
-                             </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
                         </div>
                         <ul className="space-y-3">
@@ -287,9 +453,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     {/* Causes */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
-                             </div>
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
                         </div>
                          <ul className="space-y-3">
@@ -318,7 +481,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
                      <div className="space-y-3">
                         <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                             <Info className="w-5 h-5 text-[#86868b]" />
                              Cuándo contactar a un Doctor
                         </h3>
                          <div className="space-y-3 text-[#86868b] leading-relaxed text-[15px]">
@@ -381,19 +543,16 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     </p>
 
                     <div className="flex flex-wrap gap-3">
-                        {TOP_CITIES.slice(0, 8).map((city) => {
-                            const stateSlug = getStateForCity(city);
-                            return (
-                                <Link 
-                                    key={city}
-                                    href={`/doctores/${stateSlug}/${slugify(city)}/${slugify(spec)}`}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
-                                >
-                                    <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
-                                    <span>{spec} en {city}</span>
-                                </Link>
-                            );
-                        })}
+                        {TOP_CITIES.slice(0, 8).map((city) => (
+                            <Link 
+                                key={city}
+                                href={`/doctores/${slugify(city)}/${slugify(spec)}`}
+                                className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
+                            >
+                                <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
+                                <span>{spec} en {city}</span>
+                            </Link>
+                        ))}
                     </div>
                 </section>
             ))
@@ -407,19 +566,16 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                    {TOP_CITIES.slice(0, 8).map((city) => {
-                        const stateSlug = getStateForCity(city);
-                        return (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${stateSlug}/${slugify(city)}`}
-                                className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
-                            >
-                                <MapPin className="w-4 h-4 text-[#86868b]" />
-                                <span>Doctores en {city}</span>
-                            </Link>
-                        );
-                    })}
+                    {TOP_CITIES.slice(0, 8).map((city) => (
+                        <Link 
+                            key={city}
+                            href={`/doctores/${slugify(city)}`}
+                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                        >
+                            <MapPin className="w-4 h-4 text-[#86868b]" />
+                            <span>Doctores en {city}</span>
+                        </Link>
+                    ))}
                 </div>
             </section>
         )}

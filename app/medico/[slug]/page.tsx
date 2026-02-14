@@ -1,94 +1,133 @@
-import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '@/types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
-import Link from 'next/link'; 
-import { notFound } from 'next/navigation'; 
-import { Metadata } from 'next';
-import { POPULAR_SPECIALTIES, slugify, getStateForCity } from '@/lib/constants';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../../../lib/supabase';
+import { Doctor, Article } from '../../../types';
+import { MapPin, Phone, Award, FileText, Loader2, HelpCircle, User, ArrowRight, CheckCircle, Stethoscope, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
+import { Link } from 'wouter';
+import { POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../../lib/constants';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const { data: doctor } = await supabase
-    .from('doctors')
-    .select('full_name, specialties, seo_metadata')
-    .eq('slug', params.slug)
-    .single();
+const slugify = (text: string) => {
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
 
-  if (!doctor) {
-    return {
-      title: 'Doctor no encontrado | MediBusca',
-      description: 'El perfil del doctor que buscas no está disponible.'
-    };
-  }
+export default function DoctorProfile({ params }: { params: { slug: string } }) {
+  const [doctor, setDoctor] = useState<Doctor | null>(null);
+  const [relatedDoctors, setRelatedDoctors] = useState<Doctor[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const doc = doctor as Doctor;
-  
-  return {
-    title: doc.seo_metadata?.meta_title || `${doc.full_name} - ${doc.specialties[0] || 'Doctor'} | MediBusca`,
-    description: doc.seo_metadata?.meta_description || `Agenda una cita con ${doc.full_name}, especialista en ${doc.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`,
-    keywords: doc.seo_metadata?.keywords ? doc.seo_metadata.keywords.split(',') : undefined,
-  };
-}
-
-export default async function DoctorProfile({ params, searchParams }: { params: { slug: string },searchParams: { context?: string } }) {
-  // 1. Fetch Main Doctor Data
-  const { data: currentDoctor } = await supabase
-    .from('doctors')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
-
-  // 2. Handle 404
-  if (!currentDoctor) {
-    notFound();
-  }
-
-  const doctor = currentDoctor as Doctor;
-
-  // 3. Parallel Data Fetching for Related Content
-  // We need the doctor data first to know which city/specialty to query
-  const relatedDoctorsPromise = (async () => {
-    if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
-      const { data: related } = await supabase
+  useEffect(() => {
+    async function fetchDoctorAndRelated() {
+      setLoading(true);
+      
+      // 1. Fetch current doctor
+      const { data: currentDoctor, error } = await supabase
         .from('doctors')
         .select('*')
-        .contains('cities', [doctor.cities[0]])
-        .contains('specialties', [doctor.specialties[0]])
-        .neq('id', doctor.id)
-        .limit(20);
+        .eq('slug', params.slug)
+        .single();
       
-      if (related) {
-        // Sort by phone availability (Server-side sort)
-        return (related as Doctor[])
-          .sort((a, b) => {
-            const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-            const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-            if (aHas === bHas) return 0;
-            return aHas ? -1 : 1;
-          })
-          .slice(0, 4); // Take top 4
+      if (currentDoctor) {
+        const doc = currentDoctor as Doctor;
+        setDoctor(doc);
+
+        // 2. Fetch related doctors (Same specialty, Same city, Not current doctor)
+        if (doc.cities.length > 0 && doc.specialties.length > 0) {
+            // Fetch more candidates (20) to allow better sorting by phone availability
+            const { data: related } = await supabase
+                .from('doctors')
+                .select('*')
+                .contains('cities', [doc.cities[0]])
+                .contains('specialties', [doc.specialties[0]])
+                .neq('id', doc.id)
+                .limit(20);
+            
+            if (related) {
+                // Sort by phone availability (doctors with phones first)
+                const sortedRelated = (related as Doctor[]).sort((a, b) => {
+                    // Check if valid phone exists (non-empty string)
+                    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
+                    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
+                    
+                    if (aHas === bHas) return 0;
+                    return aHas ? -1 : 1;
+                });
+                
+                // Take the top 4 after sorting
+                setRelatedDoctors(sortedRelated.slice(0, 4));
+            }
+        }
+
+        // 3. Fetch related articles based on specialty
+        if (doc.specialties.length > 0) {
+            const mainSpecialty = doc.specialties[0];
+            const { data: articlesData } = await supabase
+                .from('articles')
+                .select('*')
+                // Using ilike to match the specialty within the comma-separated category string
+                .ilike('category', `%${mainSpecialty}%`) 
+                .limit(3);
+            
+            if (articlesData) {
+                setRelatedArticles(articlesData as Article[]);
+            }
+        }
       }
+      setLoading(false);
     }
-    return [];
-  })();
+    
+    if (params.slug) fetchDoctorAndRelated();
+  }, [params.slug]);
 
-  const relatedArticlesPromise = (async () => {
-    if (doctor.specialties.length > 0) {
-      const mainSpecialty = doctor.specialties[0];
-      const { data: articlesData } = await supabase
-        .from('articles')
-        .select('*')
-        .ilike('category', `%${mainSpecialty}%`)
-        .limit(3);
-      return articlesData as Article[] || [];
+  // SEO Head Management
+  useEffect(() => {
+    if (doctor) {
+        // 1. Set Page Title
+        const pageTitle = doctor.seo_metadata?.meta_title || `${doctor.full_name} - ${doctor.specialties[0] || 'Doctor'} | MediBusca`;
+        document.title = pageTitle;
+
+        // 2. Set Meta Description
+        const metaDescContent = doctor.seo_metadata?.meta_description || 
+             `Agenda una cita con ${doctor.full_name}, especialista en ${doctor.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`;
+        
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', metaDescContent);
+
+        // 3. Set Keywords
+        if (doctor.seo_metadata?.keywords) {
+            let metaKeywords = document.querySelector('meta[name="keywords"]');
+            if (!metaKeywords) {
+                metaKeywords = document.createElement('meta');
+                metaKeywords.setAttribute('name', 'keywords');
+                document.head.appendChild(metaKeywords);
+            }
+            metaKeywords.setAttribute('content', doctor.seo_metadata.keywords);
+        }
     }
-    return [];
-  })();
+    
+    // Cleanup: We don't remove tags as moving to another page usually overwrites them, 
+    // but good practice might reset title if needed.
+  }, [doctor]);
 
-  const [relatedDoctors, relatedArticles] = await Promise.all([relatedDoctorsPromise, relatedArticlesPromise]);
+  if (loading) {
+    return <div className="min-h-screen flex justify-center items-center bg-[#f5f5f7]"><Loader2 className="animate-spin text-[#86868b] w-8 h-8" /></div>;
+  }
 
-  // --- Logic & Schema Generation ---
+  if (!doctor) {
+    return <div className="min-h-screen flex justify-center items-center bg-[#f5f5f7] text-[#86868b]">Doctor no encontrado.</div>;
+  }
 
+  // Generate Dynamic FAQs for SEO
   const faqs = [
     {
       question: `¿Cuál es la especialidad de ${doctor.full_name}?`,
@@ -123,43 +162,42 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
     }))
   };
 
+  // Safe construction of Physician Schema
+  // We prioritize our database fields to ensure critical fields like 'address' are present
+  // even if the stored schema_data is incomplete.
   const physicianSchema = {
     "@context": "https://schema.org",
     "@type": "Physician",
-    ...(doctor.schema_data || {}), 
+    ...(doctor.schema_data || {}), // Spread existing schema data first
     "name": doctor.full_name,
-    "image": "https://medibusca.com/icon-512.png",
+    "image": "https://medibusca.com/icon-512.png", // Valid image URL required
     "medicalSpecialty": doctor.specialties.map(s => ({
       "@type": "MedicalSpecialty",
       "name": s
     })),
+    // Force address from reliable contact_info
     "address": doctor.contact_info.locations && doctor.contact_info.locations.length > 0 ? {
         "@type": "PostalAddress",
         "streetAddress": doctor.contact_info.locations[0].address,
         "addressLocality": doctor.cities[0] || "",
         "addressCountry": "MX"
     } : undefined,
+    // Force telephone
     "telephone": doctor.contact_info.phones?.[0] || undefined
   };
 
-  // Build state slug for breadcrumb and back link
-  let mainCity = doctor.cities[0] || '';
-  // AUTOMATICALLY ADAPTS TO ANY CITY SENT IN URL
-  if (searchParams.context) {
-    const contextCity = doctor.cities.find(c => slugify(c) === searchParams.context);
-    if (contextCity) {
-      mainCity = contextCity; // Swaps to the correct city automatically
-    }
-  }
-  const mainStateSlug = mainCity ? getStateForCity(mainCity) : '';
-  const mainCitySlug = slugify(mainCity);
-
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
-      
-      {/* Schema Scripts (Server Injected) */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      {/* Schema.org JSON-LD (Physician) */}
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }}
+      />
+      {/* Schema.org JSON-LD (FAQPage) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* Header Profile */}
       <div className="bg-white border-b border-slate-200/50">
@@ -168,11 +206,11 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
           {/* Breadcrumb */}
           <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
-            {mainCity && (
+            {doctor.cities && doctor.cities.length > 0 && (
               <>
                 <span className="mx-2 text-[#d2d2d7]">/</span>
-                <Link href={`/doctores/${mainStateSlug}/${mainCitySlug}`} className="hover:text-[#0071e3] transition-colors">
-                  {mainCity}
+                <Link href={`/doctores/${slugify(doctor.cities[0])}`} className="hover:text-[#0071e3] transition-colors">
+                  {doctor.cities[0]}
                 </Link>
               </>
             )}
@@ -216,7 +254,7 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
                 </div>
               )}
 
-              {/* Description */}
+              {/* Description from SEO Metadata or Fallback */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
                 {doctor.seo_metadata?.meta_description || 'Especialista médico certificado dedicado a brindar la mejor atención a sus pacientes.'}
               </p>
@@ -323,7 +361,7 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
         </div>
       </div>
 
-      {/* Related Articles Section */}
+      {/* NEW: Related Articles Section */}
       {relatedArticles.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 mt-8">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
@@ -365,7 +403,7 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
       {relatedDoctors.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
-                Otros {doctor.specialties[0]}s en {mainCity}
+                Otros {doctor.specialties[0]}s en {doctor.cities[0]}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedDoctors.map((doc) => (
@@ -430,7 +468,7 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
         </section>
       )}
 
-      {/* Disclaimer Note */}
+      {/* Disclaimer Note - NEW */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-3">
             <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
@@ -440,39 +478,39 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
          </div>
       </div>
 
-      {/* SEO Cross-Linking Section */}
+
+      {/* SEO Cross-Linking Section (Optimized) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200 mt-8">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
             <Search className="w-5 h-5 text-[#86868b]" />
             Búsquedas Relacionadas
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
+             {/* 1. Same Specialty in Major Cities (Reduced list) */}
              {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla']
                 .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
-                .map((city, idx) => {
-                    const st = getStateForCity(city);
-                    return (
-                        <Link
-                            key={`spec-${idx}`}
-                            href={`/doctores/${st}/${slugify(city)}/${slugify(doctor.specialties[0])}`}
-                            className="
-                                text-[13px] text-[#86868b] hover:text-[#0071e3] 
-                                transition-colors hover:underline truncate
-                                py-1 block
-                            "
-                        >
-                            {doctor.specialties[0]} en {city}
-                        </Link>
-                    );
-                })}
+                .map((city, idx) => (
+                 <Link
+                    key={`spec-${idx}`}
+                    href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
+                    className="
+                        text-[13px] text-[#86868b] hover:text-[#0071e3] 
+                        transition-colors hover:underline truncate
+                        py-1 block
+                    "
+                 >
+                    {doctor.specialties[0]} en {city}
+                 </Link>
+             ))}
 
+             {/* 2. Other Specialties in Current City (Reduced list) */}
              {doctor.cities.length > 0 && POPULAR_SPECIALTIES
                 .filter(s => slugify(s) !== slugify(doctor.specialties[0]))
                 .slice(0, 5)
                 .map((spec, idx) => (
                  <Link
                     key={`city-${idx}`}
-                    href={`/doctores/${mainStateSlug}/${mainCitySlug}/${slugify(spec)}`}
+                    href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
                     className="
                         text-[13px] text-[#86868b] hover:text-[#0071e3] 
                         transition-colors hover:underline truncate
@@ -488,13 +526,13 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
       {/* MOBILE ACTION DOCK */}
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[200]">
         <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2.5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10">
-          <Link 
-            href={doctor.cities.length > 0 ? `/doctores/${mainStateSlug}/${mainCitySlug}/${slugify(doctor.specialties[0])}` : '/'}
+          <button 
+            onClick={() => window.history.back()}
             className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
             aria-label="Volver"
           >
             <ChevronLeft className="w-5 h-5" />
-          </Link>
+          </button>
           
           <div className="flex-1 text-center px-3 overflow-hidden">
             <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-white/50 mb-0.5 truncate">

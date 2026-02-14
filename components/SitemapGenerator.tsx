@@ -74,7 +74,7 @@ export const SitemapGenerator: React.FC = () => {
         { loc: `${SITE_URL}`, changefreq: 'daily', priority: '1.0' },
         { loc: `${SITE_URL}/buscar`, changefreq: 'weekly', priority: '0.9' },
         { loc: `${SITE_URL}/especialidades`, changefreq: 'monthly', priority: '0.8' },
-        { loc: `${SITE_URL}/padecimientos`, changefreq: 'monthly', priority: '0.8' },
+        { loc: `${SITE_URL}/enfermedades`, changefreq: 'monthly', priority: '0.8' },
         { loc: `${SITE_URL}/enciclopedia`, changefreq: 'daily', priority: '0.8' },
         { loc: `${SITE_URL}/nosotros`, changefreq: 'monthly', priority: '0.5' },
         { loc: `${SITE_URL}/contacto`, changefreq: 'monthly', priority: '0.5' },
@@ -93,7 +93,7 @@ export const SitemapGenerator: React.FC = () => {
       const cityUrls = ALL_CITIES.map(city => ({
         loc: `${SITE_URL}/doctores/${slugify(city)}`,
         changefreq: 'weekly',
-        priority: '0.9'
+        priority: '0.8'
       }));
       files.push({
         filename: 'sitemap-cities.xml',
@@ -113,9 +113,9 @@ export const SitemapGenerator: React.FC = () => {
       });
 
       const diseaseUrls = ALL_DISEASES.map(disease => ({
-        loc: `${SITE_URL}/padecimientos/${slugify(disease)}`,
+        loc: `${SITE_URL}/enfermedad/${slugify(disease)}`,
         changefreq: 'weekly',
-        priority: '0.9'
+        priority: '0.8'
       }));
       files.push({
         filename: 'sitemap-diseases.xml',
@@ -131,23 +131,9 @@ export const SitemapGenerator: React.FC = () => {
       ALL_CITIES.forEach(city => {
           COMMON_SPECIALTIES.forEach(spec => {
             citySpecUrls.push({
-                  // Assuming this routes correctly via state logic now or direct city path if handled
-                  // For simplicity we point to the canonical URL structure if known, or assume router handles it
-                  // Since we have state logic now, constructing URLs might need state lookup.
-                  // For this generator, we might need to import getStateForCity to be precise.
-                  // However, let's keep it simple or assume redirection works.
-                  // Ideally: /doctores/[state]/[city]/[spec]
-                  // But we don't have state lookup easily available inside this loop efficiently without rework.
-                  // Let's rely on the redirection or updated structure.
-                  // Wait, we do have getStateForCity in constants. Let's use it.
-                  // We need to import it first. It is not imported above. Added to imports.
-                  // Wait, getStateForCity is available.
-                  // The URL structure is /doctores/[state]/[city]/[specialty]
-                  // BUT sitemap generation runs in browser here? Yes.
-                  // Let's try to do it right.
-                  loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`, // This will redirect to state path
+                  loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`,
                   changefreq: 'monthly',
-                  priority: '0.8'
+                  priority: '1.0'
               });
           });
       });
@@ -166,7 +152,7 @@ export const SitemapGenerator: React.FC = () => {
       ALL_DISEASES.forEach(disease => {
         ALL_CITIES.forEach(city => {
             diseaseCityUrls.push({
-                loc: `${SITE_URL}/padecimientos/${slugify(disease)}/${slugify(city)}`,
+                loc: `${SITE_URL}/enfermedad/${slugify(disease)}/${slugify(city)}`,
                 changefreq: 'monthly',
                 priority: '0.8'
             });
@@ -194,7 +180,7 @@ export const SitemapGenerator: React.FC = () => {
             loc: `${SITE_URL}/enciclopedia/${article.slug}`,
             lastmod: article.published_at || new Date().toISOString(),
             changefreq: 'weekly',
-            priority: '0.7'
+            priority: '0.9'
         }));
         
         files.push({

@@ -1,49 +1,27 @@
-import React from 'react';
-import Link from 'next/link';
-import { ShieldCheck, Heart, Search, Users, BookOpen, Info, CheckCircle, AlertCircle, FileText } from 'lucide-react';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: "Sobre MediBusca - Información que orienta y conecta",
-  description: "MediBusca es una plataforma informativa de salud creada para ayudar a las personas a encontrar médicos, especialidades y contenido médico claro y confiable.",
-};
+import React, { useEffect } from 'react';
+import { Link } from 'wouter';
+import { ShieldCheck, Heart, Search, Users, BookOpen, Info, CheckCircle, AlertCircle, Eye, Activity } from 'lucide-react';
 
 export default function AboutPage() {
-  
-  // Schema Markup
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "MediBusca",
-    "url": "https://medibusca.com",
-    "logo": "https://medibusca.com/icon-512.png",
-    "description": "Plataforma informativa de salud y directorio médico en México.",
-    "sameAs": [
-      "https://facebook.com/medibusca",
-      "https://twitter.com/medibusca"
-    ]
-  };
-
-  const aboutPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "mainEntity": organizationSchema,
-    "name": "Sobre MediBusca",
-    "description": "Información sobre la misión, visión y valores de MediBusca.",
-    "url": "https://medibusca.com/nosotros"
-  };
+  // SEO
+  useEffect(() => {
+    document.title = "Sobre MediBusca - Información que orienta y conecta";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.setAttribute('name', 'description');
+        document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "MediBusca es una plataforma informativa de salud creada para ayudar a las personas a encontrar médicos, especialidades y contenido médico claro y confiable.");
+  }, []);
 
   return (
     <div className="min-h-screen bg-white font-sans">
       
-      {/* Schema Scripts */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }} />
-
       {/* Hero Section */}
       <div className="py-20 md:py-28 px-6 bg-[#f5f5f7] border-b border-slate-200 text-center">
         <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-[#1d1d1f] tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight">
             Sobre MediBusca
           </h1>
           <p className="text-xl md:text-2xl text-[#86868b] font-medium leading-relaxed max-w-3xl mx-auto">
@@ -65,10 +43,10 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 shadow-sm">
-            <div className="flex flex-col md:flex-row items-start gap-8">
-              <div className="w-16 h-16 bg-[#0071e3]/10 rounded-2xl flex items-center justify-center shrink-0 text-[#0071e3]">
-                <Heart className="w-8 h-8" />
+          <div className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200">
+            <div className="flex items-start gap-6">
+              <div className="w-14 h-14 bg-[#0071e3]/10 rounded-2xl flex items-center justify-center shrink-0 text-[#0071e3]">
+                <Heart className="w-7 h-7" />
               </div>
               <div className="space-y-4">
                 <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">Nuestra misión</h2>
@@ -84,43 +62,41 @@ export default function AboutPage() {
         </section>
 
         {/* Functionality & Help */}
-        <section className="grid md:grid-cols-2 gap-8 md:gap-12 animate-in fade-in slide-in-from-bottom-8">
+        <section className="grid md:grid-cols-2 gap-12 animate-in fade-in slide-in-from-bottom-8">
           <div className="space-y-6">
-            <div className="flex items-center gap-4">
-               <div className="w-12 h-12 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f] border border-slate-200">
-                 <Search className="w-6 h-6" />
+            <div className="flex items-center gap-3">
+               <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f]">
+                 <Search className="w-5 h-5" />
                </div>
                <h2 className="text-2xl font-bold text-[#1d1d1f]">Qué hace MediBusca</h2>
             </div>
             <p className="text-[#86868b] leading-relaxed">
               MediBusca organiza información médica en un solo lugar para que los usuarios puedan tomar decisiones más informadas. En nuestra plataforma puedes:
             </p>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {[
                 "Buscar médicos por ciudad",
                 "Explorar especialidades médicas",
                 "Conocer enfermedades y síntomas",
                 "Acceder a opciones de contacto directo con médicos"
               ].map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-[#1d1d1f] font-medium bg-[#f5f5f7] p-3 rounded-xl">
+                <li key={i} className="flex items-start gap-3 text-[#1d1d1f] font-medium">
                   <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
                   {item}
                 </li>
               ))}
             </ul>
-            <div className="bg-slate-50 border-l-4 border-[#0071e3] p-4 rounded-r-lg">
-                <p className="text-sm text-[#86868b] italic">
-                MediBusca no realiza consultas médicas, no ofrece diagnósticos y no brinda tratamientos.
-                </p>
-            </div>
+            <p className="text-sm text-[#86868b] italic mt-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+              MediBusca no realiza consultas médicas, no ofrece diagnósticos y no brinda tratamientos.
+            </p>
           </div>
 
           <div className="space-y-6">
-            <div className="flex items-center gap-4">
-               <div className="w-12 h-12 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f] border border-slate-200">
-                 <Users className="w-6 h-6" />
+            <div className="flex items-center gap-3">
+               <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f]">
+                 <Users className="w-5 h-5" />
                </div>
-               <h2 className="text-2xl font-bold text-[#1d1d1f]">Cómo ayudamos</h2>
+               <h2 className="text-2xl font-bold text-[#1d1d1f]">Cómo ayudamos a los pacientes</h2>
             </div>
             <p className="text-[#86868b] leading-relaxed">
               MediBusca está diseñada para personas sin conocimientos médicos.
@@ -128,11 +104,9 @@ export default function AboutPage() {
             <p className="text-[#86868b] leading-relaxed">
               Explicamos temas de salud con palabras sencillas. Clasificamos médicos y especialidades de forma clara. Presentamos la información de manera ordenada para que el usuario pueda avanzar paso a paso.
             </p>
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <p className="text-[#1d1d1f] leading-relaxed font-semibold">
-                "Nuestro objetivo es ahorrar tiempo, reducir dudas y ayudar a las personas a sentirse más seguras antes de contactar a un profesional de la salud."
-                </p>
-            </div>
+            <p className="text-[#86868b] leading-relaxed font-medium text-[#1d1d1f]">
+              Nuestro objetivo es ahorrar tiempo, reducir dudas y ayudar a las personas a sentirse más seguras antes de contactar a un profesional de la salud.
+            </p>
           </div>
         </section>
 
@@ -140,41 +114,35 @@ export default function AboutPage() {
         <section className="bg-white border border-slate-200 rounded-[32px] p-8 md:p-12 shadow-sm animate-in fade-in slide-in-from-bottom-8">
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
-              <h3 className="text-xl font-bold text-[#1d1d1f] flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
-                    <BookOpen className="w-5 h-5" />
-                </div>
+              <h3 className="text-xl font-bold text-[#1d1d1f] flex items-center gap-2">
+                <BookOpen className="w-6 h-6 text-[#0071e3]" />
                 Información médica responsable
               </h3>
               <p className="text-[#86868b] leading-relaxed">
                 Toda la información médica publicada en MediBusca tiene fines educativos. Cada artículo busca explicar:
               </p>
-              <ul className="space-y-3 text-[#86868b]">
-                <li className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-[#1d1d1f]"></div> Qué es una enfermedad</li>
-                <li className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-[#1d1d1f]"></div> Cuáles son los síntomas más comunes</li>
-                <li className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-[#1d1d1f]"></div> Cuándo es importante acudir al médico</li>
-                <li className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-[#1d1d1f]"></div> Qué tipo de especialista puede ayudar</li>
+              <ul className="space-y-2 text-[#86868b]">
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Qué es una enfermedad</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Cuáles son los síntomas más comunes</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Cuándo es importante acudir al médico</li>
+                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]"></div> Qué tipo de especialista puede ayudar</li>
               </ul>
-              <p className="text-sm font-medium text-[#1d1d1f] pt-2">
+              <p className="text-sm font-medium text-[#1d1d1f]">
                 El contenido no sustituye la consulta médica profesional. Siempre recomendamos acudir a un médico calificado.
               </p>
             </div>
 
             <div className="space-y-6">
-              <h3 className="text-xl font-bold text-[#1d1d1f] flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
-                    <FileText className="w-5 h-5" />
-                </div>
+              <h3 className="text-xl font-bold text-[#1d1d1f] flex items-center gap-2">
+                <Users className="w-6 h-6 text-[#0071e3]" />
                 Conexión directa con profesionales
               </h3>
               <p className="text-[#86868b] leading-relaxed">
                 Algunos perfiles de médicos en MediBusca incluyen información de contacto. Cuando esta opción está disponible, el usuario puede comunicarse directamente con el médico o su consultorio.
               </p>
-              <div className="p-4 bg-[#f5f5f7] rounded-xl border border-slate-200">
-                  <p className="text-[#86868b] text-sm leading-relaxed">
-                    <strong>Nota:</strong> MediBusca no interviene en la comunicación ni en la atención médica. La relación médico paciente es directa y privada.
-                  </p>
-              </div>
+              <p className="text-[#86868b] leading-relaxed">
+                MediBusca no interviene en la comunicación ni en la atención médica. La relación médico paciente es directa y privada.
+              </p>
             </div>
           </div>
         </section>
@@ -187,82 +155,68 @@ export default function AboutPage() {
             <p className="text-lg text-[#86868b] mb-8">
               La confianza es esencial en temas de salud. Por eso MediBusca sigue principios claros.
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-4">
               {['No vendemos servicios médicos', 'No promocionamos tratamientos', 'No ofrecemos diagnósticos', 'No solicitamos información médica personal'].map((item, i) => (
-                <span key={i} className="px-5 py-2.5 bg-white shadow-sm rounded-full text-sm font-medium text-[#1d1d1f] border border-slate-200">
+                <span key={i} className="px-4 py-2 bg-[#f5f5f7] rounded-full text-sm font-medium text-[#1d1d1f] border border-slate-200">
                   {item}
                 </span>
               ))}
             </div>
-            <p className="text-sm text-[#86868b] mt-8">
+            <p className="text-sm text-[#86868b] mt-6">
               Respetamos la privacidad del usuario y usamos la información solo para mejorar la experiencia del sitio.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 border-t border-slate-200 pt-16">
-             <div className="space-y-6">
-               <h3 className="text-2xl font-bold text-[#1d1d1f]">Para quién es MediBusca</h3>
-               <p className="text-[#86868b] text-lg">MediBusca es útil para:</p>
-               <ul className="space-y-4">
-                 <li className="flex items-start gap-4 text-[#86868b]">
-                   <CheckCircle className="w-6 h-6 text-green-600 shrink-0" />
-                   <div>
-                        <span className="text-[#1d1d1f] font-medium block">Pacientes</span>
-                        que buscan orientación inicial.
-                   </div>
+          <div className="grid md:grid-cols-2 gap-12 border-t border-slate-100 pt-12">
+             <div className="space-y-5">
+               <h3 className="text-xl font-bold text-[#1d1d1f]">Para quién es MediBusca</h3>
+               <p className="text-[#86868b]">MediBusca es útil para:</p>
+               <ul className="space-y-3">
+                 <li className="flex items-start gap-3 text-[#86868b]">
+                   <CheckCircle className="w-5 h-5 text-green-600 shrink-0" /> Pacientes que buscan orientación inicial
                  </li>
-                 <li className="flex items-start gap-4 text-[#86868b]">
-                   <CheckCircle className="w-6 h-6 text-green-600 shrink-0" />
-                   <div>
-                        <span className="text-[#1d1d1f] font-medium block">Familias</span>
-                        que necesitan encontrar especialistas para sus seres queridos.
-                   </div>
+                 <li className="flex items-start gap-3 text-[#86868b]">
+                   <CheckCircle className="w-5 h-5 text-green-600 shrink-0" /> Familias que necesitan encontrar especialistas
                  </li>
-                 <li className="flex items-start gap-4 text-[#86868b]">
-                   <CheckCircle className="w-6 h-6 text-green-600 shrink-0" /> 
-                   <div>
-                       <span className="text-[#1d1d1f] font-medium block">Personas informadas</span>
-                       que desean investigar antes de acudir al médico.
-                   </div>
+                 <li className="flex items-start gap-3 text-[#86868b]">
+                   <CheckCircle className="w-5 h-5 text-green-600 shrink-0" /> Personas que desean informarse antes de acudir al médico
+                 </li>
+                 <li className="flex items-start gap-3 text-[#86868b]">
+                   <CheckCircle className="w-5 h-5 text-green-600 shrink-0" /> Usuarios que buscan médicos por ciudad o especialidad
                  </li>
                </ul>
-               <p className="text-sm text-[#0071e3] font-medium inline-block bg-[#0071e3]/10 px-4 py-2 rounded-full">
-                   No es necesario crear una cuenta para usar la plataforma.
-               </p>
+               <p className="text-sm text-[#0071e3] font-medium">No es necesario crear una cuenta para usar la plataforma.</p>
              </div>
 
-             <div className="space-y-6">
-               <h3 className="text-2xl font-bold text-[#1d1d1f]">Ética y responsabilidad médica</h3>
-               <p className="text-[#86868b] text-lg">La salud es un tema serio. Por eso MediBusca mantiene un enfoque ético y responsable.</p>
+             <div className="space-y-5">
+               <h3 className="text-xl font-bold text-[#1d1d1f]">Ética y responsabilidad médica</h3>
+               <p className="text-[#86868b]">La salud es un tema serio. Por eso MediBusca mantiene un enfoque ético y responsable.</p>
                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-[#f5f5f7] p-5 rounded-2xl text-center hover:bg-[#e8e8ed] transition-colors">
-                    <ShieldCheck className="w-8 h-8 text-[#1d1d1f] mx-auto mb-3" />
-                    <span className="text-sm font-semibold text-[#1d1d1f]">Sin alarmas</span>
-                    <p className="text-xs text-[#86868b] mt-1">No generamos pánico innecesario.</p>
+                  <div className="bg-[#f5f5f7] p-4 rounded-xl text-center">
+                    <ShieldCheck className="w-6 h-6 text-[#1d1d1f] mx-auto mb-2" />
+                    <span className="text-sm font-medium">No genera alarmas innecesarias</span>
                   </div>
-                  <div className="bg-[#f5f5f7] p-5 rounded-2xl text-center hover:bg-[#e8e8ed] transition-colors">
-                    <Info className="w-8 h-8 text-[#1d1d1f] mx-auto mb-3" />
-                    <span className="text-sm font-semibold text-[#1d1d1f]">Sin promesas</span>
-                    <p className="text-xs text-[#86868b] mt-1">No garantizamos curas milagrosas.</p>
+                  <div className="bg-[#f5f5f7] p-4 rounded-xl text-center">
+                    <Info className="w-6 h-6 text-[#1d1d1f] mx-auto mb-2" />
+                    <span className="text-sm font-medium">No promete resultados médicos</span>
                   </div>
-                  <div className="bg-[#f5f5f7] p-5 rounded-2xl text-center hover:bg-[#e8e8ed] transition-colors">
-                    <Users className="w-8 h-8 text-[#1d1d1f] mx-auto mb-3" />
-                    <span className="text-sm font-semibold text-[#1d1d1f]">Complementario</span>
-                    <p className="text-xs text-[#86868b] mt-1">No sustituye al doctor.</p>
+                  <div className="bg-[#f5f5f7] p-4 rounded-xl text-center">
+                    <Users className="w-6 h-6 text-[#1d1d1f] mx-auto mb-2" />
+                    <span className="text-sm font-medium">No sustituye la atención profesional</span>
                   </div>
-                  <div className="bg-[#f5f5f7] p-5 rounded-2xl text-center hover:bg-[#e8e8ed] transition-colors">
-                    <CheckCircle className="w-8 h-8 text-[#1d1d1f] mx-auto mb-3" />
-                    <span className="text-sm font-semibold text-[#1d1d1f]">Informado</span>
-                    <p className="text-xs text-[#86868b] mt-1">Promueve decisiones conscientes.</p>
+                  <div className="bg-[#f5f5f7] p-4 rounded-xl text-center">
+                    <CheckCircle className="w-6 h-6 text-[#1d1d1f] mx-auto mb-2" />
+                    <span className="text-sm font-medium">Promueve decisiones informadas</span>
                   </div>
                </div>
+               <p className="text-sm text-[#86868b]">En caso de emergencia médica, siempre recomendamos acudir de inmediato a un centro de salud.</p>
              </div>
           </div>
 
         </section>
 
         {/* Goals & Disclaimer Footer */}
-        <section className="space-y-12 border-t border-slate-200 pt-16 animate-in fade-in slide-in-from-bottom-8">
+        <section className="space-y-12 border-t border-slate-200 pt-12 animate-in fade-in slide-in-from-bottom-8">
           
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <h3 className="text-2xl font-bold text-[#1d1d1f]">Nuestro objetivo a largo plazo</h3>
@@ -271,25 +225,26 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-3xl p-8 text-center md:text-left md:flex md:items-start md:gap-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8 text-center md:text-left md:flex md:items-center md:gap-8">
              <div className="mb-4 md:mb-0 shrink-0 flex justify-center md:block">
-               <AlertCircle className="w-8 h-8 text-amber-600 mt-1" />
+               <AlertCircle className="w-12 h-12 text-amber-600" />
              </div>
              <div>
-               <h4 className="text-lg font-bold text-amber-900 mb-2">Aviso médico importante</h4>
-               <p className="text-amber-800 leading-relaxed text-[15px]">
+               <h4 className="text-lg font-bold text-amber-900 mb-2">Aviso médico</h4>
+               <p className="text-amber-800 leading-relaxed">
                  MediBusca proporciona información médica con fines educativos únicamente. No reemplaza la consulta, el diagnóstico ni el tratamiento médico profesional. Siempre consulta a un médico calificado ante cualquier problema de salud.
                </p>
              </div>
           </div>
 
           <div className="text-center pt-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] mb-4 tracking-tight">MediBusca, información que orienta</h2>
-            <p className="text-xl text-[#86868b] mb-10 max-w-2xl mx-auto">
-              MediBusca existe para informar, orientar y conectar. Creemos que una buena decisión en salud empieza con información clara.
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1d1d1f] mb-4">MediBusca, información que orienta</h2>
+            <p className="text-xl text-[#86868b] mb-8">
+              MediBusca existe para informar, orientar y conectar.<br />
+              Creemos que una buena decisión en salud empieza con información clara.
             </p>
-            <div className="flex justify-center">
-              <Link href="/buscar" className="bg-[#0071e3] text-white px-10 py-4 rounded-full font-medium text-lg hover:bg-[#0077ED] transition-all shadow-lg shadow-blue-500/20 active:scale-95">
+            <div className="flex justify-center gap-4">
+              <Link href="/buscar" className="bg-[#0071e3] text-white px-8 py-3 rounded-full font-medium hover:bg-[#0077ED] transition-colors shadow-lg shadow-blue-500/20 active:scale-95">
                 Comenzar a buscar
               </Link>
             </div>

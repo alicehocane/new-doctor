@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { MapPin, Phone, User, CheckCircle, Loader2, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Doctor } from '../types';
-import { slugify } from '@/lib/constants';
 
 const PAGE_SIZE = 12;
 
@@ -73,7 +72,7 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
                 >
                     <div className="flex-1 min-w-0 mb-5">
                          <div className="flex justify-between items-start gap-3">
-                             <Link href={`/medico/${doc.slug}?context=${slugify(city)}`} className="flex-1">
+                             <Link href={`/medico/${doc.slug}`} className="flex-1">
                                 <h2 className="text-lg md:text-xl font-bold text-[#1d1d1f] leading-snug hover:text-[#0071e3] transition-colors tracking-tight cursor-pointer">
                                     {doc.full_name}
                                 </h2>
@@ -108,7 +107,7 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
 
                     <div className="flex gap-3 pt-4 border-t border-slate-100">
                       <Link 
-                        href={`/medico/${doc.slug}?context=${slugify(city)}`}
+                        href={`/medico/${doc.slug}`}
                         className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#f5f5f7] text-[#1d1d1f] rounded-xl font-medium text-sm hover:bg-[#e5e5ea] transition-colors active:scale-95"
                       >
                         <User className="w-4 h-4" />

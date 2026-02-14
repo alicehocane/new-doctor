@@ -68,7 +68,7 @@ export default function DiseaseList({ allDiseases, children }: DiseaseListProps)
             {visibleDiseases.map((disease) => (
               <Link 
                 key={disease} 
-                href={`/padecimientos/${slugify(disease)}`}
+                href={`/enfermedad/${slugify(disease)}`}
                 className="
                   group relative flex flex-col justify-between p-6 
                   bg-white border border-slate-200 rounded-[20px] 
