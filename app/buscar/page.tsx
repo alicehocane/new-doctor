@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Phone, UserCheck, Star, HeartPulse, FileCheck, Map, Wallet, HelpCircle, Check } from 'lucide-react';
+import { ShieldCheck, Phone, UserCheck, Star, HeartPulse, FileCheck, Map, Wallet, HelpCircle, Check, AlertTriangle, BookOpen } from 'lucide-react';
 import { ALL_DISEASES } from '../../lib/constants';
 import SearchForm from '../../components/SearchForm';
 import StartSearchButton from '../../components/StartSearchButton';
@@ -191,6 +191,51 @@ export default function SearchPage() {
                       </p>
                       <StartSearchButton />
                   </div>
+              </div>
+          </div>
+      </section>
+
+      {/* NEW SECTION: Safety Guide & "Thickness" Content */}
+      <section className="w-full max-w-4xl mt-16 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
+          <div className="flex flex-col gap-8">
+              <div>
+                  <h2 className="text-3xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                      <AlertTriangle className="w-8 h-8 text-amber-500" />
+                      Guía de Seguridad: Cómo elegir un médico seguro en México
+                  </h2>
+                  <div className="prose prose-lg text-[#86868b] max-w-none">
+                      <p>
+                          Elegir un profesional de la salud es una de las decisiones más importantes que tomarás. En México, la regulación médica es estricta, pero es fundamental que como paciente sepas qué buscar para garantizar tu seguridad.
+                      </p>
+                      
+                      <h3 className="text-[#1d1d1f] font-semibold mt-6 mb-3">La importancia de la Cédula Profesional</h3>
+                      <p>
+                          La <strong className="text-[#1d1d1f]">Cédula Profesional</strong> es el documento oficial expedido por la Secretaría de Educación Pública (SEP) que autoriza a una persona a ejercer su profesión. Para un médico especialista, deben existir dos cédulas: una como Médico Cirujano (General) y otra específica de su <strong className="text-[#1d1d1f]">Cédula de Especialidad</strong> (por ejemplo, Pediatría o Cardiología).
+                      </p>
+                      
+                      <h3 className="text-[#1d1d1f] font-semibold mt-6 mb-3">Cómo usa MediBusca esta información</h3>
+                      <p>
+                          MediBusca actúa como un <strong className="text-[#1d1d1f]">directorio informativo gratuito</strong>. Nosotros realizamos una pre-validación digital de las cédulas mostradas en los perfiles. Sin embargo, nuestra labor es transcribir y verificar datos públicos para su comodidad.
+                      </p>
+                      
+                      <div className="bg-amber-50 border-l-4 border-amber-400 p-4 my-6 rounded-r-lg">
+                          <p className="text-amber-900 font-medium m-0 text-base">
+                              <strong>Recomendación de Seguridad:</strong> Aunque MediBusca verifica los datos, recomendamos siempre validar físicamente las credenciales del médico (título y cédula a la vista) durante su primera visita informativa al consultorio.
+                          </p>
+                      </div>
+
+                      <h3 className="text-[#1d1d1f] font-semibold mt-6 mb-3">Validación de credenciales médicas por el paciente</h3>
+                      <p>
+                          Cualquier ciudadano puede consultar la veracidad de una cédula en el portal oficial del Registro Nacional de Profesionistas. Si tienes dudas sobre un tratamiento propuesto, solicitar esta validación es tu derecho.
+                      </p>
+                  </div>
+              </div>
+              
+              <div className="mt-4 flex justify-center">
+                  <Link href="/nuestro-proceso" className="inline-flex items-center gap-2 text-[#0071e3] font-semibold hover:underline text-lg">
+                      <BookOpen className="w-5 h-5" />
+                      Lee más sobre nuestro proceso de validación
+                  </Link>
               </div>
           </div>
       </section>

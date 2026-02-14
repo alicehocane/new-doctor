@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink } from 'lucide-react';
 import Link from 'next/link'; // Replaced wouter
 import { notFound } from 'next/navigation'; // For 404 handling
 import { Metadata } from 'next';
@@ -202,17 +203,37 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 </div>
               </div>
               
-              {/* Licenses */}
+              {/* Licenses & Validation Block */}
               {doctor.license_numbers && doctor.license_numbers.length > 0 && (
-                <div className="text-[14px] text-[#86868b] flex items-center gap-2 font-medium">
-                  <Award className="w-4 h-4 text-[#86868b]" />
-                  <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
+                <div className="space-y-3">
+                    <div className="text-[14px] text-[#86868b] flex items-center gap-2 font-medium">
+                        <Award className="w-4 h-4 text-[#86868b]" />
+                        <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
+                    </div>
+                    
+                    {/* NEW: Verification Tooltip/Block */}
+                    <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 max-w-xl">
+                        <div className="flex gap-3">
+                            <ShieldCheck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                            <div>
+                                <h4 className="text-xs font-bold text-green-800 uppercase tracking-wide mb-1">
+                                    Verificación de Credenciales
+                                </h4>
+                                <p className="text-xs text-green-900/80 leading-relaxed">
+                                    La <strong>Cédula Profesional</strong> de este especialista ha sido cotejada con registros públicos, como el Registro Nacional de Profesionistas de la SEP. Este proceso asegura que el médico cuenta con la autorización legal para ejercer su especialidad en territorio mexicano.
+                                </p>
+                                <Link href="/nuestro-proceso" className="text-[10px] text-green-700 underline font-medium mt-1 inline-flex items-center gap-1 hover:text-green-900">
+                                    Conoce nuestro proceso de validación <ExternalLink className="w-3 h-3" />
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
               )}
 
               {/* Sub Specialties */}
               {doctor.medical_profile?.sub_specialties && doctor.medical_profile.sub_specialties.length > 0 && (
-                <div className="flex flex-wrap gap-2 items-center">
+                <div className="flex flex-wrap gap-2 items-center pt-2">
                     <Activity className="w-4 h-4 text-[#86868b]" />
                     {doctor.medical_profile.sub_specialties.map((sub, i) => (
                         <span key={i} className="text-[14px] text-[#1d1d1f] font-medium bg-slate-100 px-2 py-0.5 rounded text-slate-700">
@@ -441,7 +462,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-3">
             <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
             <p className="text-xs text-slate-500 leading-relaxed">
-              <strong>Descargo de responsabilidad:</strong> Este perfil es informativo. MediBusca no ofrece atención médica ni reemplaza la consulta profesional.
+              <strong>Descargo de responsabilidad:</strong> Este perfil es informativo. MediBusca no ofrece atención médica ni reemplaza la consulta profesional. Recomendamos siempre validar las credenciales del médico presencialmente antes de iniciar cualquier tratamiento.
             </p>
          </div>
       </div>
