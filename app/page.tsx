@@ -1,8 +1,9 @@
+
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck, ArrowRight as ArrowRightIcon } from 'lucide-react';
+import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Search, Heart, BookOpen, ArrowRight as ArrowRightIcon } from 'lucide-react';
 import { Metadata } from 'next';
-import { ALL_DISEASES, slugify, getStateForCity } from '../lib/constants';
+import { ALL_DISEASES, slugify } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 import { supabase } from '../lib/supabase';
 
@@ -138,12 +139,12 @@ export default async function HomePage() {
             -mx-4 px-4 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
             {FEATURED_CITIES.map((city) => {
-              const stateSlug = getStateForCity(city);
               const citySlug = slugify(city);
               return (
                 <Link 
                   key={city} 
-                  href={`/doctores/${stateSlug}/${citySlug}`}
+                  // UPDATED: Using direct city routing (no state)
+                  href={`/doctores/${citySlug}`}
                   className="
                     snap-center shrink-0 w-[260px] md:w-auto
                     group p-6 md:p-8 bg-[#f5f5f7] rounded-[24px] 

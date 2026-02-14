@@ -1,11 +1,12 @@
+
 import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '@/types';
+import { supabase } from '../../../lib/supabase';
+import { Doctor, Article } from '../../../types';
 import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
 import Link from 'next/link'; 
 import { notFound } from 'next/navigation'; 
 import { Metadata } from 'next';
-import { POPULAR_SPECIALTIES, slugify, getStateForCity } from '@/lib/constants';
+import { POPULAR_SPECIALTIES, slugify, getStateForCity } from '../../../lib/constants';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: doctor } = await supabase
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function DoctorProfile({ params, searchParams }: { params: { slug: string },searchParams: { context?: string } }) {
+export default async function DoctorProfile({ params }: { params: { slug: string } }) {
   // 1. Fetch Main Doctor Data
   const { data: currentDoctor } = await supabase
     .from('doctors')
@@ -143,15 +144,7 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
   };
 
   // Build state slug for breadcrumb and back link
-  let mainCity = doctor.cities[0] || '';
-  // AUTOMATICALLY ADAPTS TO ANY CITY SENT IN URL
-  if (searchParams.context) {
-    const contextCity = doctor.cities.find(c => slugify(c) === searchParams.context);
-    if (contextCity) {
-      mainCity = contextCity; // Swaps to the correct city automatically
-    }
-  }
-  const mainStateSlug = mainCity ? getStateForCity(mainCity) : '';
+  const mainCity = doctor.cities[0] || '';
   const mainCitySlug = slugify(mainCity);
 
   return (
@@ -171,7 +164,8 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
             {mainCity && (
               <>
                 <span className="mx-2 text-[#d2d2d7]">/</span>
-                <Link href={`/doctores/${mainStateSlug}/${mainCitySlug}`} className="hover:text-[#0071e3] transition-colors">
+                {/* UPDATED: Removing state from URL */}
+                <Link href={`/doctores/${mainCitySlug}`} className="hover:text-[#0071e3] transition-colors">
                   {mainCity}
                 </Link>
               </>
@@ -450,11 +444,11 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
              {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla']
                 .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
                 .map((city, idx) => {
-                    const st = getStateForCity(city);
                     return (
                         <Link
                             key={`spec-${idx}`}
-                            href={`/doctores/${st}/${slugify(city)}/${slugify(doctor.specialties[0])}`}
+                            // UPDATED: Removing state from URL
+                            href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
                             className="
                                 text-[13px] text-[#86868b] hover:text-[#0071e3] 
                                 transition-colors hover:underline truncate
@@ -472,7 +466,8 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
                 .map((spec, idx) => (
                  <Link
                     key={`city-${idx}`}
-                    href={`/doctores/${mainStateSlug}/${mainCitySlug}/${slugify(spec)}`}
+                    // UPDATED: Removing state from URL
+                    href={`/doctores/${mainCitySlug}/${slugify(spec)}`}
                     className="
                         text-[13px] text-[#86868b] hover:text-[#0071e3] 
                         transition-colors hover:underline truncate
@@ -489,7 +484,8 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[200]">
         <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2.5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10">
           <Link 
-            href={doctor.cities.length > 0 ? `/doctores/${mainStateSlug}/${mainCitySlug}/${slugify(doctor.specialties[0])}` : '/'}
+            // UPDATED: Removing state from URL
+            href={doctor.cities.length > 0 ? `/doctores/${mainCitySlug}/${slugify(doctor.specialties[0])}` : '/'}
             className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
             aria-label="Volver"
           >
