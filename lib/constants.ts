@@ -682,7 +682,6 @@ export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
   'Autismo': ['Neurólogo pediatra', 'Psiquiatra infantil'],
   'Trombosis venosa profunda': ['Angiólogo'],
   'Dolor en la espalda': ['Ortopedista', 'Fisioterapeuta'],
-  'Hombro doloroso': ['Traumatólogo', 'Fisioterapeuta'],
   'Avulsión dental': ['Dentista - Odontólogo'],
   'Parálisis cerebral': ['Neurólogo pediatra', 'Fisioterapeuta'],
   'Fractura coronal': ['Dentista - Odontólogo'],
