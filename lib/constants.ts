@@ -1325,6 +1325,32 @@ export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
   'Enfermedad pulmonar intersticial difusa': ['Neumólogo']
 };
 
+export const SPECIALTY_PROCEDURES: Record<string, string[]> = {
+  'Dentista - Odontólogo': ['Limpieza dental profunda', 'Empastes y resinas', 'Extracciones dentales', 'Blanqueamiento dental', 'Endodoncia', 'Coronas dentales'],
+  'Ginecólogo': ['Papanicolaou', 'Colposcopia', 'Ultrasonido pélvico', 'Colocación de DIU', 'Examen mamario', 'Control prenatal'],
+  'Cardiólogo': ['Electrocardiograma (EKG)', 'Ecocardiograma', 'Prueba de esfuerzo', 'Holter de ritmo', 'Monitoreo de presión arterial'],
+  'Dermatólogo': ['Biopsia de piel', 'Crioterapia', 'Eliminación de verrugas', 'Peeling químico', 'Dermatoscopia', 'Control de acné'],
+  'Pediatra': ['Vacunación', 'Evaluación del crecimiento', 'Tamiz neonatal', 'Revisión de oído y garganta', 'Certificados médicos escolares'],
+  'Oftalmólogo': ['Examen de agudeza visual', 'Fondo de ojo', 'Tonometría (presión ocular)', 'Prueba de refracción', 'Evaluación de cataratas'],
+  'Traumatólogo': ['Inmovilización con férula o yeso', 'Infiltraciones articulares', 'Artrocentesis', 'Reducción de fracturas', 'Evaluación de postura'],
+  'Psicólogo': ['Evaluación psicométrica', 'Terapia cognitivo-conductual', 'Entrevista clínica', 'Terapia de pareja', 'Manejo de estrés'],
+  'Médico general': ['Certificado médico', 'Control de diabetes e hipertensión', 'Lavado de oídos', 'Curación de heridas', 'Suturas menores'],
+  'Urólogo': ['Examen de próstata', 'Ultrasonido vesical', 'Vasectomía', 'Tratamiento de infecciones urinarias', 'Litotricia'],
+  'Nutricionista': ['Plan de alimentación personalizado', 'Evaluación antropométrica', 'Control de peso', 'Educación nutricional', 'Dieta para deportistas']
+};
+
+export const SPECIALTY_FIRST_VISIT: Record<string, string> = {
+  'Dentista - Odontólogo': 'En tu primera visita, el dentista revisará tu historial médico y realizará un examen completo de tus dientes y encías. Es posible que tome radiografías para detectar problemas ocultos como caries entre los dientes o problemas en la mandíbula.',
+  'Ginecólogo': 'La primera consulta suele incluir una revisión de antecedentes familiares y personales. Dependiendo de tu edad y necesidades, se puede realizar un examen físico, papanicolaou o exploración mamaria, siempre en un ambiente de respeto y confidencialidad.',
+  'Cardiólogo': 'El cardiólogo escuchará tu corazón y pulmones, tomará tu presión arterial y revisará tus antecedentes de salud. Es común que se realice un electrocardiograma en el consultorio para analizar el ritmo cardíaco de forma inmediata.',
+  'Dermatólogo': 'El especialista examinará tu piel, cabello y uñas. Si tienes lunares o manchas preocupantes, utilizará un dermatoscopio para verlos en detalle. Prepárate para responder preguntas sobre tu exposición al sol y productos que usas.',
+  'Pediatra': 'El médico medirá y pesará al niño para evaluar su crecimiento. Revisará hitos del desarrollo, esquemas de vacunación y resolverá dudas sobre alimentación, sueño y comportamiento. Es importante llevar la cartilla de vacunación.',
+  'Traumatólogo': 'Se evaluará la movilidad, fuerza y dolor en la zona afectada. El médico puede realizar maniobras específicas para detectar lesiones en ligamentos o meniscos y solicitar radiografías o resonancias magnéticas si es necesario.',
+  'Psicólogo': 'La primera sesión es una entrevista para conocerte. Hablarás sobre las razones que te trajeron a consulta, tus síntomas y lo que esperas lograr con la terapia. Es un espacio seguro para expresarte sin juicios.',
+  'Oftalmólogo': 'Se realizarán pruebas para medir tu visión y la presión intraocular. Es posible que dilaten tus pupilas para examinar el fondo del ojo, por lo que se recomienda llevar gafas de sol y no conducir inmediatamente después.',
+  'Médico general': 'El médico realizará un interrogatorio completo sobre tus síntomas actuales y antecedentes. Hará una exploración física general (signos vitales, garganta, abdomen, pulmones) para llegar a un diagnóstico o referirte a un especialista.',
+  'Nutricionista': 'Se realizará una evaluación de tu estilo de vida, hábitos alimenticios y actividad física. El especialista tomará medidas corporales (peso, talla, pliegues) para establecer metas realistas y diseñar un plan a tu medida.'
+};
 
 export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
