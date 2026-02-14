@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Activity, Search, ShieldCheck, CheckCircle, AlertCircle } from 'lucide-react';
+import { Activity, Search, ShieldCheck, CheckCircle, AlertCircle, FileText } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Article } from '../../types';
 import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
@@ -72,10 +73,10 @@ export default async function EncyclopediaIndexPage() {
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4">
                      <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
-                        ¿Qué es la Enciclopedia Médica de MediBusca?
+                        Biblioteca de Salud y Divulgación Médica
                      </h2>
                      <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
-                        La Enciclopedia Médica de MediBusca es un lugar confiable para aprender sobre la salud, las enfermedades y temas médicos. Ayuda a pacientes, familias y estudiantes a entender información médica de manera sencilla. Aquí puedes leer sobre síntomas, causas, tratamientos y los doctores que se especializan en cada condición.
+                        La Enciclopedia Médica de MediBusca es tu fuente de <strong>guías clínicas</strong> y recursos de <strong>bienestar preventivo</strong>. Diseñada para pacientes en México, ofrecemos información clara sobre síntomas, protocolos de salud y los especialistas adecuados para cada condición.
                      </p>
                 </div>
 
@@ -88,7 +89,13 @@ export default async function EncyclopediaIndexPage() {
                              Cómo te ayuda la Enciclopedia
                         </h3>
                         <ul className="space-y-3">
-                            {['Conocer problemas de salud y enfermedades comunes', 'Entender los síntomas y señales de alerta', 'Descubrir opciones de tratamiento y cuidados preventivos', 'Encontrar doctores que pueden ayudarte con cada condición'].map((item, i) => (
+                            {[
+                                'Conocer problemas de salud y enfermedades comunes', 
+                                'Entender los síntomas y señales de alerta temprana', 
+                                'Descubrir opciones de tratamiento y cuidados preventivos', 
+                                'Encontrar doctores que pueden ayudarte con cada condición',
+                                'Validar la especialidad del médico tratante a través de nuestra base de datos cotejada con la SEP'
+                            ].map((item, i) => (
                                 <li key={i} className="flex items-start gap-3 text-[#86868b] leading-relaxed">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                                     <span>{item}</span>
@@ -122,7 +129,12 @@ export default async function EncyclopediaIndexPage() {
                          Por qué MediBusca es confiable
                      </h3>
                      <div className="grid sm:grid-cols-2 gap-6">
-                        {['La información proviene de fuentes confiables y doctores verificados', 'Escrita con lenguaje claro y fácil de entender', 'Se actualiza regularmente para ofrecer información correcta', 'Te ayuda a tomar decisiones informadas sobre tu salud'].map((item, i) => (
+                        {[
+                            'Información basada en protocolos de salud en México', 
+                            'Contenido verificado por profesionales', 
+                            'Se actualiza regularmente para mantener vigencia médica', 
+                            'Te ayuda a tomar decisiones informadas sobre tu salud'
+                        ].map((item, i) => (
                              <div key={i} className="flex items-start gap-3 text-[#86868b]">
                                 <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
                                 <span className="leading-relaxed">{item}</span>
@@ -131,12 +143,12 @@ export default async function EncyclopediaIndexPage() {
                      </div>
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 flex gap-4 animate-in fade-in slide-in-from-bottom-8">
-                    <AlertCircle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+                <div className="bg-[#f0f5fa] border border-[#dcecfc] rounded-xl p-6 flex gap-4 animate-in fade-in slide-in-from-bottom-8">
+                    <FileText className="w-6 h-6 text-[#0071e3] shrink-0 mt-0.5" />
                     <div>
-                        <h3 className="font-semibold text-amber-900 mb-1">Nota importante</h3>
-                        <p className="text-sm text-amber-900/80 leading-relaxed">
-                            La Enciclopedia Médica de MediBusca ofrece información solamente. No proporciona diagnóstico, tratamiento ni citas médicas. Los pacientes se conectan directamente con los doctores para recibir atención profesional.
+                        <h3 className="font-semibold text-[#1d1d1f] mb-1">Nota legal y responsabilidad</h3>
+                        <p className="text-sm text-[#526075] leading-relaxed">
+                            La Enciclopedia Médica de MediBusca ofrece información solamente con fines de divulgación. No proporciona diagnóstico, tratamiento ni citas médicas automáticas. Los pacientes se conectan directamente con los doctores para recibir atención profesional personalizada.
                         </p>
                     </div>
                 </div>

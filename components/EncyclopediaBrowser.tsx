@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -7,6 +8,8 @@ import { supabase } from '../lib/supabase';
 import { Article } from '../types';
 
 const PAGE_SIZE = 9;
+const POPULAR_TOPICS = ['Diabetes', 'Ansiedad', 'Hipertensión', 'Nutrición', 'Embarazo', 'Pediatría'];
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 interface EncyclopediaBrowserProps {
   initialArticles: Article[];
@@ -17,12 +20,18 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [loading, setLoading] = useState(false); // Loading for search
   const [loadingMore, setLoadingMore] = useState(false);
+  
+  // Search State
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
+  
+  // Filter State
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
 
-  // Debounce search
+  // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -30,7 +39,7 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  const fetchArticles = useCallback(async (isLoadMore = false, query = '') => {
+  const fetchArticles = useCallback(async (isLoadMore = false) => {
     try {
       if (!isLoadMore) {
         setLoading(true);
@@ -49,9 +58,12 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
         .select('*')
         .order('published_at', { ascending: false });
 
-      if (query.trim()) {
-        const term = query.trim();
+      // Apply Filters
+      if (debouncedQuery.trim()) {
+        const term = debouncedQuery.trim();
         dbQuery = dbQuery.or(`title.ilike.%${term}%,excerpt.ilike.%${term}%,category.ilike.%${term}%`);
+      } else if (selectedLetter) {
+        dbQuery = dbQuery.ilike('title', `${selectedLetter}%`);
       }
 
       const { data, error } = await dbQuery.range(from, to);
@@ -76,41 +88,64 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [page]);
+  }, [page, debouncedQuery, selectedLetter]);
 
-  // Effect for Search
+  // Effect for Search & Letter Filter
   useEffect(() => {
-    // Only fetch client side if we have a query or if we cleared it (and need to reset to initial)
-    if (debouncedQuery !== '') {
-        fetchArticles(false, debouncedQuery);
-    } else if (articles !== initialArticles && debouncedQuery === '') {
-        // Reset to initial if cleared
+    // Determine if we need to fetch based on state changes
+    // If user is searching or filtering, fetch new data
+    if (debouncedQuery !== '' || selectedLetter !== null) {
+        fetchArticles(false);
+    } else if (articles !== initialArticles && debouncedQuery === '' && selectedLetter === null) {
+        // Reset to initial if everything is cleared
         setArticles(initialArticles);
         setPage(0);
         setHasMore(true);
     }
-  }, [debouncedQuery]);
+  }, [debouncedQuery, selectedLetter]);
 
   const handleLoadMore = () => {
-    fetchArticles(true, debouncedQuery);
+    fetchArticles(true);
   };
 
   const clearSearch = () => {
     setSearchQuery('');
     setDebouncedQuery('');
+    // Keep letter if selected? No, usually clear means clear all.
+    // If we want independent clearing, we'd need separate clear buttons.
+    // For this single X in search bar, let's keep letter if it exists? 
+    // Actually, usually search overrides letter.
   };
 
-  const isSearchActive = debouncedQuery.trim().length > 0;
+  const handleLetterClick = (letter: string) => {
+      if (selectedLetter === letter) {
+          setSelectedLetter(null); // Toggle off
+      } else {
+          setSearchQuery(''); // Clear text search to focus on letter
+          setDebouncedQuery(''); 
+          setSelectedLetter(letter);
+      }
+  };
+
+  const handleTopicClick = (topic: string) => {
+      setSelectedLetter(null);
+      setSearchQuery(topic);
+      // Debounce will pick it up, or we can force it immediately? 
+      // Debounce effect watches searchQuery, so it will trigger.
+  };
+
+  const isSearchActive = debouncedQuery.trim().length > 0 || selectedLetter !== null;
   
-  // Featured logic: First article is featured if NO search is active.
+  // Featured logic: First article is featured if NO search/filter is active.
   const featuredArticle = !isSearchActive && articles.length > 0 ? articles[0] : null;
   const gridArticles = !isSearchActive ? articles.slice(1) : articles;
 
   return (
     <>
       {/* Hero & Search Header */}
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 text-center">
+      <div className="bg-white border-b border-slate-200 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#f5f5f7]/50 to-white pointer-events-none"></div>
+        <div className="max-w-6xl mx-auto px-6 py-16 md:py-20 text-center relative z-10">
             <h1 className="text-4xl md:text-6xl font-semibold text-[#1d1d1f] tracking-tight mb-6">
                 Enciclopedia Médica.
             </h1>
@@ -119,14 +154,17 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-xl mx-auto relative group">
+            <div className="max-w-xl mx-auto relative group mb-6">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Search className="h-5 w-5 text-[#86868b]" />
                 </div>
                 <input 
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        if (e.target.value) setSelectedLetter(null); // Clear letter filter if typing
+                    }}
                     placeholder="Buscar artículos (ej. Diabetes, Nutrición)..."
                     className="
                         w-full h-14 pl-11 pr-12 
@@ -145,6 +183,47 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
                     </button>
                 )}
             </div>
+
+            {/* Popular Topics Chips */}
+            <div className="flex flex-wrap justify-center gap-2 mb-10 animate-in fade-in slide-in-from-bottom-2">
+                <span className="text-xs font-semibold text-[#86868b] uppercase tracking-wide py-1.5 mr-1">Tendencias:</span>
+                {POPULAR_TOPICS.map((topic) => (
+                    <button
+                        key={topic}
+                        onClick={() => handleTopicClick(topic)}
+                        className="px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-colors"
+                    >
+                        {topic}
+                    </button>
+                ))}
+            </div>
+
+            {/* Alphabet Glossary Filter */}
+            <div className="flex flex-wrap justify-center gap-1 md:gap-2 max-w-4xl mx-auto border-t border-slate-100 pt-8 animate-in fade-in slide-in-from-bottom-3">
+                <button
+                    onClick={() => { setSelectedLetter(null); clearSearch(); }}
+                    className={`
+                        px-2 py-1 text-xs font-bold rounded-md transition-colors
+                        ${!selectedLetter && !searchQuery ? 'bg-[#1d1d1f] text-white' : 'text-[#86868b] hover:bg-[#f5f5f7]'}
+                    `}
+                >
+                    TODOS
+                </button>
+                {ALPHABET.map((letter) => (
+                    <button
+                        key={letter}
+                        onClick={() => handleLetterClick(letter)}
+                        className={`
+                            w-7 h-7 flex items-center justify-center text-xs font-medium rounded-full transition-all
+                            ${selectedLetter === letter 
+                                ? 'bg-[#0071e3] text-white shadow-md scale-110' 
+                                : 'text-[#1d1d1f] hover:bg-[#f5f5f7] hover:text-[#0071e3]'}
+                        `}
+                    >
+                        {letter}
+                    </button>
+                ))}
+            </div>
         </div>
       </div>
 
@@ -156,7 +235,7 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
              </div>
         ) : (
             <>
-                {/* Featured Article */}
+                {/* Featured Article (Only show on initial view) */}
                 {featuredArticle && (
                     <section className="mb-16 animate-in fade-in slide-in-from-bottom-4">
                         <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
@@ -210,7 +289,10 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
                 <section>
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-2xl font-semibold text-[#1d1d1f]">
-                            {isSearchActive ? 'Resultados de búsqueda' : 'Artículos Recientes'}
+                            {isSearchActive 
+                                ? (selectedLetter ? `Índice: ${selectedLetter}` : 'Resultados de búsqueda')
+                                : 'Artículos Recientes'
+                            }
                         </h2>
                         {isSearchActive && (
                              <span className="text-sm text-[#86868b]">{articles.length} resultados encontrados</span>
@@ -257,7 +339,7 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
                             <p className="text-[#1d1d1f] font-medium text-lg">No encontramos artículos.</p>
                             <p className="text-[#86868b] mt-1">Intenta buscar con otros términos o palabras clave.</p>
                             {isSearchActive && (
-                                <button onClick={clearSearch} className="mt-4 text-[#0071e3] font-medium hover:underline">
+                                <button onClick={() => { clearSearch(); setSelectedLetter(null); }} className="mt-4 text-[#0071e3] font-medium hover:underline">
                                     Limpiar búsqueda
                                 </button>
                             )}
