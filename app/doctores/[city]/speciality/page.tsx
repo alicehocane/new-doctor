@@ -1,28 +1,37 @@
 
 import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor } from '@/types';
-import { CheckCircle, ArrowRight, MapPin, Activity, Stethoscope, BookOpen, Info, ShieldCheck } from 'lucide-react';
+import { supabase } from '../../../lib/supabase';
+import { Doctor } from '../../../types';
+import { CheckCircle, ArrowRight, Activity, Stethoscope, BookOpen, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { COMMON_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, STATE_TO_CITIES, slugify, getStateForCity, ALL_CITIES } from '@/lib/constants';
-import CityDoctorList from '@/components/CityDoctorList';
+import { COMMON_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, POPULAR_CITIES, slugify, ALL_CITIES } from '../../../lib/constants';
+import CityDoctorList from '../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
 
 const getCanonicalSpecialty = (input: string) => {
-    const targetSlug = slugify(input);
+    const decoded = decodeURIComponent(input);
+    const targetSlug = slugify(decoded);
     const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
     if (found) return found;
-    const normalizedInput = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+    // Fallback for accent variations
+    const normalizedInput = decoded.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     return COMMON_SPECIALTIES.find(s => 
         s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
-    ) || input;
+    ) || decoded;
 };
 
 const getCanonicalCity = (slug: string) => {
-  return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const decoded = decodeURIComponent(slug);
+  // Try exact match first
+  const found = ALL_CITIES.find(c => slugify(c) === slugify(decoded));
+  if (found) return found;
+  
+  // Fallback formatter if not in list (though validation should catch this)
+  return decoded.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
@@ -36,51 +45,52 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 
 export async function generateMetadata({ params }: { params: { city: string, specialty: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
-  const decodedSpecialty = decodeURIComponent(params.specialty);
-  const searchTerm = getCanonicalSpecialty(decodedSpecialty);
+  const specialtyName = getCanonicalSpecialty(params.specialty);
 
   return {
-    title: `${searchTerm}s en ${cityName} - Directorio y Guía | MediBusca`,
-    description: `Encuentra ${searchTerm.toLowerCase()}s en ${cityName}. Información sobre qué tratan, padecimientos comunes y lista de especialistas verificados en ${cityName}.`,
+    title: `${specialtyName}s en ${cityName} - Directorio y Guía | MediBusca`,
+    description: `Encuentra ${specialtyName.toLowerCase()}s en ${cityName}. Información sobre qué tratan, padecimientos comunes y lista de especialistas verificados en ${cityName}.`,
   };
 }
 
 export default async function CitySpecialtyPage({ params }: { params: { city: string, specialty: string } }) {
   const { city: citySlug, specialty: specialtySlug } = params;
   
+  // 1. Resolve Canonical Names
+  // We strictly match against our constants to ensure DB queries (which are exact strings) work.
   const cityName = getCanonicalCity(citySlug);
+  const specialtyName = getCanonicalSpecialty(specialtySlug);
   
-  // Strict City Validation
-  if (!ALL_CITIES.some(c => slugify(c) === citySlug)) {
+  // 2. Validate Existence to prevent 404s on valid paths or soft-404 on invalid ones
+  const isValidCity = ALL_CITIES.some(c => slugify(c) === slugify(citySlug));
+  if (!isValidCity) {
+      // You can decide to notFound() here, or allow the page to render with 0 results if you want to capture traffic.
+      // For a strict directory, notFound() is better.
       notFound();
   }
 
-  // Derive state for "Nearby Cities" logic
-  const stateSlug = getStateForCity(cityName);
-  const citiesInState = STATE_TO_CITIES[stateSlug] || [];
-
-  const decodedSpecialty = decodeURIComponent(specialtySlug);
-  const specialtyName = getCanonicalSpecialty(decodedSpecialty);
-  
   const description = SPECIALTY_DESCRIPTIONS[specialtyName] || `Especialistas dedicados al diagnóstico y tratamiento de condiciones relacionadas con ${specialtyName}.`;
   const relatedConditions = SPECIALTY_CONDITIONS[specialtyName] || [];
 
-  // Fetch Doctors
+  // 3. Fetch Doctors
+  // Note: .contains('cities', [cityName]) relies on the DB having "Ciudad de México" exactly if cityName is "Ciudad de México".
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
-    .contains('cities', [cityName])
+    .contains('cities', [cityName]) 
     .contains('specialties', [specialtyName])
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   const isKnownSpecialty = COMMON_SPECIALTIES.includes(specialtyName);
+  
+  // If strict validation is needed for specialty:
   if (doctors.length === 0 && !isKnownSpecialty) {
     notFound();
   }
 
-  // BREADCRUMB: Inicio > Especialidades > [Specialty] > [City]
+  // Schema Markup
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -232,29 +242,27 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </div>
         </section>
 
-        {/* Nearby Cities Links - Using Derived State */}
-        {citiesInState.length > 1 && (
-            <section className="pt-12 border-t border-slate-200/60 mt-8">
-                <h3 className="text-sm font-bold text-[#86868b] uppercase tracking-wide mb-6">
-                    {specialtyName}s en ciudades cercanas
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                    {citiesInState
-                        .filter(c => slugify(c) !== citySlug)
-                        .slice(0, 10)
-                        .map((city) => (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${slugify(city)}/${specialtySlug}`}
-                                className="text-sm text-[#0071e3] hover:underline bg-white px-3 py-1.5 rounded-md border border-slate-100"
-                            >
-                                {city}
-                            </Link>
-                        ))
-                    }
-                </div>
-            </section>
-        )}
+        {/* REPLACED: Nearby Cities -> Popular Cities (Removing state dependency) */}
+        <section className="pt-12 border-t border-slate-200/60 mt-8">
+            <h3 className="text-sm font-bold text-[#86868b] uppercase tracking-wide mb-6">
+                Buscar {specialtyName}s en otras ciudades populares
+            </h3>
+            <div className="flex flex-wrap gap-3">
+                {POPULAR_CITIES
+                    .filter(c => slugify(c) !== citySlug)
+                    .slice(0, 10)
+                    .map((city) => (
+                        <Link 
+                            key={city}
+                            href={`/doctores/${slugify(city)}/${specialtySlug}`}
+                            className="text-sm text-[#0071e3] hover:underline bg-white px-3 py-1.5 rounded-md border border-slate-100"
+                        >
+                            {city}
+                        </Link>
+                    ))
+                }
+            </div>
+        </section>
 
       </div>
     </div>

@@ -12,7 +12,10 @@ import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 const PAGE_SIZE = 12;
 
 const getCanonicalCity = (slug: string) => {
-  return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const decoded = decodeURIComponent(slug);
+  const found = ALL_CITIES.find(c => slugify(c) === slugify(decoded));
+  if (found) return found;
+  return decoded.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
@@ -40,7 +43,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
@@ -56,10 +59,13 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   // Logic to prevent Thin Content indexing
-  const isKnownCity = ALL_CITIES.includes(cityName);
-  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
+  const isKnownCity = ALL_CITIES.some(c => slugify(c) === slugify(citySlug));
+  const isKnownDisease = ALL_DISEASES.some(d => slugify(d) === slugify(diseaseSlug));
 
-  if (doctors.length === 0 && (!isKnownCity || !isKnownDisease)) {
+  // If no doctors found AND it's not a known city/disease combo, 404.
+  // We allow the page if it's a valid city/disease even with 0 doctors to capture potential SEO traffic, 
+  // but usually it's better to 404 empty pages to save crawl budget.
+  if (!isKnownCity || !isKnownDisease) {
     notFound();
   }
 
@@ -229,74 +235,18 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
           </div>
         </section>
 
-        {/* Cities Section (Specialty Focused) - Updated to new URL structure */}
-        {relatedSpecialties.length > 0 ? (
-            relatedSpecialties.slice(0, 3).map((spec) => (
-                <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                        {spec.startsWith('Medicina') || spec.includes('Cirujano') 
-                            ? `Expertos en ${spec} cerca de ti`
-                            : `Mejores ${spec}s por ciudad`
-                        }
-                    </h2>
-                    <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
-                        La atención local es clave para el seguimiento de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>. Encuentra consultorios equipados y especialistas certificados en las principales ciudades.
-                    </p>
-
-                    <div className="flex flex-wrap gap-3">
-                        {POPULAR_CITIES.slice(0, 8).map((city) => {
-                            return (
-                                <Link 
-                                    key={city}
-                                    href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
-                                >
-                                    <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
-                                    <span>{spec} en {city}</span>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </section>
-            ))
-        ) : (
-            /* Fallback: General Doctor Search */
-            <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                    Encuentra especialistas en las principales ciudades
-                </h2>
-                <p className="text-[#86868b] mb-8 text-[17px]">
-                    Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                    {POPULAR_CITIES.slice(0, 8).map((city) => {
-                        return (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${slugify(city)}`}
-                                className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
-                            >
-                                <MapPin className="w-4 h-4 text-[#86868b]" />
-                                <span>Doctores en {city}</span>
-                            </Link>
-                        );
-                    })}
-                </div>
-            </section>
-        )}
-
-        {/* Nearby Cities Section */}
+        {/* Nearby Cities Section (Replaced STATE logic with POPULAR_CITIES) */}
         <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
                 También disponible en ciudades cercanas
             </h2>
             <p className="text-lg text-[#86868b] mb-8 max-w-3xl">
                 Si no encuentras lo que buscas en <span className="text-[#1d1d1f] font-medium">{cityName}</span>, 
-                explora atención para <span className="text-[#1d1d1f] font-medium">{diseaseName}</span> en otras ciudades.
+                explora atención para <span className="text-[#1d1d1f] font-medium">{diseaseName}</span> en otras ciudades importantes.
             </p>
             
             <div className="flex flex-wrap gap-3 md:gap-4">
-                {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).map((city) => (
+                {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).slice(0, 8).map((city) => (
                     <Link 
                         key={city}
                         href={`/padecimientos/${diseaseSlug}/${slugify(city)}`}
