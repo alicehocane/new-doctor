@@ -2,29 +2,23 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, CheckCircle, Activity, MapPin } from 'lucide-react';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, CheckCircle, Activity, MapPin, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, slugify, getStateForCity } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;
 
-const slugify = (text: string) => {
-  return text.toString().toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
-};
-
 const getCanonicalSpecialty = (input: string) => {
+    // Try to find exact match by slug
     const targetSlug = slugify(input);
     const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
+    
     if (found) return found;
+
+    // Fallback: match normalized string
     const normalizedInput = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const foundFallback = COMMON_SPECIALTIES.find(s => 
         s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
@@ -41,6 +35,8 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
   });
 };
 
+// --- Metadata ---
+
 export async function generateMetadata({ params }: { params: { specialty: string } }): Promise<Metadata> {
   const decodedSpecialty = decodeURIComponent(params.specialty);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
@@ -51,6 +47,8 @@ export async function generateMetadata({ params }: { params: { specialty: string
   };
 }
 
+// --- Server Component ---
+
 export default async function SpecialtyPage({ params }: { params: { specialty: string } }) {
   const decodedSpecialty = decodeURIComponent(params.specialty);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
@@ -58,6 +56,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en México.`;
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || ['Diagnóstico general', 'Tratamiento especializado', 'Seguimiento de padecimientos', 'Consultas preventivas', 'Evaluación de síntomas', 'Manejo de enfermedades crónicas'];
 
+  // 1. Fetch Initial Data Server-Side
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
@@ -66,6 +65,8 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
+  // Logic to prevent Thin Content indexing
+  // If no doctors are found AND the specialty is not in our known list, return 404.
   const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
   if (doctors.length === 0 && !isKnownSpecialty) {
     notFound();
@@ -76,9 +77,24 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://medibusca.com" },
-      { "@type": "ListItem", "position": 2, "name": "Especialidades", "item": "https://medibusca.com/especialidades" },
-      { "@type": "ListItem", "position": 3, "name": searchTerm, "item": `https://medibusca.com/especialidad/${params.specialty}` }
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Especialidades",
+        "item": "https://medibusca.com/especialidades"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": searchTerm,
+        "item": `https://medibusca.com/especialidad/${params.specialty}`
+      }
     ]
   };
 
@@ -90,17 +106,33 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
     "url": `https://medibusca.com/especialidad/${params.specialty}`
   };
 
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": `Todo sobre ${searchTerm}`,
+    "description": `Guía completa sobre la especialidad de ${searchTerm}: funciones, enfermedades que trata y prevención.`,
+    "audience": {
+        "@type": "Patient",
+        "geographicArea": {
+            "@type": "Country",
+            "name": "Mexico"
+        }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalSpecialtySchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
-      {/* 1️⃣ Header Section */}
+      {/* 1️⃣ Hero Section */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
             
-            {/* Breadcrumb - LEFT ALIGNED (Legacy) */}
-            <nav className="text-sm font-medium text-[#86868b] mb-10 flex items-center animate-in fade-in slide-in-from-bottom-1 flex-wrap">
+            {/* Breadcrumb - Left Aligned Legacy Style */}
+            <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1 flex-wrap">
                 <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
                 <span className="mx-2 text-[#d2d2d7]">/</span>
                 <Link href="/especialidades" className="hover:text-[#0071e3] transition-colors">Especialidades</Link>
@@ -108,15 +140,12 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                 <span className="text-[#1d1d1f] capitalize">{searchTerm}</span>
             </nav>
 
-            {/* Hero Content - CENTERED (Request) */}
-            <div className="text-center animate-in fade-in slide-in-from-bottom-2">
-                <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
-                    Todo sobre {searchTerm}
-                </h1>
-                <p className="text-xl text-[#86868b] leading-relaxed max-w-3xl mx-auto font-normal">
-                    La {searchTerm.toLowerCase()} es una especialidad médica fundamental. En esta página encontrarás información sobre los servicios que brinda un {searchTerm.toLowerCase()}, los padecimientos más comunes que trata, consejos de prevención y cómo encontrar especialistas en tu ciudad.
-                </p>
-            </div>
+            <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-6 tracking-tight animate-in fade-in slide-in-from-bottom-2">
+                Todo sobre {searchTerm}
+            </h1>
+            <p className="text-xl text-[#86868b] leading-relaxed max-w-3xl font-normal animate-in fade-in slide-in-from-bottom-3">
+                La {searchTerm.toLowerCase()} es una especialidad médica fundamental. En esta página encontrarás información sobre los servicios que brinda un {searchTerm.toLowerCase()}, los padecimientos más comunes que trata, consejos de prevención y cómo encontrar especialistas en tu ciudad.
+            </p>
         </div>
       </div>
 
@@ -173,6 +202,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         <span className="font-medium text-[#1d1d1f]">{cond}</span>
                     </div>
                 ))}
+                {/* Generic placeholders if generic fallback is used */}
                 {conditions.length < 4 && (
                     <div className="flex items-center gap-3 p-4 bg-[#f5f5f7] border border-transparent rounded-xl">
                         <div className="w-2 h-2 rounded-full bg-[#d2d2d7] shrink-0"></div>
@@ -215,7 +245,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* 5️⃣ Section: Local Doctor Listings */}
         <section className="pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-7">
-            <div className="mb-10 text-center md:text-left">
+            <div className="mb-10">
                 <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Encuentra {searchTerm}s en tu Ciudad</h2>
                 <p className="text-lg text-[#86868b] max-w-3xl leading-relaxed">
                     Una vez informado sobre la especialidad, puedes consultar {searchTerm.toLowerCase()}s en tu ciudad. Esta sección conecta a los usuarios con especialistas locales verificados.
@@ -229,11 +259,11 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                 <p className="text-sm font-semibold text-[#86868b] uppercase tracking-wide mb-4">Búsquedas Frecuentes</p>
                 <div className="flex flex-wrap gap-3">
                     {POPULAR_CITIES.slice(0, 8).map((city) => {
+                        const stateSlug = getStateForCity(city);
                         return (
                             <Link 
                                 key={city}
-                                // UPDATED: Removing state from URL
-                                href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
+                                href={`/doctores/${stateSlug}/${slugify(city)}/${slugify(searchTerm)}`}
                                 className="
                                     flex items-center gap-2 px-5 py-3 
                                     bg-white border border-slate-200 rounded-full 

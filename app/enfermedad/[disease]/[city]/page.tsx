@@ -1,12 +1,12 @@
 import React from 'react';
-import { supabase } from '../../../../lib/supabase';
-import { Doctor } from '../../../../types';
+import { supabase } from '@/lib/supabase';
+import { Doctor } from '@/types';
 import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
-import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '@/lib/constants';
+import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
 
@@ -89,19 +89,19 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
         "@type": "ListItem",
         "position": 2,
         "name": "Padecimientos",
-        "item": "https://medibusca.com/padecimientos"
+        "item": "https://medibusca.com/enfermedades"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": diseaseName,
-        "item": `https://medibusca.com/padecimientos/${diseaseSlug}`
+        "item": `https://medibusca.com/enfermedad/${diseaseSlug}`
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": `${diseaseName} en ${cityName}`,
-        "item": `https://medibusca.com/padecimientos/${diseaseSlug}/${citySlug}`
+        "item": `https://medibusca.com/enfermedad/${diseaseSlug}/${citySlug}`
       }
     ]
   };
@@ -111,7 +111,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
     "@type": "MedicalWebPage",
     "name": `Tratamiento para ${diseaseName} en ${cityName} | MediBusca`,
     "description": `Encuentra doctores especialistas en ${diseaseName} en ${cityName}. Agenda tu cita con expertos verificados.`,
-    "url": `https://medibusca.com/padecimientos/${diseaseSlug}/${citySlug}`,
+    "url": `https://medibusca.com/enfermedad/${diseaseSlug}/${citySlug}`,
     "specialty": targetSpecialty ? {
         "@type": "MedicalSpecialty",
         "name": targetSpecialty
@@ -141,9 +141,9 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center flex-wrap animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href="/padecimientos" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
+            <Link href="/enfermedades" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href={`/padecimientos/${diseaseSlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{diseaseName}</Link>
+            <Link href={`/enfermedad/${diseaseSlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{diseaseName}</Link>
             <span className="mx-2 text-[#d2d2d7]">/</span>
             <span className="text-[#1d1d1f] capitalize">{cityName}</span>
         </nav>
@@ -254,7 +254,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).map((city) => (
                     <Link 
                         key={city}
-                        href={`/padecimientos/${diseaseSlug}/${slugify(city)}`}
+                        href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
                         className="
                             inline-flex items-center px-5 py-2.5
                             bg-white border border-[#d2d2d7]/60 rounded-full

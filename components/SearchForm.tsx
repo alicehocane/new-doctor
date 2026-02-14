@@ -1,11 +1,10 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, Activity } from 'lucide-react';
-import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES, slugify } from '../lib/constants';
+import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES, slugify, getStateForCity } from '../lib/constants';
 
 export default function SearchForm() {
   const router = useRouter();
@@ -59,15 +58,17 @@ export default function SearchForm() {
     if (city && specialty.trim()) {
       const citySlug = slugify(city);
       const termSlug = slugify(specialty.trim());
+      const stateSlug = getStateForCity(city);
       
       // Check if term matches a known disease to route correctly
       const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
 
       if (isDisease) {
+        // Updated to /padecimientos
         router.push(`/padecimientos/${termSlug}/${citySlug}`);
       } else {
-        // UPDATED: Removed stateSlug, now pushing directly to /doctores/[city]/[specialty]
-        router.push(`/doctores/${citySlug}/${termSlug}`);
+        // Updated routing for doctors
+        router.push(`/doctores/${stateSlug}/${citySlug}/${termSlug}`);
       }
     }
   };
