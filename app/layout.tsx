@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Link from 'next/link';
 import { Metadata, Viewport } from 'next';
@@ -114,6 +115,7 @@ export default function RootLayout({
                <h3 className="font-semibold text-[#1d1d1f]">Enlaces importantes</h3>
                <ul className="space-y-3">
                  <li><Link href="/nosotros" className="hover:text-[#0071e3] hover:underline transition-colors">Sobre nosotros</Link></li>
+                 <li><Link href="/politica-editorial" className="hover:text-[#0071e3] hover:underline transition-colors">Política Editorial</Link></li>
                  <li><Link href="/privacidad" className="hover:text-[#0071e3] hover:underline transition-colors">Política de privacidad</Link></li>
                  <li><Link href="/terminos" className="hover:text-[#0071e3] hover:underline transition-colors">Términos y condiciones</Link></li>
                  <li><Link href="/contacto" className="hover:text-[#0071e3] hover:underline transition-colors">Contacto</Link></li>
