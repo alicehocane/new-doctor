@@ -8,7 +8,7 @@ import { Metadata } from 'next';
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
-  title: "Enciclopedia Médica y Artículos de Salud | MediBusca",
+  title: "Enciclopedia Médica y Artículos de Salud",
   description: "Biblioteca de salud de MediBusca. Artículos verificados sobre bienestar, prevención y medicina escritos por expertos.",
 };
 

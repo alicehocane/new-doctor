@@ -4,7 +4,7 @@ import { Scale, AlertCircle, FileText, Shield, Globe, Lock, Info, Mail, CheckCir
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones | MediBusca",
+  title: "Términos y Condiciones",
   description: "Términos y condiciones de uso de la plataforma MediBusca. Información legal, responsabilidades y uso del sitio.",
 };
 

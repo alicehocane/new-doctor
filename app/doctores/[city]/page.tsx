@@ -378,7 +378,7 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 export async function generateMetadata({ params }: { params: { city: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
   return {
-    title: `Doctores en ${cityName} | MediBusca`,
+    title: `Doctores en ${cityName}`,
     description: `Encuentra los mejores doctores y especialistas en ${cityName} sin intermediarios. Revisa perfiles verificados y contacta directamente.`,
   };
 }

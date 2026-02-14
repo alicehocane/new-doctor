@@ -6,7 +6,7 @@ import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Diccionario de Enfermedades y Padecimientos | MediBusca",
+  title: "Diccionario de Enfermedades y Padecimientos",
   description: "Busca doctores por enfermedad o síntoma. Guía completa de padecimientos y los especialistas que los tratan.",
 };
 

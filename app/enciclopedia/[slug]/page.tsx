@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!article) {
     return {
-      title: 'Artículo no encontrado | MediBusca',
+      title: 'Artículo no encontrado',
       description: 'El artículo que buscas no existe en nuestra enciclopedia.',
     };
   }

@@ -31,7 +31,7 @@ const TOP_SPECIALTIES = [
 ];
 
 export const metadata: Metadata = {
-  title: "Especialidades Médicas - Directorio Completo | MediBusca",
+  title: "Especialidades Médicas - Directorio Completo",
   description: "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud.",
 };
 

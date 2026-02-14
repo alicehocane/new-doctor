@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: { params: { specialty: string
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
   return {
-    title: `${searchTerm}s en México | MediBusca`,
+    title: `${searchTerm}s en México`,
     description: `Encuentra a los mejores ${searchTerm.toLowerCase()}s verificados en México. Información sobre padecimientos, tratamientos y contacto directo.`,
   };
 }

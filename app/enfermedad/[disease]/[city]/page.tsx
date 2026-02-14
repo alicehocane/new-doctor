@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { disease: string, 
   const { name: diseaseName } = getDiseaseInfo(params.disease);
   
   return {
-    title: `Especialistas en ${diseaseName} en ${cityName} | MediBusca`,
+    title: `Especialistas en ${diseaseName} en ${cityName}`,
     description: `Encuentra doctores expertos en ${diseaseName} en ${cityName}. Consulta perfiles verificados, direcciones y teléfonos para agendar tu cita.`,
   };
 }

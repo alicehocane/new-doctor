@@ -4,7 +4,7 @@ import ContactForm from '../../components/ContactForm';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Contacto y Soporte | MediBusca",
+  title: "Contacto y Soporte",
   description: "Ponte en contacto con el equipo de MediBusca. Resolvemos tus dudas, recibimos comentarios y ayudamos a doctores a unirse a nuestra red médica.",
 };
 

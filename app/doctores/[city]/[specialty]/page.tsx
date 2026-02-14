@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: { params: { city: string, spe
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
 
   return {
-    title: `${searchTerm}s en ${cityName} | MediBusca`,
+    title: `${searchTerm}s en ${cityName}`,
     description: `Lista de los mejores ${searchTerm.toLowerCase()}s en ${cityName}. Consulta opiniones, direcciones y teléfonos de consultorios verificados.`,
   };
 }

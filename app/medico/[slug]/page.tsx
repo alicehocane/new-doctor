@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!doctor) {
     return {
-      title: 'Doctor no encontrado | MediBusca',
+      title: 'Doctor no encontrado',
       description: 'El perfil del doctor que buscas no está disponible.'
     };
   }
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const doc = doctor as Doctor;
   
   return {
-    title: doc.seo_metadata?.meta_title || `${doc.full_name} - ${doc.specialties[0] || 'Doctor'} | MediBusca`,
+    title: doc.seo_metadata?.meta_title || `${doc.full_name} - ${doc.specialties[0] || 'Doctor'}`,
     description: doc.seo_metadata?.meta_description || `Agenda una cita con ${doc.full_name}, especialista en ${doc.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`,
     keywords: doc.seo_metadata?.keywords ? doc.seo_metadata.keywords.split(',') : undefined,
   };

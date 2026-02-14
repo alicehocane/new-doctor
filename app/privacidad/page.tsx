@@ -14,7 +14,7 @@ export default function PrivacyPage() {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Política de Privacidad | MediBusca",
+    "name": "Política de Privacidad",
     "description": "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información y el uso de datos en nuestra plataforma informativa de salud.",
     "url": "https://medibusca.com/privacidad"
   };
