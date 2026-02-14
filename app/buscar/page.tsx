@@ -51,7 +51,7 @@ export default function SearchPage() {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": "Buscar Doctores y Especialistas | MediBusca",
+    "name": "Buscar Doctores y Especialistas",
     "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
     "url": "https://medibusca.com/buscar",
     "audience": {
