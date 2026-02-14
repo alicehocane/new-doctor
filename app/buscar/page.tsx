@@ -5,8 +5,6 @@ import { ALL_DISEASES } from '../../lib/constants';
 import SearchForm from '../../components/SearchForm';
 import { Metadata } from 'next';
 
-export const revalidate = 3600;
-
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas | MediBusca',
   description: 'Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.',

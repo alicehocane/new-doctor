@@ -1,12 +1,25 @@
-
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
 import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info } from 'lucide-react';
-import Link from 'next/link'; 
-import { notFound } from 'next/navigation'; 
+import Link from 'next/link'; // Replaced wouter
+import { notFound } from 'next/navigation'; // For 404 handling
 import { Metadata } from 'next';
-import { POPULAR_SPECIALTIES, slugify, getStateForCity } from '../../../lib/constants';
+import { POPULAR_SPECIALTIES } from '../../../lib/constants';
+
+// --- Utility Functions ---
+
+const slugify = (text: string) => {
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+// --- SEO Metadata Generation ---
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: doctor } = await supabase
@@ -30,6 +43,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     keywords: doc.seo_metadata?.keywords ? doc.seo_metadata.keywords.split(',') : undefined,
   };
 }
+
+// --- Server Component ---
 
 export default async function DoctorProfile({ params }: { params: { slug: string } }) {
   // 1. Fetch Main Doctor Data
@@ -143,9 +158,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     "telephone": doctor.contact_info.phones?.[0] || undefined
   };
 
-  // Build state slug for breadcrumb and back link
-  const mainCity = doctor.cities[0] || '';
-  const mainCitySlug = slugify(mainCity);
+  // --- Render ---
 
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
@@ -161,12 +174,11 @@ export default async function DoctorProfile({ params }: { params: { slug: string
           {/* Breadcrumb */}
           <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
-            {mainCity && (
+            {doctor.cities && doctor.cities.length > 0 && (
               <>
                 <span className="mx-2 text-[#d2d2d7]">/</span>
-                {/* UPDATED: Removing state from URL */}
-                <Link href={`/doctores/${mainCitySlug}`} className="hover:text-[#0071e3] transition-colors">
-                  {mainCity}
+                <Link href={`/doctores/${slugify(doctor.cities[0])}`} className="hover:text-[#0071e3] transition-colors">
+                  {doctor.cities[0]}
                 </Link>
               </>
             )}
@@ -359,7 +371,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       {relatedDoctors.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
-                Otros {doctor.specialties[0]}s en {mainCity}
+                Otros {doctor.specialties[0]}s en {doctor.cities[0]}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedDoctors.map((doc) => (
@@ -443,22 +455,19 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
              {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla']
                 .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
-                .map((city, idx) => {
-                    return (
-                        <Link
-                            key={`spec-${idx}`}
-                            // UPDATED: Removing state from URL
-                            href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
-                            className="
-                                text-[13px] text-[#86868b] hover:text-[#0071e3] 
-                                transition-colors hover:underline truncate
-                                py-1 block
-                            "
-                        >
-                            {doctor.specialties[0]} en {city}
-                        </Link>
-                    );
-                })}
+                .map((city, idx) => (
+                 <Link
+                    key={`spec-${idx}`}
+                    href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
+                    className="
+                        text-[13px] text-[#86868b] hover:text-[#0071e3] 
+                        transition-colors hover:underline truncate
+                        py-1 block
+                    "
+                 >
+                    {doctor.specialties[0]} en {city}
+                 </Link>
+             ))}
 
              {doctor.cities.length > 0 && POPULAR_SPECIALTIES
                 .filter(s => slugify(s) !== slugify(doctor.specialties[0]))
@@ -466,8 +475,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 .map((spec, idx) => (
                  <Link
                     key={`city-${idx}`}
-                    // UPDATED: Removing state from URL
-                    href={`/doctores/${mainCitySlug}/${slugify(spec)}`}
+                    href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
                     className="
                         text-[13px] text-[#86868b] hover:text-[#0071e3] 
                         transition-colors hover:underline truncate
@@ -484,8 +492,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[200]">
         <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2.5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10">
           <Link 
-            // UPDATED: Removing state from URL
-            href={doctor.cities.length > 0 ? `/doctores/${mainCitySlug}/${slugify(doctor.specialties[0])}` : '/'}
+            href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
             className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
             aria-label="Volver"
           >

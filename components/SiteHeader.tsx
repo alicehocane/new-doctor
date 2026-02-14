@@ -27,7 +27,7 @@ export default function SiteHeader() {
         <nav className="hidden md:flex gap-8 text-[12px] font-normal text-[#1d1d1f]/80" aria-label="Navegación principal">
           <Link href="/buscar" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Buscar</Link>
           <Link href="/especialidades" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Especialidades</Link>
-          <Link href="/padecimientos" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Padecimientos</Link>
+          <Link href="/enfermedades" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Padecimientos</Link>
           <Link href="/enciclopedia" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Enciclopedia</Link>
           <Link href="/admin/upload" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Admin</Link>
         </nav>
@@ -55,7 +55,7 @@ export default function SiteHeader() {
         <nav className="flex flex-col px-6 py-4 space-y-4 text-[17px] font-medium text-[#1d1d1f]" aria-label="Navegación móvil">
           <Link href="/buscar" className="py-2 border-b border-slate-100">Buscar</Link>
           <Link href="/especialidades" className="py-2 border-b border-slate-100">Especialidades</Link>
-          <Link href="/padecimientos" className="py-2 border-b border-slate-100">Padecimientos</Link>
+          <Link href="/enfermedades" className="py-2 border-b border-slate-100">Padecimientos</Link>
           <Link href="/enciclopedia" className="py-2 border-b border-slate-100">Enciclopedia</Link>
           <Link href="/admin/upload" className="py-2 text-slate-500">Admin</Link>
         </nav>

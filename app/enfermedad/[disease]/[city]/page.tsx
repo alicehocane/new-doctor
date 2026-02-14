@@ -1,15 +1,24 @@
-
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info, Stethoscope, Activity, BookOpen, Search, ArrowRight } from 'lucide-react';
+import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, slugify } from '../../../../lib/constants';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
+
+const slugify = (text: string) => {
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
 
 const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -40,7 +49,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
@@ -56,6 +65,8 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   // Logic to prevent Thin Content indexing
+  // If no doctors are found AND (disease is unknown OR city is unknown), return 404.
+  // This prevents URL manipulation like /enfermedad/foobar/fake-city from generating indexable pages.
   const isKnownCity = ALL_CITIES.includes(cityName);
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
 
@@ -78,19 +89,19 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
         "@type": "ListItem",
         "position": 2,
         "name": "Padecimientos",
-        "item": "https://medibusca.com/padecimientos"
+        "item": "https://medibusca.com/enfermedades"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": diseaseName,
-        "item": `https://medibusca.com/padecimientos/${diseaseSlug}`
+        "item": `https://medibusca.com/enfermedad/${diseaseSlug}`
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": `${diseaseName} en ${cityName}`,
-        "item": `https://medibusca.com/padecimientos/${diseaseSlug}/${citySlug}`
+        "item": `https://medibusca.com/enfermedad/${diseaseSlug}/${citySlug}`
       }
     ]
   };
@@ -100,7 +111,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
     "@type": "MedicalWebPage",
     "name": `Tratamiento para ${diseaseName} en ${cityName} | MediBusca`,
     "description": `Encuentra doctores especialistas en ${diseaseName} en ${cityName}. Agenda tu cita con expertos verificados.`,
-    "url": `https://medibusca.com/padecimientos/${diseaseSlug}/${citySlug}`,
+    "url": `https://medibusca.com/enfermedad/${diseaseSlug}/${citySlug}`,
     "specialty": targetSpecialty ? {
         "@type": "MedicalSpecialty",
         "name": targetSpecialty
@@ -130,9 +141,9 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center flex-wrap animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href="/padecimientos" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
+            <Link href="/enfermedades" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href={`/padecimientos/${diseaseSlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{diseaseName}</Link>
+            <Link href={`/enfermedad/${diseaseSlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{diseaseName}</Link>
             <span className="mx-2 text-[#d2d2d7]">/</span>
             <span className="text-[#1d1d1f] capitalize">{cityName}</span>
         </nav>
@@ -229,62 +240,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
           </div>
         </section>
 
-        {/* Cities Section (Specialty Focused) - Updated to new URL structure */}
-        {relatedSpecialties.length > 0 ? (
-            relatedSpecialties.slice(0, 3).map((spec) => (
-                <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                        {spec.startsWith('Medicina') || spec.includes('Cirujano') 
-                            ? `Expertos en ${spec} cerca de ti`
-                            : `Mejores ${spec}s por ciudad`
-                        }
-                    </h2>
-                    <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
-                        La atención local es clave para el seguimiento de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>. Encuentra consultorios equipados y especialistas certificados en las principales ciudades.
-                    </p>
-
-                    <div className="flex flex-wrap gap-3">
-                        {POPULAR_CITIES.slice(0, 8).map((city) => {
-                            return (
-                                <Link 
-                                    key={city}
-                                    href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
-                                >
-                                    <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
-                                    <span>{spec} en {city}</span>
-                                </Link>
-                            );
-                        })}
-                    </div>
-                </section>
-            ))
-        ) : (
-            /* Fallback: General Doctor Search */
-            <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
-                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                    Encuentra especialistas en las principales ciudades
-                </h2>
-                <p className="text-[#86868b] mb-8 text-[17px]">
-                    Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                    {POPULAR_CITIES.slice(0, 8).map((city) => {
-                        return (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${slugify(city)}`}
-                                className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
-                            >
-                                <MapPin className="w-4 h-4 text-[#86868b]" />
-                                <span>Doctores en {city}</span>
-                            </Link>
-                        );
-                    })}
-                </div>
-            </section>
-        )}
-
         {/* Nearby Cities Section */}
         <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
@@ -299,7 +254,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).map((city) => (
                     <Link 
                         key={city}
-                        href={`/padecimientos/${diseaseSlug}/${slugify(city)}`}
+                        href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
                         className="
                             inline-flex items-center px-5 py-2.5
                             bg-white border border-[#d2d2d7]/60 rounded-full
@@ -312,22 +267,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                         {diseaseName} en {city}
                     </Link>
                 ))}
-            </div>
-        </section>
-
-        {/* 10️⃣ Related Resources */}
-        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-8 mt-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-8">Recursos Relacionados</h2>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link href="/especialidades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
-                    <Stethoscope className="w-5 h-5" /> Especialistas Médicos
-                </Link>
-                <Link href="/padecimientos" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
-                    <Activity className="w-5 h-5" /> Otros Padecimientos
-                </Link>
-                <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
-                    <BookOpen className="w-5 h-5" /> Guías Médicas
-                </Link>
             </div>
         </section>
 

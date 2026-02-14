@@ -126,7 +126,7 @@ export default function RootLayout({
                <ul className="space-y-3">
                  <li><Link href="/buscar" className="hover:text-[#0071e3] hover:underline transition-colors">Buscar médicos por ciudad</Link></li>
                  <li><Link href="/especialidades" className="hover:text-[#0071e3] hover:underline transition-colors">Buscar por especialidad</Link></li>
-                 <li><Link href="/padecimientos" className="hover:text-[#0071e3] hover:underline transition-colors">Explorar padecimientos</Link></li>
+                 <li><Link href="/enfermedades" className="hover:text-[#0071e3] hover:underline transition-colors">Explorar enfermedades y síntomas</Link></li>
                  <li><Link href="/buscar" className="hover:text-[#0071e3] hover:underline transition-colors">Conectar con doctores</Link></li>
                </ul>
              </div>

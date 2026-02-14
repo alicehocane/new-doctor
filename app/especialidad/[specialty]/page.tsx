@@ -232,7 +232,6 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         return (
                             <Link 
                                 key={city}
-                                // UPDATED: Removing state from URL
                                 href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
                                 className="
                                     flex items-center gap-2 px-5 py-3 

@@ -1,15 +1,29 @@
 
 import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor } from '@/types';
-import { CheckCircle, ArrowRight, MapPin, Activity, Stethoscope, BookOpen, Info, ShieldCheck } from 'lucide-react';
+import { supabase } from '../../../../lib/supabase';
+import { Doctor } from '../../../../types';
+import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, Activity, Stethoscope, BookOpen, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { COMMON_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, STATE_TO_CITIES, slugify, getStateForCity, ALL_CITIES } from '@/lib/constants';
-import CityDoctorList from '@/components/CityDoctorList';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
+import CityDoctorList from '../../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
+
+const slugify = (text: string) => {
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+const getCanonicalCity = (slug: string) => {
+  return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+};
 
 const getCanonicalSpecialty = (input: string) => {
     const targetSlug = slugify(input);
@@ -19,10 +33,6 @@ const getCanonicalSpecialty = (input: string) => {
     return COMMON_SPECIALTIES.find(s => 
         s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
     ) || input;
-};
-
-const getCanonicalCity = (slug: string) => {
-  return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
@@ -46,19 +56,10 @@ export async function generateMetadata({ params }: { params: { city: string, spe
 }
 
 export default async function CitySpecialtyPage({ params }: { params: { city: string, specialty: string } }) {
-  const { city: citySlug, specialty: specialtySlug } = params;
+  const citySlug = params.city;
+  const specialtySlug = params.specialty;
   
   const cityName = getCanonicalCity(citySlug);
-  
-  // Strict City Validation
-  if (!ALL_CITIES.some(c => slugify(c) === citySlug)) {
-      notFound();
-  }
-
-  // Derive state for "Nearby Cities" logic
-  const stateSlug = getStateForCity(cityName);
-  const citiesInState = STATE_TO_CITIES[stateSlug] || [];
-
   const decodedSpecialty = decodeURIComponent(specialtySlug);
   const specialtyName = getCanonicalSpecialty(decodedSpecialty);
   
@@ -80,7 +81,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
     notFound();
   }
 
-  // BREADCRUMB: Inicio > Especialidades > [Specialty] > [City]
+  // Schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -97,14 +98,8 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
     "@type": "MedicalWebPage",
     "name": `${specialtyName}s en ${cityName}`,
     "description": `Guía completa sobre ${specialtyName}s en ${cityName}. Funciones, enfermedades que tratan y especialistas disponibles.`,
-    "specialty": {
-        "@type": "MedicalSpecialty",
-        "name": specialtyName
-    },
-    "contentLocation": {
-        "@type": "City",
-        "name": cityName
-    }
+    "specialty": { "@type": "MedicalSpecialty", "name": specialtyName },
+    "contentLocation": { "@type": "City", "name": cityName }
   };
 
   return (
@@ -140,7 +135,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
 
-        {/* 2️⃣ Section: Sobre la Especialidad */}
+        {/* 2️⃣ Section: Sobre la Especialidad (Educación antes que listado) */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 shadow-sm animate-in fade-in slide-in-from-bottom-3">
             <div className="flex flex-col md:flex-row gap-8">
                 <div className="w-16 h-16 rounded-2xl bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3] shrink-0">
@@ -171,7 +166,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </div>
         </section>
 
-        {/* 3️⃣ Section: Padecimientos Comunes */}
+        {/* 3️⃣ Section: Padecimientos Comunes (Cross-linking local) */}
         {relatedConditions.length > 0 && (
             <section className="animate-in fade-in slide-in-from-bottom-4">
                 <div className="mb-8">
@@ -188,7 +183,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                     {relatedConditions.slice(0, 9).map((condition) => (
                         <Link 
                             key={condition}
-                            href={`/padecimientos/${slugify(condition)}/${citySlug}`}
+                            href={`/enfermedad/${slugify(condition)}/${citySlug}`}
                             className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 hover:border-[#0071e3] hover:shadow-sm transition-all group"
                         >
                             <span className="font-medium text-[#1d1d1f]">{condition}</span>
@@ -231,30 +226,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </Link>
             </div>
         </section>
-
-        {/* Nearby Cities Links - Using Derived State */}
-        {citiesInState.length > 1 && (
-            <section className="pt-12 border-t border-slate-200/60 mt-8">
-                <h3 className="text-sm font-bold text-[#86868b] uppercase tracking-wide mb-6">
-                    {specialtyName}s en ciudades cercanas
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                    {citiesInState
-                        .filter(c => slugify(c) !== citySlug)
-                        .slice(0, 10)
-                        .map((city) => (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${slugify(city)}/${specialtySlug}`}
-                                className="text-sm text-[#0071e3] hover:underline bg-white px-3 py-1.5 rounded-md border border-slate-100"
-                            >
-                                {city}
-                            </Link>
-                        ))
-                    }
-                </div>
-            </section>
-        )}
 
       </div>
     </div>
