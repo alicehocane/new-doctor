@@ -1,5 +1,7 @@
+
 import React from 'react';
-import { Activity, Search, ShieldCheck, CheckCircle, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Activity, Search, ShieldCheck, CheckCircle, AlertCircle, BookOpen, Stethoscope, ChevronRight, HeartPulse, Brain, Smile } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Article } from '../../types';
 import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
@@ -8,8 +10,8 @@ import { Metadata } from 'next';
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
-  title: "Enciclopedia Médica y Artículos de Salud | MediBusca",
-  description: "Biblioteca de salud de MediBusca. Artículos verificados sobre bienestar, prevención y medicina escritos por expertos.",
+  title: "Enciclopedia Médica | MediBusca",
+  description: "Bienvenido a nuestra Enciclopedia Médica. Guías completas sobre enfermedades, tratamientos, síntomas y prevención.",
 };
 
 export default async function EncyclopediaIndexPage() {
@@ -46,8 +48,8 @@ export default async function EncyclopediaIndexPage() {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": "Enciclopedia Médica y Artículos de Salud | MediBusca",
-    "description": "Biblioteca de salud de MediBusca. Artículos verificados sobre bienestar, prevención y medicina escritos por expertos.",
+    "name": "Enciclopedia Médica | MediBusca",
+    "description": "Bienvenido a nuestra Enciclopedia Médica. Aquí encontrarás guías completas y artículos especializados sobre enfermedades, tratamientos, síntomas, prevención y cuidado general de la salud.",
     "url": "https://medibusca.com/enciclopedia",
     "audience": {
         "@type": "Patient",
@@ -65,70 +67,126 @@ export default async function EncyclopediaIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
       {/* Interactive Browser (Search, List, Pagination) */}
-      <EncyclopediaBrowser initialArticles={initialArticles}>
+      <EncyclopediaBrowser 
+        initialArticles={initialArticles}
+        title="Enciclopedia Médica"
+        description="Bienvenido a nuestra Enciclopedia Médica. Aquí encontrarás guías completas y artículos especializados sobre enfermedades, tratamientos, síntomas, prevención y cuidado general de la salud. Aprende todo lo que necesitas saber para tomar decisiones informadas sobre tu bienestar."
+      >
         
-        {/* SEO / Informational Content Section (Static Server Content passed as children) */}
-        <section className="mt-24 pt-16 border-t border-slate-200">
-            <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4">
-                     <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
-                        ¿Qué es la Enciclopedia Médica de MediBusca?
-                     </h2>
-                     <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
-                        La Enciclopedia Médica de MediBusca es un lugar confiable para aprender sobre la salud, las enfermedades y temas médicos. Ayuda a pacientes, familias y estudiantes a entender información médica de manera sencilla. Aquí puedes leer sobre síntomas, causas, tratamientos y los doctores que se especializan en cada condición.
-                     </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-12 mb-16 animate-in fade-in slide-in-from-bottom-6">
+        {/* New Educational Sections */}
+        <section className="mt-20 pt-16 border-t border-slate-200">
+            <div className="max-w-5xl mx-auto space-y-20">
+                
+                {/* 3️⃣ Cómo Usar la Enciclopedia */}
+                <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in slide-in-from-bottom-4">
                     <div>
-                        <h3 className="text-xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                             <div className="w-8 h-8 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
-                                <Activity className="w-4 h-4" />
-                             </div>
-                             Cómo te ayuda la Enciclopedia
-                        </h3>
-                        <ul className="space-y-3">
-                            {['Conocer problemas de salud y enfermedades comunes', 'Entender los síntomas y señales de alerta', 'Descubrir opciones de tratamiento y cuidados preventivos', 'Encontrar doctores que pueden ayudarte con cada condición'].map((item, i) => (
-                                <li key={i} className="flex items-start gap-3 text-[#86868b] leading-relaxed">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
-                                    <span>{item}</span>
-                                </li>
-                            ))}
+                        <h2 className="text-3xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-3">
+                            <BookOpen className="w-8 h-8 text-[#0071e3]" />
+                            Aprende a Navegar la Información Médica
+                        </h2>
+                        <p className="text-lg text-[#86868b] leading-relaxed mb-6">
+                            Nuestra enciclopedia está organizada por categorías y especialidades médicas. Puedes explorar artículos según la condición, el tratamiento o la especialidad para encontrar información confiable y detallada.
+                        </p>
+                        <ul className="space-y-4">
+                            <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
+                                <CheckCircle className="w-5 h-5 text-[#0071e3]" /> Explora por enfermedad o padecimiento
+                            </li>
+                            <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
+                                <CheckCircle className="w-5 h-5 text-[#0071e3]" /> Busca guías por especialidad médica
+                            </li>
+                            <li className="flex items-center gap-3 text-[#1d1d1f] font-medium">
+                                <CheckCircle className="w-5 h-5 text-[#0071e3]" /> Filtra por síntomas o tratamientos
+                            </li>
                         </ul>
                     </div>
-                     <div>
-                        <h3 className="text-xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                             <div className="w-8 h-8 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
-                                <Search className="w-4 h-4" />
-                             </div>
-                             Fácil de usar
-                        </h3>
-                        <p className="text-[#86868b] mb-4 leading-relaxed">La Enciclopedia Médica de MediBusca es muy fácil de leer. Puedes buscar por:</p>
-                        <ul className="space-y-3">
-                            {['Enfermedad o condición de salud', 'Parte del cuerpo o sistema (como corazón, pulmones o piel)', 'Especialidad del doctor (como cardiología o pediatría)'].map((item, i) => (
-                                <li key={i} className="flex items-start gap-3 text-[#86868b] leading-relaxed">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
-                                    <span>{item}</span>
-                                </li>
-                            ))}
-                        </ul>
-                        <p className="text-[#86868b] mt-4 leading-relaxed">Cada página explica la condición con palabras simples. También muestra qué doctores pueden ayudar y cómo contactarlos directamente.</p>
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <Activity className="w-6 h-6 text-[#0071e3] mb-3" />
+                            <h3 className="font-bold text-[#1d1d1f]">Por Padecimiento</h3>
+                            <p className="text-sm text-[#86868b] mt-1">Encuentra información sobre síntomas específicos y su manejo.</p>
+                        </div>
+                        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <Stethoscope className="w-6 h-6 text-[#0071e3] mb-3" />
+                            <h3 className="font-bold text-[#1d1d1f]">Por Especialidad</h3>
+                            <p className="text-sm text-[#86868b] mt-1">Lee artículos escritos desde la perspectiva de expertos en cada área.</p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="bg-white p-8 rounded-[24px] shadow-sm border border-slate-100 mb-16 animate-in fade-in slide-in-from-bottom-8">
-                     <h3 className="text-xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                         <ShieldCheck className="w-6 h-6 text-[#0071e3]" />
-                         Por qué MediBusca es confiable
-                     </h3>
-                     <div className="grid sm:grid-cols-2 gap-6">
-                        {['La información proviene de fuentes confiables y doctores verificados', 'Escrita con lenguaje claro y fácil de entender', 'Se actualiza regularmente para ofrecer información correcta', 'Te ayuda a tomar decisiones informadas sobre tu salud'].map((item, i) => (
-                             <div key={i} className="flex items-start gap-3 text-[#86868b]">
-                                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
-                                <span className="leading-relaxed">{item}</span>
-                             </div>
-                        ))}
-                     </div>
+                {/* 4️⃣ Relación con Especialistas */}
+                <div className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 animate-in fade-in slide-in-from-bottom-6">
+                    <div className="text-center mb-10 max-w-3xl mx-auto">
+                        <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">Encuentra Doctores Según lo que Aprendes</h2>
+                        <p className="text-lg text-[#86868b] leading-relaxed">
+                            Después de aprender sobre un padecimiento o tratamiento, consulta nuestros listados de especialistas en tu ciudad para recibir atención profesional confiable.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+                        <Link href="/padecimientos/ansiedad/ciudad-de-mexico" className="group bg-[#f5f5f7] p-6 rounded-2xl hover:bg-[#0071e3] hover:text-white transition-all duration-300">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 rounded-full bg-white text-[#0071e3] flex items-center justify-center">
+                                    <Brain className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-lg text-[#1d1d1f] group-hover:text-white">Ansiedad</span>
+                            </div>
+                            <p className="text-sm text-[#86868b] group-hover:text-white/90 mb-4">Encuentra especialistas en Ciudad de México.</p>
+                            <span className="text-sm font-medium text-[#0071e3] group-hover:text-white flex items-center gap-1">
+                                Ver doctores <ChevronRight className="w-4 h-4" />
+                            </span>
+                        </Link>
+
+                        <Link href="/padecimientos/diabetes/jalisco/guadalajara" className="group bg-[#f5f5f7] p-6 rounded-2xl hover:bg-[#0071e3] hover:text-white transition-all duration-300">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 rounded-full bg-white text-[#0071e3] flex items-center justify-center">
+                                    <Activity className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-lg text-[#1d1d1f] group-hover:text-white">Diabetes</span>
+                            </div>
+                            <p className="text-sm text-[#86868b] group-hover:text-white/90 mb-4">Especialistas en Guadalajara.</p>
+                            <span className="text-sm font-medium text-[#0071e3] group-hover:text-white flex items-center gap-1">
+                                Ver doctores <ChevronRight className="w-4 h-4" />
+                            </span>
+                        </Link>
+
+                        <Link href="/especialidad/dentista-odontologo/ciudad-de-mexico" className="group bg-[#f5f5f7] p-6 rounded-2xl hover:bg-[#0071e3] hover:text-white transition-all duration-300">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-10 h-10 rounded-full bg-white text-[#0071e3] flex items-center justify-center">
+                                    <Smile className="w-5 h-5" />
+                                </div>
+                                <span className="font-bold text-lg text-[#1d1d1f] group-hover:text-white">Gingivitis</span>
+                            </div>
+                            <p className="text-sm text-[#86868b] group-hover:text-white/90 mb-4">Dentistas en Ciudad de México.</p>
+                            <span className="text-sm font-medium text-[#0071e3] group-hover:text-white flex items-center gap-1">
+                                Ver doctores <ChevronRight className="w-4 h-4" />
+                            </span>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* 5️⃣ Navegación por Categorías */}
+                <div className="animate-in fade-in slide-in-from-bottom-8">
+                    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-8 text-center">Categorías Principales</h2>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        <Link 
+                            href="/especialidades" 
+                            className="bg-white border border-slate-200 px-8 py-4 rounded-full text-[#1d1d1f] font-semibold hover:border-[#0071e3] hover:text-[#0071e3] transition-colors shadow-sm flex items-center gap-2"
+                        >
+                            <Stethoscope className="w-5 h-5" /> Especialidades Médicas
+                        </Link>
+                        <Link 
+                            href="/padecimientos" 
+                            className="bg-white border border-slate-200 px-8 py-4 rounded-full text-[#1d1d1f] font-semibold hover:border-[#0071e3] hover:text-[#0071e3] transition-colors shadow-sm flex items-center gap-2"
+                        >
+                            <Activity className="w-5 h-5" /> Padecimientos y Condiciones
+                        </Link>
+                        <Link 
+                            href="/enciclopedia" 
+                            className="bg-[#0071e3] text-white border border-[#0071e3] px-8 py-4 rounded-full font-semibold shadow-sm flex items-center gap-2"
+                        >
+                            <BookOpen className="w-5 h-5" /> Guías y Artículos
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 flex gap-4 animate-in fade-in slide-in-from-bottom-8">

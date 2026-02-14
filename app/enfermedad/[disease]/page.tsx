@@ -1,27 +1,15 @@
 import React from 'react';
-import { supabase } from '../../../lib/supabase';
-import { Doctor, Article } from '../../../types';
+import { supabase } from '@/lib/supabase';
+import { Doctor, Article } from '@/types';
 import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES } from '../../../lib/constants';
-import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify, getStateForCity } from '@/lib/constants';
+import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
-
-// --- Helpers ---
-
-const slugify = (text: string) => {
-  return text.toString().toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
-};
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
   return [...doctors].sort((a, b) => {
@@ -393,16 +381,19 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     </p>
 
                     <div className="flex flex-wrap gap-3">
-                        {TOP_CITIES.slice(0, 8).map((city) => (
-                            <Link 
-                                key={city}
-                                href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
-                            >
-                                <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
-                                <span>{spec} en {city}</span>
-                            </Link>
-                        ))}
+                        {TOP_CITIES.slice(0, 8).map((city) => {
+                            const stateSlug = getStateForCity(city);
+                            return (
+                                <Link 
+                                    key={city}
+                                    href={`/doctores/${stateSlug}/${slugify(city)}/${slugify(spec)}`}
+                                    className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
+                                >
+                                    <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
+                                    <span>{spec} en {city}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
                 </section>
             ))
@@ -416,16 +407,19 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                    {TOP_CITIES.slice(0, 8).map((city) => (
-                        <Link 
-                            key={city}
-                            href={`/doctores/${slugify(city)}`}
-                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
-                        >
-                            <MapPin className="w-4 h-4 text-[#86868b]" />
-                            <span>Doctores en {city}</span>
-                        </Link>
-                    ))}
+                    {TOP_CITIES.slice(0, 8).map((city) => {
+                        const stateSlug = getStateForCity(city);
+                        return (
+                            <Link 
+                                key={city}
+                                href={`/doctores/${stateSlug}/${slugify(city)}`}
+                                className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                            >
+                                <MapPin className="w-4 h-4 text-[#86868b]" />
+                                <span>Doctores en {city}</span>
+                            </Link>
+                        );
+                    })}
                 </div>
             </section>
         )}

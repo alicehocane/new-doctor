@@ -5,7 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fcqtnpqcgzu
 
 // UPDATED: Using Anon Key. Service Role Key must NOT be used on client side.
 // Ensure your Supabase RLS policies are configured to allow the authenticated admin user to write data.
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjcXRucHFjZ3p1YWdyc3ViaGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxODEwMjIsImV4cCI6MjA4NTc1NzAyMn0.pWzVs-Ja_4Huc9PikU3oQiP1Irf72uL6fi6Khn5R4e4';
 
 export const isSupabaseConfigured = () => {
     return supabaseUrl.length > 0 && supabaseKey.length > 0;

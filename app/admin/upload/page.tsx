@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { DoctorUploader } from '../../../components/DoctorUploader';
 import { ArticleUploader } from '../../../components/ArticleUploader';
 import { SitemapGenerator } from '../../../components/SitemapGenerator';
-import { Database, BookOpen, LogOut, Loader2, AlertCircle, Shield, Globe } from 'lucide-react';
+import { Database, BookOpen, Lock, LogOut, Loader2, AlertCircle, Shield, Globe } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 
 export default function AdminUploadPage() {
