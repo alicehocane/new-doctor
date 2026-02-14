@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
-import { Doctor } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck } from 'lucide-react';
+import { Doctor, Article } from '../../../types';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;
@@ -50,8 +51,8 @@ export async function generateMetadata({ params }: { params: { specialty: string
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
   return {
-    title: `${searchTerm}s en México`,
-    description: `Encuentra a los mejores ${searchTerm.toLowerCase()}s verificados en México. Información sobre padecimientos, tratamientos y contacto directo.`,
+    title: `${searchTerm}s en México - Procedimientos y Consulta`,
+    description: `Guía completa sobre ${searchTerm}s. Qué esperar en la primera consulta, procedimientos comunes y lista de especialistas verificados en México.`,
   };
 }
 
@@ -63,8 +64,10 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en México.`;
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || ['Diagnóstico general', 'Tratamiento especializado', 'Seguimiento de padecimientos', 'Consultas preventivas'];
+  const procedures = SPECIALTY_PROCEDURES[searchTerm] || ['Evaluación clínica', 'Diagnóstico especializado', 'Plan de tratamiento', 'Seguimiento médico'];
+  const firstVisitText = SPECIALTY_FIRST_VISIT[searchTerm] || 'Durante la primera consulta, el especialista realizará una historia clínica detallada para entender tus síntomas y antecedentes. Se llevará a cabo un examen físico enfocado en tu motivo de consulta para determinar el mejor plan de diagnóstico y tratamiento.';
 
-  // 1. Fetch Initial Data Server-Side
+  // 1. Fetch Initial Data Server-Side (Doctors)
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
@@ -72,6 +75,15 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+
+  // 2. Fetch Related Articles
+  const { data: articles } = await supabase
+    .from('articles')
+    .select('id, title, slug, excerpt, category, author, read_time')
+    .ilike('category', `%${searchTerm}%`)
+    .limit(3);
+  
+  const relatedArticles = articles as Article[] || [];
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -147,7 +159,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
           </h1>
           <div className="space-y-1">
              <p className="text-xl md:text-2xl text-[#86868b] font-normal">
-               Encuentra al mejor {searchTerm}.
+               Guía completa y directorio de especialistas.
              </p>
              <p className="text-[#86868b] text-base md:text-lg max-w-3xl font-normal leading-relaxed">
                {description}
@@ -155,17 +167,99 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
           </div>
         </div>
 
+        {/* 1️⃣ "What to Expect" Section - Adds authoritative content */}
+        <section className="bg-white rounded-[32px] p-8 md:p-10 border border-slate-200 mb-12 animate-in fade-in slide-in-from-bottom-3 shadow-sm">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+                <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
+                        <UserCheck className="w-7 h-7 text-[#0071e3]" />
+                        ¿Qué esperar de tu primera visita?
+                    </h2>
+                    <p className="text-lg text-[#86868b] leading-relaxed mb-6">
+                        {firstVisitText}
+                    </p>
+                    <div className="flex flex-wrap gap-4">
+                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f] bg-[#f5f5f7] px-4 py-2 rounded-full">
+                            <Clock className="w-4 h-4 text-[#0071e3]" />
+                            Duración: 30 - 60 min
+                        </div>
+                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f] bg-[#f5f5f7] px-4 py-2 rounded-full">
+                            <ClipboardList className="w-4 h-4 text-[#0071e3]" />
+                            Llevar estudios previos
+                        </div>
+                    </div>
+                </div>
+                {/* Procedures Mini-Grid */}
+                <div className="flex-1 w-full bg-[#f9f9fb] rounded-2xl p-6 md:p-8">
+                    <h3 className="font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
+                        <Stethoscope className="w-5 h-5 text-[#86868b]" />
+                        Procedimientos Comunes
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {procedures.map((proc, idx) => (
+                            <div key={idx} className="flex items-start gap-2.5">
+                                <div className="mt-1 w-4 h-4 rounded-full bg-white border border-[#d2d2d7] flex items-center justify-center shrink-0">
+                                    <div className="w-2 h-2 rounded-full bg-[#0071e3]"></div>
+                                </div>
+                                <span className="text-sm text-[#1d1d1f]/80 font-medium leading-tight">{proc}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
         {/* Interactive Doctor List */}
         <SpecialtyDoctorList initialDoctors={doctors} specialty={searchTerm} />
 
-        {/* NEW: SEO / Informational Content Section */}
-        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-20 animate-in fade-in slide-in-from-bottom-8">
+        {/* 2️⃣ Related Articles Section - Boosts internal linking and relevance */}
+        {relatedArticles.length > 0 && (
+            <section className="mt-20 pt-10 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-6">
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] flex items-center gap-2">
+                        <BookOpen className="w-7 h-7 text-[#0071e3]" />
+                        Artículos y Guías sobre {searchTerm}
+                    </h2>
+                    <Link href="/enciclopedia" className="text-[#0071e3] font-medium hover:underline text-sm hidden md:block">
+                        Ver biblioteca
+                    </Link>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {relatedArticles.map((article) => (
+                        <Link key={article.id} href={`/enciclopedia/${article.slug}`}>
+                            <div className="group h-full bg-white rounded-[24px] p-6 border border-slate-200 hover:border-[#0071e3]/30 hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="px-2.5 py-1 bg-[#0071e3]/10 text-[#0071e3] text-[10px] font-bold uppercase tracking-wider rounded-lg truncate">
+                                        {article.category.split(',')[0]}
+                                    </span>
+                                    <span className="text-[11px] text-[#86868b] ml-auto">
+                                        {article.read_time} lectura
+                                    </span>
+                                </div>
+                                <h3 className="text-lg font-bold text-[#1d1d1f] mb-3 leading-snug group-hover:text-[#0071e3] transition-colors line-clamp-2">
+                                    {article.title}
+                                </h3>
+                                <p className="text-[#86868b] text-sm leading-relaxed mb-4 line-clamp-3 flex-1">
+                                    {article.excerpt}
+                                </p>
+                                <div className="flex items-center text-[#0071e3] font-semibold text-xs mt-auto group-hover:translate-x-1 transition-transform">
+                                    Leer más <ArrowRight className="w-3 h-3 ml-1" />
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        {/* Existing Educational Content Section (Refined) */}
+        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
             <div className="max-w-4xl mx-auto space-y-12">
                 
-                {/* Intro */}
                 <div className="text-center space-y-4">
                     <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] tracking-tight">
-                        Doctores y Especialistas en {searchTerm} | MediBusca
+                        Doctores y Especialistas en {searchTerm}
                     </h2>
                     <p className="text-lg text-[#86868b] leading-relaxed max-w-2xl mx-auto">
                         La {searchTerm.toLowerCase()} se enfoca en el diagnóstico y manejo de condiciones en este campo médico. MediBusca lista doctores que ejercen de manera independiente, permitiendo a los pacientes conectar directamente con especialistas para recibir orientación y tratamiento.
@@ -173,19 +267,6 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12">
-                    {/* What they do */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <BookOpen className="w-5 h-5 text-[#0071e3]" />
-                             </div>
-                             <h3 className="text-xl font-semibold text-[#1d1d1f]">¿Qué hace un {searchTerm}?</h3>
-                        </div>
-                        <p className="text-[#86868b] leading-relaxed">
-                            {description}
-                        </p>
-                    </div>
-
                     {/* Conditions Managed */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-3 mb-2">
@@ -203,28 +284,19 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                             ))}
                         </ul>
                     </div>
-                </div>
 
-                {/* When to consult & Find Doctors */}
-                <div className="grid md:grid-cols-2 gap-12 pt-8 border-t border-[#f5f5f7]">
-                     <div className="space-y-3">
-                        <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                            ¿Cuándo consultar a un especialista?
-                        </h3>
-                        <p className="text-[#86868b] leading-relaxed text-[15px]">
+                    {/* When to consult */}
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 mb-2">
+                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                                <Info className="w-5 h-5 text-[#0071e3]" />
+                             </div>
+                             <h3 className="text-xl font-semibold text-[#1d1d1f]">¿Cuándo consultar?</h3>
+                        </div>
+                        <p className="text-[#86868b] leading-relaxed">
                             Los pacientes deben considerar contactar a un especialista si los síntomas persisten, si requieren una segunda opinión experta o si han sido derivados por un médico general para un tratamiento específico.
                         </p>
-                     </div>
-
-                     <div className="space-y-3">
-                        <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                             <Stethoscope className="w-5 h-5 text-[#86868b]" />
-                             Encuentra especialistas en {searchTerm}
-                        </h3>
-                        <p className="text-[#86868b] leading-relaxed text-[15px]">
-                             Explora los perfiles de doctores en MediBusca, revisa la información de sus clínicas y conecta directamente con ellos para agendar una consulta o resolver tus dudas.
-                        </p>
-                     </div>
+                    </div>
                 </div>
 
                 {/* Disclaimer */}
