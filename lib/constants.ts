@@ -1,9 +1,20 @@
 
 export const POPULAR_CITIES = [
-  'Aguascalientes', 'Chihuahua', 'Ciudad Juárez', 'Ciudad de México',
-  'Cuernavaca', 'Ecatepec de Morelos', 'Guadalajara', 'Gustavo A. Madero',
-  'Iztapalapa', 'León', 'Mexicali', 'Monterrey', 'Mérida', 'Puebla',
-  'San Luis Potosí', 'Tijuana', 'Toluca', 'Zapopan'
+  'Ciudad de México',
+  'Monterrey',
+  'Guadalajara',
+  'Puebla',
+  'Querétaro',
+  'Mérida',
+  'Cancún',
+  'Tijuana',
+  'León',
+  'San Luis Potosí',
+  'Toluca',
+  'Veracruz',
+  'Cuernavaca',
+  'Aguascalientes',
+  'Chihuahua'
 ];
 
 export const ALL_CITIES = [

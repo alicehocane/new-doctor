@@ -1,15 +1,16 @@
 
 import React from 'react';
-import { supabase } from '../../../lib/supabase';
-import { Doctor, Article } from '../../../types';
-import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Brain, HeartPulse, Stethoscope, Search } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { Doctor, Article } from '@/types';
+import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Brain, HeartPulse, Stethoscope, Search, Clock, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify, getStateForCity } from '../../../lib/constants';
-import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify, getStateForCity } from '@/lib/constants';
+import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 8;
+const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
   return [...doctors].sort((a, b) => {
@@ -127,7 +128,7 @@ export async function generateMetadata({ params }: { params: { disease: string }
 
 export default async function DiseasePage({ params }: { params: { disease: string } }) {
   const diseaseSlug = params.disease;
-  const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
   const content = getRichContent(diseaseSlug, diseaseName, details);
 
   // 1. Fetch Initial Doctors (Supporting list)
@@ -141,9 +142,19 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
-  if (doctors.length === 0 && !isKnownDisease && diseaseSlug !== 'ansiedad') { // Allow 'ansiedad' even if no docs locally for now
+  if (doctors.length === 0 && !isKnownDisease && diseaseSlug !== 'ansiedad') {
     notFound();
   }
+
+  // 2. Fetch Related Articles
+  const { data: articlesData } = await supabase
+    .from('articles')
+    .select('*')
+    .or(`title.ilike.%${diseaseName}%,category.ilike.%${diseaseName}%,excerpt.ilike.%${diseaseName}%`)
+    .order('published_at', { ascending: false })
+    .limit(3);
+  
+  const relatedArticles = articlesData as Article[] || [];
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -186,7 +197,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalConditionSchema) }} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+      <div className="max-w-4xl mx-auto px-6 py-12 md:py-16 space-y-16">
         
         {/* 1️⃣ Header */}
         <header className="space-y-6 animate-in fade-in slide-in-from-bottom-2">
@@ -195,12 +206,21 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 <span className="mx-2 text-[#d2d2d7]">/</span>
                 <Link href="/padecimientos" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
                 <span className="mx-2 text-[#d2d2d7]">/</span>
-                <span className="text-[#1d1d1f] font-semibold">{diseaseName}</span>
+                <span className="text-[#1d1d1f] font-semibold capitalize">{diseaseName}</span>
             </nav>
 
-            <h1 className="text-4xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight">
-                {diseaseName}
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-end gap-4 mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight capitalize">
+                  {diseaseName}
+              </h1>
+              {targetSpecialty && (
+                <Link href={`/especialidad/${slugify(targetSpecialty)}`} className="mb-1.5">
+                    <span className="px-3 py-1 bg-[#0071e3]/10 text-[#0071e3] rounded-full text-sm font-semibold hover:bg-[#0071e3]/20 transition-colors">
+                        Especialista sugerido: {targetSpecialty}
+                    </span>
+                </Link>
+              )}
+            </div>
             
             <div className="bg-white p-6 md:p-8 rounded-[24px] border border-slate-200 shadow-sm leading-relaxed text-lg text-[#1d1d1f]/80">
                 {content.intro}
@@ -355,15 +375,116 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
         </section>
 
-        {/* 9️⃣ Local Treatment Links */}
-        <section className="pt-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
+        {/* Related Articles Section */}
+        {relatedArticles.length > 0 && (
+            <section className="mt-20 mb-12 animate-in fade-in slide-in-from-bottom-8">
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-2xl font-bold text-[#1d1d1f] flex items-center gap-2">
+                        Guías y Artículos sobre {diseaseName}
+                    </h2>
+                    <Link href="/enciclopedia" className="text-[#0071e3] font-medium hover:underline text-sm hidden md:block">
+                        Ver enciclopedia
+                    </Link>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {relatedArticles.map((article) => (
+                        <Link key={article.id} href={`/enciclopedia/${article.slug}`}>
+                            <div className="group h-full bg-white rounded-[20px] p-6 border border-[#d2d2d7]/60 hover:border-[#0071e3]/30 hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col relative overflow-hidden">
+                                {/* Decorative gradient blob */}
+                                <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#0071e3]/5 rounded-full blur-2xl group-hover:bg-[#0071e3]/10 transition-all"></div>
+                                
+                                <div className="flex items-center gap-2 mb-4 relative z-10">
+                                    <span className="px-2.5 py-1 bg-[#0071e3]/10 text-[#0071e3] text-[10px] font-bold uppercase tracking-wider rounded-lg">
+                                        Artículo
+                                    </span>
+                                    <span className="text-[11px] text-[#86868b] flex items-center gap-1 ml-auto shrink-0">
+                                        <Clock className="w-3 h-3" /> {article.read_time}
+                                    </span>
+                                </div>
+                                
+                                <h3 className="text-lg font-bold text-[#1d1d1f] mb-3 leading-snug group-hover:text-[#0071e3] transition-colors line-clamp-2 relative z-10">
+                                    {article.title}
+                                </h3>
+                                
+                                <p className="text-[#86868b] text-[14px] leading-relaxed mb-6 line-clamp-3 flex-1 relative z-10">
+                                    {article.excerpt}
+                                </p>
+                                
+                                <div className="flex items-center text-[#0071e3] font-semibold text-[14px] mt-auto relative z-10 group-hover:translate-x-1 transition-transform">
+                                    Leer artículo completo <ChevronRight className="w-4 h-4 ml-1" />
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        {/* Cities Section (Specialty Focused) - Updated to new URL structure */}
+        {relatedSpecialties.length > 0 ? (
+            relatedSpecialties.slice(0, 3).map((spec) => (
+                <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
+                        {spec.startsWith('Medicina') || spec.includes('Cirujano') 
+                            ? `Expertos en ${spec} cerca de ti`
+                            : `Mejores ${spec}s por ciudad`
+                        }
+                    </h2>
+                    <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
+                        La atención local es clave para el seguimiento de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>. Encuentra consultorios equipados y especialistas certificados en las principales ciudades.
+                    </p>
+
+                    <div className="flex flex-wrap gap-3">
+                        {TOP_CITIES.slice(0, 8).map((city) => {
+                            return (
+                                <Link 
+                                    key={city}
+                                    href={`/doctores/${slugify(city)}/${slugify(spec)}`}
+                                    className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
+                                >
+                                    <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
+                                    <span>{spec} en {city}</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </section>
+            ))
+        ) : (
+            /* Fallback: General Doctor Search */
+            <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
+                    Encuentra especialistas en las principales ciudades
+                </h2>
+                <p className="text-[#86868b] mb-8 text-[17px]">
+                    Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                    {TOP_CITIES.slice(0, 8).map((city) => {
+                        return (
+                            <Link 
+                                key={city}
+                                href={`/doctores/${slugify(city)}`}
+                                className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                            >
+                                <MapPin className="w-4 h-4 text-[#86868b]" />
+                                <span>Doctores en {city}</span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            </section>
+        )}
+
+        {/* 9️⃣ Local Treatment Links (Specific Padecimiento + City) */}
+        <section className="pt-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8 mt-12">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-6">Tratamiento de {diseaseName} en tu Ciudad</h2>
             <p className="text-lg text-[#86868b] mb-8">
                 Si buscas atención médica o psicológica especializada, puedes explorar opciones de tratamiento disponibles cerca de ti:
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mb-12">
                 {POPULAR_CITIES.slice(0, 6).map((city) => {
-                    const stateSlug = getStateForCity(city);
                     return (
                         <Link 
                             key={city}
@@ -403,7 +524,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         </section>
 
         {/* 🔟 Related Resources */}
-        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-8">
+        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-8 mt-12">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-8">Recursos Relacionados</h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link href="/especialidades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
