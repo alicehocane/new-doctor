@@ -16,7 +16,7 @@ export default function SiteHeader() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50 transition-all duration-300">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-[48px] md:h-[52px] flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[48px] md:h-[52px] flex items-center justify-between">
         
         {/* Logo */}
         <Link href="/" className="text-xl font-semibold tracking-tight text-[#1d1d1f] flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity" aria-label="MediBusca Inicio">
@@ -29,7 +29,6 @@ export default function SiteHeader() {
           <Link href="/especialidades" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Especialidades</Link>
           <Link href="/enfermedades" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Padecimientos</Link>
           <Link href="/enciclopedia" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Enciclopedia</Link>
-          <Link href="/admin/upload" className="hover:text-blue-600 hover:opacity-100 transition-all cursor-pointer">Admin</Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -57,7 +56,6 @@ export default function SiteHeader() {
           <Link href="/especialidades" className="py-2 border-b border-slate-100">Especialidades</Link>
           <Link href="/enfermedades" className="py-2 border-b border-slate-100">Padecimientos</Link>
           <Link href="/enciclopedia" className="py-2 border-b border-slate-100">Enciclopedia</Link>
-          <Link href="/admin/upload" className="py-2 text-slate-500">Admin</Link>
         </nav>
       </div>
     </header>
