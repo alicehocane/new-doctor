@@ -329,7 +329,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
                      <div className="space-y-3">
                         <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                             <Info className="w-5 h-5 text-[#86868b]" />
                              Cuándo contactar a un Doctor
                         </h3>
                          <div className="space-y-3 text-[#86868b] leading-relaxed text-[15px]">
@@ -341,6 +340,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
                 {/* Disclaimer */}
                 <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4">
+                    <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <div className="text-sm text-amber-900/80">
                         <strong>Aviso Médico:</strong> MediBusca proporciona solo información. La plataforma no ofrece consejo médico, diagnóstico, tratamiento ni reserva de citas. Siempre consulta a un profesional de la salud calificado.
                     </div>
