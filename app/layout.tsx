@@ -97,62 +97,64 @@ export default function RootLayout({
         </main>
 
         <footer className="bg-[#f5f5f7] border-t border-slate-200 text-[#86868b] py-16 mt-auto text-[13px]">
-           <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-             
-             <div className="space-y-4">
-               <Link href="/" className="text-[17px] font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors block">MediBusca</Link>
-               <p className="leading-relaxed">
-                 MediBusca es una plataforma informativa de salud. Ayudamos a las personas a encontrar médicos, especialidades y contenido médico claro y confiable.
-               </p>
-               <div className="bg-white border border-slate-200 p-3 rounded-lg">
-                 <p className="font-medium text-[#1d1d1f] text-xs">
-                   No brindamos atención médica ni realizamos diagnósticos o tratamientos.
-                 </p>
-               </div>
-             </div>
+  <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    
+    <div className="space-y-4">
+      <Link href="/" className="text-[17px] font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors block">MediBusca</Link>
+      <p className="leading-relaxed">
+        MediBusca es el directorio informativo líder en México para la validación de credenciales médicas y localización de especialistas.
+      </p>
+      {/* NEW: Physical Trust Signal */}
+      <div className="text-[11px] space-y-1">
+        <p>Ciudad de México, México</p>
+        <p>Contacto: contacto@medibusca.com</p>
+      </div>
+    </div>
 
-             <div className="space-y-4">
-               <h3 className="font-semibold text-[#1d1d1f]">Enlaces importantes</h3>
-               <ul className="space-y-3">
-                 <li><Link href="/nosotros" className="hover:text-[#0071e3] hover:underline transition-colors">Sobre nosotros</Link></li>
-                 <li><Link href="/politica-editorial" className="hover:text-[#0071e3] hover:underline transition-colors">Política Editorial</Link></li>
-                 <li><Link href="/privacidad" className="hover:text-[#0071e3] hover:underline transition-colors">Política de privacidad</Link></li>
-                 <li><Link href="/terminos" className="hover:text-[#0071e3] hover:underline transition-colors">Términos y condiciones</Link></li>
-                 <li><Link href="/contacto" className="hover:text-[#0071e3] hover:underline transition-colors">Contacto</Link></li>
-               </ul>
-             </div>
+    <div className="space-y-4">
+      <h3 className="font-semibold text-[#1d1d1f]">Institucional</h3>
+      <ul className="space-y-3">
+        <li><Link href="/nosotros" className="hover:text-[#0071e3] transition-colors">Sobre nosotros</Link></li>
+        <li><Link href="/politica-editorial" className="hover:text-[#0071e3] transition-colors">Política Editorial y Verificación</Link></li>
+        <li><Link href="/privacidad" className="hover:text-[#0071e3] transition-colors">Privacidad</Link></li>
+        <li><Link href="/terminos" className="hover:text-[#0071e3] transition-colors">Términos</Link></li>
+      </ul>
+    </div>
 
-             <div className="space-y-4">
-               <h3 className="font-semibold text-[#1d1d1f]">Para pacientes</h3>
-               <ul className="space-y-3">
-                 <li><Link href="/buscar" className="hover:text-[#0071e3] hover:underline transition-colors">Buscar médicos por ciudad</Link></li>
-                 <li><Link href="/especialidades" className="hover:text-[#0071e3] hover:underline transition-colors">Buscar por especialidad</Link></li>
-                 <li><Link href="/enfermedades" className="hover:text-[#0071e3] hover:underline transition-colors">Explorar enfermedades y síntomas</Link></li>
-                 <li><Link href="/buscar" className="hover:text-[#0071e3] hover:underline transition-colors">Conectar con doctores</Link></li>
-               </ul>
-             </div>
+    <div className="space-y-4">
+      <h3 className="font-semibold text-[#1d1d1f]">Recursos</h3>
+      <ul className="space-y-3">
+        <li><Link href="/buscar" className="hover:text-[#0071e3] transition-colors">Directorio por Ciudad</Link></li>
+        <li><Link href="/especialidades" className="hover:text-[#0071e3] transition-colors">Especialidades Médicas</Link></li>
+        <li><Link href="/enfermedades" className="hover:text-[#0071e3] transition-colors">Síntomas y Padecimientos</Link></li>
+        <li><Link href="/enciclopedia" className="hover:text-[#0071e3] transition-colors">Enciclopedia de Salud</Link></li>
+      </ul>
+    </div>
 
-             <div className="space-y-6">
-               <div className="space-y-2">
-                 <h3 className="font-semibold text-[#1d1d1f]">Compromiso con la información</h3>
-                 <p className="leading-relaxed text-xs">
-                   El contenido de MediBusca es educativo y no reemplaza la consulta médica profesional. Siempre consulta a un médico calificado ante cualquier problema de salud.
-                 </p>
-               </div>
-               <div className="space-y-2">
-                 <h3 className="font-semibold text-[#1d1d1f]">Independencia y Transparencia</h3>
-                 <p className="leading-relaxed text-xs">
-                   MediBusca es un directorio independiente. <strong>No recibimos pagos de los doctores para alterar los resultados de búsqueda ni cobramos a los pacientes.</strong> Nuestra prioridad es la transparencia informativa y la privacidad de los usuarios.
-                 </p>
-               </div>
-             </div>
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h3 className="font-semibold text-[#1d1d1f]">Transparencia SEP</h3>
+        <p className="leading-relaxed text-[12px]">
+          Validamos las cédulas profesionales de nuestros especialistas directamente ante el <strong>Registro Nacional de Profesionistas</strong> para garantizar su veracidad.
+        </p>
+      </div>
+      <div className="bg-white border border-slate-200 p-3 rounded-xl shadow-sm">
+        <p className="font-medium text-[#1d1d1f] text-[11px] leading-tight">
+          <strong>Aviso:</strong> MediBusca no es un centro médico. La información aquí contenida no sustituye el diagnóstico de un profesional de la salud.
+        </p>
+      </div>
+    </div>
 
-           </div>
+  </div>
 
-           <div className="max-w-6xl mx-auto px-6 border-t border-slate-200 pt-8">
-             <p>&copy; {new Date().getFullYear()} MediBusca. Todos los derechos reservados.</p>
-           </div>
-        </footer>
+  <div className="max-w-6xl mx-auto px-6 border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p>&copy; {new Date().getFullYear()} MediBusca. Información de salud verificada.</p>
+    <div className="flex gap-6">
+      {/* Add your social links here if you have them */}
+      <span className="text-[11px] text-[#d2d2d7]">Hecho con rigor médico en México</span>
+    </div>
+  </div>
+</footer>
       </body>
     </html>
   );
