@@ -133,7 +133,7 @@ export const SitemapGenerator: React.FC = () => {
             citySpecUrls.push({
                   loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`,
                   changefreq: 'monthly',
-                  priority: '0.8'
+                  priority: '0.9'
               });
           });
       });
@@ -154,7 +154,7 @@ export const SitemapGenerator: React.FC = () => {
             diseaseCityUrls.push({
                 loc: `${SITE_URL}/enfermedad/${slugify(disease)}/${slugify(city)}`,
                 changefreq: 'monthly',
-                priority: '0.8'
+                priority: '0.9'
             });
         });
       });
@@ -180,7 +180,7 @@ export const SitemapGenerator: React.FC = () => {
             loc: `${SITE_URL}/enciclopedia/${article.slug}`,
             lastmod: article.published_at || new Date().toISOString(),
             changefreq: 'weekly',
-            priority: '0.7'
+            priority: '0.9'
         }));
         
         files.push({
@@ -241,7 +241,7 @@ export const SitemapGenerator: React.FC = () => {
             loc: `${SITE_URL}/medico/${doc.slug}`,
             lastmod: doc.updated_at || new Date().toISOString(),
             changefreq: 'monthly',
-            priority: '0.6'
+            priority: '0.5'
         }));
 
         const doctorChunks = chunkArray(doctorUrls, MAX_URLS_PER_SITEMAP);
