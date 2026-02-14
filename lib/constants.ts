@@ -15,6 +15,7 @@ export const POPULAR_CITIES = [
   'Cuernavaca',
   'Aguascalientes',
   'Chihuahua'
+];
 
 export const ALL_CITIES = [
   'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 
