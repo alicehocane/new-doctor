@@ -1,3 +1,6 @@
+
+'use client';
+
 import React, { useState, useCallback, useRef } from 'react';
 import { Upload, FileJson, CheckCircle, AlertCircle, Loader2, X, Play, Database } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';

@@ -1,3 +1,6 @@
+
+'use client';
+
 import React, { useState } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { FileCode, Download, Loader2, AlertCircle, CheckCircle, Globe, Layers, FileText, Info } from 'lucide-react';

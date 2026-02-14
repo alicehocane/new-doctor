@@ -1,3 +1,6 @@
+
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { BookOpen, Save, Loader2, CheckCircle, AlertCircle, RefreshCw, Trash2, Edit2, X, Calendar, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
