@@ -1,6 +1,7 @@
+
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Activity, MapPin, Search, Phone } from 'lucide-react';
+import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck } from 'lucide-react';
 import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
@@ -26,13 +27,18 @@ const FEATURED_CITIES = [
   'Monterrey'
 ];
 
-const TOP_SPECIALTIES = [
-  'Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista'
+const TOP_SPECIALTIES_DATA = [
+  { name: 'Dentista - Odontólogo', tag: 'Salud Bucal', description: 'Cuidado dental y encías' },
+  { name: 'Psicólogo', tag: 'Salud Mental', description: 'Terapia emocional' },
+  { name: 'Pediatra', tag: 'Infantil', description: 'Desarrollo de niños' },
+  { name: 'Médico general', tag: 'Atención Primaria', description: 'Primer contacto médico' },
+  { name: 'Ginecólogo', tag: 'Salud Femenina', description: 'Embarazo y mujer' },
+  { name: 'Internista', tag: 'Adultos', description: 'Diagnóstico integral' }
 ];
 
 export const metadata: Metadata = {
   title: "Especialidades Médicas - Directorio Completo",
-  description: "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud.",
+  description: "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud en México.",
 };
 
 const slugify = (text: string) => {
@@ -75,11 +81,11 @@ export default function SpecialtiesIndexPage() {
     "@type": "ItemList",
     "name": "Especialidades Médicas Populares",
     "description": "Lista de las especialidades médicas más buscadas en México.",
-    "itemListElement": TOP_SPECIALTIES.map((spec, index) => ({
+    "itemListElement": TOP_SPECIALTIES_DATA.map((item, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "name": spec,
-      "url": `https://medibusca.com/especialidad/${slugify(spec)}`
+      "name": item.name,
+      "url": `https://medibusca.com/especialidad/${slugify(item.name)}`
     }))
   };
 
@@ -101,20 +107,61 @@ export default function SpecialtiesIndexPage() {
             </p>
         </div>
 
-        {/* Introduction Section */}
-        <div className="max-w-4xl mx-auto text-center mb-16 animate-in fade-in slide-in-from-bottom-3">
+        {/* Introduction & Responsibility Section */}
+        <div className="max-w-4xl mx-auto mb-16 animate-in fade-in slide-in-from-bottom-3">
             <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
                 {/* Decorative top border */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#0071e3] to-transparent opacity-20"></div>
                 
-                <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Directorio Médico Gratuito en México</h2>
-                <p className="text-[#86868b] leading-relaxed text-lg">
+                <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Directorio Médico en México</h2>
+                <p className="text-[#86868b] leading-relaxed text-lg mb-6">
                     En MediBusca, te ayudamos a encontrar al médico adecuado de forma rápida y sencilla. 
-                    Ya sea que busques un dentista, un pediatra o un psicólogo, aquí puedes ver perfiles de profesionales en tu ciudad. 
-                    Nuestra plataforma es gratuita y te permite contactar directamente a las clínicas sin pagar comisiones.
+                    Organizamos la oferta de salud por especialidad para facilitar tu acceso a un <strong>Consultorio Médico Privado</strong> confiable.
                 </p>
+
+                <div className="bg-blue-50/60 rounded-xl p-5 border border-blue-100 mb-8">
+                    <p className="text-[#1d1d1f] text-sm leading-relaxed font-medium">
+                        <strong>Nota de Responsabilidad:</strong> MediBusca no es un intermediario de salud ni cobramos comisiones. Nuestra labor es la transcripción y organización de datos públicos y profesionales para que los pacientes en México puedan tomar decisiones informadas.
+                    </p>
+                </div>
+
+                {/* SEP Verification Standard Block */}
+                <div className="flex items-start gap-4 pt-4 border-t border-slate-100">
+                    <div className="bg-green-100 p-2 rounded-full shrink-0">
+                        <ShieldCheck className="w-6 h-6 text-green-700" />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-[#1d1d1f] text-sm uppercase tracking-wide mb-1">Nuestro Estándar de Verificación</h3>
+                        <p className="text-[#86868b] text-sm leading-relaxed">
+                            Todos los especialistas listados en este directorio cuentan con cédulas profesionales verificables ante el <strong>Registro Nacional de Profesionistas (SEP)</strong>. Filtramos nuestra base de datos para asegurar que solo profesionales con la <strong>Cédula de Especialidad Médica</strong> adecuada sean mostrados.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        {/* High Demand Specialties Grid */}
+        <section className="mb-20 animate-in fade-in slide-in-from-bottom-4">
+            <div className="flex items-center gap-3 mb-6">
+                <UserCheck className="w-6 h-6 text-[#0071e3]" />
+                <h2 className="text-2xl font-semibold text-[#1d1d1f]">Especialidades de Alta Demanda</h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {TOP_SPECIALTIES_DATA.map((spec) => (
+                    <Link
+                        key={spec.name}
+                        href={`/especialidad/${slugify(spec.name)}`}
+                        className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-[#0071e3] hover:shadow-md transition-all text-center flex flex-col justify-between h-full"
+                    >
+                        <div>
+                            <span className="block text-xs font-bold text-[#0071e3] uppercase tracking-wider mb-2">{spec.tag}</span>
+                            <h3 className="font-semibold text-[#1d1d1f] leading-tight mb-2 group-hover:text-[#0071e3] transition-colors">{spec.name}</h3>
+                        </div>
+                        <p className="text-xs text-[#86868b] leading-snug">{spec.description}</p>
+                    </Link>
+                ))}
+            </div>
+        </section>
 
         {/* Interactive List Component */}
         <SpecialtiesList specialties={allSpecialties} />
@@ -209,17 +256,17 @@ export default function SpecialtiesIndexPage() {
                             {city}
                         </h3>
                         <div className="grid grid-cols-1 gap-2">
-                            {TOP_SPECIALTIES.map((spec) => (
+                            {TOP_SPECIALTIES_DATA.map((spec) => (
                                 <Link 
-                                    key={`${city}-${spec}`}
-                                    href={`/doctores/${slugify(city)}/${slugify(spec)}`}
+                                    key={`${city}-${spec.name}`}
+                                    href={`/doctores/${slugify(city)}/${slugify(spec.name)}`}
                                     className="
                                         flex items-center justify-between group
                                         text-[15px] text-[#86868b] hover:text-[#0071e3] 
                                         transition-colors py-1
                                     "
                                 >
-                                    <span>{spec}</span>
+                                    <span>{spec.name}</span>
                                     <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0" />
                                 </Link>
                             ))}
