@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays } from 'lucide-react';
 import Link from 'next/link'; // Replaced wouter
 import { notFound } from 'next/navigation'; // For 404 handling
 import { Metadata } from 'next';
@@ -18,6 +18,11 @@ const slugify = (text: string) => {
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
+};
+
+const formatDate = (dateString?: string) => {
+    if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
 };
 
 // --- SEO Metadata Generation ---
@@ -156,7 +161,8 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         "addressLocality": doctor.cities[0] || "",
         "addressCountry": "MX"
     } : undefined,
-    "telephone": doctor.contact_info.phones?.[0] || undefined
+    "telephone": doctor.contact_info.phones?.[0] || undefined,
+    "dateModified": doctor.updated_at
   };
 
   // --- Render ---
@@ -211,7 +217,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                         <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
                     </div>
                     
-                    {/* NEW: Verification Tooltip/Block */}
+                    {/* Verification Tooltip/Block */}
                     <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 max-w-xl">
                         <div className="flex gap-3">
                             <ShieldCheck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
@@ -457,18 +463,24 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </section>
       )}
 
-      {/* Disclaimer Note */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex gap-3">
-            <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
-            <p className="text-xs text-slate-500 leading-relaxed">
-              <strong>Descargo de responsabilidad:</strong> Este perfil es informativo. MediBusca no ofrece atención médica ni reemplaza la consulta profesional. Recomendamos siempre validar las credenciales del médico presencialmente antes de iniciar cualquier tratamiento.
-            </p>
+      {/* Disclaimer Note & Last Updated */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-200 mt-8">
+         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+             <div className="flex gap-3 max-w-2xl">
+                <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  <strong>Descargo de responsabilidad:</strong> Este perfil es informativo. MediBusca no ofrece atención médica ni reemplaza la consulta profesional. Recomendamos siempre validar las credenciales del médico presencialmente antes de iniciar cualquier tratamiento.
+                </p>
+             </div>
+             <div className="flex items-center gap-2 text-xs text-slate-400 whitespace-nowrap">
+                <CalendarDays className="w-4 h-4" />
+                <span>Última actualización: {formatDate(doctor.updated_at)}</span>
+             </div>
          </div>
       </div>
 
       {/* SEO Cross-Linking Section */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200 mt-8">
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
             <Search className="w-5 h-5 text-[#86868b]" />
             Búsquedas Relacionadas

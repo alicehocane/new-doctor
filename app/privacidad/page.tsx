@@ -1,10 +1,11 @@
+
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Lock, Eye, FileText, CheckCircle, AlertTriangle, ExternalLink } from 'lucide-react';
+import { ShieldCheck, Lock, Eye, FileText, CheckCircle, AlertTriangle, ExternalLink, XCircle } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad | MediBusca",
+  title: "Política de Privacidada",
   description: "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información y el uso de datos en nuestra plataforma informativa de salud.",
 };
 
@@ -14,7 +15,7 @@ export default function PrivacyPage() {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Política de Privacidad",
+    "name": "Política de Privacidad | MediBusca",
     "description": "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información y el uso de datos en nuestra plataforma informativa de salud.",
     "url": "https://medibusca.com/privacidad"
   };
@@ -60,43 +61,49 @@ export default function PrivacyPage() {
             </div>
           </section>
 
+          <section className="mb-12 bg-red-50 border border-red-200 rounded-2xl p-6 shadow-sm">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2 text-red-600">
+              <Lock className="w-6 h-6" />
+              DATOS QUE NO RECOPILAMOS NI VENDEMOS
+            </h2>
+            <p className="mb-4 text-[#1d1d1f] font-medium">Para garantizar tu seguridad y privacidad médica, declaramos explícitamente lo siguiente:</p>
+            <ul className="space-y-4 mb-0 list-none pl-0">
+              <li className="flex items-start gap-3">
+                <XCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                <span>
+                    <strong>NO almacenamos expedientes médicos:</strong> MediBusca no solicita, recopila ni almacena historiales clínicos, resultados de laboratorio ni diagnósticos de los usuarios.
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <XCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                <span>
+                    <strong>NO vendemos datos a farmacéuticas:</strong> La información de navegación de los usuarios no es comercializada, cedida ni compartida con compañías farmacéuticas, aseguradoras ni terceros con fines de lucro.
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <XCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                <span>
+                    <strong>NO realizamos consultas médicas:</strong> La plataforma es un directorio. Toda comunicación médica ocurre estrictamente entre el paciente y el doctor fuera de nuestro entorno digital.
+                </span>
+              </li>
+            </ul>
+          </section>
+
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Información que recopilamos</h2>
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Información técnica que recopilamos</h2>
             <p className="mb-4">
-              MediBusca no solicita información médica personal sensible. Podemos recopilar información técnica básica de forma automática para el funcionamiento del sitio, como:
+              Podemos recopilar información técnica básica de forma automática para el funcionamiento y seguridad del sitio, como:
             </p>
             <ul className="grid sm:grid-cols-2 gap-2 list-none pl-0">
-              {['Dirección IP', 'Tipo de navegador', 'Tipo de dispositivo', 'Páginas visitadas', 'Tiempo de navegación'].map((item, i) => (
+              {['Dirección IP (anonimizada)', 'Tipo de navegador', 'Tipo de dispositivo', 'Páginas visitadas', 'Tiempo de navegación'].map((item, i) => (
                 <li key={i} className="flex items-center gap-2 text-sm bg-[#f5f5f7] p-2 rounded-lg text-[#1d1d1f]">
                   <CheckCircle className="w-4 h-4 text-green-600" /> {item}
                 </li>
               ))}
             </ul>
             <p className="mt-4 text-sm text-[#86868b]">
-              Estos datos se usan exclusivamente para análisis estadístico y mejora del rendimiento.
+              Estos datos se usan exclusivamente para análisis estadístico de rendimiento y mejora de la experiencia de usuario.
             </p>
-          </section>
-
-          <section className="mb-12 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2 text-red-600">
-              <Lock className="w-6 h-6" />
-              Información que NO recopilamos
-            </h2>
-            <p className="mb-4 text-[#1d1d1f]">Para tu seguridad, es importante aclarar qué datos NO procesamos:</p>
-            <ul className="space-y-3 mb-0 list-none pl-0">
-              <li className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2.5 shrink-0"></div>
-                <span><strong>No solicitamos historial médico:</strong> No almacenamos expedientes ni diagnósticos clínicos.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2.5 shrink-0"></div>
-                <span><strong>No realizamos consultas:</strong> La comunicación es directa con los doctores externos.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2.5 shrink-0"></div>
-                <span><strong>No almacenamos datos financieros:</strong> No procesamos pagos por servicios médicos.</span>
-              </li>
-            </ul>
           </section>
 
           <section className="mb-12">
@@ -154,7 +161,7 @@ export default function PrivacyPage() {
               Actualizaciones
             </h3>
             <p className="text-slate-300 leading-relaxed mb-0 text-sm">
-              Esta política puede actualizarse periódicamente. La última revisión fue realizada en <strong>Octubre 2023</strong>. Te recomendamos revisar esta página regularmente para estar informado sobre cambios.
+              Esta política puede actualizarse periódicamente. La última revisión fue realizada en <strong>Febrero 2026</strong>. Te recomendamos revisar esta página regularmente para estar informado sobre cambios.
             </p>
           </div>
 

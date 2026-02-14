@@ -140,9 +140,9 @@ export default function RootLayout({
                  </p>
                </div>
                <div className="space-y-2">
-                 <h3 className="font-semibold text-[#1d1d1f]">Transparencia y confianza</h3>
+                 <h3 className="font-semibold text-[#1d1d1f]">Independencia y Transparencia</h3>
                  <p className="leading-relaxed text-xs">
-                   MediBusca respeta la privacidad de los usuarios y no solicita información médica personal. La información publicada se revisa con fines educativos y puede actualizarse con el tiempo.
+                   MediBusca es un directorio independiente. <strong>No recibimos pagos de los doctores para alterar los resultados de búsqueda ni cobramos a los pacientes.</strong> Nuestra prioridad es la transparencia informativa y la privacidad de los usuarios.
                  </p>
                </div>
              </div>

@@ -1,6 +1,7 @@
+
 import React from 'react';
 import Link from 'next/link';
-import { Clock, ChevronLeft, User, Share2, Bookmark, ArrowRight, BookOpen } from 'lucide-react';
+import { Clock, ChevronLeft, User, Share2, Bookmark, ArrowRight, BookOpen, CalendarDays } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { Article } from '../../../types';
 import { notFound } from 'next/navigation';
@@ -28,6 +29,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description: article.excerpt || `Lee sobre ${article.title} en la Enciclopedia Médica de MediBusca.`,
   };
 }
+
+const formatDate = (dateString?: string) => {
+    if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+};
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
   // 1. Fetch Main Article
@@ -141,7 +147,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                             <span>{article.author_role}</span>
                             <span>•</span>
                             <span className="flex items-center gap-1">
-                                {article.published_at}
+                                {formatDate(article.published_at)}
                             </span>
                         </div>
                     </div>
@@ -262,6 +268,12 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
             {/* Footer / Disclaimer */}
             <div className="mt-20 pt-10 border-t border-slate-200">
+                <div className="flex justify-end mb-6 text-xs text-slate-400 font-medium">
+                    <span className="flex items-center gap-1">
+                        <CalendarDays className="w-3.5 h-3.5" />
+                        Última actualización: {formatDate(article.published_at)}
+                    </span>
+                </div>
                 <div className="bg-[#f5f5f7] rounded-2xl p-8">
                     <div className="flex items-start gap-4">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#86868b] mt-2 shrink-0"></div>

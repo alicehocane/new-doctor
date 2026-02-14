@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search } from 'lucide-react';
+import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -170,6 +171,19 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             <span className="mx-2 text-[#d2d2d7]">/</span>
             <span className="text-[#1d1d1f] capitalize">{diseaseName}</span>
         </nav>
+
+        {/* MEDICAL EMERGENCY ALERT */}
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-10 flex items-start gap-3 animate-in fade-in slide-in-from-top-4">
+            <div className="bg-red-100 p-2 rounded-full shrink-0">
+                <PhoneCall className="w-5 h-5 text-red-600" />
+            </div>
+            <div>
+                <h3 className="font-bold text-red-900 text-sm mb-1">¿Emergencia Médica?</h3>
+                <p className="text-sm text-red-800/90 leading-relaxed">
+                    Si tienes una emergencia médica, llama al <strong>911</strong> o acude al hospital más cercano de inmediato. Esta página es solo para fines informativos y no sustituye la atención urgente.
+                </p>
+            </div>
+        </div>
 
         {/* Header */}
         <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
