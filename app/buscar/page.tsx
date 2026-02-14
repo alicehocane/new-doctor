@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ShieldCheck, Phone, UserCheck, Star, HeartPulse, FileCheck, Map, Wallet, HelpCircle, Check } from 'lucide-react';
 import { ALL_DISEASES } from '../../lib/constants';
 import SearchForm from '../../components/SearchForm';
+import StartSearchButton from '../../components/StartSearchButton';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -188,12 +189,7 @@ export default function SearchPage() {
                       <p className="text-[#86868b] mb-8">
                           Usa nuestro buscador para filtrar por ciudad y especialidad. Recuerda que en MediBusca el contacto es directo.
                       </p>
-                      <button 
-                          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                          className="inline-flex items-center justify-center px-8 py-3 bg-[#1d1d1f] text-white rounded-full font-medium hover:bg-[#333] transition-all shadow-lg"
-                      >
-                          Iniciar Búsqueda
-                      </button>
+                      <StartSearchButton />
                   </div>
               </div>
           </div>
