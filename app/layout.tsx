@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
   title: {
     default: 'MediBusca',
-    template: '%s | MediBusca', // Keeps "MediBusca" appended on other pages
+    template: '%s | MediBusca', 
   },
   description: 'MediBusca - Directorio Médico en México. Encuentra doctores, especialistas y clínicas.',
   keywords: ['médicos', 'directorio médico', 'doctores', 'salud', 'citas médicas', 'especialistas', 'enciclopedia médica', 'clínica', 'hospital'],
@@ -37,19 +37,18 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: '/', // This auto-generates the canonical link based on metadataBase
+    canonical: './', 
   },
 
   // Open Graph (Facebook / WhatsApp)
   openGraph: {
     type: 'website',
-    url: 'https://medibusca.com/',
     title: 'MediBusca - Encuentra tu médico ideal',
     description: 'Accede a la red más completa de médicos y especialistas. Información de salud confiable y citas en línea.',
     siteName: 'MediBusca',
     images: [
       {
-        url: '/og-image.png', // Ensure this image exists in your public/ folder
+        url: '/og-image.png', 
         width: 1200,
         height: 630,
         alt: 'MediBusca Preview',
