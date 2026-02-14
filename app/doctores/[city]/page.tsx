@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { supabase } from '../../../lib/supabase';
-import { Doctor } from '../../../types';
+import { supabase } from '@/lib/supabase';
+import { Doctor } from '@/types';
 import { MapPin, ShieldCheck, Activity, BookOpen, Stethoscope, ArrowRight, CheckCircle, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { ALL_CITIES, COMMON_SPECIALTIES, ALL_DISEASES, slugify, ALL_CITIES as CITY_LIST } from '../../../lib/constants';
-import CityDoctorList from '../../../components/CityDoctorList';
+import { ALL_CITIES, COMMON_SPECIALTIES, ALL_DISEASES, slugify, ALL_CITIES as CITY_LIST } from '@/lib/constants';
+import CityDoctorList from '@/components/CityDoctorList';
 
 const PAGE_SIZE = 8;
 const POPULAR_SPECIALTIES_DISPLAY = 12;
