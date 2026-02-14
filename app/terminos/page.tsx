@@ -1,23 +1,30 @@
-import React, { useEffect } from 'react';
-import { Link } from 'wouter';
-import { Scale, AlertCircle, FileText, Shield, Globe, Lock, Info, Mail, CheckCircle } from 'lucide-react';
+import React from 'react';
+import Link from 'next/link';
+import { Scale, AlertCircle, FileText, Shield, Globe, Lock, Info, Mail, CheckCircle, Gavel } from 'lucide-react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Términos y Condiciones | MediBusca",
+  description: "Términos y condiciones de uso de la plataforma MediBusca. Información legal, responsabilidades y uso del sitio.",
+};
 
 export default function TermsPage() {
-  // SEO
-  useEffect(() => {
-    document.title = "Términos y Condiciones | MediBusca";
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', "Términos y condiciones de uso de la plataforma MediBusca. Información legal, responsabilidades y uso del sitio.");
-  }, []);
+  
+  // Schema Markup
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Términos y Condiciones | MediBusca",
+    "description": "Términos y condiciones de uso de la plataforma MediBusca.",
+    "url": "https://medibusca.com/terminos"
+  };
 
   return (
     <div className="min-h-screen bg-white font-sans">
       
+      {/* Schema Scripts */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+
       {/* Header */}
       <div className="bg-[#f5f5f7] border-b border-slate-200 py-16 md:py-24 px-6 text-center">
         <div className="max-w-3xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-4">
@@ -25,8 +32,8 @@ export default function TermsPage() {
               <Scale className="w-8 h-8" />
            </div>
            <h1 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight">Términos y Condiciones</h1>
-           <p className="text-lg text-[#86868b] max-w-2xl mx-auto">
-             Bienvenido a MediBusca.
+           <p className="text-lg text-[#86868b] max-w-2xl mx-auto font-medium">
+             Bienvenido a MediBusca. Por favor lee con atención.
            </p>
         </div>
       </div>
@@ -34,168 +41,169 @@ export default function TermsPage() {
       <div className="max-w-3xl mx-auto px-6 py-12 md:py-16 animate-in fade-in slide-in-from-bottom-6">
         
         <div className="prose prose-slate max-w-none text-[#1d1d1f]/80 leading-relaxed text-[17px]">
-          <p className="font-medium text-[#1d1d1f] mb-8 text-lg">
-            Al acceder y utilizar este sitio web, aceptas cumplir con los presentes Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, te recomendamos no utilizar el sitio.
+          <p className="font-medium text-[#1d1d1f] mb-8 text-lg border-b border-slate-100 pb-8">
+            Al acceder y utilizar este sitio web (en adelante, "la Plataforma"), aceptas cumplir con los presentes Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, te recomendamos no utilizar el sitio.
           </p>
 
-          {/* Qué es MediBusca */}
+          {/* 1. Naturaleza del Servicio */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-              Qué es MediBusca
+              1. Naturaleza del Servicio
             </h2>
             <p>
-              MediBusca es una plataforma informativa de salud. Ofrecemos información sobre médicos, especialidades, enfermedades y síntomas con fines educativos.
+              MediBusca es un directorio y plataforma informativa de salud. Nuestra función se limita a:
             </p>
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4 flex gap-3">
-               <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-               <p className="text-sm font-medium text-amber-900 m-0">
-                 MediBusca no brinda atención médica, no realiza diagnósticos y no ofrece tratamientos.
-               </p>
+            <ul className="list-none pl-0 space-y-3 mt-4">
+               <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2.5 shrink-0"></div>
+                  <span>Organizar información pública sobre médicos y especialistas.</span>
+               </li>
+               <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2.5 shrink-0"></div>
+                  <span>Proveer contenido educativo sobre enfermedades y síntomas.</span>
+               </li>
+               <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2.5 shrink-0"></div>
+                  <span>Facilitar los datos de contacto de consultorios médicos.</span>
+               </li>
+            </ul>
+            
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mt-6 flex gap-4">
+               <AlertCircle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+               <div>
+                   <h4 className="font-bold text-amber-900 mb-1">Aviso Importante</h4>
+                   <p className="text-sm font-medium text-amber-900/80 m-0 leading-relaxed">
+                     MediBusca <strong>no es un proveedor de atención médica</strong>. No realizamos consultas, no emitimos diagnósticos, no recetamos medicamentos y no ofrecemos tratamientos médicos de ninguna índole.
+                   </p>
+               </div>
             </div>
           </section>
 
-          {/* Uso del sitio */}
+          {/* 2. Uso del Sitio */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Uso del sitio</h2>
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">2. Uso del Sitio</h2>
             <p className="mb-4">Al utilizar MediBusca, el usuario se compromete a:</p>
-            <ul className="space-y-2 mb-4">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
-                Usar el sitio de forma responsable y legal
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
-                No utilizar el contenido con fines engañosos o dañinos
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
-                No copiar, reproducir o distribuir el contenido sin autorización
-              </li>
-            </ul>
+            <div className="grid sm:grid-cols-2 gap-3 mb-4">
+              <div className="flex items-center gap-3 bg-[#f5f5f7] p-3 rounded-lg">
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
+                <span className="text-sm font-medium text-[#1d1d1f]">Usar el sitio legalmente</span>
+              </div>
+              <div className="flex items-center gap-3 bg-[#f5f5f7] p-3 rounded-lg">
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
+                <span className="text-sm font-medium text-[#1d1d1f]">Proveer datos veraces</span>
+              </div>
+              <div className="flex items-center gap-3 bg-[#f5f5f7] p-3 rounded-lg">
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
+                <span className="text-sm font-medium text-[#1d1d1f]">No extraer datos masivamente</span>
+              </div>
+              <div className="flex items-center gap-3 bg-[#f5f5f7] p-3 rounded-lg">
+                <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
+                <span className="text-sm font-medium text-[#1d1d1f]">Respetar derechos de autor</span>
+              </div>
+            </div>
             <p className="text-sm text-[#86868b]">
-              El uso indebido del sitio puede dar lugar a la suspensión del acceso.
+              El incumplimiento de estas normas puede resultar en la suspensión del acceso a la plataforma.
             </p>
           </section>
 
-          {/* Contenido médico */}
+          {/* 3. Contenido Educativo */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#86868b]" />
-              Contenido médico
+              3. Contenido Educativo e Informativo
             </h2>
-            <p className="mb-4">La información médica publicada en MediBusca es solo educativa. El contenido:</p>
+            <p className="mb-4">
+                Todo el contenido disponible en la sección de "Enciclopedia", "Padecimientos" y perfiles médicos tiene fines exclusivamente educativos.
+            </p>
             <ul className="list-disc pl-5 space-y-2 mb-4 text-[#1d1d1f]">
-              <li>No sustituye la consulta médica profesional</li>
-              <li>No debe usarse para autodiagnóstico</li>
-              <li>No reemplaza el criterio de un médico calificado</li>
+              <li>La información <strong>no sustituye</strong> la consulta médica profesional.</li>
+              <li>El usuario <strong>no debe</strong> utilizar la información para autodiagnóstico o automedicación.</li>
+              <li>MediBusca no garantiza la exactitud absoluta de la información, ya que la medicina es una ciencia en constante cambio.</li>
             </ul>
-            <p className="font-medium text-[#1d1d1f]">
-              Siempre consulta a un profesional de la salud ante cualquier problema médico.
-            </p>
           </section>
 
-          {/* Perfiles de médicos y contacto */}
+          {/* 4. Relación con los Profesionales */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Perfiles de médicos y contacto</h2>
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">4. Relación con Profesionales de la Salud</h2>
             <p className="mb-4">
-              MediBusca muestra perfiles informativos de médicos y especialistas.
+              MediBusca actúa como un intermediario informativo.
             </p>
-            <p className="mb-4">
-              El contacto con médicos, cuando está disponible, se realiza directamente entre el usuario y el profesional. MediBusca no interviene en consultas, diagnósticos, pagos ni tratamientos.
-            </p>
-            <p className="text-sm bg-slate-50 p-3 rounded-lg border border-slate-100">
-              No garantizamos la disponibilidad ni los resultados de la atención médica.
-            </p>
+            <div className="space-y-4">
+                <p>
+                  <strong>Contacto Directo:</strong> El contacto a través de los botones de "Llamar" o "WhatsApp" se realiza directamente entre el usuario y el consultorio del médico. MediBusca no escucha, graba ni interviene en estas comunicaciones.
+                </p>
+                <p>
+                  <strong>Independencia:</strong> Los médicos listados son profesionales independientes. MediBusca no emplea a los médicos y no es responsable de la calidad de la atención, los diagnósticos erróneos o cualquier negligencia médica que pudiera ocurrir fuera de la plataforma.
+                </p>
+            </div>
           </section>
 
-          {/* Responsabilidad del usuario */}
-          <section className="mb-12">
+          {/* 5. Limitación de Responsabilidad */}
+          <section className="mb-12 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-              <Shield className="w-5 h-5 text-[#86868b]" />
-              Responsabilidad del usuario
+              <Shield className="w-6 h-6 text-[#0071e3]" />
+              5. Limitación de Responsabilidad
             </h2>
             <p className="mb-4">
-              El uso del contenido y de la información disponible en MediBusca es responsabilidad exclusiva del usuario.
+              En la medida máxima permitida por la ley, MediBusca y sus administradores no serán responsables por:
             </p>
-            <p className="mb-2">MediBusca no se hace responsable por:</p>
-            <ul className="list-disc pl-5 space-y-2 mb-4">
-              <li>Decisiones tomadas con base en la información del sitio</li>
-              <li>Resultados médicos o de salud</li>
-              <li>Daños directos o indirectos derivados del uso del sitio</li>
+            <ul className="list-disc pl-5 space-y-2 mb-0 text-[#1d1d1f]">
+              <li>Decisiones de salud tomadas por el usuario basadas en el contenido del sitio.</li>
+              <li>Resultados insatisfactorios de tratamientos médicos recibidos por doctores listados.</li>
+              <li>Interrupciones técnicas, errores o virus informáticos en el sitio web.</li>
+              <li>Daños directos, indirectos, incidentales o consecuentes derivados del uso de la plataforma.</li>
             </ul>
           </section>
 
-          {/* Propiedad intelectual */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Propiedad intelectual</h2>
-            <p>
-              Todos los textos, logotipos, diseños y contenidos del sitio son propiedad de MediBusca o se utilizan con autorización. Está prohibida su reproducción total o parcial sin permiso previo por escrito.
-            </p>
-          </section>
-
-          {/* Enlaces externos */}
+          {/* 6. Enlaces a Terceros */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
               <Globe className="w-5 h-5 text-[#86868b]" />
-              Enlaces externos
+              6. Enlaces a Terceros
             </h2>
             <p className="mb-4">
-              El sitio puede contener enlaces a páginas de terceros.
-            </p>
-            <p>
-              MediBusca no es responsable del contenido, servicios ni políticas de esos sitios externos. El acceso a enlaces externos es bajo responsabilidad del usuario.
+              La plataforma puede contener enlaces a sitios web externos (como mapas, sitios de clínicas, etc.). MediBusca no controla ni avala el contenido de dichos sitios y no se hace responsable de sus prácticas de privacidad o términos de uso.
             </p>
           </section>
 
-          {/* Privacidad */}
+          {/* 7. Modificaciones */}
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-              <Lock className="w-5 h-5 text-[#86868b]" />
-              Privacidad
-            </h2>
-            <p>
-              El uso del sitio también está sujeto a nuestra <Link href="/privacidad" className="text-[#0071e3] hover:underline font-medium">Política de Privacidad</Link>, donde se explica cómo se maneja la información del usuario.
-            </p>
-          </section>
-
-          {/* Legal Misc */}
-          <section className="mb-12 grid md:grid-cols-2 gap-8">
-            <div>
-               <h2 className="text-xl font-bold text-[#1d1d1f] mb-3">Cambios en los términos</h2>
-               <p className="text-sm">
-                 MediBusca puede modificar estos Términos y Condiciones en cualquier momento. Las actualizaciones se publicarán en esta página y entrarán en vigor desde su publicación.
-               </p>
-            </div>
-            <div>
-               <h2 className="text-xl font-bold text-[#1d1d1f] mb-3">Ley aplicable</h2>
-               <p className="text-sm">
-                 Estos Términos y Condiciones se rigen por las leyes aplicables según la jurisdicción correspondiente.
-               </p>
-            </div>
+             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
+               <Gavel className="w-5 h-5 text-[#86868b]" />
+               7. Modificaciones y Ley Aplicable
+             </h2>
+             <p className="mb-4">
+               MediBusca se reserva el derecho de modificar estos términos en cualquier momento. Las modificaciones entrarán en vigor inmediatamente después de su publicación.
+             </p>
+             <p>
+               Estos términos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier disputa relacionada con el uso del sitio se someterá a la jurisdicción de los tribunales competentes en la Ciudad de México.
+             </p>
           </section>
 
           {/* Contacto */}
           <section className="mb-12 pt-8 border-t border-slate-200">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
               <Mail className="w-5 h-5 text-[#86868b]" />
-              Contacto
+              ¿Dudas sobre los términos?
             </h2>
-            <p>
-              Para cualquier duda relacionada con estos Términos y Condiciones, puedes contactarnos a través de la sección de <Link href="/contacto" className="text-[#0071e3] hover:underline font-medium">Contacto</Link> de MediBusca.
+            <p className="text-base">
+              Si tienes preguntas sobre estos Términos y Condiciones, contáctanos en:
             </p>
+            <div className="mt-2">
+                <Link href="/contacto" className="text-[#0071e3] hover:underline font-medium inline-flex items-center gap-1">
+                    Ir a formulario de contacto
+                </Link>
+            </div>
           </section>
 
           {/* Aviso Final */}
           <div className="bg-[#1d1d1f] text-white p-8 rounded-[24px]">
             <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
               <Info className="w-5 h-5" />
-              Aviso final
+              Aceptación
             </h3>
-            <p className="text-slate-300 leading-relaxed mb-4">
-              El uso de MediBusca implica la aceptación completa de estos Términos y Condiciones.
-            </p>
-            <p className="text-sm text-slate-400 font-medium">
-              Si no estás de acuerdo, te recomendamos no utilizar el sitio.
+            <p className="text-slate-300 leading-relaxed mb-0 text-sm">
+              Al continuar navegando en MediBusca, reconoces que has leído, entendido y aceptado estos Términos y Condiciones, así como nuestra <Link href="/privacidad" className="text-white underline hover:text-slate-200">Política de Privacidad</Link>.
             </p>
           </div>
 

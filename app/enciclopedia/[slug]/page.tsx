@@ -1,82 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'wouter';
-import { Clock, ChevronLeft, User, Share2, Loader2, Bookmark, ArrowRight, BookOpen } from 'lucide-react';
+import React from 'react';
+import Link from 'next/link';
+import { Clock, ChevronLeft, User, Share2, Bookmark, ArrowRight, BookOpen } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
 import { Article } from '../../../types';
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const [article, setArticle] = useState<Article | null>(null);
-  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Scroll to top on load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [params.slug]);
-
-  // SEO
-  useEffect(() => {
-    if (article) {
-        document.title = `${article.title} | Enciclopedia MediBusca`;
-        let metaDesc = document.querySelector('meta[name="description"]');
-        if (!metaDesc) {
-            metaDesc = document.createElement('meta');
-            metaDesc.setAttribute('name', 'description');
-            document.head.appendChild(metaDesc);
-        }
-        metaDesc.setAttribute('content', article.excerpt || `Lee sobre ${article.title} en la Enciclopedia Médica de MediBusca.`);
-    }
-  }, [article]);
-
-  useEffect(() => {
-    async function fetchData() {
-        setLoading(true);
-        
-        // 1. Fetch current article
-        const { data: currentArticle, error } = await supabase
-            .from('articles')
-            .select('*')
-            .eq('slug', params.slug)
-            .single();
-        
-        if (currentArticle) {
-            setArticle(currentArticle as Article);
-
-            // 2. Fetch related articles based on the first category
-            const firstCategory = (currentArticle.category || '').split(',')[0].trim();
-            
-            if (firstCategory) {
-                const { data: related } = await supabase
-                    .from('articles')
-                    .select('id, title, slug, excerpt, category, read_time, author, published_at')
-                    .neq('id', currentArticle.id) // Exclude current
-                    .ilike('category', `%${firstCategory}%`) // Match category
-                    .limit(3);
-                
-                if (related) {
-                    setRelatedArticles(related as Article[]);
-                }
-            }
-        }
-        setLoading(false);
-    }
-    if (params.slug) fetchData();
-  }, [params.slug]);
-
-  if (loading) {
-    return <div className="min-h-screen flex justify-center items-center bg-[#ffffff]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
-  }
+// Generate Metadata
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const { data: article } = await supabase
+    .from('articles')
+    .select('title, excerpt')
+    .eq('slug', params.slug)
+    .single();
 
   if (!article) {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#f5f5f7]">
-            <h1 className="text-2xl font-bold text-[#1d1d1f] mb-2">Artículo no encontrado</h1>
-            <Link href="/enciclopedia" className="text-[#0071e3] hover:underline">Volver a la Enciclopedia</Link>
-        </div>
-    );
+    return {
+      title: 'Artículo no encontrado | MediBusca',
+      description: 'El artículo que buscas no existe en nuestra enciclopedia.',
+    };
   }
 
-  // Get only the first category for display
+  return {
+    title: `${article.title} | Enciclopedia MediBusca`,
+    description: article.excerpt || `Lee sobre ${article.title} en la Enciclopedia Médica de MediBusca.`,
+  };
+}
+
+export default async function ArticlePage({ params }: { params: { slug: string } }) {
+  // 1. Fetch Main Article
+  const { data: currentArticle } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('slug', params.slug)
+    .single();
+
+  if (!currentArticle) {
+    notFound();
+  }
+
+  const article = currentArticle as Article;
+
+  // 2. Fetch Related Articles
+  const firstCategory = (article.category || '').split(',')[0].trim();
+  let relatedArticles: Article[] = [];
+
+  if (firstCategory) {
+    const { data: related } = await supabase
+        .from('articles')
+        .select('id, title, slug, excerpt, category, read_time, author, published_at')
+        .neq('id', article.id)
+        .ilike('category', `%${firstCategory}%`)
+        .limit(3);
+    
+    if (related) {
+        relatedArticles = related as Article[];
+    }
+  }
+
   const primaryCategory = article.category.split(',')[0].trim();
 
   // Schema Markup
@@ -165,7 +146,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
                 </div>
             </header>
 
-            {/* Custom Styles for Raw HTML content to make it look Apple-like */}
+            {/* Custom Styles for Raw HTML content */}
             <style>{`
                 /* Target the specific container user adds */
                 .article-content div[style*="background-color"] {

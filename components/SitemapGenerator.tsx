@@ -93,7 +93,7 @@ export const SitemapGenerator: React.FC = () => {
       const cityUrls = ALL_CITIES.map(city => ({
         loc: `${SITE_URL}/doctores/${slugify(city)}`,
         changefreq: 'weekly',
-        priority: '0.8'
+        priority: '0.9'
       }));
       files.push({
         filename: 'sitemap-cities.xml',
@@ -115,7 +115,7 @@ export const SitemapGenerator: React.FC = () => {
       const diseaseUrls = ALL_DISEASES.map(disease => ({
         loc: `${SITE_URL}/enfermedad/${slugify(disease)}`,
         changefreq: 'weekly',
-        priority: '0.8'
+        priority: '0.9'
       }));
       files.push({
         filename: 'sitemap-diseases.xml',
@@ -133,7 +133,7 @@ export const SitemapGenerator: React.FC = () => {
             citySpecUrls.push({
                   loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`,
                   changefreq: 'monthly',
-                  priority: '1.0'
+                  priority: '0.8'
               });
           });
       });
@@ -180,7 +180,7 @@ export const SitemapGenerator: React.FC = () => {
             loc: `${SITE_URL}/enciclopedia/${article.slug}`,
             lastmod: article.published_at || new Date().toISOString(),
             changefreq: 'weekly',
-            priority: '0.9'
+            priority: '0.7'
         }));
         
         files.push({

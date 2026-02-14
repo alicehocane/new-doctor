@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+
+import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { MapPin, CheckCircle, Loader2, Plus, Phone, User, ArrowRight, Search, ShieldCheck } from 'lucide-react';
-import { Link } from 'wouter';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
+import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, Activity, Stethoscope, BookOpen, Info } from 'lucide-react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
+import CityDoctorList from '../../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
 
@@ -21,432 +25,205 @@ const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
+const getCanonicalSpecialty = (input: string) => {
+    const targetSlug = slugify(input);
+    const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
+    if (found) return found;
+    const normalizedInput = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return COMMON_SPECIALTIES.find(s => 
+        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
+    ) || input;
+};
+
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
   return [...doctors].sort((a, b) => {
-    // Check if valid phone exists (non-empty string)
     const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
     const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    
     if (aHas === bHas) return 0;
     return aHas ? -1 : 1;
   });
 };
 
-export default function CitySpecialtyPage({ params }: { params: { city: string, specialty: string } }) {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  
+export async function generateMetadata({ params }: { params: { city: string, specialty: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
   const decodedSpecialty = decodeURIComponent(params.specialty);
-
-  const getCanonicalSpecialty = (input: string) => {
-    // Try to find exact match by slug (handles dentista-odontologo -> Dentista - Odontólogo)
-    const targetSlug = slugify(input);
-    const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
-    
-    if (found) return found;
-
-    // Fallback
-    const normalizedInput = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const foundFallback = COMMON_SPECIALTIES.find(s => 
-        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
-    );
-    return foundFallback || input;
-  };
-
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
-  const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
-  
-  // Get conditions for dynamic text
-  const conditions = SPECIALTY_CONDITIONS[searchTerm] || [];
-  const conditionText = conditions.slice(0, 2).join(', ').toLowerCase() || 'tus síntomas';
 
-  // SEO
-  useEffect(() => {
-    if (cityName && searchTerm) {
-        document.title = `${searchTerm}s en ${cityName} | MediBusca`;
-        let metaDesc = document.querySelector('meta[name="description"]');
-        if (!metaDesc) {
-            metaDesc = document.createElement('meta');
-            metaDesc.setAttribute('name', 'description');
-            document.head.appendChild(metaDesc);
-        }
-        metaDesc.setAttribute('content', `Lista de los mejores ${searchTerm.toLowerCase()}s en ${cityName}. Consulta opiniones, direcciones y teléfonos de consultorios.`);
-    }
-  }, [cityName, searchTerm]);
-
-  useEffect(() => {
-    async function fetchInitial() {
-        setLoading(true);
-        setPage(0);
-        setHasMore(true);
-        setDoctors([]);
-
-        const { data } = await supabase
-            .from('doctors')
-            .select('*')
-            .contains('cities', [cityName])
-            .contains('specialties', [searchTerm])
-            .range(0, PAGE_SIZE - 1);
-            
-        if (data) {
-            setDoctors(sortDoctorsByPhone(data as Doctor[]));
-            if (data.length < PAGE_SIZE) setHasMore(false);
-        }
-        setLoading(false);
-    }
-    if (params.city && params.specialty) fetchInitial();
-  }, [params.city, params.specialty, searchTerm, cityName]);
-
-  const loadMore = async () => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    
-    const nextPage = page + 1;
-    const from = nextPage * PAGE_SIZE;
-    const to = from + PAGE_SIZE - 1;
-
-    const { data } = await supabase
-        .from('doctors')
-        .select('*')
-        .contains('cities', [cityName])
-        .contains('specialties', [searchTerm])
-        .range(from, to);
-
-    if (data) {
-        if (data.length > 0) {
-            const sortedNew = sortDoctorsByPhone(data as Doctor[]);
-            setDoctors(prev => [...prev, ...sortedNew]);
-            setPage(nextPage);
-        }
-        if (data.length < PAGE_SIZE) {
-            setHasMore(false);
-        }
-    }
-    setLoadingMore(false);
+  return {
+    title: `${searchTerm}s en ${cityName} - Directorio y Guía | MediBusca`,
+    description: `Encuentra ${searchTerm.toLowerCase()}s en ${cityName}. Información sobre qué tratan, padecimientos comunes y lista de especialistas verificados en ${cityName}.`,
   };
+}
 
-  // Schema Markup
+export default async function CitySpecialtyPage({ params }: { params: { city: string, specialty: string } }) {
+  const citySlug = params.city;
+  const specialtySlug = params.specialty;
+  
+  const cityName = getCanonicalCity(citySlug);
+  const decodedSpecialty = decodeURIComponent(specialtySlug);
+  const specialtyName = getCanonicalSpecialty(decodedSpecialty);
+  
+  const description = SPECIALTY_DESCRIPTIONS[specialtyName] || `Especialistas dedicados al diagnóstico y tratamiento de condiciones relacionadas con ${specialtyName}.`;
+  const relatedConditions = SPECIALTY_CONDITIONS[specialtyName] || [];
+
+  // Fetch Doctors
+  const { data: rawDoctors } = await supabase
+    .from('doctors')
+    .select('*')
+    .contains('cities', [cityName])
+    .contains('specialties', [specialtyName])
+    .range(0, PAGE_SIZE - 1);
+
+  const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+
+  const isKnownSpecialty = COMMON_SPECIALTIES.includes(specialtyName);
+  if (doctors.length === 0 && !isKnownSpecialty) {
+    notFound();
+  }
+
+  // Schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Inicio",
-        "item": "https://medibusca.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Especialidades",
-        "item": "https://medibusca.com/especialidades"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": searchTerm,
-        "item": `https://medibusca.com/especialidad/${params.specialty}`
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "name": `${searchTerm} en ${cityName}`,
-        "item": `https://medibusca.com/doctores/${params.city}/${params.specialty}`
-      }
+      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://medibusca.com" },
+      { "@type": "ListItem", "position": 2, "name": "Especialidades", "item": "https://medibusca.com/especialidades" },
+      { "@type": "ListItem", "position": 3, "name": specialtyName, "item": `https://medibusca.com/especialidad/${specialtySlug}` },
+      { "@type": "ListItem", "position": 4, "name": cityName, "item": `https://medibusca.com/doctores/${citySlug}/${specialtySlug}` }
     ]
   };
 
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": `${searchTerm}s en ${cityName} | MediBusca`,
-    "description": description,
-    "url": `https://medibusca.com/doctores/${params.city}/${params.specialty}`,
-    "specialty": {
-        "@type": "MedicalSpecialty",
-        "name": searchTerm
-    },
-    "contentLocation": {
-        "@type": "City",
-        "name": cityName
-    },
-    "audience": {
-        "@type": "Patient",
-        "geographicArea": {
-            "@type": "Country",
-            "name": "Mexico"
-        }
-    }
+    "name": `${specialtyName}s en ${cityName}`,
+    "description": `Guía completa sobre ${specialtyName}s en ${cityName}. Funciones, enfermedades que tratan y especialistas disponibles.`,
+    "specialty": { "@type": "MedicalSpecialty", "name": specialtyName },
+    "contentLocation": { "@type": "City", "name": cityName }
   };
-
-  const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": `Lista de ${searchTerm}s en ${cityName}`,
-    "itemListElement": doctors.map((doc, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "url": `https://medibusca.com/medico/${doc.slug}`,
-      "name": doc.full_name
-    }))
-  };
-
-  if (loading) {
-    return <div className="flex justify-center py-20 min-h-screen bg-[#f5f5f7]"><Loader2 className="animate-spin w-8 h-8 text-[#0071e3]" /></div>;
-  }
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
-      {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
-      {doctors.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
-      )}
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-        
-        {/* Breadcrumb - Hierarchy: Home > Specialties > Specialty > City */}
-        <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center flex-wrap animate-in fade-in slide-in-from-bottom-1">
-            <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
-            <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href="/especialidades" className="hover:text-[#0071e3] transition-colors">Especialidades</Link>
-            <span className="mx-2 text-[#d2d2d7]">/</span>
-            <Link href={`/especialidad/${params.specialty}`} className="hover:text-[#0071e3] transition-colors capitalize">{searchTerm}</Link>
-            <span className="mx-2 text-[#d2d2d7]">/</span>
-            <span className="text-[#1d1d1f] capitalize">{cityName}</span>
-        </nav>
+      {/* Header Section */}
+      <div className="bg-white border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+            
+            {/* Breadcrumb */}
+            <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center flex-wrap animate-in fade-in slide-in-from-bottom-1">
+                <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
+                <span className="mx-2 text-[#d2d2d7]">/</span>
+                <Link href="/especialidades" className="hover:text-[#0071e3] transition-colors">Especialidades</Link>
+                <span className="mx-2 text-[#d2d2d7]">/</span>
+                <Link href={`/especialidad/${specialtySlug}`} className="hover:text-[#0071e3] transition-colors capitalize">{specialtyName}</Link>
+                <span className="mx-2 text-[#d2d2d7]">/</span>
+                <span className="text-[#1d1d1f] capitalize">{cityName}</span>
+            </nav>
 
-        {/* Header */}
-        <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
-            <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 capitalize tracking-tight">
-            {searchTerm}s En {cityName}
-            </h1>
-            <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            {description}
-            </p>
-        </div>
-
-        {/* Doctor Grid (New Design) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {doctors.map((doc, idx) => (
-                <div 
-                    key={doc.id} 
-                    className={`
-                    bg-white p-6 rounded-[24px] shadow-sm hover:shadow-lg hover:-translate-y-0.5
-                    transition-all duration-300 border border-transparent hover:border-[#0071e3]/20
-                    flex flex-col justify-between animate-in fade-in slide-in-from-bottom-4
-                    `}
-                    style={{ animationDelay: `${idx * 50}ms` }}
-                >
-                    
-                    {/* Content */}
-                    <div className="flex-1 min-w-0 mb-5">
-                        <div className="flex justify-between items-start gap-3">
-                             <Link href={`/medico/${doc.slug}`} className="flex-1">
-                                <h2 className="text-lg md:text-xl font-bold text-[#1d1d1f] leading-snug hover:text-[#0071e3] transition-colors tracking-tight cursor-pointer">
-                                    {doc.full_name}
-                                </h2>
-                             </Link>
-                             {doc.license_numbers.length > 0 && (
-                                 <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-1" />
-                             )}
-                        </div>
-                        
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mt-3 mb-4">
-                            <span className="px-2.5 py-1 bg-[#f5f5f7] text-[#86868b] text-[11px] md:text-xs font-bold rounded-lg uppercase tracking-wide">
-                                {searchTerm}
-                            </span>
-                            {doc.specialties.filter(s => s !== searchTerm).slice(0, 2).map(s => (
-                                <span key={s} className="px-2.5 py-1 bg-[#f5f5f7] text-[#86868b] text-[11px] md:text-xs font-bold rounded-lg uppercase tracking-wide">
-                                    {s}
-                                </span>
-                            ))}
-                        </div>
-
-                        {/* Location */}
-                        <div className="flex items-center gap-1.5 text-sm font-medium text-[#86868b]">
-                            <MapPin className="w-4 h-4 text-[#86868b]/70" /> 
-                            {cityName}
-                        </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3 pt-4 border-t border-slate-100">
-                      <Link 
-                        href={`/medico/${doc.slug}`}
-                        className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#f5f5f7] text-[#1d1d1f] rounded-xl font-medium text-sm hover:bg-[#e5e5ea] transition-colors active:scale-95"
-                      >
-                        <User className="w-4 h-4" />
-                        Ver Perfil
-                      </Link>
-                      
-                      {doc.contact_info.phones?.[0] ? (
-                        <a 
-                          href={`tel:${doc.contact_info.phones[0]}`}
-                          className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#0071e3] text-white rounded-xl font-medium text-sm hover:bg-[#0077ED] transition-colors active:scale-95"
-                        >
-                          <Phone className="w-4 h-4" />
-                          Llamar
-                        </a>
-                      ) : (
-                        <button disabled className="flex-1 flex items-center justify-center gap-2 h-10 bg-slate-100 text-slate-400 rounded-xl font-medium text-sm cursor-not-allowed">
-                           <Phone className="w-4 h-4" />
-                           Llamar
-                        </button>
-                      )}
-                    </div>
-                </div>
-            ))}
-            {doctors.length === 0 && (
-                <div className="col-span-full py-20 text-center">
-                    <p className="text-[#86868b] text-lg">No encontramos resultados específicos para esta combinación.</p>
-                    <Link href="/buscar" className="text-[#0071e3] mt-2 inline-block font-medium hover:underline">Intentar otra búsqueda</Link>
-                </div>
-            )}
-        </div>
-
-        {/* Load More */}
-        {hasMore && doctors.length > 0 && (
-            <div className="pt-12 flex justify-center">
-                <button 
-                    onClick={loadMore} 
-                    disabled={loadingMore}
-                    className="
-                        flex items-center gap-2 px-8 py-3.5 
-                        bg-white border border-[#d2d2d7] rounded-full 
-                        font-medium text-[#1d1d1f] text-[15px]
-                        hover:bg-[#f5f5f7] hover:border-[#86868b] transition-all 
-                        disabled:opacity-50 active:scale-95 shadow-sm
-                    "
-                >
-                    {loadingMore ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                    Ver más doctores
-                </button>
+            <div className="mb-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
+                <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
+                    {specialtyName}s en {cityName}
+                </h1>
+                <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
+                    Aquí encontrarás información sobre {specialtyName.toLowerCase()}s en {cityName}, junto con consejos y recursos médicos. Antes de elegir un especialista, te recomendamos aprender sobre la especialidad y los padecimientos que trata.
+                </p>
             </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+
+        {/* 2️⃣ Section: Sobre la Especialidad (Educación antes que listado) */}
+        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 shadow-sm animate-in fade-in slide-in-from-bottom-3">
+            <div className="flex flex-col md:flex-row gap-8">
+                <div className="w-16 h-16 rounded-2xl bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3] shrink-0">
+                    <Stethoscope className="w-8 h-8" />
+                </div>
+                <div className="space-y-6">
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-3">¿Qué hace un {specialtyName}?</h2>
+                        <p className="text-lg text-[#86868b] leading-relaxed">
+                            {description}
+                        </p>
+                    </div>
+                    <ul className="space-y-3">
+                        <li className="flex items-start gap-3 text-[#1d1d1f] font-medium">
+                            <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
+                            <span>Consultas de diagnóstico, control y seguimiento especializado.</span>
+                        </li>
+                        <li className="flex items-start gap-3 text-[#1d1d1f] font-medium">
+                            <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
+                            <span>Detección temprana y prevención de enfermedades del área.</span>
+                        </li>
+                        <li className="flex items-start gap-3 text-[#1d1d1f] font-medium">
+                            <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
+                            <span>Tratamientos médicos o intervenciones según sea necesario.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        {/* 3️⃣ Section: Padecimientos Comunes (Cross-linking local) */}
+        {relatedConditions.length > 0 && (
+            <section className="animate-in fade-in slide-in-from-bottom-4">
+                <div className="mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
+                        <Activity className="w-7 h-7 text-[#0071e3]" />
+                        Problemas de Salud que Atiende
+                    </h2>
+                    <p className="text-lg text-[#86868b] max-w-3xl">
+                        Conoce los síntomas, prevención y tratamiento recomendado para cada condición antes de consultar a un especialista en {cityName}.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {relatedConditions.slice(0, 9).map((condition) => (
+                        <Link 
+                            key={condition}
+                            href={`/enfermedad/${slugify(condition)}/${citySlug}`}
+                            className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 hover:border-[#0071e3] hover:shadow-sm transition-all group"
+                        >
+                            <span className="font-medium text-[#1d1d1f]">{condition}</span>
+                            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
+                        </Link>
+                    ))}
+                </div>
+            </section>
         )}
 
-        {/* NEW: Dynamic Informational Section */}
-        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
-          <div className="max-w-4xl mx-auto space-y-16">
-            
-            {/* 1. How to Choose */}
-            <div className="text-center space-y-6">
-               <h2 className="text-3xl font-bold text-[#1d1d1f]">Cómo elegir el {searchTerm} adecuado para ti</h2>
-               <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
-                 Encontrar atención médica no debería ser difícil. En <span className="text-[#1d1d1f] font-medium">{cityName}</span>, contamos con expertos en {searchTerm} listos para ayudarte. Ya sea que busques tratamiento para {conditionText}, o una revisión general, aquí puedes ver perfiles verificados de forma gratuita.
-               </p>
+        {/* 4️⃣ Section: Doctor Listings */}
+        <section className="pt-8 animate-in fade-in slide-in-from-bottom-5">
+            <div className="mb-10">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4">
+                    {specialtyName}s Disponibles en {cityName}
+                </h2>
+                <p className="text-lg text-[#86868b] leading-relaxed max-w-4xl">
+                    A continuación, encontrarás {specialtyName.toLowerCase()}s certificados en {cityName}. Infórmate primero sobre la especialidad y sus padecimientos, luego elige un especialista que se adapte a tus necesidades.
+                </p>
             </div>
 
-            {/* 2. What you should know */}
-            <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Lo que debes saber</h3>
-                <div className="grid md:grid-cols-3 gap-8">
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <ShieldCheck className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Sin costos ocultos</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">MediBusca no te cobra nada por buscar o contactar a un especialista.</p>
-                    </div>
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <Phone className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Contacto directo</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">Hablas directamente con el consultorio del doctor para agendar tu cita.</p>
-                    </div>
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <CheckCircle className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Perfiles reales</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">Verificamos que los especialistas sean profesionales certificados en {cityName}.</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* 3. FAQs */}
-            <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Preguntas Frecuentes sobre {searchTerm}</h3>
-                <div className="space-y-4">
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Qué hace un {searchTerm}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">{description}</p>
-                    </div>
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cuánto dura una consulta?</h4>
-                        <p className="text-[#86868b] leading-relaxed">Por lo general, una consulta dura entre 30 y 60 minutos. Esto puede variar dependiendo del especialista que elijas en {cityName}.</p>
-                    </div>
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cómo contacto a un doctor en MediBusca?</h4>
-                        <p className="text-[#86868b] leading-relaxed">Solo haz clic en el botón "Llamar" o "Ver Perfil". Te conectarás de inmediato con el consultorio para pedir informes o agendar.</p>
-                    </div>
-                </div>
-            </div>
-
-          </div>
+            <CityDoctorList initialDoctors={doctors} city={cityName} specialty={specialtyName} />
         </section>
 
-        {/* Nearby Cities Section */}
-        <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
-            <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
-                También disponible en ciudades cercanas
-            </h2>
-            <p className="text-lg text-[#86868b] mb-8 max-w-3xl">
-                Si no encuentras lo que buscas en <span className="text-[#1d1d1f] font-medium">{cityName}</span>, 
-                explora <span className="text-[#1d1d1f] font-medium">{searchTerm}s</span> en otras ciudades.
+        {/* 5️⃣ Section: Recursos Adicionales */}
+        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">Más Información Médica</h2>
+            <p className="text-[#86868b] mb-8 max-w-2xl mx-auto text-lg">
+                Aprovecha nuestros recursos educativos para tomar decisiones informadas sobre tu salud.
             </p>
-            
-            <div className="flex flex-wrap gap-3 md:gap-4">
-                {POPULAR_CITIES
-                    .filter(c => slugify(c) !== slugify(params.city))
-                    .slice(0, 8)
-                    .map((city) => (
-                        <Link 
-                            key={city}
-                            href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                            className="
-                                inline-flex items-center gap-2.5 px-6 py-4
-                                bg-[#e8e8ed] rounded-full
-                                text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#d2d2d7] hover:shadow-sm transition-all group
-                            "
-                        >
-                        {searchTerm} en {city}
-                        </Link>
-                    ))
-                }
-            </div>
-        </section>
-
-        {/* Other Specialties in {City} */}
-        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
-            <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                Otras especialidades en {cityName}
-            </h3>
-            <div className="flex flex-wrap gap-x-3 gap-y-3">
-                {POPULAR_SPECIALTIES
-                    .filter(s => s !== searchTerm)
-                    .slice(0, 7)
-                    .map((spec, idx) => (
-                        <Link 
-                            key={idx}
-                            href={`/doctores/${slugify(params.city)}/${slugify(spec)}`}
-                            className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
-                        >
-                            {/* The Icon inside the record */}
-                            <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
-                            <span>{spec} en {cityName}</span>
-                        </Link>
-                    ))
-                }
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link href={`/especialidad/${specialtySlug}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <BookOpen className="w-5 h-5" /> Guía de {specialtyName}
+                </Link>
+                <Link href="/padecimientos" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <Activity className="w-5 h-5" /> Padecimientos Comunes
+                </Link>
+                <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                    <Info className="w-5 h-5" /> Enciclopedia Médica
+                </Link>
             </div>
         </section>
 
