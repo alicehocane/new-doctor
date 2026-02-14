@@ -1,6 +1,7 @@
+
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck } from 'lucide-react';
+import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck, Phone, Eye, Smile, Brain, Baby, Building2, AlertTriangle, FileCheck } from 'lucide-react';
 import { Metadata } from 'next';
 import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
@@ -11,6 +12,19 @@ const FEATURED_CITIES = [
   'Monterrey',
   'Puebla'
 ];
+
+// Configuration for distinct specialty visuals
+const SPECIALTY_CONFIG: Record<string, { icon: React.ElementType, color: string, bg: string }> = {
+  'Cardiólogo': { icon: Heart, color: 'text-red-500', bg: 'bg-red-50' },
+  'Dentista - Odontólogo': { icon: Smile, color: 'text-cyan-500', bg: 'bg-cyan-50' },
+  'Psicólogo': { icon: Brain, color: 'text-purple-500', bg: 'bg-purple-50' },
+  'Oftalmólogo': { icon: Eye, color: 'text-amber-500', bg: 'bg-amber-50' },
+  'Pediatra': { icon: Baby, color: 'text-pink-500', bg: 'bg-pink-50' },
+  'Ginecólogo': { icon: Users, color: 'text-rose-500', bg: 'bg-rose-50' },
+  'Traumatólogo': { icon: Activity, color: 'text-orange-500', bg: 'bg-orange-50' },
+  // Default fallback
+  'default': { icon: Stethoscope, color: 'text-[#1d1d1f]', bg: 'bg-[#f5f5f7]' }
+};
 
 export const metadata: Metadata = {
   title: "MediBusca - Encuentra Doctores y Especialistas en México",
@@ -36,6 +50,11 @@ export default function HomePage() {
     "name": "MediBusca",
     "url": "https://medibusca.com",
     "logo": "https://medibusca.com/icon-512.png",
+    "sameAs": [
+        "https://www.facebook.com/medibusca",
+        "https://twitter.com/medibusca",
+        "https://www.linkedin.com/company/medibusca"
+    ],
     "description": "Plataforma informativa de salud y directorio médico en México.",
     "contactPoint": {
         "@type": "ContactPoint",
@@ -66,8 +85,16 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
 
+      {/* Emergency Banner */}
+      <div className="bg-red-50 border-b border-red-100 px-4 py-3 text-center">
+        <p className="text-xs md:text-sm font-semibold text-red-800 flex items-center justify-center gap-2">
+            <Phone className="w-4 h-4 fill-current" />
+            ¿Es una emergencia médica? Llama al 911 de inmediato. MediBusca es solo informativo.
+        </p>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative py-16 px-4 md:py-32 md:px-6">
+      <section className="relative py-12 px-4 md:py-24 md:px-6">
         <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <h1 className="text-4xl md:text-7xl font-semibold tracking-tighter text-[#1d1d1f] leading-[1.1] md:leading-[1.05]">
             Salud, <br className="md:hidden" /> simplificada.
@@ -78,16 +105,46 @@ export default function HomePage() {
           
           {/* Client Side Search Component */}
           <HomeSearch />
+
+          {/* SEP Trust Badge */}
+          <div className="flex flex-col items-center justify-center gap-3 mt-8">
+             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-50 border border-green-200 rounded-full text-green-800 text-xs font-semibold tracking-wide">
+                <ShieldCheck className="w-4 h-4" />
+                Cédulas profesionales verificadas ante la SEP
+             </div>
+          </div>
+
+          {/* Quick Stats Bar */}
+          <div className="grid grid-cols-3 gap-4 md:gap-12 pt-8 md:pt-12 max-w-3xl mx-auto border-t border-slate-100 mt-12">
+             <div className="text-center">
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">200+</p>
+                <p className="text-xs md:text-sm text-[#86868b] font-medium">Especialidades</p>
+             </div>
+             <div className="text-center border-l border-slate-100">
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">50+</p>
+                <p className="text-xs md:text-sm text-[#86868b] font-medium">Ciudades</p>
+             </div>
+             <div className="text-center border-l border-slate-100">
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">100%</p>
+                <p className="text-xs md:text-sm text-[#86868b] font-medium">Información Verificada</p>
+             </div>
+          </div>
           
         </div>
       </section>
 
-      {/* Cities Section - Horizontal Snap Scroll on Mobile */}
+      {/* Cities Section */}
       <section className="py-12 md:py-24 bg-white w-full">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <h2 className="text-2xl md:text-4xl font-semibold text-[#1d1d1f] mb-8 md:mb-12 tracking-tight">
-            Ciudades destacadas.
-          </h2>
+          <div className="mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-4xl font-semibold text-[#1d1d1f] tracking-tight">
+                Ciudades destacadas.
+            </h2>
+            <div className="flex items-center gap-2 mt-2 text-sm text-[#6e6e73]">
+                <Building2 className="w-4 h-4" />
+                <p>¿Buscas médicos en <strong>Hospitales Ángeles</strong> o <strong>ABC</strong>? Encuéntralos filtrando por zona médica en tu ciudad.</p>
+            </div>
+          </div>
           
           {/* Scroll Container */}
           <div className="
@@ -139,23 +196,30 @@ export default function HomePage() {
              overflow-x-auto snap-x snap-mandatory no-scrollbar
              -mx-4 px-4 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cirujano general', 'Radiólogo', 'Ortopedista', 'Traumatólogo', 'Oftalmólogo', 'Cardiólogo'].map((spec) => (
-              <Link 
-                key={spec} 
-                href={`/especialidad/${slugify(spec)}`}
-                className="
-                  snap-center shrink-0 w-[140px] md:w-auto aspect-square
-                  flex flex-col items-center justify-center gap-3
-                  p-4 bg-white rounded-[24px] shadow-sm 
-                  hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer
-                "
-              >
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f]">
-                   <Stethoscope className="w-5 h-5 md:w-6 md:h-6 stroke-1" />
-                </div>
-                <span className="font-semibold text-[#1d1d1f] text-sm md:text-[15px] text-center leading-tight">{spec}</span>
-              </Link>
-            ))}
+            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cardiólogo', 'Oftalmólogo', 'Traumatólogo', 'Radiólogo', 'Cirujano general', 'Dermatólogo'].map((spec) => {
+              const visual = SPECIALTY_CONFIG[spec] || SPECIALTY_CONFIG['default'];
+              const Icon = visual.icon;
+              
+              return (
+                <Link 
+                    key={spec} 
+                    href={`/especialidad/${slugify(spec)}`}
+                    className="
+                    snap-center shrink-0 w-[140px] md:w-auto aspect-square
+                    flex flex-col items-center justify-center gap-3
+                    p-4 bg-white rounded-[24px] shadow-sm border border-transparent
+                    hover:border-[#0071e3]/10 hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer
+                    "
+                >
+                    <div className={`w-12 h-12 rounded-2xl ${visual.bg} ${visual.color} flex items-center justify-center transition-colors`}>
+                        <Icon className="w-6 h-6 stroke-[1.5]" />
+                    </div>
+                    <span className="font-semibold text-[#1d1d1f] text-sm md:text-[14px] text-center leading-tight line-clamp-2">
+                        {spec}
+                    </span>
+                </Link>
+              );
+            })}
           </div>
           
           <div className="mt-4 md:hidden text-center">
@@ -174,7 +238,7 @@ export default function HomePage() {
           </h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {ALL_DISEASES.slice(0, 20).map((disease) => (
+            {ALL_DISEASES.slice(0, 16map((disease) => (
                <Link 
                   key={disease}
                   href={`/enfermedad/${slugify(disease)}`}
@@ -207,16 +271,19 @@ export default function HomePage() {
               MediBusca
             </h2>
             <p className="text-lg md:text-2xl text-[#1d1d1f] font-semibold px-2">
-              Encuentra médicos, especialidades e información médica en un solo lugar
+              Directorio Médico Mexicano: Encuentra especialistas e información confiable
             </p>
             <p className="text-base md:text-lg text-[#6e6e73] leading-relaxed max-w-3xl mx-auto">
-              MediBusca es una plataforma informativa de salud que ayuda a las personas a encontrar médicos, especialidades y contenido médico claro. Nuestro objetivo es facilitar el primer paso cuando surge una duda de salud.
+              MediBusca es una plataforma informativa de salud que organiza la oferta médica de México. Ayudamos a las personas a encontrar consultorios, especialidades y contenido claro sobre salud para facilitar el primer paso en la atención médica.
             </p>
             
             <div className="bg-white border border-slate-200 rounded-2xl p-6 inline-block text-left max-w-2xl shadow-sm mx-4 md:mx-0">
-                <p className="text-[#6e6e73] text-sm font-medium leading-relaxed">
-                  <span className="text-[#1d1d1f] font-bold block mb-1">Nota Importante:</span>
-                  No ofrecemos tratamientos médicos ni consultas en línea. MediBusca existe para orientar, informar y conectar a los pacientes con profesionales de la salud reales.
+                <p className="text-[#6e6e73] text-sm font-medium leading-relaxed flex gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+                  <span>
+                    <span className="text-[#1d1d1f] font-bold block mb-1">Nota Importante:</span>
+                    No ofrecemos tratamientos médicos ni consultas en línea. MediBusca existe para orientar, informar y conectar a los pacientes con profesionales de la salud reales.
+                  </span>
                 </p>
             </div>
           </div>
@@ -231,20 +298,20 @@ export default function HomePage() {
                 <h3 className="text-xl md:text-2xl font-bold text-[#1d1d1f]">Qué hace MediBusca</h3>
               </div>
               <p className="text-[#6e6e73] text-base md:text-lg leading-relaxed">
-                Buscar un médico puede ser confuso. Muchas personas no saben qué especialista necesitan o por dónde empezar. MediBusca organiza la información médica para que el proceso sea más simple y claro.
+                Buscar un médico puede ser confuso. MediBusca simplifica este proceso centralizando la información de miles de especialistas en un solo lugar accesible.
               </p>
               <ul className="space-y-3 pt-2">
                 <li className="flex items-center gap-3 text-[#1d1d1f] font-medium text-sm md:text-base">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Buscar médicos por ciudad
+                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Encuentra la dirección del consultorio y teléfono inmediato
                 </li>
                 <li className="flex items-center gap-3 text-[#1d1d1f] font-medium text-sm md:text-base">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Explorar especialidades médicas
+                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Filtra médicos por ciudad y zona
                 </li>
                 <li className="flex items-center gap-3 text-[#1d1d1f] font-medium text-sm md:text-base">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Conocer enfermedades y síntomas
+                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Conoce enfermedades y síntomas antes de ir
                 </li>
                 <li className="flex items-center gap-3 text-[#1d1d1f] font-medium text-sm md:text-base">
-                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Contactar médicos cuando el contacto está disponible
+                  <Check className="w-5 h-5 text-green-600 shrink-0" /> Verifica cédulas profesionales (SEP)
                 </li>
               </ul>
             </div>
@@ -254,7 +321,7 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
                   <Heart className="w-5 h-5" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-[#1d1d1f]">Pensado para pacientes y familias</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-[#1d1d1f]">Pensado para pacientes</h3>
               </div>
               <p className="text-[#6e6e73] text-base md:text-lg leading-relaxed">
                 MediBusca está creado para personas comunes. No necesitas conocimientos médicos para usar la plataforma. Explicamos los temas de salud con palabras sencillas.
@@ -315,13 +382,17 @@ export default function HomePage() {
             <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] text-center">Por qué confiar en MediBusca</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {[
-                "No vendemos tratamientos médicos",
+                "Verificación de Cédula SEP",
                 "No realizamos diagnósticos",
                 "No solicitamos historial médico",
-                "No reemplazamos al médico"
+                "Sin costos ocultos"
               ].map((text, i) => (
-                <div key={i} className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
-                  <ShieldCheck className="w-8 h-8 text-[#0071e3] mx-auto mb-3" />
+                <div key={i} className="bg-white p-5 md:p-6 rounded-2xl border border-slate-200 text-center shadow-sm hover:shadow-md transition-shadow">
+                  {i === 0 ? (
+                      <FileCheck className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                  ) : (
+                      <ShieldCheck className="w-8 h-8 text-[#0071e3] mx-auto mb-3" />
+                  )}
                   <p className="font-semibold text-[#1d1d1f] text-sm md:text-base">{text}</p>
                 </div>
               ))}
