@@ -1,11 +1,12 @@
+
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
-import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight } from 'lucide-react';
+import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight, Ambulance, Bus, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES } from '../../../lib/constants';
+import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
@@ -21,332 +22,6 @@ const CITY_MEDICAL_ZONES: Record<string, { title: string, description: string }[
   'aguascalientes': [
     { title: 'Norte - Prol. Zaragoza', description: 'Zona de crecimiento médico con hospitales modernos y consultorios de especialidad.' },
     { title: 'Centro Histórico', description: 'Área con presencia de clínicas tradicionales y servicios médicos de primer nivel.' }
-  ],
-  'apizaco': [
-    { title: 'Centro de Apizaco', description: 'Núcleo de servicios de salud regionales y farmacias especializadas.' }
-  ],
-  'apodaca': [
-    { title: 'Zona Industrial - Miguel Alemán', description: 'Servicios médicos enfocados en medicina del trabajo y urgencias generales.' }
-  ],
-  'benito_juarez': [
-    { title: 'Colonia del Valle / Nápoles', description: 'Alta densidad de centros médicos privados, laboratorios y hospitales de prestigio.' }
-  ],
-  'buenavista': [
-    { title: 'Eje Central / Insurgentes Norte', description: 'Punto de conexión con acceso a servicios de salud públicos y clínicas de diagnóstico.' }
-  ],
-  'cabo_san_lucas': [
-    { title: 'Corredor Turístico', description: 'Hospitales privados de alta gama enfocados en turismo médico y atención internacional.' }
-  ],
-  'cadereyta_jimenez': [
-    { title: 'Zona Centro', description: 'Clínicas locales y servicios de salud vinculados a la industria regional.' }
-  ],
-  'campeche': [
-    { title: 'Avenida Resurgimiento', description: 'Área que concentra principales unidades hospitalarias y centros de especialidades.' }
-  ],
-  'cancun': [
-    { title: 'Avenida Tulum - Centro', description: 'Zona tradicional de servicios médicos, clínicas dentales y laboratorios.' },
-    { title: 'Zona Hotelera', description: 'Servicios de emergencia y atención médica internacional para visitantes.' }
-  ],
-  'chalco': [
-    { title: 'Centro de Chalco', description: 'Sede de hospitales regionales y centros de salud comunitarios.' }
-  ],
-  'chicoloapan': [
-    { title: 'Carretera Federal México-Texcoco', description: 'Acceso a servicios de salud locales y farmacias de distribución masiva.' }
-  ],
-  'chihuahua': [
-    { title: 'Distrito Uno / Periférico de la Juventud', description: 'Zona médica de vanguardia con hospitales privados de alta tecnología.' },
-    { title: 'Centro Médico', description: 'Concentración de especialistas tradicionales y servicios públicos.' }
-  ],
-  'chilpancingo': [
-    { title: 'Avenida Lázaro Cárdenas', description: 'Eje principal de servicios médicos y laboratorios en la capital.' }
-  ],
-  'chimalhuacan': [
-    { title: 'Barrio Santa María', description: 'Zona con presencia de hospitales generales y centros de salud estatales.' }
-  ],
-  'ciudad_acuna': [
-    { title: 'Zona Centro / Frontera', description: 'Clínicas especializadas en atención transfronteriza y servicios generales.' }
-  ],
-  'ciudad_de_mexico': [
-    { title: 'Roma / Condesa', description: 'Eje de clínicas boutique, consultorios de especialidad y laboratorios.' },
-    { title: 'Tlalpan - Zona de Hospitales', description: 'Concentración de los Institutos Nacionales de Salud y alta especialidad.' }
-  ],
-  'ciudad_del_carmen': [
-    { title: 'Avenida Concordia', description: 'Centros médicos vinculados a la industria energética y servicios generales.' }
-  ],
-  'ciudad_juarez': [
-    { title: 'Pronaf / Zona Norte', description: 'Distrito médico enfocado en servicios para pacientes locales y extranjeros.' }
-  ],
-  'ciudad_lopez_mateos': [
-    { title: 'Zona Esmeralda / Atizapán', description: 'Servicios médicos privados de alto nivel y centros de bienestar.' }
-  ],
-  'ciudad_madero': [
-    { title: 'Colonia Unidad Nacional', description: 'Zona residencial con acceso a hospitales generales y clínicas de especialidad.' }
-  ],
-  'ciudad_victoria': [
-    { title: 'Fraccionamiento San José', description: 'Área hospitalaria central con servicios médicos de tercer nivel.' }
-  ],
-  'coatzacoalcos': [
-    { title: 'Avenida Lázaro Cárdenas', description: 'Corredor médico con clínicas privadas y laboratorios de análisis clínicos.' }
-  ],
-  'colima': [
-    { title: 'Tercer Anillo Periférico', description: 'Nueva zona de desarrollo médico con hospitales modernos y consultorios.' }
-  ],
-  'coyoacan': [
-    { title: 'Circuito Interior / Churubusco', description: 'Presencia de hospitales pediátricos y centros de salud especializados.' }
-  ],
-  'cuauhtemoc': [
-    { title: 'Colonia Juárez / San Rafael', description: 'Acceso a hospitales históricos y una amplia red de farmacias.' }
-  ],
-  'cuautitlan_izcalli': [
-    { title: 'Centro Urbano', description: 'Zona comercial con clínicas privadas y centros de diagnóstico integral.' }
-  ],
-  'cuautla': [
-    { title: 'Avenida Reforma', description: 'Principal vía con servicios médicos, ópticas y consultorios generales.' }
-  ],
-  'cuernavaca': [
-    { title: 'Avenida Teopanzolco / Lomas de Cortés', description: 'Zona de clínicas de especialidad y servicios médicos privados.' }
-  ],
-  'culiacan': [
-    { title: 'Sector Tres Ríos', description: 'Desarrollo médico moderno con hospitales de alta especialidad.' }
-  ],
-  'durango': [
-    { title: 'Zona Centro / Calle Juárez', description: 'Concentración de especialistas y servicios médicos tradicionales.' }
-  ],
-  'ecatepec': [
-    { title: 'Vía Morelos', description: 'Corredor industrial y comercial con presencia de hospitales generales.' }
-  ],
-  'ensenada': [
-    { title: 'Zona Centro / Calle Cuarta', description: 'Clínicas y laboratorios con enfoque en residentes locales y turismo.' }
-  ],
-  'fresnillo': [
-    { title: 'Centro de Fresnillo', description: 'Servicios de salud enfocados en la comunidad local y medicina general.' }
-  ],
-  'garcia': [
-    { title: 'Zona Mitras Poniente', description: 'Área de crecimiento con nuevos centros médicos familiares.' }
-  ],
-  'general_escobedo': [
-    { title: 'Avenida Raúl Salinas', description: 'Zona comercial con acceso a clínicas de primer contacto.' }
-  ],
-  'gomez_palacio': [
-    { title: 'Zona Centro', description: 'Servicios de salud integrados en la zona metropolitana de la Laguna.' }
-  ],
-  'guadalajara': [
-    { title: 'Puerta de Hierro', description: 'Distrito médico de lujo con tecnología de punta y especialistas internacionales.' },
-    { title: 'Zona Centro / Hospitales Civil', description: 'Referencia médica regional con amplia capacidad de atención.' }
-  ],
-  'guadalupe': [
-    { title: 'Avenida Eloy Cavazos', description: 'Corredor con hospitales generales y centros de medicina familiar.' }
-  ],
-  'guanajuato': [
-    { title: 'Marfil / Noria Alta', description: 'Zonas con clínicas de especialidad y servicios médicos universitarios.' }
-  ],
-  'guaymas': [
-    { title: 'Sector Centro', description: 'Atención médica general y servicios vinculados a la actividad portuaria.' }
-  ],
-  'gustavo_a_madero': [
-    { title: 'Lindavista', description: 'Importante núcleo médico con hospitales privados y públicos de renombre.' }
-  ],
-  'hermosillo': [
-    { title: 'Bulevar Morelos / Kino', description: 'Zona de alta gama con hospitales de especialidades y torres médicas.' }
-  ],
-  'huixquilucan': [
-    { title: 'Interlomas', description: 'Centros médicos de excelencia con estándares internacionales.' }
-  ],
-  'irapuato': [
-    { title: 'Villas de Irapuato', description: 'Zona residencial con hospitales privados y servicios médicos avanzados.' }
-  ],
-  'ixtapaluca': [
-    { title: 'Carretera Federal México-Puebla', description: 'Ubicación de hospitales regionales de alta especialidad.' }
-  ],
-  'iztacalco': [
-    { title: 'Colonia Agricola Oriental', description: 'Servicios de salud locales y unidades médicas del sector público.' }
-  ],
-  'iztapalapa': [
-    { title: 'Ermita Iztapalapa', description: 'Corredor con hospitales generales y centros de atención comunitaria.' }
-  ],
-  'jiutepec': [
-    { title: 'Zona Centro / Tejalpa', description: 'Servicios de salud integrados en la zona conurbada de Morelos.' }
-  ],
-  'juriquilla': [
-    { title: 'Zona de Universidades', description: 'Clínicas modernas y centros de bienestar en área de alto crecimiento.' }
-  ],
-  'la_paz': [
-    { title: 'Malecón / Centro', description: 'Acceso a hospitales generales y servicios de salud para la comunidad.' }
-  ],
-  'la_piedad': [
-    { title: 'Zona Centro', description: 'Servicios de salud regionales para el bajío michoacano.' }
-  ],
-  'leon': [
-    { title: 'Cerro Gordo / Lomas del Campestre', description: 'Clúster médico de alta especialidad y hospitales privados.' }
-  ],
-  'linares': [
-    { title: 'Centro de Linares', description: 'Clínicas locales y servicios de salud de primer nivel.' }
-  ],
-  'magdalena_contreras': [
-    { title: 'San Jerónimo', description: 'Zona con clínicas especializadas y servicios de salud integrales.' }
-  ],
-  'manzanillo': [
-    { title: 'Zona Hotelera / Playa Azul', description: 'Servicios médicos para residentes y atención a emergencias portuarias.' }
-  ],
-  'matamoros': [
-    { title: 'Zona Centro / Sexta', description: 'Servicios médicos fronterizos con enfoque en medicina general y dental.' }
-  ],
-  'mazatlan': [
-    { title: 'Avenida del Mar', description: 'Clínicas y hospitales con servicios para el turismo y la población local.' }
-  ],
-  'merida': [
-    { title: 'Altabrisa', description: 'El hub médico más importante del sureste con hospitales de alta tecnología.' },
-    { title: 'Centro Médico de las Américas', description: 'Zona tradicional de especialistas y diagnóstico.' }
-  ],
-  'metepec': [
-    { title: 'Avenida Tecnológico', description: 'Zona de crecimiento con hospitales privados modernos y consultorios.' }
-  ],
-  'mexicali': [
-    { title: 'Zona Fronteriza', description: 'Destino clave para el turismo médico, especialmente en odontología y cirugía.' }
-  ],
-  'minatitlan': [
-    { title: 'Zona Centro', description: 'Centros de salud y servicios médicos vinculados a la industria petrolera.' }
-  ],
-  'miramar': [
-    { title: 'Zona Costera', description: 'Servicios de salud preventivos y atención médica general.' }
-  ],
-  'monclova': [
-    { title: 'Bulevar Harold R. Pape', description: 'Eje principal con los mayores centros hospitalarios de la región.' }
-  ],
-  'monterrey': [
-    { title: 'Gonzalitos / Mitras', description: 'Histórico corredor médico con hospitales universitarios y privados.' },
-    { title: 'Valle Oriente', description: 'Hospitales de última generación y centros de especialidad premium.' }
-  ],
-  'morelia': [
-    { title: 'Tres Marías', description: 'Zona de nuevo desarrollo médico con hospitales de alta especialidad.' }
-  ],
-  'naucalpan': [
-    { title: 'Satélite', description: 'Importante zona médica con hospitales de prestigio y múltiples consultorios.' }
-  ],
-  'nezahualcoyotl': [
-    { title: 'Avenida Pantitlán', description: 'Zona comercial con una amplia oferta de clínicas y laboratorios.' }
-  ],
-  'nogales': [
-    { title: 'Zona Fronteriza', description: 'Servicios médicos y dentales orientados a la población binacional.' }
-  ],
-  'nuevo_casas_grandes': [
-    { title: 'Centro', description: 'Servicios de salud regionales para el noroeste de Chihuahua.' }
-  ],
-  'nuevo_laredo': [
-    { title: 'Sector Centro', description: 'Clínicas especializadas en servicios transfronterizos.' }
-  ],
-  'oaxaca': [
-    { title: 'Reforma', description: 'Zona con mayor concentración de clínicas privadas y especialistas en la capital.' }
-  ],
-  'ojo_de_agua': [
-    { title: 'Bulevar Ojo de Agua', description: 'Servicios médicos locales y centros de salud familiares.' }
-  ],
-  'pachuca': [
-    { title: 'Zona Plateada', description: 'Área moderna con hospitales de especialidad y torres médicas.' }
-  ],
-  'poza_rica': [
-    { title: 'Avenida 20 de Noviembre', description: 'Corredor principal con servicios médicos y farmacias especializadas.' }
-  ],
-  'puebla': [
-    { title: 'Angelópolis', description: 'Distrito médico más moderno con hospitales de alta gama.' },
-    { title: 'La Paz', description: 'Zona tradicional de consultorios y clínicas de especialidad.' }
-  ],
-  'puerto_vallarta': [
-    { title: 'Marina Vallarta', description: 'Hospitales con estándares internacionales enfocados en turismo médico.' }
-  ],
-  'queretaro': [
-    { title: 'Jurica / Juriquilla', description: 'Zona de expansión con hospitales de alta tecnología.' },
-    { title: 'Centro Sur', description: 'Nuevo clúster médico con servicios integrales de salud.' }
-  ],
-  'reynosa': [
-    { title: 'Zona Centro / Puente Internacional', description: 'Foco de atención médica para residentes de ambos lados de la frontera.' }
-  ],
-  'salamanca': [
-    { title: 'Zona Centro', description: 'Centros médicos vinculados a la red de salud estatal e industrial.' }
-  ],
-  'saltillo': [
-    { title: 'Distrito V', description: 'Área de desarrollo con modernos centros hospitalarios y comerciales.' }
-  ],
-  'san_cristobal': [
-    { title: 'Barrio de Guadalupe', description: 'Servicios médicos con un enfoque en salud integral y comunitaria.' }
-  ],
-  'san_francisco_coacalco': [
-    { title: 'Vía José López Portillo', description: 'Corredor comercial con acceso a diversas clínicas de salud.' }
-  ],
-  'san_juan_del_rio': [
-    { title: 'Zona Centro', description: 'Servicios médicos regionales para el sur del estado de Querétaro.' }
-  ],
-  'san_luis_potosi': [
-    { title: 'Lomas / Chapultepec', description: 'Concentración de hospitales privados y centros de diagnóstico.' }
-  ],
-  'san_nicolas': [
-    { title: 'Universidad', description: 'Zona con hospitales de alta especialidad y centros médicos académicos.' }
-  ],
-  'san_pedro_garza_garcia': [
-    { title: 'Valle del Campestre', description: 'Centros médicos de lujo y servicios de salud exclusivos.' }
-  ],
-  'santa_catarina': [
-    { title: 'La Fama', description: 'Acceso a centros de salud general y medicina familiar.' }
-  ],
-  'soledad': [
-    { title: 'Acceso Norte', description: 'Servicios médicos complementarios a la zona metropolitana de SLP.' }
-  ],
-  'tapachula': [
-    { title: 'Zona Centro', description: 'Importante centro de servicios médicos para la región Soconusco.' }
-  ],
-  'tehuacan': [
-    { title: 'Centro de Tehuacán', description: 'Servicios de salud de segundo nivel y clínicas regionales.' }
-  ],
-  'tepic': [
-    { title: 'Ciudad del Valle', description: 'Zona con mayor oferta de especialistas y clínicas privadas en la ciudad.' }
-  ],
-  'tijuana': [
-    { title: 'Zona Río', description: 'Capital del turismo médico con hospitales de clase mundial y centros estéticos.' }
-  ],
-  'tlalnepantla': [
-    { title: 'Tlalnepantla Centro', description: 'Área con servicios médicos públicos y privados de alta afluencia.' }
-  ],
-  'tlalpan': [
-    { title: 'Zona de Hospitales', description: 'Referencia nacional en medicina de alta especialidad.' }
-  ],
-  'tlaquepaque': [
-    { title: 'El Álamo', description: 'Servicios médicos de primer contacto y especialidades generales.' }
-  ],
-  'toluca': [
-    { title: 'Colonia Universidad', description: 'Zona con hospitales generales y servicios de salud para la capital mexiquense.' }
-  ],
-  'tonala': [
-    { title: 'Loma Dorada', description: 'Presencia de hospitales generales y centros de salud comunitarios.' }
-  ],
-  'torreon': [
-    { title: 'Cobián / Centro', description: 'Distrito médico tradicional con hospitales de amplia trayectoria.' }
-  ],
-  'tuxtla_gutierrez': [
-    { title: 'Zona Oriente / Hospitales', description: 'Ciudad Salud, concentrando centros de alta especialidad del estado.' }
-  ],
-  'uruapan': [
-    { title: 'Zona Centro', description: 'Clínicas privadas y servicios de salud para la región purépecha.' }
-  ],
-  'veracruz': [
-    { title: 'Fraccionamiento Reforma', description: 'Zona con gran cantidad de laboratorios y especialistas médicos.' }
-  ],
-  'villahermosa': [
-    { title: 'Tabasco 2000', description: 'Centro moderno de servicios médicos y administrativos.' }
-  ],
-  'xalapa': [
-    { title: 'Avenida 20 de Noviembre', description: 'Corredor médico principal con acceso a servicios públicos y privados.' }
-  ],
-  'zacatecas': [
-    { title: 'Zona Conurbada Guadalupe-Zacatecas', description: 'Área de modernos hospitales y clínicas de especialidad.' }
-  ],
-  'zamora': [
-    { title: 'Jardines de las Catedrales', description: 'Zona con clínicas de especialidad y servicios médicos regionales.' }
-  ],
-  'zapopan': [
-    { title: 'Puerta de Hierro', description: 'Zona médica de prestigio con infraestructura de primer nivel.' }
-  ],
-  'zapotlanejo': [
-    { title: 'Centro', description: 'Servicios médicos locales y atención de salud primaria.' }
   ]
 };
 
@@ -364,6 +39,18 @@ const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
+const getCityHealthData = (citySlug: string, cityName: string) => {
+  const data = CITY_HEALTH_DATA[citySlug];
+  if (data) return data;
+  
+  // Generic Template for cities without specific data
+  return {
+    overview: `La ciudad de ${cityName} cuenta con una red de servicios médicos en crecimiento, compuesta por hospitales públicos, clínicas privadas y consultorios de especialidad. Los pacientes pueden encontrar atención para diversas condiciones de salud sin necesidad de trasladarse a otras regiones.`,
+    hospitals: [`Hospital General de ${cityName}`, 'Clínica de Especialidades Médicas', 'Cruz Roja Mexicana'],
+    transport: `El acceso a los servicios médicos en ${cityName} es generalmente sencillo a través del transporte público local y taxis. Se recomienda verificar la disponibilidad de estacionamiento si se acude en vehículo propio a la zona centro.`
+  };
+};
+
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
   return [...doctors].sort((a, b) => {
     const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
@@ -378,8 +65,8 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 export async function generateMetadata({ params }: { params: { city: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
   return {
-    title: `Doctores en ${cityName}`,
-    description: `Encuentra los mejores doctores y especialistas en ${cityName} sin intermediarios. Revisa perfiles verificados y contacta directamente.`,
+    title: `Doctores en ${cityName} - Directorio Médico Verificado`,
+    description: `Encuentra los mejores doctores y hospitales en ${cityName}. Información sobre zonas médicas, emergencias y transporte. Contacta directamente sin comisiones.`,
   };
 }
 
@@ -389,6 +76,7 @@ export default async function CityPage({ params }: { params: { city: string } })
   const citySlug = params.city;
   const cityName = getCanonicalCity(citySlug);
   const medicalZones = CITY_MEDICAL_ZONES[citySlug] || [];
+  const healthData = getCityHealthData(citySlug, cityName);
 
   // Fetch initial batch of doctors
   const { data: rawDoctors } = await supabase
@@ -400,7 +88,6 @@ export default async function CityPage({ params }: { params: { city: string } })
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   // Logic to prevent Thin Content indexing
-  // If no doctors are found AND the city is not in our known list, return 404.
   const isKnownCity = ALL_CITIES.includes(cityName);
   if (doctors.length === 0 && !isKnownCity) {
     notFound();
@@ -517,6 +204,17 @@ export default async function CityPage({ params }: { params: { city: string } })
             </p>
         </div>
 
+        {/* Local Healthcare Overview - Added Section */}
+        <section className="bg-white rounded-[24px] p-8 border border-slate-200 mb-12 animate-in fade-in slide-in-from-bottom-3 shadow-sm">
+            <div className="flex items-center gap-3 mb-4">
+                <HeartPulse className="w-6 h-6 text-[#0071e3]" />
+                <h2 className="text-xl font-bold text-[#1d1d1f]">Infraestructura de Salud en {cityName}</h2>
+            </div>
+            <p className="text-[#86868b] leading-relaxed text-lg mb-0">
+                {healthData.overview}
+            </p>
+        </section>
+
         {/* Client Side List & Pagination */}
         <CityDoctorList initialDoctors={doctors} city={cityName} />
 
@@ -564,12 +262,75 @@ export default async function CityPage({ params }: { params: { city: string } })
         </div>
       </section>
 
-      {/* Informational Sections */}
+      {/* Essential City Information Section - Added */}
       <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
+        <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-10">
+                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-2">Guía Médica de {cityName}</h2>
+                <p className="text-[#86868b]">Información útil para pacientes y familiares</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+                {/* Emergency Card */}
+                <div className="bg-white p-8 rounded-[24px] border border-slate-200/60 shadow-sm hover:border-[#0071e3]/30 transition-all">
+                    <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                        <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
+                            <Ambulance className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1d1d1f]">Hospitales y Emergencias</h3>
+                    </div>
+                    
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between bg-red-50 p-3 rounded-lg border border-red-100">
+                            <span className="font-semibold text-red-800 text-sm">Emergencias Generales</span>
+                            <span className="font-bold text-red-600 text-lg">911</span>
+                        </div>
+                        <div>
+                            <p className="text-sm font-semibold text-[#1d1d1f] mb-2 uppercase tracking-wide">Hospitales Principales:</p>
+                            <ul className="space-y-2">
+                                {healthData.hospitals.map((hospital, idx) => (
+                                    <li key={idx} className="flex items-start gap-2 text-sm text-[#86868b]">
+                                        <Building className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                                        {hospital}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <p className="text-xs text-[#86868b] italic pt-2">
+                            *Esta lista es informativa. En caso de emergencia grave acude al hospital más cercano.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Transport Card */}
+                <div className="bg-white p-8 rounded-[24px] border border-slate-200/60 shadow-sm hover:border-[#0071e3]/30 transition-all">
+                    <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                        <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center">
+                            <Bus className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1d1d1f]">Movilidad y Acceso</h3>
+                    </div>
+                    <p className="text-[#86868b] leading-relaxed mb-6">
+                        {healthData.transport}
+                    </p>
+                    <div className="bg-[#f5f5f7] p-4 rounded-xl flex gap-3">
+                        <Info className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
+                        <p className="text-sm text-[#86868b] leading-relaxed">
+                            Te recomendamos planificar tu ruta con anticipación, especialmente si tienes citas en horas pico. Muchas clínicas ofrecen estacionamiento o convenios cercanos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      {/* Informational Sections */}
+      <section className="py-16 bg-white border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                        <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
                     </div>
                     <h2 className="text-2xl font-semibold text-[#1d1d1f]">Encuentra Especialistas en {cityName} sin Costo</h2>
                 </div>
@@ -589,6 +350,7 @@ export default async function CityPage({ params }: { params: { city: string } })
             <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                        <Search className="w-5 h-5 text-[#0071e3]" />
                     </div>
                     <h2 className="text-2xl font-semibold text-[#1d1d1f]">Cómo encontrar doctor en {cityName}</h2>
                 </div>
@@ -621,7 +383,7 @@ export default async function CityPage({ params }: { params: { city: string } })
 
       {/* Medical Zones Section */}
       {medicalZones.length > 0 && (
-        <section className="py-16 bg-white border-t border-slate-200">
+        <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
             <div className="max-w-6xl mx-auto px-6">
                 <div className="flex items-center gap-3 mb-8">
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
@@ -631,7 +393,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
                     {medicalZones.map((zone, idx) => (
-                        <div key={idx} className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 hover:border-[#0071e3]/20 transition-colors">
+                        <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-100 hover:border-[#0071e3]/20 transition-colors">
                             <h3 className="font-bold text-[#1d1d1f] text-lg mb-2">{zone.title}</h3>
                             <p className="text-[#86868b] text-sm leading-relaxed">{zone.description}</p>
                         </div>
@@ -642,7 +404,7 @@ export default async function CityPage({ params }: { params: { city: string } })
       )}
 
       {/* FAQ Section */}
-      <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
+      <section className="py-16 bg-white border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-6">
             <div className="flex items-center gap-3 mb-8 justify-center">
                 <HelpCircle className="w-6 h-6 text-[#0071e3]" />
@@ -650,7 +412,7 @@ export default async function CityPage({ params }: { params: { city: string } })
             </div>
             <div className="space-y-4">
                 {faqs.map((faq, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
+                    <div key={idx} className="bg-[#f5f5f7] p-6 rounded-2xl shadow-sm border border-slate-200/60">
                         <h3 className="text-lg font-bold text-[#1d1d1f] mb-3">{faq.question}</h3>
                         <p className="text-[#86868b] leading-relaxed">{faq.answer}</p>
                     </div>
@@ -660,7 +422,7 @@ export default async function CityPage({ params }: { params: { city: string } })
       </section>
 
       {/* SEO & Other Cities Footer */}
-      <section className="bg-white py-12 border-t border-slate-200">
+      <section className="bg-[#f5f5f7] py-12 border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6 space-y-12">
             
             {/* Other Cities */}

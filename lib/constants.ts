@@ -1352,6 +1352,34 @@ export const SPECIALTY_FIRST_VISIT: Record<string, string> = {
   'Nutricionista': 'Se realizará una evaluación de tu estilo de vida, hábitos alimenticios y actividad física. El especialista tomará medidas corporales (peso, talla, pliegues) para establecer metas realistas y diseñar un plan a tu medida.'
 };
 
+export const CITY_HEALTH_DATA: Record<string, { overview: string, hospitals: string[], transport: string }> = {
+  'ciudad-de-mexico': {
+    overview: 'La Ciudad de México concentra la infraestructura médica más avanzada del país, albergando los Institutos Nacionales de Salud y hospitales privados de renombre internacional. Es el principal destino para procedimientos de alta complejidad y turismo médico nacional.',
+    hospitals: ['Hospital General de México', 'Centro Médico Nacional Siglo XXI', 'Hospital Ángeles', 'Médica Sur', 'Centro Médico ABC'],
+    transport: 'Zonas como la Colonia Roma y Tlalpan (Zona de Hospitales) tienen alta congestión. Se recomienda utilizar el Metrobús para la zona centro o el Metro para el sur. El estacionamiento suele ser limitado, por lo que el uso de apps de movilidad es aconsejable.'
+  },
+  'monterrey': {
+    overview: 'Monterrey se ha consolidado como un hub de turismo médico en el norte, conocido por su tecnología de vanguardia en cardiología y oncología. La ciudad combina atención hospitalaria de primer mundo con una fuerte formación universitaria.',
+    hospitals: ['Hospital Universitario', 'Doctors Hospital', 'Hospital San José Tec de Monterrey', 'Christus Muguerza Alta Especialidad'],
+    transport: 'La zona médica del Obispado concentra gran parte de los especialistas. El acceso es principalmente vehicular. Se recomienda prever tiempos de traslado en horas pico en las avenidas Constitución y Gonzalitos.'
+  },
+  'guadalajara': {
+    overview: 'Guadalajara ofrece un ecosistema de salud robusto, destacando en especialidades como cirugía plástica y ortopedia. Sus hospitales universitarios y privados colaboran estrechamente, garantizando atención de calidad.',
+    hospitals: ['Hospital Civil de Guadalajara', 'Centro Médico Puerta de Hierro', 'Hospital San Javier', 'Hospital Real San José'],
+    transport: 'Las zonas de Providencia y Chapalita son accesibles y seguras. El sistema de Tren Eléctrico Urbano facilita la llegada a hospitales céntricos, aunque el auto particular sigue siendo el medio más común para zonas residenciales.'
+  },
+  'puebla': {
+    overview: 'Puebla ha crecido como un centro de salud regional, atrayendo pacientes del sureste del país. Cuenta con una moderna zona hospitalaria en la Reserva Territorial Atlixcáyotl, además de hospitales tradicionales en el centro.',
+    hospitals: ['Hospital Puebla', 'Hospital Ángeles Puebla', 'Hospital UPAEP', 'Beneficencia Española de Puebla'],
+    transport: 'La zona de Angelópolis cuenta con amplios estacionamientos y vialidades rápidas. Para el centro histórico y la zona de la Paz, el transporte público es abundante, aunque el tráfico puede ser denso.'
+  },
+  'queretaro': {
+    overview: 'Querétaro se distingue por su rápido crecimiento en infraestructura sanitaria moderna y segura. Es ideal para tratamientos programados debido a su tranquilidad y cercanía con la capital del país.',
+    hospitals: ['Hospital Star Médica', 'Hospital San José', 'Hospital Ángeles Querétaro', 'Hospital General de Querétaro'],
+    transport: 'La movilidad en Querétaro depende en gran medida del vehículo particular. Las clínicas modernas suelen contar con estacionamiento propio. Las vías principales como Bernardo Quintana conectan rápidamente las zonas hospitalarias.'
+  }
+};
+
 export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
 export const getDiseaseInfo = (slug: string) => {
