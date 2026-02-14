@@ -1380,6 +1380,42 @@ export const CITY_HEALTH_DATA: Record<string, { overview: string, hospitals: str
   }
 };
 
+
+export const SPECIALTY_COMPARISONS: Record<string, { title: string, text: string }> = {
+  'Psicólogo': {
+    title: '¿Buscas un Psicólogo o un Psiquiatra?',
+    text: 'Los psicólogos en MediBusca se enfocan en terapia conductual, emocional y del habla. Si requieres diagnóstico médico y tratamiento farmacológico (medicamentos), un Psiquiatra es el especialista médico indicado.'
+  },
+  'Psiquiatra': {
+    title: '¿Psiquiatra o Psicólogo?',
+    text: 'Los psiquiatras son médicos que pueden recetar medicamentos para desequilibrios químicos y condiciones mentales complejas. Para terapia conversacional intensiva sin medicación, suelen trabajar en conjunto con Psicólogos.'
+  },
+  'Ortopedista': {
+    title: '¿Ortopedista o Traumatólogo?',
+    text: 'Aunque suelen trabajar juntos, el Traumatólogo se enfoca en lesiones agudas (golpes, fracturas recientes, accidentes), mientras que el Ortopedista trata condiciones crónicas, deformidades y enfermedades del sistema musculoesquelético.'
+  },
+  'Traumatólogo': {
+    title: '¿Traumatólogo u Ortopedista?',
+    text: 'El Traumatólogo es ideal para emergencias, fracturas y golpes recientes. Si tu dolor es crónico, de larga duración o relacionado con el desarrollo óseo, un Ortopedista podría ser más adecuado.'
+  },
+  'Oftalmólogo': {
+    title: '¿Oftalmólogo u Optometrista?',
+    text: 'El Oftalmólogo es un médico cirujano que trata enfermedades oculares (glaucoma, cataratas) y realiza cirugías. El Optometrista se enfoca principalmente en medir tu vista, graduar lentes y corregir defectos refractivos.'
+  },
+  'Nefrólogo': {
+    title: '¿Nefrólogo o Urólogo?',
+    text: 'El Nefrólogo es un médico internista que trata el funcionamiento de los riñones (insuficiencia renal, diálisis). El Urólogo es un cirujano que trata las vías urinarias (cálculos, vejiga) y el sistema reproductor masculino.'
+  },
+  'Urólogo': {
+    title: '¿Urólogo o Nefrólogo?',
+    text: 'Busca un Urólogo para problemas quirúrgicos o estructurales de las vías urinarias (cálculos, próstata). Si el problema es cómo filtran la sangre tus riñones (enfermedad renal crónica), el Nefrólogo es el especialista.'
+  },
+  'Nutricionista': {
+    title: '¿Nutricionista o Nutriólogo Clínico?',
+    text: 'Ambos se enfocan en la alimentación. Sin embargo, un Nutriólogo Clínico suele tener un enfoque más orientado al manejo de enfermedades específicas (diabetes, hipertensión) a través de la dieta en un entorno hospitalario o médico.'
+  }
+};
+
 export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
 export const getDiseaseInfo = (slug: string) => {

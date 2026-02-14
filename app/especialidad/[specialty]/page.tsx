@@ -2,10 +2,10 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck } from 'lucide-react';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;
@@ -66,6 +66,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || ['Diagnóstico general', 'Tratamiento especializado', 'Seguimiento de padecimientos', 'Consultas preventivas'];
   const procedures = SPECIALTY_PROCEDURES[searchTerm] || ['Evaluación clínica', 'Diagnóstico especializado', 'Plan de tratamiento', 'Seguimiento médico'];
   const firstVisitText = SPECIALTY_FIRST_VISIT[searchTerm] || 'Durante la primera consulta, el especialista realizará una historia clínica detallada para entender tus síntomas y antecedentes. Se llevará a cabo un examen físico enfocado en tu motivo de consulta para determinar el mejor plan de diagnóstico y tratamiento.';
+  const comparison = SPECIALTY_COMPARISONS[searchTerm];
 
   // 1. Fetch Initial Data Server-Side (Doctors)
   const { data: rawDoctors } = await supabase
@@ -168,7 +169,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
         </div>
 
         {/* 1️⃣ "What to Expect" Section - Adds authoritative content */}
-        <section className="bg-white rounded-[32px] p-8 md:p-10 border border-slate-200 mb-12 animate-in fade-in slide-in-from-bottom-3 shadow-sm">
+        <section className="bg-white rounded-[32px] p-8 md:p-10 border border-slate-200 mb-8 animate-in fade-in slide-in-from-bottom-3 shadow-sm">
             <div className="flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex-1">
                     <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
@@ -208,6 +209,21 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                 </div>
             </div>
         </section>
+
+        {/* 1.5 Contextual Comparison (New Feature) */}
+        {comparison && (
+            <div className="bg-indigo-50 border border-indigo-200 rounded-2xl p-6 mb-12 animate-in fade-in slide-in-from-bottom-4 flex gap-4">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-600 shrink-0 shadow-sm">
+                    <Scale className="w-6 h-6" />
+                </div>
+                <div>
+                    <h3 className="text-xl font-bold text-indigo-900 mb-2">{comparison.title}</h3>
+                    <p className="text-indigo-900/80 leading-relaxed">
+                        {comparison.text}
+                    </p>
+                </div>
+            </div>
+        )}
 
         {/* Interactive Doctor List */}
         <SpecialtyDoctorList initialDoctors={doctors} specialty={searchTerm} />
