@@ -289,7 +289,7 @@ export const SPECIALTY_CONDITIONS: Record<string, string[]> = {
 };
 
 // Reusing the slugify from your code for internal consistency in constants
-export const slugify = (text: string) => {
+const slugify = (text: string) => {
   return text.toString().toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/\s+/g, '-')
@@ -682,6 +682,7 @@ export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
   'Autismo': ['Neurólogo pediatra', 'Psiquiatra infantil'],
   'Trombosis venosa profunda': ['Angiólogo'],
   'Dolor en la espalda': ['Ortopedista', 'Fisioterapeuta'],
+  'Hombro congelado': ['Traumatólogo', 'Fisioterapeuta'],
   'Avulsión dental': ['Dentista - Odontólogo'],
   'Parálisis cerebral': ['Neurólogo pediatra', 'Fisioterapeuta'],
   'Fractura coronal': ['Dentista - Odontólogo'],

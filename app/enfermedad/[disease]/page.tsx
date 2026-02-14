@@ -3,9 +3,8 @@ import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
 import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search } from 'lucide-react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES } from '../../../lib/constants';
+import { POPULAR_CITIES, getDiseaseInfo } from '../../../lib/constants';
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
@@ -60,13 +59,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
-
-  // Logic to prevent Thin Content indexing
-  // If no doctors are found AND the disease is not in our known list, return 404.
-  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
-  if (doctors.length === 0 && !isKnownDisease) {
-    notFound();
-  }
 
   // 2. Fetch Related Articles
   const { data: articlesData } = await supabase

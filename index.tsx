@@ -1,0 +1,1 @@
+// This file is deprecated. The application uses the Next.js App Router in app/page.tsx.
