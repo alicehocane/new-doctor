@@ -19,14 +19,334 @@ const CITY_MEDICAL_ZONES: Record<string, { title: string, description: string }[
     { title: 'Costera Miguel Alemán', description: 'Zona con servicios médicos orientados al turismo y especialidades diversas.' }
   ],
   'aguascalientes': [
-    { title: 'Zona Norte / Campestre', description: 'Área moderna con hospitales de prestigio y centros de alta especialidad.' },
-    { title: 'Zona Centro', description: 'Concentración histórica de consultorios privados y laboratorios clínicos.' }
+    { title: 'Norte - Prol. Zaragoza', description: 'Zona de crecimiento médico con hospitales modernos y consultorios de especialidad.' },
+    { title: 'Centro Histórico', description: 'Área con presencia de clínicas tradicionales y servicios médicos de primer nivel.' }
   ],
   'apizaco': [
-    { title: 'Zona Centro y Ferrocarrilera', description: 'Punto de referencia para servicios médicos generales en la región de Tlaxcala.' }
+    { title: 'Centro de Apizaco', description: 'Núcleo de servicios de salud regionales y farmacias especializadas.' }
+  ],
+  'apodaca': [
+    { title: 'Zona Industrial - Miguel Alemán', description: 'Servicios médicos enfocados en medicina del trabajo y urgencias generales.' }
+  ],
+  'benito_juarez': [
+    { title: 'Colonia del Valle / Nápoles', description: 'Alta densidad de centros médicos privados, laboratorios y hospitales de prestigio.' }
+  ],
+  'buenavista': [
+    { title: 'Eje Central / Insurgentes Norte', description: 'Punto de conexión con acceso a servicios de salud públicos y clínicas de diagnóstico.' }
+  ],
+  'cabo_san_lucas': [
+    { title: 'Corredor Turístico', description: 'Hospitales privados de alta gama enfocados en turismo médico y atención internacional.' }
+  ],
+  'cadereyta_jimenez': [
+    { title: 'Zona Centro', description: 'Clínicas locales y servicios de salud vinculados a la industria regional.' }
+  ],
+  'campeche': [
+    { title: 'Avenida Resurgimiento', description: 'Área que concentra principales unidades hospitalarias y centros de especialidades.' }
+  ],
+  'cancun': [
+    { title: 'Avenida Tulum - Centro', description: 'Zona tradicional de servicios médicos, clínicas dentales y laboratorios.' },
+    { title: 'Zona Hotelera', description: 'Servicios de emergencia y atención médica internacional para visitantes.' }
+  ],
+  'chalco': [
+    { title: 'Centro de Chalco', description: 'Sede de hospitales regionales y centros de salud comunitarios.' }
+  ],
+  'chicoloapan': [
+    { title: 'Carretera Federal México-Texcoco', description: 'Acceso a servicios de salud locales y farmacias de distribución masiva.' }
+  ],
+  'chihuahua': [
+    { title: 'Distrito Uno / Periférico de la Juventud', description: 'Zona médica de vanguardia con hospitales privados de alta tecnología.' },
+    { title: 'Centro Médico', description: 'Concentración de especialistas tradicionales y servicios públicos.' }
+  ],
+  'chilpancingo': [
+    { title: 'Avenida Lázaro Cárdenas', description: 'Eje principal de servicios médicos y laboratorios en la capital.' }
+  ],
+  'chimalhuacan': [
+    { title: 'Barrio Santa María', description: 'Zona con presencia de hospitales generales y centros de salud estatales.' }
+  ],
+  'ciudad_acuna': [
+    { title: 'Zona Centro / Frontera', description: 'Clínicas especializadas en atención transfronteriza y servicios generales.' }
+  ],
+  'ciudad_de_mexico': [
+    { title: 'Roma / Condesa', description: 'Eje de clínicas boutique, consultorios de especialidad y laboratorios.' },
+    { title: 'Tlalpan - Zona de Hospitales', description: 'Concentración de los Institutos Nacionales de Salud y alta especialidad.' }
+  ],
+  'ciudad_del_carmen': [
+    { title: 'Avenida Concordia', description: 'Centros médicos vinculados a la industria energética y servicios generales.' }
+  ],
+  'ciudad_juarez': [
+    { title: 'Pronaf / Zona Norte', description: 'Distrito médico enfocado en servicios para pacientes locales y extranjeros.' }
+  ],
+  'ciudad_lopez_mateos': [
+    { title: 'Zona Esmeralda / Atizapán', description: 'Servicios médicos privados de alto nivel y centros de bienestar.' }
+  ],
+  'ciudad_madero': [
+    { title: 'Colonia Unidad Nacional', description: 'Zona residencial con acceso a hospitales generales y clínicas de especialidad.' }
+  ],
+  'ciudad_victoria': [
+    { title: 'Fraccionamiento San José', description: 'Área hospitalaria central con servicios médicos de tercer nivel.' }
+  ],
+  'coatzacoalcos': [
+    { title: 'Avenida Lázaro Cárdenas', description: 'Corredor médico con clínicas privadas y laboratorios de análisis clínicos.' }
+  ],
+  'colima': [
+    { title: 'Tercer Anillo Periférico', description: 'Nueva zona de desarrollo médico con hospitales modernos y consultorios.' }
+  ],
+  'coyoacan': [
+    { title: 'Circuito Interior / Churubusco', description: 'Presencia de hospitales pediátricos y centros de salud especializados.' }
+  ],
+  'cuauhtemoc': [
+    { title: 'Colonia Juárez / San Rafael', description: 'Acceso a hospitales históricos y una amplia red de farmacias.' }
+  ],
+  'cuautitlan_izcalli': [
+    { title: 'Centro Urbano', description: 'Zona comercial con clínicas privadas y centros de diagnóstico integral.' }
+  ],
+  'cuautla': [
+    { title: 'Avenida Reforma', description: 'Principal vía con servicios médicos, ópticas y consultorios generales.' }
+  ],
+  'cuernavaca': [
+    { title: 'Avenida Teopanzolco / Lomas de Cortés', description: 'Zona de clínicas de especialidad y servicios médicos privados.' }
+  ],
+  'culiacan': [
+    { title: 'Sector Tres Ríos', description: 'Desarrollo médico moderno con hospitales de alta especialidad.' }
+  ],
+  'durango': [
+    { title: 'Zona Centro / Calle Juárez', description: 'Concentración de especialistas y servicios médicos tradicionales.' }
+  ],
+  'ecatepec': [
+    { title: 'Vía Morelos', description: 'Corredor industrial y comercial con presencia de hospitales generales.' }
+  ],
+  'ensenada': [
+    { title: 'Zona Centro / Calle Cuarta', description: 'Clínicas y laboratorios con enfoque en residentes locales y turismo.' }
+  ],
+  'fresnillo': [
+    { title: 'Centro de Fresnillo', description: 'Servicios de salud enfocados en la comunidad local y medicina general.' }
+  ],
+  'garcia': [
+    { title: 'Zona Mitras Poniente', description: 'Área de crecimiento con nuevos centros médicos familiares.' }
+  ],
+  'general_escobedo': [
+    { title: 'Avenida Raúl Salinas', description: 'Zona comercial con acceso a clínicas de primer contacto.' }
+  ],
+  'gomez_palacio': [
+    { title: 'Zona Centro', description: 'Servicios de salud integrados en la zona metropolitana de la Laguna.' }
+  ],
+  'guadalajara': [
+    { title: 'Puerta de Hierro', description: 'Distrito médico de lujo con tecnología de punta y especialistas internacionales.' },
+    { title: 'Zona Centro / Hospitales Civil', description: 'Referencia médica regional con amplia capacidad de atención.' }
+  ],
+  'guadalupe': [
+    { title: 'Avenida Eloy Cavazos', description: 'Corredor con hospitales generales y centros de medicina familiar.' }
+  ],
+  'guanajuato': [
+    { title: 'Marfil / Noria Alta', description: 'Zonas con clínicas de especialidad y servicios médicos universitarios.' }
+  ],
+  'guaymas': [
+    { title: 'Sector Centro', description: 'Atención médica general y servicios vinculados a la actividad portuaria.' }
+  ],
+  'gustavo_a_madero': [
+    { title: 'Lindavista', description: 'Importante núcleo médico con hospitales privados y públicos de renombre.' }
+  ],
+  'hermosillo': [
+    { title: 'Bulevar Morelos / Kino', description: 'Zona de alta gama con hospitales de especialidades y torres médicas.' }
+  ],
+  'huixquilucan': [
+    { title: 'Interlomas', description: 'Centros médicos de excelencia con estándares internacionales.' }
+  ],
+  'irapuato': [
+    { title: 'Villas de Irapuato', description: 'Zona residencial con hospitales privados y servicios médicos avanzados.' }
+  ],
+  'ixtapaluca': [
+    { title: 'Carretera Federal México-Puebla', description: 'Ubicación de hospitales regionales de alta especialidad.' }
+  ],
+  'iztacalco': [
+    { title: 'Colonia Agricola Oriental', description: 'Servicios de salud locales y unidades médicas del sector público.' }
+  ],
+  'iztapalapa': [
+    { title: 'Ermita Iztapalapa', description: 'Corredor con hospitales generales y centros de atención comunitaria.' }
+  ],
+  'jiutepec': [
+    { title: 'Zona Centro / Tejalpa', description: 'Servicios de salud integrados en la zona conurbada de Morelos.' }
+  ],
+  'juriquilla': [
+    { title: 'Zona de Universidades', description: 'Clínicas modernas y centros de bienestar en área de alto crecimiento.' }
+  ],
+  'la_paz': [
+    { title: 'Malecón / Centro', description: 'Acceso a hospitales generales y servicios de salud para la comunidad.' }
+  ],
+  'la_piedad': [
+    { title: 'Zona Centro', description: 'Servicios de salud regionales para el bajío michoacano.' }
+  ],
+  'leon': [
+    { title: 'Cerro Gordo / Lomas del Campestre', description: 'Clúster médico de alta especialidad y hospitales privados.' }
+  ],
+  'linares': [
+    { title: 'Centro de Linares', description: 'Clínicas locales y servicios de salud de primer nivel.' }
+  ],
+  'magdalena_contreras': [
+    { title: 'San Jerónimo', description: 'Zona con clínicas especializadas y servicios de salud integrales.' }
+  ],
+  'manzanillo': [
+    { title: 'Zona Hotelera / Playa Azul', description: 'Servicios médicos para residentes y atención a emergencias portuarias.' }
+  ],
+  'matamoros': [
+    { title: 'Zona Centro / Sexta', description: 'Servicios médicos fronterizos con enfoque en medicina general y dental.' }
+  ],
+  'mazatlan': [
+    { title: 'Avenida del Mar', description: 'Clínicas y hospitales con servicios para el turismo y la población local.' }
+  ],
+  'merida': [
+    { title: 'Altabrisa', description: 'El hub médico más importante del sureste con hospitales de alta tecnología.' },
+    { title: 'Centro Médico de las Américas', description: 'Zona tradicional de especialistas y diagnóstico.' }
+  ],
+  'metepec': [
+    { title: 'Avenida Tecnológico', description: 'Zona de crecimiento con hospitales privados modernos y consultorios.' }
+  ],
+  'mexicali': [
+    { title: 'Zona Fronteriza', description: 'Destino clave para el turismo médico, especialmente en odontología y cirugía.' }
+  ],
+  'minatitlan': [
+    { title: 'Zona Centro', description: 'Centros de salud y servicios médicos vinculados a la industria petrolera.' }
+  ],
+  'miramar': [
+    { title: 'Zona Costera', description: 'Servicios de salud preventivos y atención médica general.' }
+  ],
+  'monclova': [
+    { title: 'Bulevar Harold R. Pape', description: 'Eje principal con los mayores centros hospitalarios de la región.' }
+  ],
+  'monterrey': [
+    { title: 'Gonzalitos / Mitras', description: 'Histórico corredor médico con hospitales universitarios y privados.' },
+    { title: 'Valle Oriente', description: 'Hospitales de última generación y centros de especialidad premium.' }
+  ],
+  'morelia': [
+    { title: 'Tres Marías', description: 'Zona de nuevo desarrollo médico con hospitales de alta especialidad.' }
+  ],
+  'naucalpan': [
+    { title: 'Satélite', description: 'Importante zona médica con hospitales de prestigio y múltiples consultorios.' }
+  ],
+  'nezahualcoyotl': [
+    { title: 'Avenida Pantitlán', description: 'Zona comercial con una amplia oferta de clínicas y laboratorios.' }
+  ],
+  'nogales': [
+    { title: 'Zona Fronteriza', description: 'Servicios médicos y dentales orientados a la población binacional.' }
+  ],
+  'nuevo_casas_grandes': [
+    { title: 'Centro', description: 'Servicios de salud regionales para el noroeste de Chihuahua.' }
+  ],
+  'nuevo_laredo': [
+    { title: 'Sector Centro', description: 'Clínicas especializadas en servicios transfronterizos.' }
+  ],
+  'oaxaca': [
+    { title: 'Reforma', description: 'Zona con mayor concentración de clínicas privadas y especialistas en la capital.' }
+  ],
+  'ojo_de_agua': [
+    { title: 'Bulevar Ojo de Agua', description: 'Servicios médicos locales y centros de salud familiares.' }
+  ],
+  'pachuca': [
+    { title: 'Zona Plateada', description: 'Área moderna con hospitales de especialidad y torres médicas.' }
+  ],
+  'poza_rica': [
+    { title: 'Avenida 20 de Noviembre', description: 'Corredor principal con servicios médicos y farmacias especializadas.' }
+  ],
+  'puebla': [
+    { title: 'Angelópolis', description: 'Distrito médico más moderno con hospitales de alta gama.' },
+    { title: 'La Paz', description: 'Zona tradicional de consultorios y clínicas de especialidad.' }
+  ],
+  'puerto_vallarta': [
+    { title: 'Marina Vallarta', description: 'Hospitales con estándares internacionales enfocados en turismo médico.' }
+  ],
+  'queretaro': [
+    { title: 'Jurica / Juriquilla', description: 'Zona de expansión con hospitales de alta tecnología.' },
+    { title: 'Centro Sur', description: 'Nuevo clúster médico con servicios integrales de salud.' }
+  ],
+  'reynosa': [
+    { title: 'Zona Centro / Puente Internacional', description: 'Foco de atención médica para residentes de ambos lados de la frontera.' }
+  ],
+  'salamanca': [
+    { title: 'Zona Centro', description: 'Centros médicos vinculados a la red de salud estatal e industrial.' }
+  ],
+  'saltillo': [
+    { title: 'Distrito V', description: 'Área de desarrollo con modernos centros hospitalarios y comerciales.' }
+  ],
+  'san_cristobal': [
+    { title: 'Barrio de Guadalupe', description: 'Servicios médicos con un enfoque en salud integral y comunitaria.' }
+  ],
+  'san_francisco_coacalco': [
+    { title: 'Vía José López Portillo', description: 'Corredor comercial con acceso a diversas clínicas de salud.' }
+  ],
+  'san_juan_del_rio': [
+    { title: 'Zona Centro', description: 'Servicios médicos regionales para el sur del estado de Querétaro.' }
+  ],
+  'san_luis_potosi': [
+    { title: 'Lomas / Chapultepec', description: 'Concentración de hospitales privados y centros de diagnóstico.' }
+  ],
+  'san_nicolas': [
+    { title: 'Universidad', description: 'Zona con hospitales de alta especialidad y centros médicos académicos.' }
+  ],
+  'san_pedro_garza_garcia': [
+    { title: 'Valle del Campestre', description: 'Centros médicos de lujo y servicios de salud exclusivos.' }
+  ],
+  'santa_catarina': [
+    { title: 'La Fama', description: 'Acceso a centros de salud general y medicina familiar.' }
+  ],
+  'soledad': [
+    { title: 'Acceso Norte', description: 'Servicios médicos complementarios a la zona metropolitana de SLP.' }
+  ],
+  'tapachula': [
+    { title: 'Zona Centro', description: 'Importante centro de servicios médicos para la región Soconusco.' }
+  ],
+  'tehuacan': [
+    { title: 'Centro de Tehuacán', description: 'Servicios de salud de segundo nivel y clínicas regionales.' }
+  ],
+  'tepic': [
+    { title: 'Ciudad del Valle', description: 'Zona con mayor oferta de especialistas y clínicas privadas en la ciudad.' }
+  ],
+  'tijuana': [
+    { title: 'Zona Río', description: 'Capital del turismo médico con hospitales de clase mundial y centros estéticos.' }
+  ],
+  'tlalnepantla': [
+    { title: 'Tlalnepantla Centro', description: 'Área con servicios médicos públicos y privados de alta afluencia.' }
+  ],
+  'tlalpan': [
+    { title: 'Zona de Hospitales', description: 'Referencia nacional en medicina de alta especialidad.' }
+  ],
+  'tlaquepaque': [
+    { title: 'El Álamo', description: 'Servicios médicos de primer contacto y especialidades generales.' }
+  ],
+  'toluca': [
+    { title: 'Colonia Universidad', description: 'Zona con hospitales generales y servicios de salud para la capital mexiquense.' }
+  ],
+  'tonala': [
+    { title: 'Loma Dorada', description: 'Presencia de hospitales generales y centros de salud comunitarios.' }
+  ],
+  'torreon': [
+    { title: 'Cobián / Centro', description: 'Distrito médico tradicional con hospitales de amplia trayectoria.' }
+  ],
+  'tuxtla_gutierrez': [
+    { title: 'Zona Oriente / Hospitales', description: 'Ciudad Salud, concentrando centros de alta especialidad del estado.' }
+  ],
+  'uruapan': [
+    { title: 'Zona Centro', description: 'Clínicas privadas y servicios de salud para la región purépecha.' }
+  ],
+  'veracruz': [
+    { title: 'Fraccionamiento Reforma', description: 'Zona con gran cantidad de laboratorios y especialistas médicos.' }
+  ],
+  'villahermosa': [
+    { title: 'Tabasco 2000', description: 'Centro moderno de servicios médicos y administrativos.' }
+  ],
+  'xalapa': [
+    { title: 'Avenida 20 de Noviembre', description: 'Corredor médico principal con acceso a servicios públicos y privados.' }
+  ],
+  'zacatecas': [
+    { title: 'Zona Conurbada Guadalupe-Zacatecas', description: 'Área de modernos hospitales y clínicas de especialidad.' }
+  ],
+  'zamora': [
+    { title: 'Jardines de las Catedrales', description: 'Zona con clínicas de especialidad y servicios médicos regionales.' }
+  ],
+  'zapopan': [
+    { title: 'Puerta de Hierro', description: 'Zona médica de prestigio con infraestructura de primer nivel.' }
   ],
   'zapotlanejo': [
-    { title: 'Zona Centro', description: 'Servicios de salud locales y regionales.' }
+    { title: 'Centro', description: 'Servicios médicos locales y atención de salud primaria.' }
   ]
 };
 
