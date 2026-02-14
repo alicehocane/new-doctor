@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor } from '@/types';
+import { supabase } from '../../../lib/supabase';
+import { Doctor } from '../../../types';
 import { CheckCircle, ArrowRight, MapPin, Activity, Stethoscope, BookOpen, Info, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { COMMON_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, STATE_TO_CITIES, slugify, getStateForCity, ALL_CITIES } from '@/lib/constants';
-import CityDoctorList from '@/components/CityDoctorList';
+import { COMMON_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, STATE_TO_CITIES, slugify, getStateForCity, ALL_CITIES } from '../../../lib/constants';
+import CityDoctorList from '../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
 
@@ -50,11 +50,9 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   
   const cityName = getCanonicalCity(citySlug);
   
-  // Validate if city exists in our known list (optional, but good for SEO to avoid infinite generated pages)
-  const isKnownCity = ALL_CITIES.some(c => slugify(c) === citySlug);
-  if (!isKnownCity) {
-      // If strict validation is required, uncomment:
-      // notFound();
+  // Strict City Validation
+  if (!ALL_CITIES.some(c => slugify(c) === citySlug)) {
+      notFound();
   }
 
   // Derive state for "Nearby Cities" logic

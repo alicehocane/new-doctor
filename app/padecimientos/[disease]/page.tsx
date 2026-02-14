@@ -440,7 +440,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                             return (
                                 <Link 
                                     key={city}
-                                    // UPDATED: Removing state from URL
                                     href={`/doctores/${slugify(city)}/${slugify(spec)}`}
                                     className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
                                 >
@@ -466,7 +465,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         return (
                             <Link 
                                 key={city}
-                                // UPDATED: Removing state from URL
                                 href={`/doctores/${slugify(city)}`}
                                 className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
                             >
