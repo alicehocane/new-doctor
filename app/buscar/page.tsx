@@ -6,7 +6,7 @@ import SearchForm from '../../components/SearchForm';
 import StartSearchButton from '../../components/StartSearchButton';
 import { Metadata } from 'next';
 import { supabase } from '../../lib/supabase';
-import { City, Disease } from '../../types';
+import { City, Disease, Specialty } from '../../types';
 
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas',
@@ -22,17 +22,23 @@ export default async function SearchPage() {
     .order('name');
 
   // Fetch Diseases from DB
-  // Increased limit to support comprehensive autocomplete
   const diseasesPromise = supabase
     .from('diseases')
     .select('*')
     .eq('category', 'common')
     .limit(1000);
 
-  const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
+  // Fetch Specialties from DB
+  const specialtiesPromise = supabase
+    .from('specialties')
+    .select('id, name, slug, is_popular')
+    .order('name');
+
+  const [citiesResponse, diseasesResponse, specialtiesResponse] = await Promise.all([citiesPromise, diseasesPromise, specialtiesPromise]);
   
   const allCities = (citiesResponse.data as City[]) || [];
   const commonDiseases = (diseasesResponse.data as Disease[]) || [];
+  const allSpecialties = (specialtiesResponse.data as Specialty[]) || [];
 
   // Schema Markup - Separated Scripts for Maximum Google Compatibility
   const breadcrumbSchema = {
@@ -87,7 +93,7 @@ export default async function SearchPage() {
       </div>
 
       {/* Interactive Search Container (Client Component) */}
-      <SearchForm cities={allCities} diseases={commonDiseases} />
+      <SearchForm cities={allCities} diseases={commonDiseases} specialties={allSpecialties} />
 
       {/* Verification Process Section (Trust Building) */}
       <section className="w-full max-w-4xl mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-6">

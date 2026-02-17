@@ -2,9 +2,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck } from 'lucide-react';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
+import { supabase } from '../../lib/supabase';
+import { Specialty } from '../../types';
 
 const COMMON_DISEASES = [
   { name: 'Diabetes', category: 'Endocrinología' },
@@ -51,10 +52,16 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export default function SpecialtiesIndexPage() {
+export default async function SpecialtiesIndexPage() {
   
-  // Merge and Deduplicate Specialties for Client List
-  const allSpecialties = Array.from(new Set([...POPULAR_SPECIALTIES, ...COMMON_SPECIALTIES]));
+  // Fetch Specialties from DB
+  const { data: specialtiesData } = await supabase
+    .from('specialties')
+    .select('id, name, slug, is_popular')
+    .order('name');
+
+  const allSpecialties = (specialtiesData as Specialty[]) || [];
+  const specialtyNames = allSpecialties.map(s => s.name);
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -164,7 +171,7 @@ export default function SpecialtiesIndexPage() {
         </section>
 
         {/* Interactive List Component */}
-        <SpecialtiesList specialties={allSpecialties} />
+        <SpecialtiesList specialties={specialtyNames} />
 
         {/* How It Works Section */}
         <section className="mt-24 py-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-6">
@@ -193,6 +200,92 @@ export default function SpecialtiesIndexPage() {
                     <h3 className="font-bold text-[#1d1d1f] mb-3 text-lg">Llama directamente</h3>
                     <p className="text-[#86868b] leading-relaxed">Usa el botón de contacto para hablar con el consultorio y agendar tu cita.</p>
                 </div>
+            </div>
+        </section>
+
+        {/* Popular Diseases Section + Educational Context */}
+        <section className="mt-20 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
+            <div className="grid lg:grid-cols-2 gap-12 mb-10 items-center">
+                <div>
+                    <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-4 flex items-center gap-3">
+                        <Activity className="w-7 h-7 text-[#0071e3]" />
+                        Padecimientos frecuentes
+                    </h2>
+                    <Link href="/enfermedades" className="text-[#0071e3] hover:underline text-[15px] font-medium inline-flex items-center gap-1 shrink-0 h-fit">
+                        Ver todos los padecimientos <ArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
+                {/* Educational Context */}
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex gap-4">
+                    <div className="shrink-0 mt-1">
+                        <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
+                            <Activity className="w-5 h-5" />
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-bold text-[#1d1d1f] mb-2">Aprende sobre tu salud</h3>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Si tienes dudas sobre un padecimiento como diabetes o ansiedad, visita nuestras guías. 
+                            Te explicamos qué son y qué tipo de médico es el mejor para atenderte.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {COMMON_DISEASES.map((disease) => (
+                    <Link
+                        key={disease.name}
+                        href={`/enfermedad/${slugify(disease.name)}`}
+                        className="
+                            flex flex-col p-4 bg-white border border-slate-200 rounded-xl
+                            hover:border-[#0071e3] hover:shadow-md transition-all duration-300
+                            cursor-pointer h-full
+                        "
+                    >
+                        <span className="font-semibold text-[#1d1d1f] mb-1">{disease.name}</span>
+                        <span className="text-xs text-[#86868b] uppercase tracking-wide">{disease.category}</span>
+                    </Link>
+                ))}
+            </div>
+        </section>
+
+        {/* Popular Specialties by City Section */}
+        <section className="mt-20 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
+             <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-10 flex items-center gap-3">
+                Especialistas por ciudad
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {FEATURED_CITIES.map((city) => (
+                    <div key={city} className="space-y-4">
+                        <h3 className="font-bold text-lg text-[#1d1d1f] border-b border-slate-100 pb-3 flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-[#0071e3]" />
+                            {city}
+                        </h3>
+                        <div className="grid grid-cols-1 gap-2">
+                            {TOP_SPECIALTIES_DATA.map((spec) => (
+                                <Link 
+                                    key={`${city}-${spec.name}`}
+                                    href={`/doctores/${slugify(city)}/${slugify(spec.name)}`}
+                                    className="
+                                        flex items-center justify-between group
+                                        text-[15px] text-[#86868b] hover:text-[#0071e3] 
+                                        transition-colors py-1
+                                    "
+                                >
+                                    <span>{spec.name}</span>
+                                    <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0" />
+                                </Link>
+                            ))}
+                             <Link 
+                                href={`/doctores/${slugify(city)}`}
+                                className="text-sm font-semibold text-[#0071e3] hover:underline mt-2 inline-block"
+                            >
+                                Ver todos en {city}
+                            </Link>
+                        </div>
+                    </div>
+                ))}
             </div>
         </section>
       </div>

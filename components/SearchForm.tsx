@@ -5,15 +5,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, Activity } from 'lucide-react';
-import { COMMON_SPECIALTIES } from '../lib/constants';
-import { City, Disease } from '../types';
+import { City, Disease, Specialty } from '../types';
 
 interface SearchFormProps {
   cities: City[];
   diseases: Disease[];
+  specialties: Specialty[];
 }
 
-export default function SearchForm({ cities, diseases }: SearchFormProps) {
+export default function SearchForm({ cities, diseases, specialties }: SearchFormProps) {
   const router = useRouter();
   const [city, setCity] = useState(cities.length > 0 ? cities[0].name : 'Ciudad de México');
   const [specialty, setSpecialty] = useState('');
@@ -50,9 +50,9 @@ export default function SearchForm({ cities, diseases }: SearchFormProps) {
     if (val.length > 0) {
       const normalizedVal = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       
-      const filteredSpecs = COMMON_SPECIALTIES.filter(s => 
-        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
-      );
+      const filteredSpecs = specialties
+        .filter(s => s.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal))
+        .map(s => s.name);
 
       const filteredDiseases = diseases
         .filter(d => d.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal))

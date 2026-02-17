@@ -4,8 +4,7 @@
 import React, { useState } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { FileCode, Download, Loader2, AlertCircle, CheckCircle, Globe, Layers, FileText, Info } from 'lucide-react';
-import { COMMON_SPECIALTIES } from '../lib/constants';
-import { City, Disease } from '../types';
+import { City, Disease, Specialty } from '../types';
 
 const SITE_URL = 'https://medibusca.com';
 const MAX_URLS_PER_SITEMAP = 10000;
@@ -73,17 +72,20 @@ export const SitemapGenerator: React.FC = () => {
 
     try {
       // --- 0. Fetch Data from DB ---
-      setStatus('Fetching Cities and Diseases from Database...');
+      setStatus('Fetching Cities, Diseases and Specialties from Database...');
       const citiesPromise = supabase.from('cities').select('name, slug');
       const diseasesPromise = supabase.from('diseases').select('name, slug');
+      const specialtiesPromise = supabase.from('specialties').select('name, slug');
 
-      const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
+      const [citiesResponse, diseasesResponse, specialtiesResponse] = await Promise.all([citiesPromise, diseasesPromise, specialtiesPromise]);
       
       if (citiesResponse.error) throw citiesResponse.error;
       if (diseasesResponse.error) throw diseasesResponse.error;
+      if (specialtiesResponse.error) throw specialtiesResponse.error;
 
       const allCities = citiesResponse.data as { name: string, slug: string }[];
       const allDiseases = diseasesResponse.data as { name: string, slug: string }[];
+      const allSpecialties = specialtiesResponse.data as { name: string, slug: string }[];
 
       // --- 1. Main Static Pages ---
       setStatus('Generating Main Pages...');
@@ -118,8 +120,8 @@ export const SitemapGenerator: React.FC = () => {
         type: 'Taxonomy'
       });
 
-      const specialtyUrls = COMMON_SPECIALTIES.map(spec => ({
-        loc: `${SITE_URL}/especialidad/${slugify(spec)}`,
+      const specialtyUrls = allSpecialties.map(spec => ({
+        loc: `${SITE_URL}/especialidad/${spec.slug}`,
         changefreq: 'weekly',
         priority: '0.9'
       }));
@@ -146,9 +148,9 @@ export const SitemapGenerator: React.FC = () => {
       // City + Specialty
       const citySpecUrls: SitemapUrl[] = [];
       allCities.forEach(city => {
-          COMMON_SPECIALTIES.forEach(spec => {
+          allSpecialties.forEach(spec => {
             citySpecUrls.push({
-                  loc: `${SITE_URL}/doctores/${city.slug}/${slugify(spec)}`,
+                  loc: `${SITE_URL}/doctores/${city.slug}/${spec.slug}`,
                   changefreq: 'monthly',
                   priority: '0.9'
               });

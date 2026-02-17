@@ -82,6 +82,18 @@ export interface Disease {
   created_at: string;
 }
 
+export interface Specialty {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  is_popular: boolean;
+  first_visit_guide?: string;
+  procedures?: string | string[]; // JSON string or parsed array
+  comparison_guide?: string | { title: string; text: string }; // JSON string or parsed object
+  created_at: string;
+}
+
 // The payload sent to Supabase (omitting generated fields like id and created_at)
 export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at'>;
 

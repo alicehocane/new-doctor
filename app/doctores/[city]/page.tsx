@@ -1,12 +1,11 @@
 
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
-import { Doctor, City } from '../../../types';
+import { Doctor, City, Specialty } from '../../../types';
 import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight, Ambulance, Bus, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
@@ -98,6 +97,17 @@ export default async function CityPage({ params }: { params: { city: string } })
     .limit(8);
   const popularCities = popularCitiesData as { name: string, slug: string }[] || [];
 
+  // Fetch Specialties from DB
+  const { data: specialtiesData } = await supabase
+    .from('specialties')
+    .select('name, slug, is_popular')
+    .order('name');
+  
+  const allSpecialties = (specialtiesData as Specialty[]) || [];
+  const popularSpecialties = allSpecialties.filter(s => s.is_popular).map(s => s.name);
+  // Fallback to top N if no popular flag
+  const displayedSpecialties = (popularSpecialties.length > 0 ? popularSpecialties : allSpecialties.map(s => s.name)).slice(0, INITIAL_SPECIALTIES_COUNT);
+
   // FAQs
   const faqs = [
     {
@@ -177,8 +187,6 @@ export default async function CityPage({ params }: { params: { city: string } })
       }
     }))
   };
-
-  const displayedSpecialties = COMMON_SPECIALTIES.slice(0, INITIAL_SPECIALTIES_COUNT);
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
@@ -451,7 +459,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                     Búsquedas populares en {city.name}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2">
-                    {GLOBAL_POPULAR_SPECIALTIES.map((spec, idx) => (
+                    {displayedSpecialties.map((spec, idx) => (
                         <Link 
                             key={idx}
                             href={`/doctores/${citySlug}/${slugify(spec)}`}

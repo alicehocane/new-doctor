@@ -5,7 +5,7 @@ import { MapPin, Stethoscope, ChevronRight, Activity, ArrowRight, ArrowUpRight, 
 import { Metadata } from 'next';
 import HomeSearch from '../components/HomeSearch';
 import { supabase } from '../lib/supabase';
-import { City, Disease } from '../types';
+import { City, Disease, Specialty } from '../types';
 
 // Configuration for distinct specialty visuals
 const SPECIALTY_CONFIG: Record<string, { icon: React.ElementType, color: string, bg: string }> = {
@@ -44,7 +44,6 @@ export default async function HomePage() {
     .order('name');
 
   // Fetch Diseases from DB (Category: Common)
-  // Increased limit to 1000 to ensure all common diseases are available for search autocomplete
   const diseasesPromise = supabase
     .from('diseases')
     .select('*')
@@ -52,11 +51,18 @@ export default async function HomePage() {
     .order('name')
     .limit(1000); 
 
-  const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
+  // Fetch Specialties from DB for autocomplete
+  const specialtiesPromise = supabase
+    .from('specialties')
+    .select('id, name, slug, is_popular')
+    .order('name');
+
+  const [citiesResponse, diseasesResponse, specialtiesResponse] = await Promise.all([citiesPromise, diseasesPromise, specialtiesPromise]);
   
   const allCities = (citiesResponse.data as City[]) || [];
   const featuredCities = allCities.filter(c => c.is_featured);
   const commonDiseases = (diseasesResponse.data as Disease[]) || [];
+  const allSpecialties = (specialtiesResponse.data as Specialty[]) || [];
 
   // Schema Markup
   const organizationSchema = {
@@ -119,7 +125,7 @@ export default async function HomePage() {
           </p>
           
           {/* Client Side Search Component */}
-          <HomeSearch cities={allCities} diseases={commonDiseases} />
+          <HomeSearch cities={allCities} diseases={commonDiseases} specialties={allSpecialties} />
 
           {/* SEP Trust Badge */}
           <div className="flex flex-col items-center justify-center gap-3 mt-8">
@@ -132,7 +138,7 @@ export default async function HomePage() {
           {/* Quick Stats Bar */}
           <div className="grid grid-cols-3 gap-4 md:gap-12 pt-8 md:pt-12 max-w-3xl mx-auto border-t border-slate-100 mt-12">
              <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">200+</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">{allSpecialties.length}+</p>
                 <p className="text-xs md:text-sm text-[#86868b] font-medium">Especialidades</p>
              </div>
              <div className="text-center border-l border-slate-100">
