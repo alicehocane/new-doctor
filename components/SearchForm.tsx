@@ -1,14 +1,20 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, Activity } from 'lucide-react';
-import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../lib/constants';
+import { ALL_DISEASES, COMMON_SPECIALTIES } from '../lib/constants';
+import { City } from '../types';
 
-export default function SearchForm() {
+interface SearchFormProps {
+  cities: City[];
+}
+
+export default function SearchForm({ cities }: SearchFormProps) {
   const router = useRouter();
-  const [city, setCity] = useState('Ciudad de México');
+  const [city, setCity] = useState(cities.length > 0 ? cities[0].name : 'Ciudad de México');
   const [specialty, setSpecialty] = useState('');
   
   // Autocomplete State
@@ -99,8 +105,8 @@ export default function SearchForm() {
                       onChange={(e) => setCity(e.target.value)}
                       className="w-full bg-transparent border-none outline-none text-[17px] font-medium text-[#1d1d1f] appearance-none cursor-pointer pt-3"
                   >
-                      {ALL_CITIES.map(c => (
-                          <option key={c} value={c}>{c}</option>
+                      {cities.map(c => (
+                          <option key={c.id} value={c.name}>{c.name}</option>
                       ))}
                   </select>
               </div>

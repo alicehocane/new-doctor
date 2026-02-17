@@ -1,29 +1,18 @@
 
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
-import { Doctor } from '../../../types';
+import { Doctor, City } from '../../../types';
 import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight, Ambulance, Bus, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA } from '../../../lib/constants';
+import { COMMON_SPECIALTIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;
 
 // --- Constants & Helpers ---
-
-const CITY_MEDICAL_ZONES: Record<string, { title: string, description: string }[]> = {
-  'acapulco': [
-    { title: 'Avenida Cuauhtémoc', description: 'Corredor principal con una alta concentración de clínicas privadas y hospitales generales.' },
-    { title: 'Costera Miguel Alemán', description: 'Zona con servicios médicos orientados al turismo y especialidades diversas.' }
-  ],
-  'aguascalientes': [
-    { title: 'Norte - Prol. Zaragoza', description: 'Zona de crecimiento médico con hospitales modernos y consultorios de especialidad.' },
-    { title: 'Centro Histórico', description: 'Área con presencia de clínicas tradicionales y servicios médicos de primer nivel.' }
-  ]
-};
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -33,22 +22,6 @@ const slugify = (text: string) => {
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
-};
-
-const getCanonicalCity = (slug: string) => {
-  return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-};
-
-const getCityHealthData = (citySlug: string, cityName: string) => {
-  const data = CITY_HEALTH_DATA[citySlug];
-  if (data) return data;
-  
-  // Generic Template for cities without specific data
-  return {
-    overview: `La ciudad de ${cityName} cuenta con una red de servicios médicos en crecimiento, compuesta por hospitales públicos, clínicas privadas y consultorios de especialidad. Los pacientes pueden encontrar atención para diversas condiciones de salud sin necesidad de trasladarse a otras regiones.`,
-    hospitals: [`Hospital General de ${cityName}`, 'Clínica de Especialidades Médicas', 'Cruz Roja Mexicana'],
-    transport: `El acceso a los servicios médicos en ${cityName} es generalmente sencillo a través del transporte público local y taxis. Se recomienda verificar la disponibilidad de estacionamiento si se acude en vehículo propio a la zona centro.`
-  };
 };
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
@@ -63,7 +36,14 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { city: string } }): Promise<Metadata> {
-  const cityName = getCanonicalCity(params.city);
+  const { data: cityData } = await supabase
+    .from('cities')
+    .select('name')
+    .eq('slug', params.city)
+    .single();
+
+  const cityName = cityData?.name || params.city;
+
   return {
     title: `Doctores en ${cityName} - Directorio Médico Verificado`,
     description: `Encuentra los mejores doctores y hospitales en ${cityName}. Información sobre zonas médicas, emergencias y transporte. Contacta directamente sin comisiones.`,
@@ -74,29 +54,54 @@ export async function generateMetadata({ params }: { params: { city: string } })
 
 export default async function CityPage({ params }: { params: { city: string } }) {
   const citySlug = params.city;
-  const cityName = getCanonicalCity(citySlug);
-  const medicalZones = CITY_MEDICAL_ZONES[citySlug] || [];
-  const healthData = getCityHealthData(citySlug, cityName);
+
+  // 1. Fetch City Data
+  const { data: cityRecord, error: cityError } = await supabase
+    .from('cities')
+    .select('*')
+    .eq('slug', citySlug)
+    .single();
+
+  if (cityError || !cityRecord) {
+    notFound();
+  }
+
+  const city = cityRecord as City;
+  
+  // Parse health_data if string, else assume object
+  let healthData = { overview: '', hospitals: [], transport: '' };
+  if (typeof city.health_data === 'string') {
+      try {
+          healthData = JSON.parse(city.health_data);
+      } catch (e) {
+          console.error("Failed to parse health_data JSON", e);
+      }
+  } else if (typeof city.health_data === 'object' && city.health_data !== null) {
+      healthData = city.health_data as any;
+  }
 
   // Fetch initial batch of doctors
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
-    .contains('cities', [cityName])
+    .contains('cities', [city.name])
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
-  // Logic to prevent Thin Content indexing
-  const isKnownCity = ALL_CITIES.includes(cityName);
-  if (doctors.length === 0 && !isKnownCity) {
-    notFound();
-  }
+  // Fetch featured cities for footer links
+  const { data: popularCitiesData } = await supabase
+    .from('cities')
+    .select('name, slug')
+    .eq('is_featured', true)
+    .neq('slug', citySlug)
+    .limit(8);
+  const popularCities = popularCitiesData as { name: string, slug: string }[] || [];
 
   // FAQs
   const faqs = [
     {
-      question: `¿Cómo puedo contactar a un doctor en ${cityName} a través de MediBusca?`,
+      question: `¿Cómo puedo contactar a un doctor en ${city.name} a través de MediBusca?`,
       answer: "Es muy sencillo. Solo elige un especialista, revisa su perfil verificado y utiliza el botón de 'Llamar' para comunicarte directamente con su consultorio. No necesitas crear una cuenta ni realizar pagos adicionales por el uso de la plataforma."
     },
     {
@@ -104,8 +109,8 @@ export default async function CityPage({ params }: { params: { city: string } })
       answer: "No. MediBusca es una plataforma informativa 100% gratuita para los pacientes. La relación es directa entre tú y el doctor; nosotros solo facilitamos la conexión segura."
     },
     {
-      question: `¿Qué tipos de especialistas médicos puedo encontrar en ${cityName}?`,
-      answer: `Contamos con una extensa red que incluye cardiólogos, ginecólogos, pediatras, psicólogos y más, ubicados en las zonas médicas más importantes de ${cityName}.`
+      question: `¿Qué tipos de especialistas médicos puedo encontrar en ${city.name}?`,
+      answer: `Contamos con una extensa red que incluye cardiólogos, ginecólogos, pediatras, psicólogos y más, ubicados en las zonas médicas más importantes de ${city.name}.`
     }
   ];
 
@@ -123,7 +128,7 @@ export default async function CityPage({ params }: { params: { city: string } })
       {
         "@type": "ListItem",
         "position": 2,
-        "name": `Doctores en ${cityName}`,
+        "name": `Doctores en ${city.name}`,
         "item": `https://medibusca.com/doctores/${citySlug}`
       }
     ]
@@ -132,12 +137,12 @@ export default async function CityPage({ params }: { params: { city: string } })
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    "name": `Doctores en ${cityName} | MediBusca`,
-    "description": `Encuentra los mejores doctores y especialistas en ${cityName} sin intermediarios. Revisa perfiles verificados y contacta directamente.`,
+    "name": `Doctores en ${city.name} | MediBusca`,
+    "description": `Encuentra los mejores doctores y especialistas en ${city.name} sin intermediarios. Revisa perfiles verificados y contacta directamente.`,
     "url": `https://medibusca.com/doctores/${citySlug}`,
     "contentLocation": {
         "@type": "City",
-        "name": cityName
+        "name": city.name
     },
     "audience": {
         "@type": "Patient",
@@ -151,7 +156,7 @@ export default async function CityPage({ params }: { params: { city: string } })
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": `Doctores en ${cityName}`,
+    "name": `Doctores en ${city.name}`,
     "itemListElement": doctors.map((doc, index) => ({
       "@type": "ListItem",
       "position": index + 1,
@@ -191,32 +196,34 @@ export default async function CityPage({ params }: { params: { city: string } })
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <span className="text-[#1d1d1f] capitalize">{cityName}</span>
+            <span className="text-[#1d1d1f] capitalize">{city.name}</span>
         </nav>
 
         {/* Header */}
         <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
             <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-            Doctores en {cityName}
+            Doctores en {city.name}
             </h1>
             <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            Explora los mejores especialistas médicos verificados en {cityName}. Agenda tu cita hoy mismo.
+            Explora los mejores especialistas médicos verificados en {city.name}. Agenda tu cita hoy mismo.
             </p>
         </div>
 
-        {/* Local Healthcare Overview - Added Section */}
-        <section className="bg-white rounded-[24px] p-8 border border-slate-200 mb-12 animate-in fade-in slide-in-from-bottom-3 shadow-sm">
-            <div className="flex items-center gap-3 mb-4">
-                <HeartPulse className="w-6 h-6 text-[#0071e3]" />
-                <h2 className="text-xl font-bold text-[#1d1d1f]">Infraestructura de Salud en {cityName}</h2>
-            </div>
-            <p className="text-[#86868b] leading-relaxed text-lg mb-0">
-                {healthData.overview}
-            </p>
-        </section>
+        {/* Local Healthcare Overview - Populated from DB */}
+        {healthData.overview && (
+            <section className="bg-white rounded-[24px] p-8 border border-slate-200 mb-12 animate-in fade-in slide-in-from-bottom-3 shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                    <HeartPulse className="w-6 h-6 text-[#0071e3]" />
+                    <h2 className="text-xl font-bold text-[#1d1d1f]">Infraestructura de Salud en {city.name}</h2>
+                </div>
+                <p className="text-[#86868b] leading-relaxed text-lg mb-0">
+                    {healthData.overview}
+                </p>
+            </section>
+        )}
 
         {/* Client Side List & Pagination */}
-        <CityDoctorList initialDoctors={doctors} city={cityName} />
+        <CityDoctorList initialDoctors={doctors} city={city.name} />
 
       </div>
 
@@ -224,7 +231,7 @@ export default async function CityPage({ params }: { params: { city: string } })
       <section className="bg-white py-16 border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-8 tracking-tight">
-                Especialidades médicas en {cityName}
+                Especialidades médicas en {city.name}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {displayedSpecialties.map((spec) => (
@@ -262,67 +269,73 @@ export default async function CityPage({ params }: { params: { city: string } })
         </div>
       </section>
 
-      {/* Essential City Information Section - Added */}
-      <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-10">
-                <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-2">Guía Médica de {cityName}</h2>
-                <p className="text-[#86868b]">Información útil para pacientes y familiares</p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-                {/* Emergency Card */}
-                <div className="bg-white p-8 rounded-[24px] border border-slate-200/60 shadow-sm hover:border-[#0071e3]/30 transition-all">
-                    <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                        <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
-                            <Ambulance className="w-5 h-5" />
-                        </div>
-                        <h3 className="text-lg font-bold text-[#1d1d1f]">Hospitales y Emergencias</h3>
-                    </div>
-                    
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between bg-red-50 p-3 rounded-lg border border-red-100">
-                            <span className="font-semibold text-red-800 text-sm">Emergencias Generales</span>
-                            <span className="font-bold text-red-600 text-lg">911</span>
-                        </div>
-                        <div>
-                            <p className="text-sm font-semibold text-[#1d1d1f] mb-2 uppercase tracking-wide">Hospitales Principales:</p>
-                            <ul className="space-y-2">
-                                {healthData.hospitals.map((hospital, idx) => (
-                                    <li key={idx} className="flex items-start gap-2 text-sm text-[#86868b]">
-                                        <Building className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
-                                        {hospital}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <p className="text-xs text-[#86868b] italic pt-2">
-                            *Esta lista es informativa. En caso de emergencia grave acude al hospital más cercano.
-                        </p>
-                    </div>
+      {/* Essential City Information Section */}
+      {(healthData.hospitals?.length > 0 || healthData.transport) && (
+        <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="text-center mb-10">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-2">Guía Médica de {city.name}</h2>
+                    <p className="text-[#86868b]">Información útil para pacientes y familiares</p>
                 </div>
 
-                {/* Transport Card */}
-                <div className="bg-white p-8 rounded-[24px] border border-slate-200/60 shadow-sm hover:border-[#0071e3]/30 transition-all">
-                    <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                        <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center">
-                            <Bus className="w-5 h-5" />
+                <div className="grid md:grid-cols-2 gap-8">
+                    {/* Emergency Card */}
+                    <div className="bg-white p-8 rounded-[24px] border border-slate-200/60 shadow-sm hover:border-[#0071e3]/30 transition-all">
+                        <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                            <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
+                                <Ambulance className="w-5 h-5" />
+                            </div>
+                            <h3 className="text-lg font-bold text-[#1d1d1f]">Hospitales y Emergencias</h3>
                         </div>
-                        <h3 className="text-lg font-bold text-[#1d1d1f]">Movilidad y Acceso</h3>
+                        
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between bg-red-50 p-3 rounded-lg border border-red-100">
+                                <span className="font-semibold text-red-800 text-sm">Emergencias Generales</span>
+                                <span className="font-bold text-red-600 text-lg">911</span>
+                            </div>
+                            {healthData.hospitals && (
+                                <div>
+                                    <p className="text-sm font-semibold text-[#1d1d1f] mb-2 uppercase tracking-wide">Hospitales Principales:</p>
+                                    <ul className="space-y-2">
+                                        {healthData.hospitals.map((hospital: string, idx: number) => (
+                                            <li key={idx} className="flex items-start gap-2 text-sm text-[#86868b]">
+                                                <Building className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                                                {hospital}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                            <p className="text-xs text-[#86868b] italic pt-2">
+                                *Esta lista es informativa. En caso de emergencia grave acude al hospital más cercano.
+                            </p>
+                        </div>
                     </div>
-                    <p className="text-[#86868b] leading-relaxed mb-6">
-                        {healthData.transport}
-                    </p>
-                    <div className="bg-[#f5f5f7] p-4 rounded-xl flex gap-3">
-                        <Info className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
-                        <p className="text-sm text-[#86868b] leading-relaxed">
-                            Te recomendamos planificar tu ruta con anticipación, especialmente si tienes citas en horas pico. Muchas clínicas ofrecen estacionamiento o convenios cercanos.
-                        </p>
-                    </div>
+
+                    {/* Transport Card */}
+                    {healthData.transport && (
+                        <div className="bg-white p-8 rounded-[24px] border border-slate-200/60 shadow-sm hover:border-[#0071e3]/30 transition-all">
+                            <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                                <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center">
+                                    <Bus className="w-5 h-5" />
+                                </div>
+                                <h3 className="text-lg font-bold text-[#1d1d1f]">Movilidad y Acceso</h3>
+                            </div>
+                            <p className="text-[#86868b] leading-relaxed mb-6">
+                                {healthData.transport}
+                            </p>
+                            <div className="bg-[#f5f5f7] p-4 rounded-xl flex gap-3">
+                                <Info className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
+                                <p className="text-sm text-[#86868b] leading-relaxed">
+                                    Te recomendamos planificar tu ruta con anticipación, especialmente si tienes citas en horas pico. Muchas clínicas ofrecen estacionamiento o convenios cercanos.
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Informational Sections */}
       <section className="py-16 bg-white border-t border-slate-200">
@@ -332,14 +345,14 @@ export default async function CityPage({ params }: { params: { city: string } })
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
                         <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
                     </div>
-                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Encuentra Especialistas en {cityName} sin Costo</h2>
+                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Encuentra Especialistas en {city.name} sin Costo</h2>
                 </div>
                 <div className="prose text-[#86868b] leading-relaxed">
                     <p className="font-medium text-[#1d1d1f] mb-3">
                         Sin intermediarios ni comisiones ocultas.
                     </p>
                     <p>
-                        En MediBusca, nuestra misión es facilitar el acceso a la salud. No somos una plataforma de reservas ni cobramos por agendar. Ofrecemos un directorio verificado de doctores en {cityName} para que puedas contactarlos directamente por teléfono o a través de su perfil profesional. 
+                        En MediBusca, nuestra misión es facilitar el acceso a la salud. No somos una plataforma de reservas ni cobramos por agendar. Ofrecemos un directorio verificado de doctores en {city.name} para que puedas contactarlos directamente por teléfono o a través de su perfil profesional. 
                     </p>
                     <p className="mt-4">
                         Información transparente, gratuita y actualizada para tu bienestar.
@@ -352,14 +365,14 @@ export default async function CityPage({ params }: { params: { city: string } })
                     <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
                         <Search className="w-5 h-5 text-[#0071e3]" />
                     </div>
-                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Cómo encontrar doctor en {cityName}</h2>
+                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Cómo encontrar doctor en {city.name}</h2>
                 </div>
                 <ul className="space-y-4">
                     <li className="flex gap-4">
                         <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center text-xs font-bold">1</div>
                         <div>
                             <h3 className="font-semibold text-[#1d1d1f] Selecciona la especialidad">Selecciona la especialidad</h3>
-                            <p className="text-sm text-[#86868b] mt-1">Usa nuestros filtros para encontrar cardiólogos, pediatras o cualquier especialista que necesites en {cityName}.</p>
+                            <p className="text-sm text-[#86868b] mt-1">Usa nuestros filtros para encontrar cardiólogos, pediatras o cualquier especialista que necesites en {city.name}.</p>
                         </div>
                     </li>
                     <li className="flex gap-4">
@@ -380,28 +393,6 @@ export default async function CityPage({ params }: { params: { city: string } })
             </div>
         </div>
       </section>
-
-      {/* Medical Zones Section */}
-      {medicalZones.length > 0 && (
-        <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
-            <div className="max-w-6xl mx-auto px-6">
-                <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                        <Building className="w-5 h-5 text-[#0071e3]" />
-                    </div>
-                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Zonas médicas destacadas en {cityName}</h2>
-                </div>
-                <div className="grid md:grid-cols-3 gap-6">
-                    {medicalZones.map((zone, idx) => (
-                        <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-100 hover:border-[#0071e3]/20 transition-colors">
-                            <h3 className="font-bold text-[#1d1d1f] text-lg mb-2">{zone.title}</h3>
-                            <p className="text-[#86868b] text-sm leading-relaxed">{zone.description}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-      )}
 
       {/* FAQ Section */}
       <section className="py-16 bg-white border-t border-slate-200">
@@ -426,36 +417,38 @@ export default async function CityPage({ params }: { params: { city: string } })
         <div className="max-w-6xl mx-auto px-6 space-y-12">
             
             {/* Other Cities */}
-            <div>
-                <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-[#86868b]" />
-                    Explora doctores en otras ciudades populares
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                    {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).map((city) => (
-                        <Link 
-                            key={city}
-                            href={`/doctores/${slugify(city)}`}
-                            className="
-                                group flex items-center gap-2 px-5 py-2.5 
-                                bg-white border border-slate-200 rounded-full 
-                                text-[#1d1d1f] font-medium text-sm 
-                                hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-[#0071e3]/5
-                                transition-all duration-300
-                            "
-                        >
-                            {city}
-                            <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity -ml-1 group-hover:ml-0" />
-                        </Link>
-                    ))}
+            {popularCities.length > 0 && (
+                <div>
+                    <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
+                        <MapPin className="w-5 h-5 text-[#86868b]" />
+                        Explora doctores en otras ciudades populares
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                        {popularCities.map((pc) => (
+                            <Link 
+                                key={pc.slug}
+                                href={`/doctores/${pc.slug}`}
+                                className="
+                                    group flex items-center gap-2 px-5 py-2.5 
+                                    bg-white border border-slate-200 rounded-full 
+                                    text-[#1d1d1f] font-medium text-sm 
+                                    hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-[#0071e3]/5
+                                    transition-all duration-300
+                                "
+                            >
+                                {pc.name}
+                                <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity -ml-1 group-hover:ml-0" />
+                            </Link>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Popular Searches SEO Text Links */}
             <div>
                  <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
                     <ShieldCheck className="w-5 h-5 text-[#86868b]" />
-                    Búsquedas populares en {cityName}
+                    Búsquedas populares en {city.name}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2">
                     {GLOBAL_POPULAR_SPECIALTIES.map((spec, idx) => (
@@ -464,7 +457,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                             href={`/doctores/${citySlug}/${slugify(spec)}`}
                             className="text-[13px] text-[#86868b] hover:text-[#0071e3] hover:underline truncate transition-colors"
                         >
-                            {spec} en {cityName}
+                            {spec} en {city.name}
                         </Link>
                     ))}
                 </div>

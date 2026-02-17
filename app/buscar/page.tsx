@@ -6,17 +6,13 @@ import { ALL_DISEASES } from '../../lib/constants';
 import SearchForm from '../../components/SearchForm';
 import StartSearchButton from '../../components/StartSearchButton';
 import { Metadata } from 'next';
+import { supabase } from '../../lib/supabase';
+import { City } from '../../types';
 
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas',
   description: 'Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.',
 };
-
-const FEATURED_CITIES = [
-  'Ciudad de México',
-  'Guadalajara',
-  'Monterrey'
-];
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
@@ -28,8 +24,17 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export default function SearchPage() {
+export default async function SearchPage() {
   
+  // Fetch Cities from DB
+  const { data: citiesData } = await supabase
+    .from('cities')
+    .select('id, name, slug, is_featured')
+    .order('name');
+  
+  const allCities = (citiesData as City[]) || [];
+  const featuredCities = allCities.filter(c => c.is_featured).slice(0, 3); // Get top 3 featured
+
   // Schema Markup - Separated Scripts for Maximum Google Compatibility
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -83,7 +88,7 @@ export default function SearchPage() {
       </div>
 
       {/* Interactive Search Container (Client Component) */}
-      <SearchForm />
+      <SearchForm cities={allCities} />
 
       {/* Verification Process Section (Trust Building) */}
       <section className="w-full max-w-4xl mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-6">
@@ -246,30 +251,30 @@ export default function SearchPage() {
               Encuentra tratamiento en tu ciudad
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {FEATURED_CITIES.map((city) => (
-                  <div key={city} className="space-y-3">
+              {featuredCities.map((city) => (
+                  <div key={city.id} className="space-y-3">
                       <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
-                          {city}
+                          {city.name}
                       </h3>
                       <ul className="space-y-2.5">
                           {/* Show top 5 diseases for each city */}
                           {ALL_DISEASES.slice(0, 5).map((disease) => (
                               <li key={disease}>
                                   <Link 
-                                      href={`/enfermedad/${slugify(disease)}/${slugify(city)}`}
+                                      href={`/enfermedad/${slugify(disease)}/${city.slug}`}
                                       className="text-[14px] text-[#86868b] hover:text-[#0071e3] hover:underline flex items-center gap-2 transition-colors"
                                   >
                                       <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
-                                      {disease} en {city}
+                                      {disease} en {city.name}
                                   </Link>
                               </li>
                           ))}
                           <li>
                               <Link 
-                                  href={`/doctores/${slugify(city)}`}
+                                  href={`/doctores/${city.slug}`}
                                   className="text-[13px] font-medium text-[#0071e3] hover:underline mt-1 inline-block"
                               >
-                                  Ver todos en {city}
+                                  Ver todos en {city.name}
                               </Link>
                           </li>
                       </ul>

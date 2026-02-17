@@ -60,6 +60,18 @@ export type Doctor = {
   updated_at: string;
 };
 
+export interface City {
+  id: number;
+  name: string;
+  slug: string;
+  is_featured: boolean;
+  health_data: {
+    overview: string;
+    hospitals: string[];
+    transport: string;
+  } | string; // Handle potential stringified JSON from certain RPCs or raw queries
+}
+
 // The payload sent to Supabase (omitting generated fields like id and created_at)
 export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at'>;
 

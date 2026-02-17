@@ -1,13 +1,19 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, MapPin, ChevronRight, Stethoscope, Activity } from 'lucide-react';
-import { ALL_CITIES, ALL_DISEASES, COMMON_SPECIALTIES } from '../lib/constants';
+import { ALL_DISEASES, COMMON_SPECIALTIES } from '../lib/constants';
+import { City } from '../types';
 
-export default function HomeSearch() {
+interface HomeSearchProps {
+  cities: City[];
+}
+
+export default function HomeSearch({ cities }: HomeSearchProps) {
   const router = useRouter();
-  const [city, setCity] = useState('Ciudad de México');
+  const [city, setCity] = useState(cities.length > 0 ? cities[0].name : 'Ciudad de México');
   const [specialty, setSpecialty] = useState('');
   
   // Autocomplete state
@@ -100,8 +106,8 @@ export default function HomeSearch() {
             onChange={(e) => setCity(e.target.value)}
             className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-base appearance-none cursor-pointer pr-4 truncate"
           >
-            {ALL_CITIES.map(c => (
-              <option key={c} value={c}>{c}</option>
+            {cities.map(c => (
+              <option key={c.id} value={c.name}>{c.name}</option>
             ))}
           </select>
           <ChevronRight className="w-3 h-3 text-[#6e6e73] absolute right-4 rotate-90 pointer-events-none" aria-hidden="true" />
