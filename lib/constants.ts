@@ -1,65 +1,3 @@
-
-export const POPULAR_CITIES = [
-  'Ciudad de México',
-  'Monterrey',
-  'Guadalajara',
-  'Puebla',
-  'Querétaro',
-  'Mérida',
-  'Cancún',
-  'Tijuana',
-  'León',
-  'San Luis Potosí',
-  'Toluca',
-  'Veracruz',
-  'Cuernavaca',
-  'Aguascalientes',
-  'Chihuahua'
-];
-
-export const COMMON_SPECIALTIES = [
-    'Dentista - Odontólogo',
-    'Psicólogo',
-    'Médico general',
-    'Hematólogo',
-    'Internista',
-    'Cardiólogo'
-];
-
-export const POPULAR_SPECIALTIES = [
-  "Dentista - Odontólogo",
-  "Psicólogo",
-  "Pediatra",
-  "Médico general",
-  "Ginecólogo",
-  "Internista",
-  "Cirujano general",
-  "Radiólogo",
-  "Ortopedista",
-  "Traumatólogo",
-  "Oftalmólogo",
-  "Psiquiatra",
-  "Cardiólogo",
-  "Nutricionista",
-  "Otorrinolaringólogo",
-  "Nutriólogo clínico",
-  "Dermatólogo",
-  "Fisioterapeuta",
-  "Urólogo",
-  "Cirujano plástico",
-  "Gastroenterólogo",
-  "Anestesiólogo",
-  "Endoscopista",
-  "Neurocirujano",
-  "Endocrinólogo",
-  "Nefrólogo",
-  "Neonatólogo",
-  "Psicoanalista",
-  "Cirujano pediátrico",
-  "Alergólogo"
-];
-
-
 export const SPECIALTY_CONDITIONS: Record<string, string[]> = {
   'Dentista - Odontólogo': ['Caries', 'Dolor de muelas', 'Infección dental', 'Bruxismo', 'Fracturas de dientes', 'Desgaste dental', 'Enfermedad periodontal - piorrea', 'Gingivitis', 'Sensibilidad dentaria', 'Alveolitis', 'Movilidad dentaria', 'Halitosis', 'Úlceras bucales', 'Impactación dental', 'Atrición dental', 'Fistula dental o en encía', 'Traumatismo dental'],
   'Psicólogo': ['Ansiedad', 'Depresión', 'Duelo', 'Estrés', 'Codependencia', 'Ataques de pánico', 'Bullying (acoso escolar)', 'Estrés laboral', 'Angustia', 'Baja autoestima', 'Luto', 'Tristeza', 'Dependencia emocional', 'Control de emociones', 'Trastorno de adaptación'],
@@ -152,13 +90,6 @@ export const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
-
-export const ALL_CITIES = [
-  "Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León",
-  "Mérida", "Cancún", "Querétaro", "Toluca", "Chihuahua", "Hermosillo",
-  "Saltillo", "Mexicali", "Aguascalientes", "San Luis Potosí", "Culiacán",
-  "Acapulco", "Morelia", "Veracruz"
-];
 
 export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
   'Ansiedad': ['Psicólogo', 'Psiquiatra'],
