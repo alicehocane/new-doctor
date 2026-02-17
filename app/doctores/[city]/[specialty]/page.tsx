@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
-import { Doctor } from '../../../../types';
-import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin } from 'lucide-react';
+import { Doctor, Specialty } from '../../../../types';
+import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, Info, Scale } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -54,8 +55,21 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 
 export async function generateMetadata({ params }: { params: { city: string, specialty: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
-  const decodedSpecialty = decodeURIComponent(params.specialty);
-  const searchTerm = getCanonicalSpecialty(decodedSpecialty);
+  
+  // Try to fetch from DB first for accurate naming
+  const { data: specialtyRecord } = await supabase
+    .from('specialties')
+    .select('name')
+    .eq('slug', params.specialty)
+    .single();
+
+  let searchTerm = '';
+  if (specialtyRecord) {
+      searchTerm = specialtyRecord.name;
+  } else {
+      const decodedSpecialty = decodeURIComponent(params.specialty);
+      searchTerm = getCanonicalSpecialty(decodedSpecialty);
+  }
 
   return {
     title: `${searchTerm}s en ${cityName}`,
@@ -70,15 +84,44 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   const specialtySlug = params.specialty;
   
   const cityName = getCanonicalCity(citySlug);
-  const decodedSpecialty = decodeURIComponent(specialtySlug);
-  const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
-  const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
+  // 1. Fetch Specialty from DB
+  const { data: specialtyRecord } = await supabase
+    .from('specialties')
+    .select('*')
+    .eq('slug', specialtySlug)
+    .single();
+
+  const specialty = specialtyRecord as Specialty | null;
+
+  let searchTerm = '';
+  let description = '';
+  let comparison: { title: string, text: string } | null = null;
+
+  if (specialty) {
+      searchTerm = specialty.name;
+      description = specialty.description || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
+      
+      // Parse comparison guide
+      try {
+        if (typeof specialty.comparison_guide === 'object' && specialty.comparison_guide !== null) {
+            comparison = specialty.comparison_guide as { title: string, text: string };
+        } else if (typeof specialty.comparison_guide === 'string') {
+            comparison = JSON.parse(specialty.comparison_guide);
+        }
+      } catch (e) { console.error("Error parsing comparison guide", e); }
+
+  } else {
+      // Fallback Logic
+      const decodedSpecialty = decodeURIComponent(specialtySlug);
+      searchTerm = getCanonicalSpecialty(decodedSpecialty);
+      description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
+  }
   
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || [];
   const conditionText = conditions.slice(0, 2).join(', ').toLowerCase() || 'tus síntomas';
 
-  // Fetch Data
+  // 2. Fetch Data
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
@@ -90,7 +133,9 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
   // Logic to prevent Thin Content indexing
   // If no doctors are found AND the specialty is not in our known list (meaning it's likely gibberish or a typo), return 404.
-  const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
+  // We check if it exists in DB (specialty valid) OR in constants
+  const isKnownSpecialty = !!specialty || COMMON_SPECIALTIES.includes(searchTerm);
+  
   if (doctors.length === 0 && !isKnownSpecialty) {
     notFound();
   }
@@ -199,7 +244,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
         {/* NEW: Dynamic Informational Section */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
-          <div className="max-w-4xl mx-auto space-y-16">
+          <div className="max-w-4xl mx-auto space-y-12">
             
             {/* 1. How to Choose */}
             <div className="text-center space-y-6">
@@ -208,6 +253,21 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                  Encontrar atención médica no debería ser difícil. En <span className="text-[#1d1d1f] font-medium">{cityName}</span>, contamos con expertos en {searchTerm} listos para ayudarte. Ya sea que busques tratamiento para {conditionText}, o una revisión general, aquí puedes ver perfiles verificados de forma gratuita.
                </p>
             </div>
+
+            {/* Comparison Guide (If available) */}
+            {comparison && (
+                <div className="bg-indigo-50 border border-indigo-200 rounded-2xl p-6 flex gap-4">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-indigo-600 shrink-0 shadow-sm">
+                        <Scale className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-indigo-900 mb-2">{comparison.title}</h3>
+                        <p className="text-indigo-900/80 leading-relaxed">
+                            {comparison.text}
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* 2. What you should know */}
             <div>
@@ -253,6 +313,14 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                         <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cómo contacto a un doctor en MediBusca?</h4>
                         <p className="text-[#86868b] leading-relaxed">Solo haz clic en el botón "Llamar" o "Ver Perfil". Te conectarás de inmediato con el consultorio para pedir informes o agendar.</p>
                     </div>
+                </div>
+            </div>
+
+            {/* Disclaimer */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
+                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-900/80">
+                    <strong>Aviso Importante:</strong> La información aquí presentada es de carácter educativo. Para diagnóstico y tratamiento de {searchTerm}, siempre consulta directamente a un profesional de la salud.
                 </div>
             </div>
 
