@@ -130,71 +130,80 @@ export const DoctorUploader: React.FC = () => {
     }
 
     setUploadStatus('uploading');
-    setLogs([]); // Clear old logs
+    setLogs([]); 
+
+    // --- 1. TRANSFORMATION & DEDUPLICATION STEP ---
+    // We map all raw records to payloads first
+    const allPayloads = rawRecords.map(transformRecord);
+
+    // We use a Map to remove duplicates based on 'slug'. 
+    // If a slug appears twice, the later one overwrites the earlier one.
+    const uniquePayloadsMap = new Map();
+    
+    allPayloads.forEach(record => {
+      if (record.slug) {
+        uniquePayloadsMap.set(record.slug, record);
+      }
+    });
+
+    const uniquePayloads = Array.from(uniquePayloadsMap.values());
+
+    // Log if we removed any duplicates
+    if (allPayloads.length > uniquePayloads.length) {
+      console.warn(`Removed ${allPayloads.length - uniquePayloads.length} duplicate records.`);
+      addLog('System', 'success', `Cleaned ${allPayloads.length - uniquePayloads.length} duplicate records automatically.`);
+    }
+    // ----------------------------------------------
 
     // --- CONFIGURATION ---
-    const BATCH_SIZE = 50;     // Safe size to avoid 6MB payload limit
-    const MAX_CONCURRENCY = 4;  // 5 parallel connections (Browser friendly)
-    // ---------------------
-
-    const totalRecords = rawRecords.length;
+    const BATCH_SIZE = 100;
+    const MAX_CONCURRENCY = 5;
+    
+    const totalRecords = uniquePayloads.length; // Use the cleaned array length
     let processedCount = 0;
     
-    // 1. Create a queue of batches (chunks)
-    // We use a mutable array that acts as a "Job Queue"
-    const queue: DoctorUpsertPayload[][] = [];
+    // --- 2. CREATE CHUNKS ---
+    // Use the CLEANED 'uniquePayloads' array here, not 'rawRecords'
+    const chunks: DoctorUpsertPayload[][] = [];
     for (let i = 0; i < totalRecords; i += BATCH_SIZE) {
-      const chunk = rawRecords.slice(i, i + BATCH_SIZE);
-      queue.push(chunk.map(transformRecord));
+      chunks.push(uniquePayloads.slice(i, i + BATCH_SIZE));
     }
 
-    const totalBatches = queue.length;
-    
-    // 2. Define the Worker
-    // This function keeps taking jobs from the queue until it's empty
-    const worker = async (workerId: number) => {
-      while (queue.length > 0) {
-        // Atomic pop: Grab the next batch immediately
-        const batch = queue.shift();
-        if (!batch) break; 
+    // --- 3. DEFINE WORKER ---
+    let currentChunkIndex = 0;
 
-        const currentBatchSize = batch.length;
+    const processNextChunk = async (): Promise<void> => {
+      const index = currentChunkIndex++;
+      if (index >= chunks.length) return;
 
-        try {
-          const { error: dbError } = await supabase
-            .from('doctors')
-            .upsert(batch, { 
-                onConflict: 'slug',
-                ignoreDuplicates: false // Ensure we update if exists
-            });
+      const batch = chunks[index];
 
-          if (dbError) throw dbError;
+      try {
+        const { error: dbError } = await supabase
+          .from('doctors')
+          .upsert(batch, { onConflict: 'slug' });
 
-          // Update Progress
-          processedCount += currentBatchSize;
-          setProgress({ current: processedCount, total: totalRecords });
-          
-          // Log success (optional: limit logs if you have 10k records to avoid React lag)
-          addLog(`Worker ${workerId}`, 'success', `Upserted ${currentBatchSize} records`);
+        if (dbError) throw dbError;
 
-        } catch (err: any) {
-          console.error(err);
-          // Log specific error details
-          addLog(`Worker ${workerId}`, 'error', err.message || 'Unknown error');
-          
-          // OPTIONAL: If you want to retry failed batches, you could push 'batch' back into 'queue'
-          // queue.push(batch); 
-        }
+        processedCount += batch.length;
+        setProgress({ current: processedCount, total: totalRecords });
+        addLog(`Batch ${index + 1}`, 'success', `Upserted ${batch.length} records`);
+      
+      } catch (err: any) {
+        // If we STILL get the error, it means the database has a constraint we missed,
+        // but the map above should fix 99% of cases.
+        addLog(`Batch ${index + 1}`, 'error', err.message);
+      } finally {
+        await processNextChunk();
       }
     };
 
-    // 3. Start the Engine
-    // Create an array of workers based on concurrency limit
-    const workers = Array.from({ length: MAX_CONCURRENCY }, (_, i) => worker(i + 1));
+    // --- 4. IGNITE WORKERS ---
+    const workers = Array(Math.min(chunks.length, MAX_CONCURRENCY))
+      .fill(null)
+      .map(() => processNextChunk());
 
-    // Wait for all workers to finish
     await Promise.all(workers);
-
     setUploadStatus('completed');
   };
 
