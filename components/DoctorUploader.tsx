@@ -124,43 +124,79 @@ export const DoctorUploader: React.FC = () => {
   };
 
   const startUpload = async () => {
-  if (!isSupabaseConfigured()) {
-    setError("Supabase is not configured.");
-    return;
-  }
-
-  setUploadStatus('uploading');
-  const BATCH_SIZE = 50; // Adjust based on record complexity
-  const total = rawRecords.length;
-  let processed = 0;
-
-  // Process in chunks
-  for (let i = 0; i < total; i += BATCH_SIZE) {
-    const chunk = rawRecords.slice(i, i + BATCH_SIZE);
-    
-    // Transform the entire chunk at once
-    const payloads = chunk.map(rec => transformRecord(rec));
-
-    try {
-      const { error: dbError } = await supabase
-        .from('doctors')
-        .upsert(payloads, { onConflict: 'slug' });
-
-      if (dbError) throw dbError;
-
-      // Add a summary log for the batch or individual logs
-      addLog(`Batch ${i/BATCH_SIZE + 1}`, 'success', `Upserted ${payloads.length} records`);
-      
-      processed += payloads.length;
-      setProgress({ current: processed, total });
-    } catch (err: any) {
-      addLog(`Batch Error`, 'error', err.message || 'Unknown error');
-      // Optional: if a batch fails, you could retry individually here
+    if (!isSupabaseConfigured()) {
+      setError("Supabase is not configured.");
+      return;
     }
-  }
 
-  setUploadStatus('completed');
-};
+    setUploadStatus('uploading');
+    setLogs([]); // Clear old logs
+
+    // --- CONFIGURATION ---
+    const BATCH_SIZE = 100;     // Safe size to avoid 6MB payload limit
+    const MAX_CONCURRENCY = 5;  // 5 parallel connections (Browser friendly)
+    // ---------------------
+
+    const totalRecords = rawRecords.length;
+    let processedCount = 0;
+    
+    // 1. Create a queue of batches (chunks)
+    // We use a mutable array that acts as a "Job Queue"
+    const queue: DoctorUpsertPayload[][] = [];
+    for (let i = 0; i < totalRecords; i += BATCH_SIZE) {
+      const chunk = rawRecords.slice(i, i + BATCH_SIZE);
+      queue.push(chunk.map(transformRecord));
+    }
+
+    const totalBatches = queue.length;
+    
+    // 2. Define the Worker
+    // This function keeps taking jobs from the queue until it's empty
+    const worker = async (workerId: number) => {
+      while (queue.length > 0) {
+        // Atomic pop: Grab the next batch immediately
+        const batch = queue.shift();
+        if (!batch) break; 
+
+        const currentBatchSize = batch.length;
+
+        try {
+          const { error: dbError } = await supabase
+            .from('doctors')
+            .upsert(batch, { 
+                onConflict: 'slug',
+                ignoreDuplicates: false // Ensure we update if exists
+            });
+
+          if (dbError) throw dbError;
+
+          // Update Progress
+          processedCount += currentBatchSize;
+          setProgress({ current: processedCount, total: totalRecords });
+          
+          // Log success (optional: limit logs if you have 10k records to avoid React lag)
+          addLog(`Worker ${workerId}`, 'success', `Upserted ${currentBatchSize} records`);
+
+        } catch (err: any) {
+          console.error(err);
+          // Log specific error details
+          addLog(`Worker ${workerId}`, 'error', err.message || 'Unknown error');
+          
+          // OPTIONAL: If you want to retry failed batches, you could push 'batch' back into 'queue'
+          // queue.push(batch); 
+        }
+      }
+    };
+
+    // 3. Start the Engine
+    // Create an array of workers based on concurrency limit
+    const workers = Array.from({ length: MAX_CONCURRENCY }, (_, i) => worker(i + 1));
+
+    // Wait for all workers to finish
+    await Promise.all(workers);
+
+    setUploadStatus('completed');
+  };
 
   // --- Render Helpers ---
 
