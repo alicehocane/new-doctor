@@ -1356,7 +1356,7 @@ export const CITY_HEALTH_DATA: Record<string, { overview: string, hospitals: str
   'ciudad-de-mexico': {
     overview: 'La Ciudad de México concentra la infraestructura médica más avanzada del país, albergando los Institutos Nacionales de Salud y hospitales privados de renombre internacional. Es el principal destino para procedimientos de alta complejidad y turismo médico nacional.',
     hospitals: ['Hospital General de México', 'Centro Médico Nacional Siglo XXI', 'Hospital Ángeles', 'Médica Sur', 'Centro Médico ABC'],
-    transport: 'Zonas como la Colonia Roma y Tlalpan (Zona de Hospitales) tienen alta congestión. Se recomienda utilizar el Metrobús para la zona centro o el Metro para el sur. El estacionamiento suele ser limitado, por lo que el uso de apps de movilidad es aconsejable.'
+    transport: 'Zonas como la Colonia Romas y Tlalpan (Zona de Hospitales) tienen alta congestión. Se recomienda utilizar el Metrobús para la zona centro o el Metro para el sur. El estacionamiento suele ser limitado, por lo que el uso de apps de movilidad es aconsejable.'
   },
   'monterrey': {
     overview: 'Monterrey se ha consolidado como un hub de turismo médico en el norte, conocido por su tecnología de vanguardia en cardiología y oncología. La ciudad combina atención hospitalaria de primer mundo con una fuerte formación universitaria.',
