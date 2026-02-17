@@ -2,9 +2,9 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, Building2 } from 'lucide-react';
-import Link from 'next/link'; 
-import { notFound } from 'next/navigation'; 
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays } from 'lucide-react';
+import Link from 'next/link'; // Replaced wouter
+import { notFound } from 'next/navigation'; // For 404 handling
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES } from '../../../lib/constants';
 
@@ -28,109 +28,67 @@ const formatDate = (dateString?: string) => {
 // --- SEO Metadata Generation ---
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  // We perform a joined query to get the specialty name for the title
-  const { data: rawData } = await supabase
+  const { data: doctor } = await supabase
     .from('doctors')
-    .select(`
-      full_name,
-      seo_metadata,
-      doctor_specialties(specialties(name))
-    `)
+    .select('full_name, specialties, seo_metadata')
     .eq('slug', params.slug)
     .single();
 
-  if (!rawData) {
+  if (!doctor) {
     return {
       title: 'Doctor no encontrado',
       description: 'El perfil del doctor que buscas no está disponible.'
     };
   }
 
-  // Flatten specialty for metadata
-  const specialties = rawData.doctor_specialties?.map((ds: any) => ds.specialties?.name) || [];
-  const primarySpecialty = specialties[0] || 'Doctor';
-
+  const doc = doctor as Doctor;
+  
   return {
-    title: rawData.seo_metadata?.meta_title || `${rawData.full_name} - ${primarySpecialty}`,
-    description: rawData.seo_metadata?.meta_description || `Agenda una cita con ${rawData.full_name}, especialista en ${specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`,
-    keywords: rawData.seo_metadata?.keywords ? rawData.seo_metadata.keywords.split(',') : undefined,
+    title: doc.seo_metadata?.meta_title || `${doc.full_name} - ${doc.specialties[0] || 'Doctor'}`,
+    description: doc.seo_metadata?.meta_description || `Agenda una cita con ${doc.full_name}, especialista en ${doc.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`,
+    keywords: doc.seo_metadata?.keywords ? doc.seo_metadata.keywords.split(',') : undefined,
   };
 }
 
 // --- Server Component ---
 
 export default async function DoctorProfile({ params }: { params: { slug: string } }) {
-  
-  // 1. Fetch Main Doctor Data with RELATIONS (Taxonomies)
-  // We use the joining syntax: table_name ( columns )
-  const { data: rawData, error } = await supabase
+  // 1. Fetch Main Doctor Data
+  const { data: currentDoctor } = await supabase
     .from('doctors')
-    .select(`
-      *,
-      doctor_cities (
-        cities ( name, slug )
-      ),
-      doctor_specialties (
-        specialties ( name, slug )
-      )
-    `)
+    .select('*')
     .eq('slug', params.slug)
     .single();
 
   // 2. Handle 404
-  if (!rawData || error) {
+  if (!currentDoctor) {
     notFound();
   }
 
-  // 3. Transform Data (Flatten Relations to match UI expectations)
-  // The DB returns nested objects, we want simple arrays for the UI: ['Cardiology', 'Internal Med']
-  const doctor: Doctor = {
-    ...rawData,
-    cities: rawData.doctor_cities?.map((item: any) => item.cities?.name).filter(Boolean) || [],
-    specialties: rawData.doctor_specialties?.map((item: any) => item.specialties?.name).filter(Boolean) || [],
-    // Ensure JSON fields have defaults if null
-    contact_info: rawData.contact_info || { locations: [], phones: [] },
-    medical_profile: rawData.medical_profile || { diseases_treated: [], sub_specialties: [] }
-  };
+  const doctor = currentDoctor as Doctor;
 
-  // 4. Parallel Data Fetching for Related Content
+  // 3. Parallel Data Fetching for Related Content
+  // We need the doctor data first to know which city/specialty to query
   const relatedDoctorsPromise = (async () => {
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
-      // Note: For complex relation filtering in Supabase client, it's easier to verify match in application logic 
-      // or simple filter if possible. Here we fetch a batch and filter.
-      // A more performant way requires an RPC or exact join filter, but for < 10k rows this is okay.
-      
       const { data: related } = await supabase
         .from('doctors')
-        .select(`
-            *, 
-            doctor_cities!inner(cities(name)), 
-            doctor_specialties!inner(specialties(name))
-        `)
-        // Filter where city matches
-        .eq('doctor_cities.cities.name', doctor.cities[0])
-        // Filter where specialty matches
-        .eq('doctor_specialties.specialties.name', doctor.specialties[0])
+        .select('*')
+        .contains('cities', [doctor.cities[0]])
+        .contains('specialties', [doctor.specialties[0]])
         .neq('id', doctor.id)
-        .limit(15);
+        .limit(20);
       
       if (related) {
-        // Transform the related doctors too
-        const formattedRelated = related.map((d: any) => ({
-            ...d,
-            cities: d.doctor_cities?.map((c: any) => c.cities?.name) || [],
-            specialties: d.doctor_specialties?.map((s: any) => s.specialties?.name) || []
-        }));
-
-        // Sort by phone availability
-        return formattedRelated
+        // Sort by phone availability (Server-side sort)
+        return (related as Doctor[])
           .sort((a, b) => {
-            const aHas = Boolean(a.contact_info?.phones?.some((p: string) => p && p.trim().length > 0));
-            const bHas = Boolean(b.contact_info?.phones?.some((p: string) => p && p.trim().length > 0));
+            const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
+            const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
             if (aHas === bHas) return 0;
             return aHas ? -1 : 1;
           })
-          .slice(0, 4); 
+          .slice(0, 4); // Take top 4
       }
     }
     return [];
@@ -166,9 +124,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     },
     {
       question: `¿Dónde se encuentran los consultorios de ${doctor.full_name}?`,
-      answer: doctor.contact_info.locations && doctor.contact_info.locations.length > 0
-        ? `${doctor.full_name} ofrece consulta en: ${doctor.contact_info.locations.map(l => `${l.clinic_name} (${l.address})`).join('; ')}.`
-        : 'Actualmente estamos actualizando la información de consultorios.'
+      answer: `${doctor.full_name} ofrece consulta en: ${doctor.contact_info.locations.map(l => `${l.clinic_name} en ${l.address}`).join('; ')}.`
     },
     {
       question: `¿Cómo puedo agendar una cita con ${doctor.full_name}?`,
@@ -295,7 +251,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
               {/* Description */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
-                {doctor.seo_metadata?.meta_description || 'Especialista médico certificado dedicado a brindar la mejor atención a sus pacientes. Consulta horarios y ubicaciones a continuación.'}
+                {doctor.seo_metadata?.meta_description || 'Especialista médico certificado dedicado a brindar la mejor atención a sus pacientes.'}
               </p>
             </div>
           </div>
@@ -307,72 +263,55 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
           
-          {/* Locations Card */}
-          <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
-             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-[#86868b]" />
-              Ubicaciones y Consultorios
-            </h2>
-            <div className="space-y-6">
-              {doctor.contact_info.locations && doctor.contact_info.locations.length > 0 ? (
-                doctor.contact_info.locations.map((loc, idx) => (
-                  <div key={idx} className="flex flex-col gap-3 p-5 bg-[#f5f5f7] rounded-2xl border border-transparent hover:border-[#0071e3]/20 transition-all">
-                    <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
-                        <div>
-                            <div className="flex items-start gap-2 mb-1">
-                                <Building2 className="w-4 h-4 text-[#0071e3] shrink-0 mt-1" />
-                                <h3 className="font-bold text-[#1d1d1f] text-base leading-snug">{loc.clinic_name}</h3>
-                            </div>
-                            <p className="text-[#86868b] text-[15px] leading-relaxed pl-6">{loc.address}</p>
-                        </div>
-                        {loc.map_url && (
-                            <a 
-                            href={loc.map_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center px-4 py-2 bg-white text-[#0071e3] rounded-full text-[13px] font-bold shadow-sm hover:bg-slate-50 transition-colors shrink-0 h-fit self-start border border-[#0071e3]/10"
-                            >
-                            Ver Mapa <ExternalLink className="w-3 h-3 ml-1" />
-                            </a>
-                        )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-4 bg-slate-50 rounded-xl text-[#86868b] text-sm italic">
-                    Ubicación exacta disponible al contactar.
-                </div>
-              )}
-            </div>
-          </section>
-
           {/* Medical Profile Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#86868b]" />
-              Experiencia Médica
+              Información Médica
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {doctor.medical_profile.diseases_treated?.length > 0 ? (
                 <div>
-                  <h3 className="text-[13px] font-bold text-[#86868b] mb-4 uppercase tracking-wider flex items-center gap-2">
-                    <Activity className="w-4 h-4" /> Enfermedades Tratadas
-                  </h3>
+                  <h3 className="text-[13px] font-semibold text-[#86868b] mb-3 uppercase tracking-wider">Enfermedades Tratadas</h3>
                   <div className="flex flex-wrap gap-2">
                     {doctor.medical_profile.diseases_treated.map((d, i) => (
-                      <Link 
-                        key={i} 
-                        href={`/enfermedad/${slugify(d)}`}
-                        className="px-3.5 py-2 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg text-[14px] font-medium hover:bg-[#e0e0e5] transition-colors"
-                      >
+                      <span key={i} className="px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg text-[14px] font-medium">
                         {d}
-                      </Link>
+                      </span>
                     ))}
                   </div>
                 </div>
               ) : (
                 <p className="text-[#86868b]">Información detallada sobre enfermedades tratadas no disponible.</p>
               )}
+            </div>
+          </section>
+
+          {/* Locations Card */}
+          <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
+             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-[#86868b]" />
+              Ubicaciones
+            </h2>
+            <div className="space-y-6">
+              {doctor.contact_info.locations?.map((loc, idx) => (
+                <div key={idx} className="flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-start p-5 bg-[#f5f5f7] rounded-2xl">
+                  <div>
+                    <h3 className="font-semibold text-[#1d1d1f] text-lg">{loc.clinic_name}</h3>
+                    <p className="text-[#86868b] text-[15px] mt-1 leading-relaxed">{loc.address}</p>
+                  </div>
+                  {loc.map_url && (
+                    <a 
+                      href={loc.map_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-4 py-2 bg-white text-[#0071e3] rounded-full text-[14px] font-medium shadow-sm hover:bg-slate-50 transition-colors shrink-0"
+                    >
+                      Ver en Mapa
+                    </a>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
 
@@ -385,7 +324,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             <div className="space-y-6 divide-y divide-slate-100">
               {faqs.map((faq, idx) => (
                 <div key={idx} className={idx > 0 ? 'pt-5' : ''}>
-                  <h3 className="font-bold text-[#1d1d1f] text-[15px] mb-2">{faq.question}</h3>
+                  <h3 className="font-medium text-[#1d1d1f] text-[16px] mb-2">{faq.question}</h3>
                   <p className="text-[#86868b] text-[15px] leading-relaxed">{faq.answer}</p>
                 </div>
               ))}
@@ -396,31 +335,21 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
         {/* Desktop Sidebar: Contact */}
         <div className="hidden md:block md:col-span-1">
-          <div className="bg-white rounded-[24px] shadow-sm p-6 sticky top-24 border border-slate-100">
-            <h2 className="text-lg font-bold text-[#1d1d1f] mb-4">Contacto Directo</h2>
+          <div className="bg-white rounded-[24px] shadow-sm p-6 sticky top-24">
+            <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
             <div className="space-y-3">
-              {doctor.contact_info.phones && doctor.contact_info.phones.length > 0 ? (
-                  doctor.contact_info.phones.map((phone, idx) => (
-                    <a 
-                      key={idx}
-                      href={`tel:${phone}`} 
-                      className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#0071e3] text-white rounded-xl font-bold hover:bg-[#0077ED] transition-all active:scale-95 shadow-lg shadow-blue-500/20"
-                    >
-                      <Phone className="w-4 h-4 fill-current" />
-                      Llamar al Consultorio
-                    </a>
-                  ))
-              ) : (
-                  <button disabled className="w-full py-3.5 bg-slate-100 text-slate-400 rounded-xl font-bold cursor-not-allowed">
-                      Teléfono no disponible
-                  </button>
-              )}
-              
-              <div className="bg-blue-50 rounded-xl p-4 mt-4 border border-blue-100">
-                <p className="text-[12px] text-blue-800 leading-relaxed text-center font-medium">
-                    <Info className="w-3 h-3 inline mr-1 mb-0.5" />
-                    Al llamar, menciona que viste el perfil en <strong>MediBusca</strong> para asegurar la mejor atención.
-                </p>
+              {doctor.contact_info.phones?.map((phone, idx) => (
+                <a 
+                  key={idx}
+                  href={`tel:${phone}`} 
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
+                >
+                  <Phone className="w-4 h-4 fill-current" />
+                  Llamar
+                </a>
+              ))}
+              <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
+                Al contactar, menciona que lo viste en MediBusca para mejor atención.
               </div>
             </div>
           </div>
@@ -472,7 +401,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 Otros {doctor.specialties[0]}s en {doctor.cities[0]}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedDoctors.map((doc: any) => (
+                {relatedDoctors.map((doc) => (
                     <div 
                         key={doc.id}
                         className="bg-white p-6 rounded-[24px] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 border border-transparent hover:border-[#0071e3]/20 flex flex-col justify-between"
@@ -484,13 +413,13 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                                         {doc.full_name}
                                     </h3>
                                 </Link>
-                                {doc.license_numbers && doc.license_numbers.length > 0 && (
+                                {doc.license_numbers.length > 0 && (
                                     <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-1" />
                                 )}
                             </div>
                             
                             <div className="flex flex-wrap gap-2 mt-3 mb-4">
-                                {doc.specialties.slice(0, 2).map((s: string) => (
+                                {doc.specialties.slice(0, 2).map(s => (
                                     <span key={s} className="px-2.5 py-1 bg-[#f5f5f7] text-[#86868b] text-[11px] font-bold rounded-lg uppercase tracking-wide">
                                         {s}
                                     </span>

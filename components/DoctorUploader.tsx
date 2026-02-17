@@ -19,7 +19,7 @@ export const DoctorUploader: React.FC = () => {
   // --- File Handling ---
 
   const handleDrag = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
+    e.preventDefault();a
     e.stopPropagation();
     if (e.type === 'dragenter' || e.type === 'dragover') {
       setDragActive(true);
