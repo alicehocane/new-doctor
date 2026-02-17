@@ -153,6 +153,12 @@ export const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+export const ALL_CITIES = [
+  "Ciudad de México", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "León",
+  "Mérida", "Cancún", "Querétaro", "Toluca", "Chihuahua", "Hermosillo",
+  "Saltillo", "Mexicali", "Aguascalientes", "San Luis Potosí", "Culiacán",
+  "Acapulco", "Morelia", "Veracruz"
+];
 
 export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
   'Ansiedad': ['Psicólogo', 'Psiquiatra'],
