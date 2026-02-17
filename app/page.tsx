@@ -3,10 +3,9 @@ import React from 'react';
 import Link from 'next/link';
 import { MapPin, Stethoscope, ChevronRight, Activity, ArrowRight, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck, Phone, Eye, Smile, Brain, Baby, Building2, AlertTriangle, FileCheck } from 'lucide-react';
 import { Metadata } from 'next';
-import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 import { supabase } from '../lib/supabase';
-import { City } from '../types';
+import { City, Disease } from '../types';
 
 // Configuration for distinct specialty visuals
 const SPECIALTY_CONFIG: Record<string, { icon: React.ElementType, color: string, bg: string }> = {
@@ -39,13 +38,23 @@ const slugify = (text: string) => {
 export default async function HomePage() {
   
   // Fetch Cities from DB
-  const { data: citiesData } = await supabase
+  const citiesPromise = supabase
     .from('cities')
     .select('id, name, slug, is_featured')
     .order('name');
+
+  // Fetch Diseases from DB (Category: Common)
+  const diseasesPromise = supabase
+    .from('diseases')
+    .select('*')
+    .eq('category', 'common')
+    .limit(30);
+
+  const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
   
-  const allCities = (citiesData as City[]) || [];
+  const allCities = (citiesResponse.data as City[]) || [];
   const featuredCities = allCities.filter(c => c.is_featured);
+  const commonDiseases = (diseasesResponse.data as Disease[]) || [];
 
   // Schema Markup
   const organizationSchema = {
@@ -108,7 +117,7 @@ export default async function HomePage() {
           </p>
           
           {/* Client Side Search Component */}
-          <HomeSearch cities={allCities} />
+          <HomeSearch cities={allCities} diseases={commonDiseases} />
 
           {/* SEP Trust Badge */}
           <div className="flex flex-col items-center justify-center gap-3 mt-8">
@@ -242,17 +251,17 @@ export default async function HomePage() {
           </h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {ALL_DISEASES.slice(0, 20).map((disease) => (
+            {commonDiseases.slice(0, 20).map((disease) => (
                <Link 
-                  key={disease}
-                  href={`/enfermedad/${slugify(disease)}`}
+                  key={disease.id}
+                  href={`/enfermedad/${disease.slug}`}
                   className="
                     group flex items-center justify-between p-4 px-6
                     bg-[#f5f5f7] rounded-xl md:rounded-2xl hover:bg-[#0071e3] hover:text-white
                     transition-all duration-300 cursor-pointer border border-transparent hover:border-blue-500/10
                   "
                >
-                 <span className="font-medium text-sm md:text-[15px] truncate">{disease}</span>
+                 <span className="font-medium text-sm md:text-[15px] truncate">{disease.name}</span>
                  <ArrowUpRight className="w-4 h-4 text-[#6e6e73] group-hover:text-white transition-colors shrink-0" />
                </Link>
             ))}

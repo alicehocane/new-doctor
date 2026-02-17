@@ -1,13 +1,15 @@
+
 'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Search, Activity, ArrowRight, Plus } from 'lucide-react';
+import { Disease } from '../types';
 
 const PAGE_SIZE = 12;
 
 interface DiseaseListProps {
-  allDiseases: string[];
+  diseases: Disease[];
   children?: React.ReactNode;
 }
 
@@ -21,13 +23,13 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export default function DiseaseList({ allDiseases, children }: DiseaseListProps) {
+export default function DiseaseList({ diseases, children }: DiseaseListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Filter diseases based on search query
-  const filteredDiseases = allDiseases.filter(d => 
-    d.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredDiseases = diseases.filter(d => 
+    d.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Pagination logic
@@ -67,8 +69,8 @@ export default function DiseaseList({ allDiseases, children }: DiseaseListProps)
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-in fade-in slide-in-from-bottom-6">
             {visibleDiseases.map((disease) => (
               <Link 
-                key={disease} 
-                href={`/enfermedad/${slugify(disease)}`}
+                key={disease.id} 
+                href={`/enfermedad/${disease.slug}`}
                 className="
                   group relative flex flex-col justify-between p-6 
                   bg-white border border-slate-200 rounded-[20px] 
@@ -85,7 +87,7 @@ export default function DiseaseList({ allDiseases, children }: DiseaseListProps)
                 
                 <div>
                   <h3 className="text-lg font-semibold text-[#1d1d1f] mb-1 group-hover:text-[#0071e3] transition-colors">
-                      {disease}
+                      {disease.name}
                   </h3>
                   <span className="text-xs font-medium text-[#86868b] uppercase tracking-wide">
                       Información Médica

@@ -4,14 +4,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, MapPin, ChevronRight, Stethoscope, Activity } from 'lucide-react';
-import { ALL_DISEASES, COMMON_SPECIALTIES } from '../lib/constants';
-import { City } from '../types';
+import { COMMON_SPECIALTIES } from '../lib/constants';
+import { City, Disease } from '../types';
 
 interface HomeSearchProps {
   cities: City[];
+  diseases: Disease[];
 }
 
-export default function HomeSearch({ cities }: HomeSearchProps) {
+export default function HomeSearch({ cities, diseases }: HomeSearchProps) {
   const router = useRouter();
   const [city, setCity] = useState(cities.length > 0 ? cities[0].name : 'Ciudad de México');
   const [specialty, setSpecialty] = useState('');
@@ -52,9 +53,9 @@ export default function HomeSearch({ cities }: HomeSearchProps) {
         s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
       );
 
-      const filteredDiseases = ALL_DISEASES.filter(d => 
-        d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
-      );
+      const filteredDiseases = diseases
+        .filter(d => d.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal))
+        .map(d => d.name);
 
       setSuggestions([...filteredSpecs, ...filteredDiseases].slice(0, 10));
       setShowSuggestions(true);
@@ -74,7 +75,8 @@ export default function HomeSearch({ cities }: HomeSearchProps) {
       const citySlug = slugify(city);
       const termSlug = slugify(specialty.trim()); 
       
-      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
+      // Check if it matches a disease name
+      const isDisease = diseases.some(d => slugify(d.name) === termSlug);
 
       if (isDisease) {
         router.push(`/enfermedad/${termSlug}/${citySlug}`);
@@ -148,7 +150,7 @@ export default function HomeSearch({ cities }: HomeSearchProps) {
         <div className="absolute top-full left-0 right-0 mt-3 px-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
            <ul className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-100 overflow-hidden divide-y divide-slate-100 max-h-60 overflow-y-auto">
             {suggestions.map((suggestion) => {
-              const isDisease = ALL_DISEASES.includes(suggestion);
+              const isDisease = diseases.some(d => d.name === suggestion);
               return (
                 <li 
                   key={suggestion}

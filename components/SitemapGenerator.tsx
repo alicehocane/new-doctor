@@ -4,8 +4,8 @@
 import React, { useState } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { FileCode, Download, Loader2, AlertCircle, CheckCircle, Globe, Layers, FileText, Info } from 'lucide-react';
-import { COMMON_SPECIALTIES, ALL_DISEASES } from '../lib/constants';
-import { City } from '../types';
+import { COMMON_SPECIALTIES } from '../lib/constants';
+import { City, Disease } from '../types';
 
 const SITE_URL = 'https://medibusca.com';
 const MAX_URLS_PER_SITEMAP = 10000;
@@ -73,13 +73,17 @@ export const SitemapGenerator: React.FC = () => {
 
     try {
       // --- 0. Fetch Data from DB ---
-      setStatus('Fetching Cities from Database...');
-      const { data: citiesData, error: citiesError } = await supabase
-        .from('cities')
-        .select('name, slug');
+      setStatus('Fetching Cities and Diseases from Database...');
+      const citiesPromise = supabase.from('cities').select('name, slug');
+      const diseasesPromise = supabase.from('diseases').select('name, slug');
+
+      const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
       
-      if (citiesError) throw citiesError;
-      const allCities = citiesData as { name: string, slug: string }[];
+      if (citiesResponse.error) throw citiesResponse.error;
+      if (diseasesResponse.error) throw diseasesResponse.error;
+
+      const allCities = citiesResponse.data as { name: string, slug: string }[];
+      const allDiseases = diseasesResponse.data as { name: string, slug: string }[];
 
       // --- 1. Main Static Pages ---
       setStatus('Generating Main Pages...');
@@ -125,8 +129,8 @@ export const SitemapGenerator: React.FC = () => {
         type: 'Taxonomy'
       });
 
-      const diseaseUrls = ALL_DISEASES.map(disease => ({
-        loc: `${SITE_URL}/enfermedad/${slugify(disease)}`,
+      const diseaseUrls = allDiseases.map(disease => ({
+        loc: `${SITE_URL}/enfermedad/${disease.slug}`,
         changefreq: 'weekly',
         priority: '0.9'
       }));
@@ -162,10 +166,10 @@ export const SitemapGenerator: React.FC = () => {
 
       // Disease + City
       const diseaseCityUrls: SitemapUrl[] = [];
-      ALL_DISEASES.forEach(disease => {
+      allDiseases.forEach(disease => {
         allCities.forEach(city => {
             diseaseCityUrls.push({
-                loc: `${SITE_URL}/enfermedad/${slugify(disease)}/${city.slug}`,
+                loc: `${SITE_URL}/enfermedad/${disease.slug}/${city.slug}`,
                 changefreq: 'monthly',
                 priority: '0.9'
             });

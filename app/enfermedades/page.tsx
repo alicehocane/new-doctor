@@ -2,12 +2,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, MapPin, ShieldCheck, BookOpen, Brain, HeartPulse, Stethoscope, Activity, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import { POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
+import { POPULAR_SPECIALTIES } from '../../lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
+import { supabase } from '../../lib/supabase';
+import { Disease } from '../../types';
 
 export const metadata: Metadata = {
-  title: "Diccionario de Enfermedades y Guía de Síntomas",
+  title: "Diccionario de Enfermedades y Guía de Síntomas | MediBusca",
   description: "Guía médica completa de enfermedades y síntomas en México. Aprende a identificar cuándo acudir a un especialista y encuentra doctores verificados.",
 };
 
@@ -54,7 +56,17 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export default function DiseasesIndexPage() {
+export default async function DiseasesIndexPage() {
+  
+  // Fetch All Diseases from DB (Category: Common)
+  const { data: diseasesData } = await supabase
+    .from('diseases')
+    .select('*')
+    .eq('category', 'common')
+    .order('name');
+
+  const allDiseases = (diseasesData as Disease[]) || [];
+
   // Schema Markup
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -127,7 +139,7 @@ export default function DiseasesIndexPage() {
         </section>
 
         {/* Client Component for Interactive Search */}
-        <DiseaseList allDiseases={ALL_DISEASES} />
+        <DiseaseList diseases={allDiseases} />
 
         {/* SEMANTIC CATEGORIZATION (Grouping for context) */}
         <section className="mt-24 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-6">
@@ -221,6 +233,80 @@ export default function DiseasesIndexPage() {
                 </div>
             </div>
         </section>
+        
+        {/* Popular Specialties Section (SEO) */}
+        <section className="mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
+            <div className="mb-8">
+                <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
+                    Encuentra doctores por su especialidad
+                </h2>
+                <p className="text-[#86868b] text-lg leading-relaxed max-w-3xl">
+                    Si ya sabes qué tipo de doctor necesitas, como un pediatra para tus hijos o un dentista para una revisión, búscalo aquí. Tenemos una lista completa de especialistas listos para atenderte.
+                </p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {POPULAR_SPECIALTIES.map((spec) => (
+                    <Link 
+                        key={spec}
+                        href={`/especialidad/${slugify(spec)}`}
+                        className="
+                            flex items-center justify-center px-4 py-3
+                            bg-white border border-slate-200 rounded-xl
+                            text-sm font-medium text-[#1d1d1f] text-center
+                            hover:border-[#0071e3] hover:text-[#0071e3]
+                            transition-colors shadow-sm
+                        "
+                    >
+                        {spec}
+                    </Link>
+                ))}
+            </div>
+            <div className="mt-6 text-center md:text-left">
+                <Link href="/especialidades" className="text-[#0071e3] hover:underline text-sm font-medium inline-flex items-center gap-1">
+                    Ver todas las especialidades <ArrowRight className="w-3 h-3" />
+                </Link>
+            </div>
+        </section>
+
+        {/* Popular Diseases by City (SEO Cross-Linking) */}
+        <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
+             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
+                Encuentra tratamiento en tu ciudad
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {FEATURED_CITIES.map((city) => (
+                    <div key={city} className="space-y-3">
+                        <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
+                            {city}
+                        </h3>
+                        <ul className="space-y-2.5">
+                            {/* Show top 5 diseases for each city */}
+                            {allDiseases.slice(0, 5).map((disease) => (
+                                <li key={disease.id}>
+                                    <Link 
+                                        href={`/enfermedad/${disease.slug}/${slugify(city)}`}
+                                        className="text-[14px] text-[#86868b] hover:text-[#0071e3] hover:underline flex items-center gap-2 transition-colors"
+                                    >
+                                        <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
+                                        {disease.name} en {city}
+                                    </Link>
+                                </li>
+                            ))}
+                            <li>
+                                <Link 
+                                    href={`/doctores/${slugify(city)}`}
+                                    className="text-[13px] font-medium text-[#0071e3] hover:underline mt-1 inline-block"
+                                >
+                                    Ver todos en {city}
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        </section>
+
       </div>
     </div>
   );

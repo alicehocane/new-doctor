@@ -5,14 +5,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, Activity } from 'lucide-react';
-import { ALL_DISEASES, COMMON_SPECIALTIES } from '../lib/constants';
-import { City } from '../types';
+import { COMMON_SPECIALTIES } from '../lib/constants';
+import { City, Disease } from '../types';
 
 interface SearchFormProps {
   cities: City[];
+  diseases: Disease[];
 }
 
-export default function SearchForm({ cities }: SearchFormProps) {
+export default function SearchForm({ cities, diseases }: SearchFormProps) {
   const router = useRouter();
   const [city, setCity] = useState(cities.length > 0 ? cities[0].name : 'Ciudad de México');
   const [specialty, setSpecialty] = useState('');
@@ -53,9 +54,9 @@ export default function SearchForm({ cities }: SearchFormProps) {
         s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
       );
 
-      const filteredDiseases = ALL_DISEASES.filter(d => 
-        d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
-      );
+      const filteredDiseases = diseases
+        .filter(d => d.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal))
+        .map(d => d.name);
 
       setSuggestions([...filteredSpecs, ...filteredDiseases].slice(0, 10));
       setShowSuggestions(true);
@@ -76,7 +77,7 @@ export default function SearchForm({ cities }: SearchFormProps) {
       const termSlug = slugify(specialty.trim());
       
       // Check if term matches a known disease to route correctly
-      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
+      const isDisease = diseases.some(d => slugify(d.name) === termSlug);
 
       if (isDisease) {
         router.push(`/enfermedad/${termSlug}/${citySlug}`);
@@ -148,7 +149,7 @@ export default function SearchForm({ cities }: SearchFormProps) {
           <div className="mt-2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
             <ul className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
               {suggestions.map((suggestion) => {
-                const isDisease = ALL_DISEASES.includes(suggestion);
+                const isDisease = diseases.some(d => d.name === suggestion);
                 return (
                   <li 
                     key={suggestion}

@@ -1,11 +1,12 @@
+
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
-import { Doctor } from '../../../../types';
+import { Doctor, Disease } from '../../../../types';
 import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
+import { POPULAR_CITIES, ALL_CITIES, DISEASE_RELATED_SPECIALTIES } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
@@ -35,7 +36,13 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 
 export async function generateMetadata({ params }: { params: { disease: string, city: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
-  const { name: diseaseName } = getDiseaseInfo(params.disease);
+  const { data: diseaseData } = await supabase
+    .from('diseases')
+    .select('name')
+    .eq('slug', params.disease)
+    .single();
+
+  const diseaseName = diseaseData?.name || params.disease.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   
   return {
     title: `Especialistas en ${diseaseName} en ${cityName}`,
@@ -48,10 +55,28 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const citySlug = params.city;
   const cityName = getCanonicalCity(citySlug);
   
-  // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
+  // 1. Fetch Disease from DB
+  const { data: diseaseRecord } = await supabase
+    .from('diseases')
+    .select('*')
+    .eq('slug', diseaseSlug)
+    .single();
 
-  // 1. Fetch Initial Data Server-Side
+  if (!diseaseRecord) {
+    // If unknown disease, 404
+    notFound();
+  }
+
+  const disease = diseaseRecord as Disease;
+  const diseaseName = disease.name;
+
+  // Determine Related Specialties
+  const relatedSpecialties = DISEASE_RELATED_SPECIALTIES[diseaseName] || 
+                             Object.entries(DISEASE_RELATED_SPECIALTIES).find(([k]) => slugify(k) === diseaseSlug)?.[1] || 
+                             [];
+  const targetSpecialty = relatedSpecialties.length > 0 ? relatedSpecialties[0] : null;
+
+  // 2. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
 
   if (targetSpecialty) {
@@ -65,12 +90,11 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   // Logic to prevent Thin Content indexing
-  // If no doctors are found AND (disease is unknown OR city is unknown), return 404.
-  // This prevents URL manipulation like /enfermedad/foobar/fake-city from generating indexable pages.
+  // If no doctors are found AND city is unknown, return 404.
+  // Disease existence is already checked above.
   const isKnownCity = ALL_CITIES.includes(cityName);
-  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
 
-  if (doctors.length === 0 && (!isKnownCity || !isKnownDisease)) {
+  if (doctors.length === 0 && !isKnownCity) {
     notFound();
   }
 

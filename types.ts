@@ -72,6 +72,16 @@ export interface City {
   } | string; // Handle potential stringified JSON from certain RPCs or raw queries
 }
 
+export interface Disease {
+  id: number;
+  name: string;
+  slug: string;
+  symptoms: string; // JSON string in DB e.g. "[\"Symptom 1\"]"
+  causes: string;   // JSON string in DB
+  category: string; // e.g. "common"
+  created_at: string;
+}
+
 // The payload sent to Supabase (omitting generated fields like id and created_at)
 export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at'>;
 
