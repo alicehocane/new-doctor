@@ -1,4 +1,3 @@
-
 export interface RawDoctorRecord {
   id: string;
   slug: string;
@@ -26,17 +25,16 @@ export interface RawDoctorRecord {
   schema_json_ld: any;
 }
 
-// Normalized Database Types
+// Matching the provided "Hybrid Model" TypeScript definition
 export type Doctor = {
   id: string; // UUID
   external_id: string | null;
   slug: string;
   full_name: string;
   
-  // These are now populated via JOINs or transformation in the UI layer
+  // Searchable Arrays
   specialties: string[];
   cities: string[];
-  
   license_numbers: string[];
   
   // Typed JSON objects
@@ -45,7 +43,7 @@ export type Doctor = {
     locations: Array<{
       clinic_name: string;
       address: string;
-      map_url?: string; // Optional in some records
+      map_url: string;
     }>;
   };
   
@@ -64,14 +62,10 @@ export type Doctor = {
   
   created_at: string;
   updated_at: string;
-  
-  // Optional relations for initial fetch
-  doctor_cities?: { cities: { name: string } }[];
-  doctor_specialties?: { specialties: { name: string } }[];
 };
 
 // The payload sent to Supabase (omitting generated fields like id and created_at)
-export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at' | 'doctor_cities' | 'doctor_specialties'>;
+export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at'>;
 
 export type UploadStatus = 'idle' | 'uploading' | 'completed' | 'error';
 
