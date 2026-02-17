@@ -3,8 +3,8 @@ import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
 import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays } from 'lucide-react';
-import Link from 'next/link'; // Replaced wouter
-import { notFound } from 'next/navigation'; // For 404 handling
+import Link from 'next/link'; 
+import { notFound } from 'next/navigation'; 
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES } from '../../../lib/constants';
 
@@ -25,28 +25,31 @@ const formatDate = (dateString?: string) => {
     return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
 };
 
-// --- SEO Metadata Generation ---
+// --- SEO Metadata Generation (Dynamic) ---
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: doctor } = await supabase
     .from('doctors')
-    .select('full_name, specialties, seo_metadata')
+    .select('full_name, specialties, cities')
     .eq('slug', params.slug)
     .single();
 
   if (!doctor) {
     return {
-      title: 'Doctor no encontrado',
+      title: 'Doctor no encontrado | MediBusca',
       description: 'El perfil del doctor que buscas no está disponible.'
     };
   }
 
   const doc = doctor as Doctor;
-  
+  const mainSpecialty = doc.specialties?.[0] || 'Doctor';
+  const mainCity = doc.cities?.[0] || 'México';
+
+  // Dynamic SEO Construction
   return {
-    title: doc.seo_metadata?.meta_title || `${doc.full_name} - ${doc.specialties[0] || 'Doctor'}`,
-    description: doc.seo_metadata?.meta_description || `Agenda una cita con ${doc.full_name}, especialista en ${doc.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`,
-    keywords: doc.seo_metadata?.keywords ? doc.seo_metadata.keywords.split(',') : undefined,
+    title: `${doc.full_name} - ${mainSpecialty} en ${mainCity} | MediBusca`,
+    description: `Agenda una cita con ${doc.full_name}, especialista en ${mainSpecialty}. Consulta ubicación del consultorio en ${mainCity}, opiniones y disponibilidad.`,
+    keywords: [...(doc.specialties || []), ...(doc.cities || []), 'doctor', 'cita médica', 'salud'],
   };
 }
 
@@ -68,7 +71,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const doctor = currentDoctor as Doctor;
 
   // 3. Parallel Data Fetching for Related Content
-  // We need the doctor data first to know which city/specialty to query
   const relatedDoctorsPromise = (async () => {
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
       const { data: related } = await supabase
@@ -111,6 +113,12 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
   // --- Logic & Schema Generation ---
 
+  const mainSpecialty = doctor.specialties?.[0] || 'Doctor';
+  const mainCity = doctor.cities?.[0] || 'México';
+
+  // Dynamic Description for UI
+  const generatedDescription = `${doctor.full_name} es un especialista en ${mainSpecialty} certificado, ofreciendo atención profesional en ${mainCity}. Dedicado al bienestar del paciente con diagnósticos precisos y tratamientos efectivos.`;
+
   const faqs = [
     {
       question: `¿Cuál es la especialidad de ${doctor.full_name}?`,
@@ -120,7 +128,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       question: `¿Qué enfermedades trata ${doctor.full_name}?`,
       answer: doctor.medical_profile.diseases_treated && doctor.medical_profile.diseases_treated.length > 0
         ? `Algunas de las principales enfermedades que trata incluyen: ${doctor.medical_profile.diseases_treated.slice(0, 8).join(', ')}, entre otras condiciones relacionadas con su especialidad.`
-        : `${doctor.full_name} trata una amplia gama de condiciones médicas relacionadas con ${doctor.specialties[0]}.`
+        : `${doctor.full_name} trata una amplia gama de condiciones médicas relacionadas con ${mainSpecialty}.`
     },
     {
       question: `¿Dónde se encuentran los consultorios de ${doctor.full_name}?`,
@@ -145,10 +153,10 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     }))
   };
 
+  // Construct Physician Schema dynamically since we removed schema_data
   const physicianSchema = {
     "@context": "https://schema.org",
     "@type": "Physician",
-    ...(doctor.schema_data || {}), 
     "name": doctor.full_name,
     "image": "https://medibusca.com/icon-512.png",
     "medicalSpecialty": doctor.specialties.map(s => ({
@@ -249,9 +257,9 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 </div>
               )}
 
-              {/* Description */}
+              {/* Description (Dynamic Generation) */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
-                {doctor.seo_metadata?.meta_description || 'Especialista médico certificado dedicado a brindar la mejor atención a sus pacientes.'}
+                {generatedDescription}
               </p>
             </div>
           </div>

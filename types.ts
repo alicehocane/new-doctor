@@ -1,3 +1,4 @@
+
 export interface RawDoctorRecord {
   id: string;
   slug: string;
@@ -17,18 +18,19 @@ export interface RawDoctorRecord {
     sub_specialties: string[];
     diseases_treated: string[];
   };
-  seo: {
+  // Raw JSON might still have SEO, but we won't store it
+  seo?: {
     meta_title: string;
     meta_description: string;
     keywords: string;
   };
-  schema_json_ld: any;
+  schema_json_ld?: any;
 }
 
 // Matching the provided "Hybrid Model" TypeScript definition
 export type Doctor = {
   id: string; // UUID
-  external_id: string | null;
+  // external_id removed
   slug: string;
   full_name: string;
   
@@ -52,13 +54,7 @@ export type Doctor = {
     diseases_treated: string[];
   };
   
-  seo_metadata: {
-    meta_title: string;
-    meta_description: string;
-    keywords: string;
-  };
-  
-  schema_data: Record<string, any>;
+  // Removed redundant JSONB columns (seo_metadata, schema_data)
   
   created_at: string;
   updated_at: string;
