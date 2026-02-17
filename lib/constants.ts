@@ -17,6 +17,15 @@ export const POPULAR_CITIES = [
   'Chihuahua'
 ];
 
+export const COMMON_SPECIALTIES = [
+    'Dentista - Odontólogo',
+    'Psicólogo',
+    'Médico general',
+    'Hematólogo',
+    'Internista',
+    'Cardiólogo'
+];
+
 export const POPULAR_SPECIALTIES = [
   "Dentista - Odontólogo",
   "Psicólogo",
