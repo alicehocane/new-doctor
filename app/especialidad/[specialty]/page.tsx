@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
-import { Doctor, Article, Specialty } from '../../../types';
+import { Doctor, Article } from '../../../types';
 import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, SPECIALTY_CONDITIONS } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;
@@ -18,6 +18,21 @@ const slugify = (text: string) => {
     .replace(/\-\-+/g, '-')
     .replace(/^-+/, '')
     .replace(/-+$/, '');
+};
+
+const getCanonicalSpecialty = (input: string) => {
+    // Try to find exact match by slug
+    const targetSlug = slugify(input);
+    const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
+    
+    if (found) return found;
+
+    // Fallback: match normalized string
+    const normalizedInput = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const foundFallback = COMMON_SPECIALTIES.find(s => 
+        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedInput
+    );
+    return foundFallback || input;
 };
 
 const sortDoctorsByPhone = (doctors: Doctor[]) => {
@@ -33,65 +48,27 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 
 export async function generateMetadata({ params }: { params: { specialty: string } }): Promise<Metadata> {
   const decodedSpecialty = decodeURIComponent(params.specialty);
-  // Try to find normalized name via slug if possible, or just use param for now
-  // Ideally fetch from DB here too, but for simplicity assuming param is close to name
-  const displayTitle = decodedSpecialty.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
   return {
-    title: `${displayTitle} en México - Procedimientos y Consulta`,
-    description: `Guía completa sobre ${displayTitle}. Qué esperar en la primera consulta, procedimientos comunes y lista de especialistas verificados en México.`,
+    title: `${searchTerm}s en México - Procedimientos y Consulta`,
+    description: `Guía completa sobre ${searchTerm}s. Qué esperar en la primera consulta, procedimientos comunes y lista de especialistas verificados en México.`,
   };
 }
 
 // --- Server Component ---
 
 export default async function SpecialtyPage({ params }: { params: { specialty: string } }) {
-  const specialtySlug = params.specialty;
-
-  // 1. Fetch Specialty Info from DB
-  const { data: specialtyRecord } = await supabase
-    .from('specialties')
-    .select('*')
-    .eq('slug', specialtySlug)
-    .single();
-
-  const specialty = specialtyRecord as Specialty | null;
+  const decodedSpecialty = decodeURIComponent(params.specialty);
+  const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
-  // If not found in DB, fallback to name generation from slug, but ideally handle 404 or generic fallback
-  const searchTerm = specialty?.name || decodeURIComponent(specialtySlug).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  
-  const description = specialty?.description || `Encuentra a los mejores especialistas en ${searchTerm} verificados en México.`;
-  
-  // Use constants for conditions if not in DB, else empty default
-  // Note: DB structure provided doesn't have conditions, so we stick to constant or empty
-  const conditions = SPECIALTY_CONDITIONS[searchTerm] || [];
-  
-  // Parse procedures
-  let procedures: string[] = [];
-  try {
-      if (Array.isArray(specialty?.procedures)) {
-          procedures = specialty.procedures;
-      } else if (typeof specialty?.procedures === 'string') {
-          procedures = JSON.parse(specialty.procedures);
-      }
-  } catch (e) { console.error("Error parsing procedures", e); }
-  // Fallback if empty
-  if (procedures.length === 0) procedures = ['Evaluación clínica', 'Diagnóstico especializado', 'Plan de tratamiento', 'Seguimiento médico'];
+  const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en México.`;
+  const conditions = SPECIALTY_CONDITIONS[searchTerm] || ['Diagnóstico general', 'Tratamiento especializado', 'Seguimiento de padecimientos', 'Consultas preventivas'];
+  const procedures = SPECIALTY_PROCEDURES[searchTerm] || ['Evaluación clínica', 'Diagnóstico especializado', 'Plan de tratamiento', 'Seguimiento médico'];
+  const firstVisitText = SPECIALTY_FIRST_VISIT[searchTerm] || 'Durante la primera consulta, el especialista realizará una historia clínica detallada para entender tus síntomas y antecedentes. Se llevará a cabo un examen físico enfocado en tu motivo de consulta para determinar el mejor plan de diagnóstico y tratamiento.';
+  const comparison = SPECIALTY_COMPARISONS[searchTerm];
 
-  const firstVisitText = specialty?.first_visit_guide || 'Durante la primera consulta, el especialista realizará una historia clínica detallada para entender tus síntomas y antecedentes.';
-  
-  // Parse comparison
-  let comparison: { title: string, text: string } | null = null;
-  try {
-      if (typeof specialty?.comparison_guide === 'object' && specialty?.comparison_guide !== null) {
-          comparison = specialty.comparison_guide as { title: string, text: string };
-      } else if (typeof specialty?.comparison_guide === 'string') {
-          comparison = JSON.parse(specialty.comparison_guide);
-      }
-  } catch (e) { console.error("Error parsing comparison guide", e); }
-
-
-  // 2. Fetch Initial Data Server-Side (Doctors)
+  // 1. Fetch Initial Data Server-Side (Doctors)
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
@@ -100,7 +77,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
-  // 3. Fetch Related Articles
+  // 2. Fetch Related Articles
   const { data: articles } = await supabase
     .from('articles')
     .select('id, title, slug, excerpt, category, author, read_time')
@@ -214,24 +191,22 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     </div>
                 </div>
                 {/* Procedures Mini-Grid */}
-                {procedures.length > 0 && (
-                    <div className="flex-1 w-full bg-[#f9f9fb] rounded-2xl p-6 md:p-8">
-                        <h3 className="font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                            <Stethoscope className="w-5 h-5 text-[#86868b]" />
-                            Procedimientos Comunes
-                        </h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {procedures.map((proc, idx) => (
-                                <div key={idx} className="flex items-start gap-2.5">
-                                    <div className="mt-1 w-4 h-4 rounded-full bg-white border border-[#d2d2d7] flex items-center justify-center shrink-0">
-                                        <div className="w-2 h-2 rounded-full bg-[#0071e3]"></div>
-                                    </div>
-                                    <span className="text-sm text-[#1d1d1f]/80 font-medium leading-tight">{proc}</span>
+                <div className="flex-1 w-full bg-[#f9f9fb] rounded-2xl p-6 md:p-8">
+                    <h3 className="font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
+                        <Stethoscope className="w-5 h-5 text-[#86868b]" />
+                        Procedimientos Comunes
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {procedures.map((proc, idx) => (
+                            <div key={idx} className="flex items-start gap-2.5">
+                                <div className="mt-1 w-4 h-4 rounded-full bg-white border border-[#d2d2d7] flex items-center justify-center shrink-0">
+                                    <div className="w-2 h-2 rounded-full bg-[#0071e3]"></div>
                                 </div>
-                            ))}
-                        </div>
+                                <span className="text-sm text-[#1d1d1f]/80 font-medium leading-tight">{proc}</span>
+                            </div>
+                        ))}
                     </div>
-                )}
+                </div>
             </div>
         </section>
 
@@ -309,24 +284,22 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
                 <div className="grid md:grid-cols-2 gap-12">
                     {/* Conditions Managed */}
-                    {conditions.length > 0 && (
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3 mb-2">
-                                 <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                    <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
-                                 </div>
-                                 <h3 className="text-xl font-semibold text-[#1d1d1f]">Padecimientos Tratados</h3>
-                            </div>
-                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
-                                {conditions.map((condition, i) => (
-                                    <li key={i} className="flex items-center gap-2 text-[#86868b]">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
-                                        {condition}
-                                    </li>
-                                ))}
-                            </ul>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 mb-2">
+                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                                <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
+                             </div>
+                             <h3 className="text-xl font-semibold text-[#1d1d1f]">Padecimientos Tratados</h3>
                         </div>
-                    )}
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                            {conditions.map((condition, i) => (
+                                <li key={i} className="flex items-center gap-2 text-[#86868b]">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
+                                    {condition}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
                     {/* When to consult */}
                     <div className="space-y-4">
@@ -375,6 +348,32 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         </Link>
                     ))
                 }
+            </div>
+        </section>
+
+        {/* Other Popular Specialties in Cities */}
+        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
+            <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                Búsquedas populares en otras ciudades
+            </h3>
+            <div className="flex flex-wrap gap-x-3 gap-y-3">
+                {POPULAR_CITIES.slice(0, 6).flatMap((city, cIdx) => 
+                    POPULAR_SPECIALTIES.slice((cIdx % 3), (cIdx % 3) + 3).map(spec => ({
+                        city,
+                        spec
+                    }))
+                )
+                .slice(0, 10) 
+                .map((item, idx) => (
+                    <Link 
+                        key={idx}
+                        href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
+                        className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    >
+                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                        <span>{item.spec} en {item.city}</span>
+                    </Link>
+                ))}
             </div>
         </section>
 

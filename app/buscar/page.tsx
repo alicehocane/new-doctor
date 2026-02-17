@@ -2,44 +2,34 @@
 import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Phone, UserCheck, Star, HeartPulse, FileCheck, Map, Wallet, HelpCircle, Check, AlertTriangle, BookOpen } from 'lucide-react';
+import { ALL_DISEASES } from '../../lib/constants';
 import SearchForm from '../../components/SearchForm';
 import StartSearchButton from '../../components/StartSearchButton';
 import { Metadata } from 'next';
-import { supabase } from '../../lib/supabase';
-import { City, Disease, Specialty } from '../../types';
 
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas',
   description: 'Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.',
 };
 
-export default async function SearchPage() {
+const FEATURED_CITIES = [
+  'Ciudad de México',
+  'Guadalajara',
+  'Monterrey'
+];
+
+const slugify = (text: string) => {
+  return text.toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+export default function SearchPage() {
   
-  // Fetch Cities from DB
-  const citiesPromise = supabase
-    .from('cities')
-    .select('id, name, slug, is_featured')
-    .order('name');
-
-  // Fetch Diseases from DB
-  const diseasesPromise = supabase
-    .from('diseases')
-    .select('*')
-    .eq('category', 'common')
-    .limit(1000);
-
-  // Fetch Specialties from DB
-  const specialtiesPromise = supabase
-    .from('specialties')
-    .select('id, name, slug, is_popular')
-    .order('name');
-
-  const [citiesResponse, diseasesResponse, specialtiesResponse] = await Promise.all([citiesPromise, diseasesPromise, specialtiesPromise]);
-  
-  const allCities = (citiesResponse.data as City[]) || [];
-  const commonDiseases = (diseasesResponse.data as Disease[]) || [];
-  const allSpecialties = (specialtiesResponse.data as Specialty[]) || [];
-
   // Schema Markup - Separated Scripts for Maximum Google Compatibility
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -93,7 +83,7 @@ export default async function SearchPage() {
       </div>
 
       {/* Interactive Search Container (Client Component) */}
-      <SearchForm cities={allCities} diseases={commonDiseases} specialties={allSpecialties} />
+      <SearchForm />
 
       {/* Verification Process Section (Trust Building) */}
       <section className="w-full max-w-4xl mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-6">
@@ -256,30 +246,30 @@ export default async function SearchPage() {
               Encuentra tratamiento en tu ciudad
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {allCities.filter(c => c.is_featured).slice(0, 3).map((city) => (
-                  <div key={city.id} className="space-y-3">
+              {FEATURED_CITIES.map((city) => (
+                  <div key={city} className="space-y-3">
                       <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
-                          {city.name}
+                          {city}
                       </h3>
                       <ul className="space-y-2.5">
                           {/* Show top 5 diseases for each city */}
-                          {commonDiseases.slice(0, 5).map((disease) => (
-                              <li key={disease.id}>
+                          {ALL_DISEASES.slice(0, 5).map((disease) => (
+                              <li key={disease}>
                                   <Link 
-                                      href={`/enfermedad/${disease.slug}/${city.slug}`}
+                                      href={`/enfermedad/${slugify(disease)}/${slugify(city)}`}
                                       className="text-[14px] text-[#86868b] hover:text-[#0071e3] hover:underline flex items-center gap-2 transition-colors"
                                   >
                                       <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
-                                      {disease.name} en {city.name}
+                                      {disease} en {city}
                                   </Link>
                               </li>
                           ))}
                           <li>
                               <Link 
-                                  href={`/doctores/${city.slug}`}
+                                  href={`/doctores/${slugify(city)}`}
                                   className="text-[13px] font-medium text-[#0071e3] hover:underline mt-1 inline-block"
                               >
-                                  Ver todos en {city.name}
+                                  Ver todos en {city}
                               </Link>
                           </li>
                       </ul>

@@ -1,11 +1,17 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Stethoscope, ChevronRight, Activity, ArrowRight, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck, Phone, Eye, Smile, Brain, Baby, Building2, AlertTriangle, FileCheck } from 'lucide-react';
+import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Search, Heart, Users, BookOpen, ShieldCheck, Phone, Eye, Smile, Brain, Baby, Building2, AlertTriangle, FileCheck } from 'lucide-react';
 import { Metadata } from 'next';
+import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
-import { supabase } from '../lib/supabase';
-import { City, Disease, Specialty } from '../types';
+
+const FEATURED_CITIES = [
+  'Ciudad de México',
+  'Guadalajara',
+  'Monterrey',
+  'Puebla'
+];
 
 // Configuration for distinct specialty visuals
 const SPECIALTY_CONFIG: Record<string, { icon: React.ElementType, color: string, bg: string }> = {
@@ -35,35 +41,8 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export default async function HomePage() {
+export default function HomePage() {
   
-  // Fetch Cities from DB
-  const citiesPromise = supabase
-    .from('cities')
-    .select('id, name, slug, is_featured')
-    .order('name');
-
-  // Fetch Diseases from DB (Category: Common)
-  const diseasesPromise = supabase
-    .from('diseases')
-    .select('*')
-    .eq('category', 'common')
-    .order('name')
-    .limit(1000); 
-
-  // Fetch Specialties from DB for autocomplete
-  const specialtiesPromise = supabase
-    .from('specialties')
-    .select('id, name, slug, is_popular')
-    .order('name');
-
-  const [citiesResponse, diseasesResponse, specialtiesResponse] = await Promise.all([citiesPromise, diseasesPromise, specialtiesPromise]);
-  
-  const allCities = (citiesResponse.data as City[]) || [];
-  const featuredCities = allCities.filter(c => c.is_featured);
-  const commonDiseases = (diseasesResponse.data as Disease[]) || [];
-  const allSpecialties = (specialtiesResponse.data as Specialty[]) || [];
-
   // Schema Markup
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -125,7 +104,7 @@ export default async function HomePage() {
           </p>
           
           {/* Client Side Search Component */}
-          <HomeSearch cities={allCities} diseases={commonDiseases} specialties={allSpecialties} />
+          <HomeSearch />
 
           {/* SEP Trust Badge */}
           <div className="flex flex-col items-center justify-center gap-3 mt-8">
@@ -138,11 +117,11 @@ export default async function HomePage() {
           {/* Quick Stats Bar */}
           <div className="grid grid-cols-3 gap-4 md:gap-12 pt-8 md:pt-12 max-w-3xl mx-auto border-t border-slate-100 mt-12">
              <div className="text-center">
-                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">{allSpecialties.length}+</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">90+</p>
                 <p className="text-xs md:text-sm text-[#86868b] font-medium">Especialidades</p>
              </div>
              <div className="text-center border-l border-slate-100">
-                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">{allCities.length}+</p>
+                <p className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">50+</p>
                 <p className="text-xs md:text-sm text-[#86868b] font-medium">Ciudades</p>
              </div>
              <div className="text-center border-l border-slate-100">
@@ -173,10 +152,10 @@ export default async function HomePage() {
             overflow-x-auto snap-x snap-mandatory no-scrollbar 
             -mx-4 px-4 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {featuredCities.map((city) => (
+            {FEATURED_CITIES.map((city) => (
               <Link 
-                key={city.id} 
-                href={`/doctores/${city.slug}`}
+                key={city} 
+                href={`/doctores/${slugify(city)}`}
                 className="
                   snap-center shrink-0 w-[260px] md:w-auto
                   group p-6 md:p-8 bg-[#f5f5f7] rounded-[24px] 
@@ -188,7 +167,7 @@ export default async function HomePage() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[#1d1d1f] leading-tight">{city.name}</h3>
+                  <h3 className="text-lg md:text-xl font-semibold text-[#1d1d1f] leading-tight">{city}</h3>
                   <div className="flex items-center gap-1 text-[#0071e3] text-sm font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
                     Ver doctores <ChevronRight className="w-3 h-3" />
                   </div>
@@ -259,17 +238,17 @@ export default async function HomePage() {
           </h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {commonDiseases.slice(0, 20).map((disease) => (
+            {ALL_DISEASES.slice(0, 16).map((disease) => (
                <Link 
-                  key={disease.id}
-                  href={`/enfermedad/${disease.slug}`}
+                  key={disease}
+                  href={`/enfermedad/${slugify(disease)}`}
                   className="
                     group flex items-center justify-between p-4 px-6
                     bg-[#f5f5f7] rounded-xl md:rounded-2xl hover:bg-[#0071e3] hover:text-white
                     transition-all duration-300 cursor-pointer border border-transparent hover:border-blue-500/10
                   "
                >
-                 <span className="font-medium text-sm md:text-[15px] truncate">{disease.name}</span>
+                 <span className="font-medium text-sm md:text-[15px] truncate">{disease}</span>
                  <ArrowUpRight className="w-4 h-4 text-[#6e6e73] group-hover:text-white transition-colors shrink-0" />
                </Link>
             ))}

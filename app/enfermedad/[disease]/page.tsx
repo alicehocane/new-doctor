@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
-import { Doctor, Article, Disease } from '../../../types';
+import { Doctor, Article } from '../../../types';
 import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, DISEASE_RELATED_SPECIALTIES } from '../../../lib/constants';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES } from '../../../lib/constants';
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
@@ -36,13 +36,7 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
-  const { data: diseaseData } = await supabase
-    .from('diseases')
-    .select('name')
-    .eq('slug', params.disease)
-    .single();
-
-  const diseaseName = diseaseData?.name || params.disease.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const { name: diseaseName } = getDiseaseInfo(params.disease);
   
   return {
     title: `Tratamiento para ${diseaseName} - Especialistas y Causas`,
@@ -54,51 +48,9 @@ export async function generateMetadata({ params }: { params: { disease: string }
 
 export default async function DiseasePage({ params }: { params: { disease: string } }) {
   const diseaseSlug = params.disease;
+  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
 
-  // 1. Fetch Disease Info from DB
-  const { data: diseaseRecord } = await supabase
-    .from('diseases')
-    .select('*')
-    .eq('slug', diseaseSlug)
-    .single();
-
-  if (!diseaseRecord) {
-    notFound();
-  }
-
-  const disease = diseaseRecord as Disease;
-  const diseaseName = disease.name;
-  
-  // Parse JSON columns safely
-  // DB might return string (if type text) or array/object (if type json/jsonb)
-  let symptoms: string[] = [];
-  try {
-      if (Array.isArray(disease.symptoms)) {
-          symptoms = disease.symptoms;
-      } else if (typeof disease.symptoms === 'string') {
-          // Check if string looks like JSON array before parsing, or just parse
-          symptoms = JSON.parse(disease.symptoms);
-      }
-  } catch (e) { console.error("Error parsing symptoms", e); }
-
-  let causes: string[] = [];
-  try {
-      if (Array.isArray(disease.causes)) {
-          causes = disease.causes;
-      } else if (typeof disease.causes === 'string') {
-          causes = JSON.parse(disease.causes);
-      }
-  } catch (e) { console.error("Error parsing causes", e); }
-
-  // Determine Related Specialties (from Constants map or empty)
-  // Try to match by exact name or slugified name in constants key
-  const relatedSpecialties = DISEASE_RELATED_SPECIALTIES[diseaseName] || 
-                             Object.entries(DISEASE_RELATED_SPECIALTIES).find(([k]) => slugify(k) === diseaseSlug)?.[1] || 
-                             [];
-  
-  const targetSpecialty = relatedSpecialties.length > 0 ? relatedSpecialties[0] : null;
-
-  // 2. Fetch Initial Doctors
+  // 1. Fetch Initial Doctors
   let query = supabase.from('doctors').select('*');
 
   if (targetSpecialty) {
@@ -110,7 +62,14 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
-  // 3. Fetch Related Articles
+  // Logic to prevent Thin Content indexing
+  // If no doctors are found AND the disease is not in our known list, return 404.
+  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
+  if (doctors.length === 0 && !isKnownDisease) {
+    notFound();
+  }
+
+  // 2. Fetch Related Articles
   const { data: articlesData } = await supabase
     .from('articles')
     .select('*')
@@ -155,11 +114,11 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       "@type": "MedicalTherapy",
       "name": `Consulta con ${targetSpecialty}`
     } : undefined,
-    "signOrSymptom": symptoms.map(s => ({
+    "signOrSymptom": details.symptoms.map(s => ({
       "@type": "MedicalSymptom",
       "name": s
     })),
-    "riskFactor": causes.map(c => ({
+    "riskFactor": details.causes.map(c => ({
       "@type": "MedicalRiskFactor",
       "name": c
     }))
@@ -334,44 +293,40 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
                 <div className="grid md:grid-cols-2 gap-12">
                     {/* Symptoms */}
-                    {symptoms.length > 0 && (
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                    <Activity className="w-5 h-5 text-[#0071e3]" />
-                                </div>
-                                <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
-                            </div>
-                            <ul className="space-y-3">
-                                {symptoms.map((symptom, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-[#86868b]">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
-                                        <span className="leading-relaxed">{symptom}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 mb-2">
+                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                                <Activity className="w-5 h-5 text-[#0071e3]" />
+                             </div>
+                             <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
                         </div>
-                    )}
+                        <ul className="space-y-3">
+                            {details.symptoms.map((symptom, i) => (
+                                <li key={i} className="flex items-start gap-3 text-[#86868b]">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
+                                    <span className="leading-relaxed">{symptom}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
                     {/* Causes */}
-                    {causes.length > 0 && (
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                    <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
-                                </div>
-                                <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
-                            </div>
-                            <ul className="space-y-3">
-                                {causes.map((cause, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-[#86868b]">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7] mt-2 shrink-0"></div>
-                                        <span className="leading-relaxed">{cause}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 mb-2">
+                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                                <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
+                             </div>
+                             <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
                         </div>
-                    )}
+                         <ul className="space-y-3">
+                            {details.causes.map((cause, i) => (
+                                <li key={i} className="flex items-start gap-3 text-[#86868b]">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7] mt-2 shrink-0"></div>
+                                    <span className="leading-relaxed">{cause}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
                 {/* Care & Diagnosis */}

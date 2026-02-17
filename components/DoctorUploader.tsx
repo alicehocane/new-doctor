@@ -97,7 +97,7 @@ export const DoctorUploader: React.FC = () => {
       : [];
 
     return {
-      // external_id removed
+      external_id: raw.id, // Maps raw.id ("0") to external_id
       slug: raw.slug,
       full_name: fullName,
       specialties: specialties,
@@ -106,7 +106,8 @@ export const DoctorUploader: React.FC = () => {
       // JSONB Fields mapped strictly to Typed Objects
       contact_info: raw.contact,
       medical_profile: raw.medical_info,
-      // REMOVED: seo_metadata and schema_data (now generated dynamically on frontend)
+      seo_metadata: raw.seo,
+      schema_data: raw.schema_json_ld,
       updated_at: new Date().toISOString(), // Update timestamp on upsert
     };
   };
@@ -147,13 +148,14 @@ export const DoctorUploader: React.FC = () => {
 
       if (dbError) throw dbError;
 
-      // Add a summary log for the batch
-      addLog(`Batch ${Math.floor(i/BATCH_SIZE) + 1}`, 'success', `Upserted ${payloads.length} records`);
+      // Add a summary log for the batch or individual logs
+      addLog(`Batch ${i/BATCH_SIZE + 1}`, 'success', `Upserted ${payloads.length} records`);
       
       processed += payloads.length;
       setProgress({ current: processed, total });
     } catch (err: any) {
       addLog(`Batch Error`, 'error', err.message || 'Unknown error');
+      // Optional: if a batch fails, you could retry individually here
     }
   }
 
@@ -178,7 +180,7 @@ export const DoctorUploader: React.FC = () => {
       <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
         <div>
           <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <Database className="w-5 h-5 text-indigo-600" />
+            <Database className="w-5 h-5 text-primary" />
             Doctor Data Importer
           </h2>
           <p className="text-sm text-slate-500 mt-1">Transform JSON records and upsert to Supabase.</p>
@@ -200,7 +202,7 @@ export const DoctorUploader: React.FC = () => {
               border-2 border-dashed rounded-xl p-12
               flex flex-col items-center justify-center text-center
               transition-all duration-200 ease-in-out
-              ${dragActive ? 'border-indigo-500 bg-indigo-50' : 'border-slate-300 hover:border-indigo-500 hover:bg-slate-50'}
+              ${dragActive ? 'border-primary bg-primary/5' : 'border-slate-300 hover:border-primary hover:bg-slate-50'}
               ${error ? 'border-red-300 bg-red-50' : ''}
             `}
             onDragEnter={handleDrag}
@@ -219,7 +221,7 @@ export const DoctorUploader: React.FC = () => {
             
             <div className={`
               w-16 h-16 rounded-full flex items-center justify-center mb-4
-              ${error ? 'bg-red-100 text-red-600' : 'bg-indigo-100 text-indigo-600'}
+              ${error ? 'bg-red-100 text-red-600' : 'bg-primary/10 text-primary'}
             `}>
               {error ? <AlertCircle className="w-8 h-8" /> : <Upload className="w-8 h-8" />}
             </div>

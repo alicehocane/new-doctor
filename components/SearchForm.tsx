@@ -1,21 +1,14 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, MapPin, Stethoscope, ChevronRight, ArrowRight, Activity } from 'lucide-react';
-import { City, Disease, Specialty } from '../types';
+import { ALL_DISEASES, ALL_CITIES, COMMON_SPECIALTIES } from '../lib/constants';
 
-interface SearchFormProps {
-  cities: City[];
-  diseases: Disease[];
-  specialties: Specialty[];
-}
-
-export default function SearchForm({ cities, diseases, specialties }: SearchFormProps) {
+export default function SearchForm() {
   const router = useRouter();
-  const [city, setCity] = useState(cities.length > 0 ? cities[0].name : 'Ciudad de México');
+  const [city, setCity] = useState('Ciudad de México');
   const [specialty, setSpecialty] = useState('');
   
   // Autocomplete State
@@ -50,13 +43,13 @@ export default function SearchForm({ cities, diseases, specialties }: SearchForm
     if (val.length > 0) {
       const normalizedVal = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       
-      const filteredSpecs = specialties
-        .filter(s => s.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal))
-        .map(s => s.name);
+      const filteredSpecs = COMMON_SPECIALTIES.filter(s => 
+        s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
+      );
 
-      const filteredDiseases = diseases
-        .filter(d => d.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal))
-        .map(d => d.name);
+      const filteredDiseases = ALL_DISEASES.filter(d => 
+        d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(normalizedVal)
+      );
 
       setSuggestions([...filteredSpecs, ...filteredDiseases].slice(0, 10));
       setShowSuggestions(true);
@@ -77,7 +70,7 @@ export default function SearchForm({ cities, diseases, specialties }: SearchForm
       const termSlug = slugify(specialty.trim());
       
       // Check if term matches a known disease to route correctly
-      const isDisease = diseases.some(d => slugify(d.name) === termSlug);
+      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
 
       if (isDisease) {
         router.push(`/enfermedad/${termSlug}/${citySlug}`);
@@ -106,8 +99,8 @@ export default function SearchForm({ cities, diseases, specialties }: SearchForm
                       onChange={(e) => setCity(e.target.value)}
                       className="w-full bg-transparent border-none outline-none text-[17px] font-medium text-[#1d1d1f] appearance-none cursor-pointer pt-3"
                   >
-                      {cities.map(c => (
-                          <option key={c.id} value={c.name}>{c.name}</option>
+                      {ALL_CITIES.map(c => (
+                          <option key={c} value={c}>{c}</option>
                       ))}
                   </select>
               </div>
@@ -149,7 +142,7 @@ export default function SearchForm({ cities, diseases, specialties }: SearchForm
           <div className="mt-2 bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
             <ul className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
               {suggestions.map((suggestion) => {
-                const isDisease = diseases.some(d => d.name === suggestion);
+                const isDisease = ALL_DISEASES.includes(suggestion);
                 return (
                   <li 
                     key={suggestion}

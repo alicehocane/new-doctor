@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { FileCode, Download, Loader2, AlertCircle, CheckCircle, Globe, Layers, FileText, Info } from 'lucide-react';
-import { City, Disease, Specialty } from '../types';
+import { ALL_CITIES, COMMON_SPECIALTIES, ALL_DISEASES } from '../lib/constants';
 
 const SITE_URL = 'https://medibusca.com';
 const MAX_URLS_PER_SITEMAP = 10000;
@@ -71,22 +71,6 @@ export const SitemapGenerator: React.FC = () => {
     const files: GeneratedFile[] = [];
 
     try {
-      // --- 0. Fetch Data from DB ---
-      setStatus('Fetching Cities, Diseases and Specialties from Database...');
-      const citiesPromise = supabase.from('cities').select('name, slug');
-      const diseasesPromise = supabase.from('diseases').select('name, slug');
-      const specialtiesPromise = supabase.from('specialties').select('name, slug');
-
-      const [citiesResponse, diseasesResponse, specialtiesResponse] = await Promise.all([citiesPromise, diseasesPromise, specialtiesPromise]);
-      
-      if (citiesResponse.error) throw citiesResponse.error;
-      if (diseasesResponse.error) throw diseasesResponse.error;
-      if (specialtiesResponse.error) throw specialtiesResponse.error;
-
-      const allCities = citiesResponse.data as { name: string, slug: string }[];
-      const allDiseases = diseasesResponse.data as { name: string, slug: string }[];
-      const allSpecialties = specialtiesResponse.data as { name: string, slug: string }[];
-
       // --- 1. Main Static Pages ---
       setStatus('Generating Main Pages...');
       const mainUrls: SitemapUrl[] = [
@@ -109,8 +93,8 @@ export const SitemapGenerator: React.FC = () => {
       // --- 2. Taxonomies (Cities, Specialties, Diseases) ---
       setStatus('Generating Taxonomies (Cities, Specialties, Diseases)...');
       
-      const cityUrls = allCities.map(city => ({
-        loc: `${SITE_URL}/doctores/${city.slug}`,
+      const cityUrls = ALL_CITIES.map(city => ({
+        loc: `${SITE_URL}/doctores/${slugify(city)}`,
         changefreq: 'weekly',
         priority: '0.9'
       }));
@@ -120,8 +104,8 @@ export const SitemapGenerator: React.FC = () => {
         type: 'Taxonomy'
       });
 
-      const specialtyUrls = allSpecialties.map(spec => ({
-        loc: `${SITE_URL}/especialidad/${spec.slug}`,
+      const specialtyUrls = COMMON_SPECIALTIES.map(spec => ({
+        loc: `${SITE_URL}/especialidad/${slugify(spec)}`,
         changefreq: 'weekly',
         priority: '0.9'
       }));
@@ -131,8 +115,8 @@ export const SitemapGenerator: React.FC = () => {
         type: 'Taxonomy'
       });
 
-      const diseaseUrls = allDiseases.map(disease => ({
-        loc: `${SITE_URL}/enfermedad/${disease.slug}`,
+      const diseaseUrls = ALL_DISEASES.map(disease => ({
+        loc: `${SITE_URL}/enfermedad/${slugify(disease)}`,
         changefreq: 'weekly',
         priority: '0.9'
       }));
@@ -147,10 +131,10 @@ export const SitemapGenerator: React.FC = () => {
       
       // City + Specialty
       const citySpecUrls: SitemapUrl[] = [];
-      allCities.forEach(city => {
-          allSpecialties.forEach(spec => {
+      ALL_CITIES.forEach(city => {
+          COMMON_SPECIALTIES.forEach(spec => {
             citySpecUrls.push({
-                  loc: `${SITE_URL}/doctores/${city.slug}/${spec.slug}`,
+                  loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`,
                   changefreq: 'monthly',
                   priority: '0.9'
               });
@@ -168,10 +152,10 @@ export const SitemapGenerator: React.FC = () => {
 
       // Disease + City
       const diseaseCityUrls: SitemapUrl[] = [];
-      allDiseases.forEach(disease => {
-        allCities.forEach(city => {
+      ALL_DISEASES.forEach(disease => {
+        ALL_CITIES.forEach(city => {
             diseaseCityUrls.push({
-                loc: `${SITE_URL}/enfermedad/${disease.slug}/${city.slug}`,
+                loc: `${SITE_URL}/enfermedad/${slugify(disease)}/${slugify(city)}`,
                 changefreq: 'monthly',
                 priority: '0.9'
             });
