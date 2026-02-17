@@ -133,8 +133,8 @@ export const DoctorUploader: React.FC = () => {
     setLogs([]); // Clear old logs
 
     // --- CONFIGURATION ---
-    const BATCH_SIZE = 100;     // Safe size to avoid 6MB payload limit
-    const MAX_CONCURRENCY = 5;  // 5 parallel connections (Browser friendly)
+    const BATCH_SIZE = 50;     // Safe size to avoid 6MB payload limit
+    const MAX_CONCURRENCY = 4;  // 5 parallel connections (Browser friendly)
     // ---------------------
 
     const totalRecords = rawRecords.length;
