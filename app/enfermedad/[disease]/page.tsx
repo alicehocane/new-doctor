@@ -69,9 +69,26 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const disease = diseaseRecord as Disease;
   const diseaseName = disease.name;
   
-  // Parse JSON columns
-  const symptoms = JSON.parse(disease.symptoms || '[]') as string[];
-  const causes = JSON.parse(disease.causes || '[]') as string[];
+  // Parse JSON columns safely
+  // DB might return string (if type text) or array/object (if type json/jsonb)
+  let symptoms: string[] = [];
+  try {
+      if (Array.isArray(disease.symptoms)) {
+          symptoms = disease.symptoms;
+      } else if (typeof disease.symptoms === 'string') {
+          // Check if string looks like JSON array before parsing, or just parse
+          symptoms = JSON.parse(disease.symptoms);
+      }
+  } catch (e) { console.error("Error parsing symptoms", e); }
+
+  let causes: string[] = [];
+  try {
+      if (Array.isArray(disease.causes)) {
+          causes = disease.causes;
+      } else if (typeof disease.causes === 'string') {
+          causes = JSON.parse(disease.causes);
+      }
+  } catch (e) { console.error("Error parsing causes", e); }
 
   // Determine Related Specialties (from Constants map or empty)
   // Try to match by exact name or slugified name in constants key

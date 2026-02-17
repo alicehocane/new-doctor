@@ -44,11 +44,13 @@ export default async function HomePage() {
     .order('name');
 
   // Fetch Diseases from DB (Category: Common)
+  // Increased limit to 1000 to ensure all common diseases are available for search autocomplete
   const diseasesPromise = supabase
     .from('diseases')
     .select('*')
     .eq('category', 'common')
-    .limit(30);
+    .order('name')
+    .limit(1000); 
 
   const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
   

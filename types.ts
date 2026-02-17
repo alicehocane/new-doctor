@@ -76,8 +76,8 @@ export interface Disease {
   id: number;
   name: string;
   slug: string;
-  symptoms: string; // JSON string in DB e.g. "[\"Symptom 1\"]"
-  causes: string;   // JSON string in DB
+  symptoms: string | string[]; // Can be JSON string or parsed array
+  causes: string | string[];   // Can be JSON string or parsed array
   category: string; // e.g. "common"
   created_at: string;
 }

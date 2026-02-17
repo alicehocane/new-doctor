@@ -22,11 +22,12 @@ export default async function SearchPage() {
     .order('name');
 
   // Fetch Diseases from DB
+  // Increased limit to support comprehensive autocomplete
   const diseasesPromise = supabase
     .from('diseases')
     .select('*')
     .eq('category', 'common')
-    .limit(50); // Increased limit for search page
+    .limit(1000);
 
   const [citiesResponse, diseasesResponse] = await Promise.all([citiesPromise, diseasesPromise]);
   
