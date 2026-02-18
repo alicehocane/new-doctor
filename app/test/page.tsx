@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '@/types';
+import { Doctor } from '@/types';
 import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Brain, HeartPulse, Stethoscope, Search } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify } from '@/lib/constants';
+// Ensure DISEASE_INFORMATION is imported here
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, slugify, DISEASE_INFORMATION } from '@/lib/constants';
 import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 8;
@@ -20,105 +20,67 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
   });
 };
 
-// --- Content Dictionary for Rich Pages ---
+// --- Dynamic Content Generator ---
 const getRichContent = (slug: string, name: string, genericDetails: { symptoms: string[], causes: string[] }) => {
-  if (slug === 'ansiedad') {
-    return {
-      intro: "La ansiedad es una respuesta natural del cuerpo ante el estrés o situaciones percibidas como amenazantes. Sin embargo, cuando la ansiedad es persistente, intensa o interfiere con la vida diaria, puede convertirse en un trastorno que requiere atención médica y psicológica. En esta página encontrarás información clara y confiable sobre qué es la ansiedad, sus síntomas, causas, tipos y opciones de tratamiento.",
-      whatIs: {
-        title: "¿Qué es la Ansiedad?",
-        text: "La ansiedad es un estado emocional caracterizado por preocupación excesiva, nerviosismo o miedo anticipatorio. A diferencia del estrés ocasional, la ansiedad clínica puede mantenerse durante semanas o meses y afectar el bienestar físico, mental y social de una persona."
-      },
-      symptoms: {
-        title: "Síntomas Comunes de la Ansiedad",
-        intro: "Los síntomas pueden variar según la persona y el tipo de ansiedad, pero suelen incluir:",
-        groups: [
-          { name: "Síntomas emocionales", items: ["Preocupación constante o pensamientos repetitivos", "Sensación de peligro inminente", "Dificultad para concentrarse", "Irritabilidad"] },
-          { name: "Síntomas físicos", items: ["Palpitaciones o taquicardia", "Sudoración excesiva", "Tensión muscular", "Dificultad para respirar", "Problemas gastrointestinales", "Trastornos del sueño"] }
-        ],
-        warning: "Si los síntomas son intensos, persistentes o empeoran, es importante buscar orientación médica."
-      },
-      types: {
-        title: "Tipos de Trastornos de Ansiedad",
-        intro: "La ansiedad puede manifestarse de diferentes formas, entre ellas:",
-        items: ["Trastorno de ansiedad generalizada (TAG)", "Trastorno de pánico", "Fobias específicas", "Ansiedad social", "Trastorno obsesivo-compulsivo (TOC)", "Trastorno de estrés postraumático (TEPT)"],
-        note: "Cada tipo tiene características y tratamientos específicos."
-      },
-      causes: {
-        title: "Causas y Factores de Riesgo",
-        intro: "La ansiedad suele ser el resultado de una combinación de factores:",
-        items: ["Estrés prolongado", "Experiencias traumáticas", "Factores genéticos", "Desequilibrios químicos en el cerebro", "Problemas de salud física", "Consumo excesivo de cafeína, alcohol o drogas"]
-      },
-      diagnosis: {
-        title: "¿Cómo se Diagnostica la Ansiedad?",
-        intro: "El diagnóstico generalmente lo realiza un profesional de la salud mediante:",
-        items: ["Entrevista clínica", "Evaluación de síntomas", "Historial médico y emocional", "Descarte de otras condiciones médicas"],
-        note: "No existen pruebas de laboratorio específicas para la ansiedad, pero pueden usarse estudios para descartar causas físicas."
-      },
-      treatment: {
-        title: "Tratamientos para la Ansiedad",
-        intro: "El tratamiento depende del tipo y la gravedad, e incluye:",
-        subsections: [
-            { title: "Opciones comunes", items: ["Psicoterapia (como terapia cognitivo-conductual)", "Medicación (cuando es indicada por un médico)", "Técnicas de relajación y manejo del estrés", "Cambios en el estilo de vida (ejercicio, sueño, alimentación)"] }
-        ],
-        note: "Muchas personas mejoran significativamente con el tratamiento adecuado y seguimiento profesional."
-      },
-      whenToSeekHelp: {
-        title: "¿Cuándo Buscar Ayuda Profesional?",
-        intro: "Se recomienda buscar ayuda cuando:",
-        items: ["La ansiedad interfiere con el trabajo, estudios o relaciones", "Los síntomas duran varias semanas", "Hay ataques de pánico frecuentes", "Aparecen pensamientos negativos persistentes"]
-      }
-    };
-  }
   
-  // Generic Fallback generator
+  // 1. Check if we have rich, custom content in constants.ts
+  if (DISEASE_INFORMATION[slug]) {
+    return DISEASE_INFORMATION[slug];
+  }
+
+  // 2. Fallback: Generate generic content based on the basic info we have
   return {
-      intro: `Información detallada sobre ${name}, sus síntomas, causas y opciones de tratamiento. En MediBusca te ayudamos a entender esta condición y encontrar especialistas.`,
-      whatIs: {
-          title: `¿Qué es ${name}?`,
-          text: `${name} es una condición de salud que afecta a muchas personas. Comprender sus características es el primer paso para un manejo adecuado.`
-      },
-      symptoms: {
-          title: `Síntomas de ${name}`,
-          intro: "Los signos y síntomas pueden incluir:",
-          groups: [{ name: "Comunes", items: genericDetails.symptoms.length > 0 ? genericDetails.symptoms : ["Consulte a un médico para una evaluación detallada."] }],
-          warning: "Si presentas síntomas persistentes, consulta a un especialista."
-      },
-      types: null,
-      causes: {
-        title: "Causas y Factores de Riesgo",
-        intro: "Los factores que pueden contribuir incluyen:",
-        items: genericDetails.causes.length > 0 ? genericDetails.causes : ["Factores genéticos", "Estilo de vida", "Condiciones ambientales"]
-      },
-      diagnosis: {
-        title: "Diagnóstico",
-        intro: "El diagnóstico es realizado por un profesional médico a través de:",
-        items: ["Evaluación clínica", "Historial médico", "Pruebas específicas según sea necesario"],
-        note: ""
-      },
-      treatment: {
-        title: "Tratamiento",
-        intro: "Las opciones de tratamiento pueden incluir:",
-        subsections: [
-            { title: "General", items: ["Manejo de síntomas", "Medicamentos bajo prescripción", "Terapias específicas"] }
-        ],
-        note: "El plan de tratamiento debe ser personalizado por un doctor."
-      },
-      whenToSeekHelp: {
-        title: "¿Cuándo ver a un doctor?",
-        intro: "Es recomendable acudir a consulta si:",
-        items: ["Los síntomas interfieren con la vida diaria", "Hay dolor o malestar persistente", "Existe preocupación sobre la salud"]
-      }
+    intro: `Información detallada sobre ${name}, sus síntomas, causas y opciones de tratamiento. En MediBusca te ayudamos a entender esta condición y encontrar especialistas.`,
+    whatIs: {
+      title: `¿Qué es ${name}?`,
+      text: `${name} es una condición de salud que afecta a muchas personas. Comprender sus características es el primer paso para un manejo adecuado.`
+    },
+    symptoms: {
+      title: `Síntomas de ${name}`,
+      intro: "Los signos y síntomas pueden incluir:",
+      groups: [{ name: "Comunes", items: genericDetails.symptoms?.length > 0 ? genericDetails.symptoms : ["Consulte a un médico para una evaluación detallada."] }],
+      warning: "Si presentas síntomas persistentes, consulta a un especialista."
+    },
+    types: null,
+    causes: {
+      title: "Causas y Factores de Riesgo",
+      intro: "Los factores que pueden contribuir incluyen:",
+      items: genericDetails.causes?.length > 0 ? genericDetails.causes : ["Factores genéticos", "Estilo de vida", "Condiciones ambientales"]
+    },
+    diagnosis: {
+      title: "Diagnóstico",
+      intro: "El diagnóstico es realizado por un profesional médico a través de:",
+      items: ["Evaluación clínica", "Historial médico", "Pruebas específicas según sea necesario"],
+      note: ""
+    },
+    treatment: {
+      title: "Tratamiento",
+      intro: "Las opciones de tratamiento pueden incluir:",
+      subsections: [
+        { title: "General", items: ["Manejo de síntomas", "Medicamentos bajo prescripción", "Terapias específicas"] }
+      ],
+      note: "El plan de tratamiento debe ser personalizado por un doctor."
+    },
+    whenToSeekHelp: {
+      title: "¿Cuándo ver a un doctor?",
+      intro: "Es recomendable acudir a consulta si:",
+      items: ["Los síntomas interfieren con la vida diaria", "Hay dolor o malestar persistente", "Existe preocupación sobre la salud"]
+    }
   };
 };
 
 // --- Metadata ---
 
-export async function generateMetadata(): Promise<Metadata> {
-  
-  const diseaseSlug = 'ansiedad'; 
+export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
+  const diseaseSlug = params.disease;
   const { name: diseaseName } = getDiseaseInfo(diseaseSlug);
   
+  if (!diseaseName) {
+      return {
+          title: 'Padecimiento no encontrado | MediBusca',
+      };
+  }
+
   return {
     title: `Todo sobre ${diseaseName} - Síntomas, Causas y Tratamiento | MediBusca`,
     description: `Guía completa sobre ${diseaseName}. Conoce qué es, sus síntomas, causas y cómo se diagnostica. Encuentra especialistas en ${diseaseName} cerca de ti.`,
@@ -128,23 +90,33 @@ export async function generateMetadata(): Promise<Metadata> {
 // --- Server Component ---
 
 export default async function DiseasePage({ params }: { params: { disease: string } }) {
-  const diseaseSlug = 'ansiedad'; // Or any valid slug from your database
+  // 1. Get dynamic slug from URL params
+  const diseaseSlug = params.disease; 
   
+  // 2. Fetch basic info (Name, Specialty)
   const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
+  
+  // 3. Fetch Rich Content (Dictionary or Fallback)
   const content = getRichContent(diseaseSlug, diseaseName, details);
 
-  // 1. Fetch Initial Doctors (Supporting list)
+  // 4. Fetch Initial Doctors
   let query = supabase.from('doctors').select('*');
+  
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);
   } else {
+      // Fallback to text search on medical profile if no specific specialty map exists
       query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
   }
+  
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
-  if (doctors.length === 0 && !isKnownDisease && diseaseSlug !== 'ansiedad') { // Allow 'ansiedad' even if no docs locally for now
+  
+  // 404 Logic: If no content in Dictionary AND no doctors found AND not in known list
+  // We keep 'ansiedad' as a safe guard if it's your main test case, but usually checking content is enough
+  if (!content && doctors.length === 0 && !isKnownDisease) { 
     notFound();
   }
 
@@ -179,9 +151,9 @@ export default async function DiseasePage({ params }: { params: { disease: strin
     "@type": "MedicalCondition",
     "name": diseaseName,
     "description": content.intro,
-    "possibleTreatment": content.treatment.subsections.flatMap(s => s.items).map(t => ({ "@type": "MedicalTherapy", "name": t })),
-    "signOrSymptom": content.symptoms.groups.flatMap(g => g.items).map(s => ({ "@type": "MedicalSymptom", "name": s })),
-    "riskFactor": content.causes.items.map(c => ({ "@type": "MedicalRiskFactor", "name": c }))
+    "possibleTreatment": content.treatment.subsections.flatMap((s: any) => s.items).map((t: string) => ({ "@type": "MedicalTherapy", "name": t })),
+    "signOrSymptom": content.symptoms.groups.flatMap((g: any) => g.items).map((s: string) => ({ "@type": "MedicalSymptom", "name": s })),
+    "riskFactor": content.causes.items.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c }))
   };
 
   return (
@@ -230,11 +202,11 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             <p className="text-[#86868b] mb-6 text-lg">{content.symptoms.intro}</p>
             
             <div className="grid md:grid-cols-2 gap-8">
-                {content.symptoms.groups.map((group, idx) => (
+                {content.symptoms.groups.map((group: any, idx: number) => (
                     <div key={idx}>
                         <h3 className="font-semibold text-[#1d1d1f] mb-3 text-lg border-b border-slate-100 pb-2">{group.name}</h3>
                         <ul className="space-y-3">
-                            {group.items.map((item, i) => (
+                            {group.items.map((item: string, i: number) => (
                                 <li key={i} className="flex items-start gap-3 text-[#1d1d1f]/80">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2.5 shrink-0"></div>
                                     <span className="leading-relaxed">{item}</span>
@@ -259,7 +231,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 </h2>
                 <p className="text-lg text-[#1d1d1f]/80 mb-6">{content.types.intro}</p>
                 <div className="grid sm:grid-cols-2 gap-4">
-                    {content.types.items.map((type, i) => (
+                    {content.types.items.map((type: string, i: number) => (
                         <div key={i} className="bg-white border border-slate-200 p-4 rounded-xl flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-[#0071e3] shrink-0"></div>
                             <span className="font-medium text-[#1d1d1f]">{type}</span>
@@ -280,7 +252,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </h2>
             <p className="text-lg text-[#1d1d1f]/80 mb-6">{content.causes.intro}</p>
             <ul className="grid sm:grid-cols-2 gap-3">
-                {content.causes.items.map((cause, i) => (
+                {content.causes.items.map((cause: string, i: number) => (
                     <li key={i} className="flex items-center gap-3 text-[#1d1d1f]/80 bg-white p-3 rounded-lg border border-transparent hover:border-slate-200 transition-colors">
                         <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
                         {cause}
@@ -297,7 +269,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </h2>
             <p className="text-lg text-[#1d1d1f]/80 mb-6">{content.diagnosis.intro}</p>
             <ul className="space-y-3 mb-6">
-                {content.diagnosis.items.map((item, i) => (
+                {content.diagnosis.items.map((item: string, i: number) => (
                     <li key={i} className="flex items-start gap-3 text-[#1d1d1f]">
                         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-[#0071e3] shrink-0 border border-slate-200 text-sm font-bold">
                             {i + 1}
@@ -322,11 +294,11 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             <p className="text-lg text-[#1d1d1f]/80 mb-8">{content.treatment.intro}</p>
             
             <div className="grid gap-6">
-                {content.treatment.subsections.map((sub, idx) => (
+                {content.treatment.subsections.map((sub: any, idx: number) => (
                     <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6">
                         <h3 className="font-bold text-[#1d1d1f] mb-4 text-lg">{sub.title}</h3>
                         <div className="grid sm:grid-cols-2 gap-4">
-                            {sub.items.map((item, i) => (
+                            {sub.items.map((item: string, i: number) => (
                                 <div key={i} className="flex items-start gap-3">
                                     <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-0.5" />
                                     <span className="text-[#1d1d1f]/80 text-sm md:text-base">{item}</span>
@@ -349,7 +321,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </h2>
             <p className="text-lg text-[#1d1d1f]/80 mb-6">{content.whenToSeekHelp.intro}</p>
             <div className="grid sm:grid-cols-2 gap-4">
-                {content.whenToSeekHelp.items.map((item, i) => (
+                {content.whenToSeekHelp.items.map((item: string, i: number) => (
                     <div key={i} className="bg-white p-4 rounded-xl shadow-sm flex items-start gap-3">
                         <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                         <span className="text-[#1d1d1f] font-medium">{item}</span>
