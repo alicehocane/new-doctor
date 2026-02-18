@@ -114,8 +114,10 @@ const getRichContent = (slug: string, name: string, genericDetails: { symptoms: 
 
 // --- Metadata ---
 
-export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
-  const { name: diseaseName } = getDiseaseInfo(params.disease);
+export async function generateMetadata(): Promise<Metadata> {
+  
+  const diseaseSlug = 'ansiedad'; 
+  const { name: diseaseName } = getDiseaseInfo(diseaseSlug);
   
   return {
     title: `Todo sobre ${diseaseName} - Síntomas, Causas y Tratamiento | MediBusca`,
