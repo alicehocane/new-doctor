@@ -270,21 +270,6 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
         )}
 
 
-        {/* 7️⃣ CTA */}
-                <section className="mt-16 pt-12 text-center py-12 animate-in fade-in slide-in-from-bottom-8 border-t border-[#d2d2d7]/30 pb-12">
-                    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
-                    <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
-                        Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
-                    </p>
-                    <Link 
-                        href="/buscar" 
-                        className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
-                    >
-                        Buscar un especialista <Search className="w-5 h-5" />
-                    </Link>
-        </section>
-
-
         {/* Existing Educational Content Section (Refined) */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
             <div className="max-w-4xl mx-auto space-y-12">
@@ -391,6 +376,20 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     </Link>
                 ))}
             </div>
+        </section>
+
+        {/* 7️⃣ CTA */}
+                <section className="mt-16 pt-12 text-center py-12 animate-in fade-in slide-in-from-bottom-8 border-t border-[#d2d2d7]/30 pb-12">
+                    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
+                    <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
+                        Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
+                    </p>
+                    <Link 
+                        href="/buscar" 
+                        className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
+                    >
+                        Buscar un especialista <Search className="w-5 h-5" />
+                    </Link>
         </section>
 
       </div>
