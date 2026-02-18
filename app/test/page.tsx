@@ -101,6 +101,17 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const diseaseSlug = params.disease;
   const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
   const content = getRichContent(diseaseSlug, diseaseName, details);
+
+  // --- ADD THIS HELPER ---
+  // This ensures that whether 'details.symptoms' is an array or an object, we get a flat list
+  const displaySymptoms = Array.isArray(details.symptoms) 
+    ? details.symptoms 
+    : (content.symptoms?.groups?.flatMap(g => g.items) || []);
+
+  const displayCauses = Array.isArray(details.causes)
+    ? details.causes
+    : (content.causes?.items || []);
+
   // 1. Fetch Initial Doctors
   let query = supabase.from('doctors').select('*');
 
@@ -352,7 +363,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
                         </div>
                         <ul className="space-y-3">
-                            {details.symptoms.map((symptom, i) => (
+                            {displaySymptoms.map((symptom, i) => (
                                 <li key={i} className="flex items-start gap-3 text-[#86868b]">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                                     <span className="leading-relaxed">{symptom}</span>
@@ -370,7 +381,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
                         </div>
                          <ul className="space-y-3">
-                            {details.causes.map((cause, i) => (
+                            {displayCauses.map((cause, i) => (
                                 <li key={i} className="flex items-start gap-3 text-[#86868b]">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7] mt-2 shrink-0"></div>
                                     <span className="leading-relaxed">{cause}</span>
