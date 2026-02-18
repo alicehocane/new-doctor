@@ -126,7 +126,8 @@ export async function generateMetadata({ params }: { params: { disease: string }
 // --- Server Component ---
 
 export default async function DiseasePage({ params }: { params: { disease: string } }) {
-  const diseaseSlug = params.disease;
+  const diseaseSlug = 'ansiedad'; // Or any valid slug from your database
+  
   const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
   const content = getRichContent(diseaseSlug, diseaseName, details);
 
