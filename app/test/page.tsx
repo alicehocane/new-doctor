@@ -200,7 +200,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
               )}
           </div>
           <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            {content.intro}
+            {details.intro}
           </p>
         </div>
 
