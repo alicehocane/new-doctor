@@ -72,15 +72,9 @@ const getRichContent = (slug: string, name: string, genericDetails: { symptoms: 
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
-  const diseaseSlug = params.disease;
-  const { name: diseaseName } = getDiseaseInfo(diseaseSlug);
+    const diseaseSlug = params.disease;
+    const { name: diseaseName } = getDiseaseInfo(diseaseSlug);
   
-  if (!diseaseName) {
-      return {
-          title: 'Padecimiento no encontrado | MediBusca',
-      };
-  }
-
   return {
     title: `Todo sobre ${diseaseName} - Síntomas, Causas y Tratamiento | MediBusca`,
     description: `Guía completa sobre ${diseaseName}. Conoce qué es, sus síntomas, causas y cómo se diagnostica. Encuentra especialistas en ${diseaseName} cerca de ti.`,
