@@ -3566,6 +3566,18 @@ export const SPECIALTY_COMPARISONS: Record<string, { title: string, text: string
 export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
 export const getDiseaseInfo = (slug: string) => {
+
+  if (!slug || typeof slug !== 'string') {
+    const defaultName = 'General';
+    return {
+      name: defaultName,
+      primarySpecialty: DISEASE_RELATED_SPECIALTIES[defaultName]?.[0] || null,
+      relatedSpecialties: DISEASE_RELATED_SPECIALTIES[defaultName] || [],
+      details: DISEASE_DETAILS[defaultName],
+      content: DISEASE_INFORMATION[defaultName]
+    };
+  }
+  
   // 1. Try exact match from constants by looking at slugified keys
   let name = Object.keys(DISEASE_RELATED_SPECIALTIES).find(k => slugify(k) === slug);
   
