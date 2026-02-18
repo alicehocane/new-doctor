@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Stethoscope, Activity, BookOpen, MapPin, Heart, ShieldCheck, ArrowRight, ChevronRight, Info } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { COMMON_SPECIALTIES, ALL_DISEASES, POPULAR_CITIES, slugify, getStateForCity } from '../../lib/constants';
+import { COMMON_SPECIALTIES, ALL_DISEASES, POPULAR_CITIES, slugify, ALL_CITIES } from '../../lib/constants';
 
 export const metadata: Metadata = {
   title: "Información Médica Confiable y Actualizada | MediBusca",
@@ -196,7 +196,6 @@ export default async function MedicalInfoHub() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {POPULAR_CITIES.slice(0, 6).map((city) => {
-                    const stateSlug = getStateForCity(city);
                     return (
                         <Link 
                             key={city} 
