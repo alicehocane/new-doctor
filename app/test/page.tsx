@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '@/types';
+import { supabase } from '../../../lib/supabase';
+import { Doctor, Article } from '../../../types';
 import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, DISEASE_INFORMATION } from '@/lib/constants';
-import DiseaseDoctorList from '@/components/DiseaseDoctorList';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, DISEASE_INFORMATION } from '../../../lib/constants';
+import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
@@ -33,56 +33,6 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
   });
 };
 
-
-const getRichContent = (slug: string, name: string, genericDetails: { symptoms: string[], causes: string[] }) => {
-  
-  // 1. Check if we have specific data for this slug in our constants
-  if (DISEASE_INFORMATION[slug]) {
-    return DISEASE_INFORMATION[slug];
-  }
-
-  // 2. Generic Fallback generator (if slug is not found)
-  return {
-      intro: `Información detallada sobre ${name}, sus síntomas, causas y opciones de tratamiento. En MediBusca te ayudamos a entender esta condición y encontrar especialistas.`,
-      whatIs: {
-          title: `¿Qué es ${name}?`,
-          text: `${name} es una condición de salud que afecta a muchas personas. Comprender sus características es el primer paso para un manejo adecuado.`
-      },
-      symptoms: {
-          title: `Síntomas de ${name}`,
-          intro: "Los signos y síntomas pueden incluir:",
-          groups: [{ name: "Comunes", items: genericDetails.symptoms.length > 0 ? genericDetails.symptoms : ["Consulte a un médico para una evaluación detallada."] }],
-          warning: "Si presentas síntomas persistentes, consulta a un especialista."
-      },
-      types: null,
-      causes: {
-        title: "Causas y Factores de Riesgo",
-        intro: "Los factores que pueden contribuir incluyen:",
-        items: genericDetails.causes.length > 0 ? genericDetails.causes : ["Factores genéticos", "Estilo de vida", "Condiciones ambientales"]
-      },
-      diagnosis: {
-        title: "Diagnóstico",
-        intro: "El diagnóstico es realizado por un profesional médico a través de:",
-        items: ["Evaluación clínica", "Historial médico", "Pruebas específicas según sea necesario"],
-        note: ""
-      },
-      treatment: {
-        title: "Tratamiento",
-        intro: "Las opciones de tratamiento pueden incluir:",
-        subsections: [
-            { title: "General", items: ["Manejo de síntomas", "Medicamentos bajo prescripción", "Terapias específicas"] }
-        ],
-        note: "El plan de tratamiento debe ser personalizado por un doctor."
-      },
-      whenToSeekHelp: {
-        title: "¿Cuándo ver a un doctor?",
-        intro: "Es recomendable acudir a consulta si:",
-        items: ["Los síntomas interfieren con la vida diaria", "Hay dolor o malestar persistente", "Existe preocupación sobre la salud"]
-      }
-  };
-};
-
-
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
@@ -94,23 +44,11 @@ export async function generateMetadata({ params }: { params: { disease: string }
   };
 }
 
-
 // --- Server Component ---
 
 export default async function DiseasePage({ params }: { params: { disease: string } }) {
   const diseaseSlug = params.disease;
-  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details } = getDiseaseInfo(diseaseSlug);
-  const content = getRichContent(diseaseSlug, diseaseName, details);
-
-  // --- ADD THIS HELPER ---
-  // This ensures that whether 'details.symptoms' is an array or an object, we get a flat list
-  const displaySymptoms = Array.isArray(details.symptoms) 
-    ? details.symptoms 
-    : (content.symptoms?.groups?.flatMap(g => g.items) || []);
-
-  const displayCauses = Array.isArray(details.causes)
-    ? details.causes
-    : (content.causes?.items || []);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details, content } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Doctors
   let query = supabase.from('doctors').select('*');
@@ -363,7 +301,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
                         </div>
                         <ul className="space-y-3">
-                            {displaySymptoms.map((symptom, i) => (
+                            {details.symptoms.map((symptom, i) => (
                                 <li key={i} className="flex items-start gap-3 text-[#86868b]">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
                                     <span className="leading-relaxed">{symptom}</span>
@@ -381,7 +319,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                              <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
                         </div>
                          <ul className="space-y-3">
-                            {displayCauses.map((cause, i) => (
+                            {details.causes.map((cause, i) => (
                                 <li key={i} className="flex items-start gap-3 text-[#86868b]">
                                     <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7] mt-2 shrink-0"></div>
                                     <span className="leading-relaxed">{cause}</span>
