@@ -291,6 +291,21 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </div>
         </section>
 
+
+        {/* 7️⃣ CTA */}
+        <section className="text-center py-12 animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
+            <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
+                Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
+            </p>
+            <Link 
+                href="/buscar" 
+                className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
+            >
+                Buscar un especialista <Search className="w-5 h-5" />
+            </Link>
+        </section>
+        
         {/* Other Specialties in {City} */}
         <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
             <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">

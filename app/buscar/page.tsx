@@ -7,6 +7,8 @@ import SearchForm from '../../components/SearchForm';
 import StartSearchButton from '../../components/StartSearchButton';
 import { Metadata } from 'next';
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas',
   description: 'Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.',
