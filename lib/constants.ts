@@ -3576,7 +3576,8 @@ export const getDiseaseInfo = (slug: string) => {
 
   const relatedSpecialties = DISEASE_RELATED_SPECIALTIES[name] || [];
   const primarySpecialty = relatedSpecialties.length > 0 ? relatedSpecialties[0] : null;
-  const details = DISEASE_INFORMATION[name] || DISEASE_DETAILS['General'];
+  const details = DISEASE_DETAILS[name] || DISEASE_DETAILS['General'];
+
   return {
     name,
     primarySpecialty,

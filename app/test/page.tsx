@@ -114,7 +114,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       "@type": "MedicalTherapy",
       "name": `Consulta con ${targetSpecialty}`
     } : undefined,
-    "signOrSymptom": details.symptoms.map(s => ({
+    "signOrSymptom": details..map(s => ({
       "@type": "MedicalSymptom",
       "name": s
     })),
