@@ -199,7 +199,7 @@ export default async function MedicalInfoHub() {
                     return (
                         <Link 
                             key={city} 
-                            href={`/doctores/${stateSlug}/${slugify(city)}`}
+                            href={`/doctores/${slugify(city)}`}
                             className="bg-white p-6 rounded-2xl border border-slate-200 hover:shadow-lg transition-all group"
                         >
                             <h3 className="text-xl font-bold text-[#1d1d1f] mb-2 group-hover:text-[#0071e3] transition-colors">
