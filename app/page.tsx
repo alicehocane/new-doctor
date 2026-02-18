@@ -28,7 +28,7 @@ const SPECIALTY_CONFIG: Record<string, { icon: React.ElementType, color: string,
 
 export const metadata: Metadata = {
   title: "MediBusca - Encuentra Doctores y Especialistas en México",
-  description: "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas. Agenda citas, revisa opiniones y contacta directamente.",
+  description: "Directorio médico líder en México. Encuentra doctores, clínicas y especialistas verificados. Accede a información sobre especialidades y enfermedades, descubre doctores recomendados y contacta directamente.",
 };
 
 const slugify = (text: string) => {
@@ -196,7 +196,7 @@ export default function HomePage() {
              overflow-x-auto snap-x snap-mandatory no-scrollbar
              -mx-4 px-4 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Ginecólogo', 'Cardiólogo'].map((spec) => {
+            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Ginecólogo', 'Cardiólogo', 'Oftalmólogo'].map((spec) => {
               const visual = SPECIALTY_CONFIG[spec] || SPECIALTY_CONFIG['default'];
               const Icon = visual.icon;
               

@@ -95,17 +95,17 @@ export default async function CityPage({ params }: { params: { city: string } })
 
   // FAQs
   const faqs = [
-    {
-      question: `¿Cómo puedo contactar a un doctor en ${cityName} a través de MediBusca?`,
-      answer: "Es muy sencillo. Solo elige un especialista, revisa su perfil verificado y utiliza el botón de 'Llamar' para comunicarte directamente con su consultorio. No necesitas crear una cuenta ni realizar pagos adicionales por el uso de la plataforma."
+   {
+    question: `¿Cómo puedo contactar a un doctor en ${cityName} a través de MediBusca?`,
+    answer: "Es muy sencillo. Solo elige un especialista, revisa su perfil verificado y utiliza la información de contacto disponible (como teléfono o WhatsApp) para comunicarte directamente con su consultorio. No necesitas crear una cuenta ni realizar pagos por usar la plataforma."
     },
     {
-      question: "¿MediBusca cobra alguna comisión por agendar una cita?",
-      answer: "No. MediBusca es una plataforma informativa 100% gratuita para los pacientes. La relación es directa entre tú y el doctor; nosotros solo facilitamos la conexión segura."
+    question: "¿MediBusca cobra alguna comisión o gestiona citas médicas?",
+    answer: "No. MediBusca es una plataforma informativa gratuita para los pacientes. No gestionamos citas ni cobramos comisiones; la comunicación y atención se realizan directamente entre tú y el doctor."
     },
     {
-      question: `¿Qué tipos de especialistas médicos puedo encontrar en ${cityName}?`,
-      answer: `Contamos con una extensa red que incluye cardiólogos, ginecólogos, pediatras, psicólogos y más, ubicados en las zonas médicas más importantes de ${cityName}.`
+    question: `¿Qué tipos de especialistas médicos puedo encontrar en ${cityName}?`,
+    answer: `Puedes encontrar una amplia variedad de especialistas como cardiólogos, ginecólogos, pediatras, psicólogos y muchos más. También ofrecemos información sobre especialidades y enfermedades para ayudarte a identificar al doctor adecuado en ${cityName}.`
     }
   ];
 
@@ -200,7 +200,7 @@ export default async function CityPage({ params }: { params: { city: string } })
             Doctores en {cityName}
             </h1>
             <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            Explora los mejores especialistas médicos verificados en {cityName}. Agenda tu cita hoy mismo.
+            Explora los mejores especialistas médicos verificados en {cityName}. Accede a información sobre especialidades y enfermedades y descubre doctores recomendados.
             </p>
         </div>
 
@@ -373,7 +373,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                         <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center text-xs font-bold">3</div>
                         <div>
                             <h3 className="font-semibold text-[#1d1d1f]">Contacta directamente</h3>
-                            <p className="text-sm text-[#86868b] mt-1">Llama directamente al consultorio desde MediBusca para agendar tu cita sin intermediarios.</p>
+                            <p className="text-sm text-[#86868b] mt-1">Contacta directamente al consultorio a través de MediBusca para obtener la información que necesitas y comunicarte con el doctor sin intermediarios.</p>
                         </div>
                     </li>
                 </ul>

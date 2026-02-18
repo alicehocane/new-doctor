@@ -150,7 +150,7 @@ export default function SearchPage() {
                           Guía del Paciente: Qué preguntar
                       </h2>
                       <p className="text-[#86868b] text-lg leading-relaxed mb-6">
-                          Llamar al doctor por primera vez puede causar nervios. Aquí tienes una lista de preguntas clave para hacer antes de agendar tu cita y evitar sorpresas.
+                          Hablar con un doctor por primera vez puede resultar estresante. Aquí tienes una lista de preguntas importantes para hacer antes de tu visita y así evitar sorpresas.
                       </p>
                       
                       <div className="space-y-4">
