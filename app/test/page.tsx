@@ -159,14 +159,14 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Padecimientos",
-        "item": "https://medibusca.com/padecimientos"
+        "name": "enfermedades",
+        "item": "https://medibusca.com/enfermedades"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": diseaseName,
-        "item": `https://medibusca.com/padecimientos/${diseaseSlug}`
+        "item": `https://medibusca.com/enfermedades/${diseaseSlug}`
       }
     ]
   };
@@ -193,7 +193,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             <nav className="text-sm font-medium text-[#86868b] flex items-center flex-wrap">
                 <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
                 <span className="mx-2 text-[#d2d2d7]">/</span>
-                <Link href="/padecimientos" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
+                <Link href="/enfermedades" className="hover:text-[#0071e3] transition-colors">Padecimientos</Link>
                 <span className="mx-2 text-[#d2d2d7]">/</span>
                 <span className="text-[#1d1d1f] font-semibold">{diseaseName}</span>
             </nav>
@@ -366,7 +366,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     return (
                         <Link 
                             key={city}
-                            href={`/enfermedads/${diseaseSlug}/${slugify(city)}`}
+                            href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
                             className="
                                 flex items-center justify-between p-5 
                                 bg-white border border-slate-200 rounded-2xl 
@@ -408,7 +408,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 <Link href="/especialidades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <Stethoscope className="w-5 h-5" /> Especialistas Médicos
                 </Link>
-                <Link href="/padecimientos" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                <Link href="/enfermedades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <Activity className="w-5 h-5" /> Otros Padecimientos
                 </Link>
                 <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
