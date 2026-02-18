@@ -38,7 +38,7 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
   const { name: diseaseName, detailedInfo } = getDiseaseInfo(params.disease);
   
-  // Use intro from detailedInfo if available, otherwise generic
+  // Use intro from detailedInfo if availableS, otherwise generic
   const description = detailedInfo?.intro 
     ? detailedInfo.intro.substring(0, 160) + '...'
     : `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`;
