@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, MapPin, ShieldCheck, BookOpen, Activity, AlertCircle, HeartPulse, Brain, Info } from 'lucide-react';
-import { ALL_DISEASES, slugify, getStateForCity } from '../../lib/constants';
+import { ALL_DISEASES, slugify } from '../../lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 import { supabase } from '../../lib/supabase';
