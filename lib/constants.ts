@@ -3578,11 +3578,16 @@ export const getDiseaseInfo = (slug: string) => {
   const primarySpecialty = relatedSpecialties.length > 0 ? relatedSpecialties[0] : null;
   const details = DISEASE_DETAILS[name] || DISEASE_DETAILS['General'];
 
+  // Look up in DISEASE_INFORMATION using the slugified key or the name if keys match
+  const infoKey = Object.keys(DISEASE_INFORMATION).find(k => slugify(k) === slug) || slug;
+  const detailedInfo = DISEASE_INFORMATION[infoKey] || null;
+
   return {
     name,
     primarySpecialty,
     relatedSpecialties,
-    details
+    details,
+    detailedInfo
   };
 };
 

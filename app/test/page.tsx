@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { supabase } from '@/lib/supabase';
-import { Doctor, Article } from '@/types';
-import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall } from 'lucide-react';
+import { Doctor, Article } from '../../../types';
+import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall, Brain, Stethoscope, HeartPulse, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, DISEASE_INFORMATION } from '@/lib/constants';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES } from '@/lib/constants';
 import DiseaseDoctorList from '@/components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
@@ -36,11 +36,16 @@ const sortDoctorsByPhone = (doctors: Doctor[]) => {
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
-  const { name: diseaseName } = getDiseaseInfo(params.disease);
+  const { name: diseaseName, detailedInfo } = getDiseaseInfo(params.disease);
   
+  // Use intro from detailedInfo if available, otherwise generic
+  const description = detailedInfo?.intro 
+    ? detailedInfo.intro.substring(0, 160) + '...'
+    : `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`;
+
   return {
     title: `Tratamiento para ${diseaseName} - Especialistas y Causas`,
-    description: `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`,
+    description: description,
   };
 }
 
@@ -48,7 +53,7 @@ export async function generateMetadata({ params }: { params: { disease: string }
 
 export default async function DiseasePage({ params }: { params: { disease: string } }) {
   const diseaseSlug = params.disease;
-  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, details, content } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, detailedInfo } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Doctors
   let query = supabase.from('doctors').select('*');
@@ -63,7 +68,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
 
   // Logic to prevent Thin Content indexing
-  // If no doctors are found AND the disease is not in our known list, return 404.
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
   if (doctors.length === 0 && !isKnownDisease) {
     notFound();
@@ -109,26 +113,20 @@ export default async function DiseasePage({ params }: { params: { disease: strin
     "@context": "https://schema.org",
     "@type": "MedicalCondition",
     "name": diseaseName,
-    "description": `Información sobre síntomas, causas y especialistas para ${diseaseName}.`,
+    "description": detailedInfo?.intro || `Información sobre síntomas, causas y especialistas para ${diseaseName}.`,
     "possibleTreatment": targetSpecialty ? {
       "@type": "MedicalTherapy",
       "name": `Consulta con ${targetSpecialty}`
     } : undefined,
-    "signOrSymptom": details..map(s => ({
-      "@type": "MedicalSymptom",
-      "name": s
-    })),
-    "riskFactor": details.causes.map(c => ({
-      "@type": "MedicalRiskFactor",
-      "name": c
-    }))
+    "signOrSymptom": detailedInfo?.symptoms?.groups?.flatMap(g => g.items.map(i => ({ "@type": "MedicalSymptom", "name": i }))) || [],
+    "riskFactor": detailedInfo?.causes?.items?.map(c => ({ "@type": "MedicalRiskFactor", "name": c })) || []
   };
 
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
     "name": `Tratamiento para ${diseaseName} - Especialistas y Causas | MediBusca`,
-    "description": `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`,
+    "description": detailedInfo?.intro?.substring(0, 160) || `Información sobre ${diseaseName}.`,
     "url": `https://medibusca.com/enfermedad/${diseaseSlug}`,
     "audience": {
         "@type": "Patient",
@@ -188,7 +186,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         {/* Header */}
         <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
           <div className="flex flex-col md:flex-row md:items-end gap-4 mb-4">
-              <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] tracking-tight">
+              <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] tracking-tight capitalize">
                 {diseaseName}
               </h1>
               {targetSpecialty && (
@@ -200,7 +198,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
               )}
           </div>
           <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            {details.intro}
+            {detailedInfo?.intro || `Encuentra especialistas médicos expertos en el diagnóstico y tratamiento de ${diseaseName}.`}
           </p>
         </div>
 
@@ -225,6 +223,173 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             targetSpecialty={targetSpecialty} 
         />
 
+        {/* Informational Content Section - Dynamic Render based on DISEASE_INFORMATION */}
+        {detailedInfo && (
+            <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
+                <div className="max-w-4xl mx-auto space-y-16">
+                    
+                    {/* What Is */}
+                    {detailedInfo.whatIs && (
+                        <div className="space-y-4">
+                            <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f]">{detailedInfo.whatIs.title}</h2>
+                            <p className="text-lg text-[#86868b] leading-relaxed">{detailedInfo.whatIs.text}</p>
+                        </div>
+                    )}
+
+                    <div className="grid md:grid-cols-2 gap-12">
+                        {/* Symptoms */}
+                        {detailedInfo.symptoms && (
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                                        <Activity className="w-5 h-5 text-[#0071e3]" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-[#1d1d1f]">{detailedInfo.symptoms.title}</h3>
+                                </div>
+                                {detailedInfo.symptoms.intro && <p className="text-[#86868b]">{detailedInfo.symptoms.intro}</p>}
+                                
+                                {detailedInfo.symptoms.groups ? (
+                                    detailedInfo.symptoms.groups.map((group: any, idx: number) => (
+                                        <div key={idx} className="mb-4">
+                                            <h4 className="font-medium text-[#1d1d1f] text-sm mb-2 uppercase tracking-wide">{group.name}</h4>
+                                            <ul className="space-y-2">
+                                                {group.items.map((item: string, i: number) => (
+                                                    <li key={i} className="flex items-start gap-3 text-[#86868b]">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
+                                                        <span className="leading-relaxed">{item}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))
+                                ) : (
+                                    // Fallback for flat lists if structure varies
+                                    <ul className="space-y-2">
+                                        {/* Logic if flat list provided */}
+                                    </ul>
+                                )}
+                                
+                                {detailedInfo.symptoms.warning && (
+                                    <div className="bg-amber-50 p-4 rounded-xl text-amber-900 text-sm mt-4 border border-amber-100 flex gap-2">
+                                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                                        {detailedInfo.symptoms.warning}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Causes */}
+                        {detailedInfo.causes && (
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
+                                        <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-[#1d1d1f]">{detailedInfo.causes.title}</h3>
+                                </div>
+                                {detailedInfo.causes.intro && <p className="text-[#86868b]">{detailedInfo.causes.intro}</p>}
+                                <ul className="space-y-3">
+                                    {detailedInfo.causes.items?.map((cause: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-3 text-[#86868b]">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7] mt-2 shrink-0"></div>
+                                            <span className="leading-relaxed">{cause}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Types */}
+                    {detailedInfo.types && (
+                        <div className="bg-[#f5f5f7] rounded-2xl p-8">
+                            <h3 className="text-xl font-bold text-[#1d1d1f] mb-4">{detailedInfo.types.title}</h3>
+                            {detailedInfo.types.intro && <p className="text-[#86868b] mb-6">{detailedInfo.types.intro}</p>}
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                {detailedInfo.types.items.map((item: string, idx: number) => (
+                                    <div key={idx} className="bg-white p-4 rounded-xl text-sm font-medium text-[#1d1d1f] shadow-sm border border-slate-100">
+                                        {item}
+                                    </div>
+                                ))}
+                            </div>
+                            {detailedInfo.types.note && <p className="text-xs text-[#86868b] mt-6 italic">{detailedInfo.types.note}</p>}
+                        </div>
+                    )}
+
+                    {/* Diagnosis & Treatment */}
+                    <div className="grid md:grid-cols-2 gap-12 pt-8 border-t border-[#f5f5f7]">
+                        {detailedInfo.diagnosis && (
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-bold text-[#1d1d1f] flex items-center gap-2">
+                                    <Stethoscope className="w-5 h-5 text-[#0071e3]" />
+                                    {detailedInfo.diagnosis.title}
+                                </h3>
+                                <p className="text-[#86868b] text-[15px]">{detailedInfo.diagnosis.intro}</p>
+                                <ul className="space-y-2">
+                                    {detailedInfo.diagnosis.items.map((item: string, i: number) => (
+                                        <li key={i} className="flex items-center gap-2 text-sm text-[#1d1d1f]">
+                                            <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {detailedInfo.treatment && (
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-bold text-[#1d1d1f] flex items-center gap-2">
+                                    <HeartPulse className="w-5 h-5 text-[#0071e3]" />
+                                    {detailedInfo.treatment.title}
+                                </h3>
+                                <p className="text-[#86868b] text-[15px]">{detailedInfo.treatment.intro}</p>
+                                {detailedInfo.treatment.subsections?.map((sub: any, idx: number) => (
+                                    <div key={idx}>
+                                        <p className="font-semibold text-[#1d1d1f] text-sm mb-2">{sub.title}</p>
+                                        <ul className="space-y-1">
+                                            {sub.items.map((item: string, i: number) => (
+                                                <li key={i} className="text-sm text-[#86868b] pl-3 border-l-2 border-[#d2d2d7]">
+                                                    {item}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* When to Seek Help */}
+                    {detailedInfo.whenToSeekHelp && (
+                        <div className="border border-blue-100 bg-blue-50/50 rounded-2xl p-8">
+                            <h3 className="text-lg font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
+                                <Info className="w-5 h-5 text-[#0071e3]" />
+                                {detailedInfo.whenToSeekHelp.title}
+                            </h3>
+                            <p className="text-[#86868b] mb-4">{detailedInfo.whenToSeekHelp.intro}</p>
+                            <ul className="grid sm:grid-cols-2 gap-3">
+                                {detailedInfo.whenToSeekHelp.items.map((item: string, i: number) => (
+                                    <li key={i} className="flex items-start gap-2 text-sm text-[#1d1d1f] font-medium">
+                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#0071e3] shrink-0"></div>
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Disclaimer */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4">
+                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                        <div className="text-sm text-amber-900/80">
+                            <strong>Aviso Médico:</strong> MediBusca proporciona solo información. La plataforma no ofrece consejo médico, diagnóstico, tratamiento ni reserva de citas. Siempre consulta a un profesional de la salud calificado.
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        )}
+
         {/* Related Articles Section */}
         {relatedArticles.length > 0 && (
             <section className="mt-20 mb-12 animate-in fade-in slide-in-from-bottom-8">
@@ -241,7 +406,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     {relatedArticles.map((article) => (
                         <Link key={article.id} href={`/enciclopedia/${article.slug}`}>
                             <div className="group h-full bg-white rounded-[20px] p-6 border border-[#d2d2d7]/60 hover:border-[#0071e3]/30 hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col relative overflow-hidden">
-                                {/* Decorative gradient blob */}
                                 <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#0071e3]/5 rounded-full blur-2xl group-hover:bg-[#0071e3]/10 transition-all"></div>
                                 
                                 <div className="flex items-center gap-2 mb-4 relative z-10">
@@ -268,101 +432,8 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         </Link>
                     ))}
                 </div>
-                
-                <div className="mt-6 md:hidden text-center">
-                    <Link href="/enciclopedia" className="text-[#0071e3] font-medium hover:underline text-sm">
-                        Ver enciclopedia
-                    </Link>
-                </div>
             </section>
         )}
-
-        {/* Informational Content Section */}
-        <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
-            <div className="max-w-4xl mx-auto space-y-12">
-                
-                {/* Intro */}
-                <div className="text-center space-y-4">
-                    <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] tracking-tight">
-                        {diseaseName} – Síntomas, Causas e Información de Cuidado | MediBusca
-                    </h2>
-                    <p className="text-lg text-[#86868b] leading-relaxed max-w-3xl mx-auto">
-                        {diseaseName} afecta a cada persona de manera diferente. MediBusca ofrece recursos informativos para ayudar a los pacientes a comprender los síntomas, las causas y las opciones de atención disponibles, y conectar directamente con doctores para recibir orientación.
-                    </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-12">
-                    {/* Symptoms */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <Activity className="w-5 h-5 text-[#0071e3]" />
-                             </div>
-                             <h3 className="text-xl font-semibold text-[#1d1d1f]">Síntomas Comunes</h3>
-                        </div>
-                        <ul className="space-y-3">
-                            {details.symptoms.map((symptom, i) => (
-                                <li key={i} className="flex items-start gap-3 text-[#86868b]">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></div>
-                                    <span className="leading-relaxed">{symptom}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Causes */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3 mb-2">
-                             <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                                <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
-                             </div>
-                             <h3 className="text-xl font-semibold text-[#1d1d1f]">Causas y Factores de Riesgo</h3>
-                        </div>
-                         <ul className="space-y-3">
-                            {details.causes.map((cause, i) => (
-                                <li key={i} className="flex items-start gap-3 text-[#86868b]">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7] mt-2 shrink-0"></div>
-                                    <span className="leading-relaxed">{cause}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-                {/* Care & Diagnosis */}
-                <div className="grid md:grid-cols-2 gap-12 pt-8 border-t border-[#f5f5f7]">
-                     <div className="space-y-3">
-                        <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                            Diagnóstico y Cuidado
-                        </h3>
-                        <div className="space-y-3 text-[#86868b] leading-relaxed text-[15px]">
-                            <p><strong>Diagnóstico:</strong> Los doctores pueden diagnosticar esta condición mediante el historial médico, examen físico y las pruebas apropiadas.</p>
-                            <p><strong>Cuidado y Manejo:</strong> El manejo puede incluir cambios en el estilo de vida, medicamentos u orientación médica, dependiendo de las recomendaciones del doctor.</p>
-                        </div>
-                     </div>
-
-                     <div className="space-y-3">
-                        <h3 className="text-lg font-semibold text-[#1d1d1f] flex items-center gap-2">
-                             Cuándo contactar a un Doctor
-                        </h3>
-                         <div className="space-y-3 text-[#86868b] leading-relaxed text-[15px]">
-                            <p>Los pacientes deben conectar con doctores calificados listados en MediBusca para una evaluación y orientación adecuada si los síntomas persisten.</p>
-                            <p><strong>Encuentra Doctores para {diseaseName}:</strong> Explora los perfiles de doctores en MediBusca relacionados con esta condición y conecta directamente con ellos para consulta.</p>
-                         </div>
-                     </div>
-                </div>
-
-                {/* Disclaimer */}
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4">
-                    <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                    <div className="text-sm text-amber-900/80">
-                        <strong>Aviso Médico:</strong> MediBusca proporciona solo información. La plataforma no ofrece consejo médico, diagnóstico, tratamiento ni reserva de citas. Siempre consulta a un profesional de la salud calificado.
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
 
         {/* Specialties that treat {Disease} Section */}
         {relatedSpecialties.length > 0 && (
@@ -392,7 +463,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
         {/* Cities Section (Specialty Focused) */}
         {relatedSpecialties.length > 0 ? (
-            relatedSpecialties.slice(0, 3).map((spec) => ( // Limiting to top 3 specialties to avoid page bloat
+            relatedSpecialties.slice(0, 3).map((spec) => (
                 <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                         {spec.startsWith('Medicina') || spec.includes('Cirujano') 
@@ -419,7 +490,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 </section>
             ))
         ) : (
-            /* Fallback: General Doctor Search */
             <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                 <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                     Encuentra especialistas en las principales ciudades
