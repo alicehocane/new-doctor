@@ -10,7 +10,7 @@ const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
   'Monterrey',
-  'Puebla'
+  'Benito Juárez'
 ];
 
 // Configuration for distinct specialty visuals
@@ -196,7 +196,7 @@ export default function HomePage() {
              overflow-x-auto snap-x snap-mandatory no-scrollbar
              -mx-4 px-4 md:mx-0 md:px-0 pb-8 md:pb-0
           ">
-            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Médico general', 'Ginecólogo', 'Internista' , 'Cardiólogo', 'Oftalmólogo', 'Traumatólogo', 'Radiólogo', 'Cirujano general', 'Dermatólogo'].map((spec) => {
+            {['Dentista - Odontólogo', 'Psicólogo', 'Pediatra', 'Ginecólogo', 'Cardiólogo'].map((spec) => {
               const visual = SPECIALTY_CONFIG[spec] || SPECIALTY_CONFIG['default'];
               const Icon = visual.icon;
               

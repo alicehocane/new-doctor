@@ -3,40 +3,39 @@ export const POPULAR_CITIES = [
   'Ciudad de México',
   'Monterrey',
   'Guadalajara',
-  'Puebla',
-  'Querétaro',
-  'Mérida',
-  'Cancún',
-  'Tijuana',
-  'León',
-  'San Luis Potosí',
-  'Toluca',
-  'Veracruz',
-  'Cuernavaca',
-  'Aguascalientes',
-  'Chihuahua'
+  'Benito Juárez',
+  'Cuauhtémoc',
+  'Pachuca',
+  'Zapopan',
+  'Tlalpan',
+  'Coyoacán',
+  'Naucalpan',
+  'Gustavo A Madero',
+  'Tlalnepantla',
+  'San Pedro Garza Garcia',
+  'Guadalupe',
+  'Magdalena Contreras'
 ];
 
 export const ALL_CITIES = [
-  'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 
-  'Benito Juárez', 'Buenavista', 'Cabo San Lucas', 'Cadereyta Jimenez', 'Campeche', 'Cancún', 
-  'Chalco', 'Chicoloapan', 'Chihuahua', 'Chilpancingo', 'Chimalhuacán', 'Ciudad Acuña', 
-  'Ciudad de México', 'Ciudad del Carmen', 'Ciudad Juárez', 'Ciudad López Mateos', 
-  'Ciudad Madero', 'Ciudad Victoria', 'Coatzacoalcos', 'Colima', 'Coyoacán', 
-  'Cuauhtémoc', 'Cuautitlán Izcalli', 'Cuautla', 'Cuernavaca', 'Culiacán', 'Durango', 
-  'Ecatepec', 'Ensenada', 'Fresnillo', 'García', 'General Escobedo', 'Gómez Palacio', 
-  'Guadalajara', 'Guadalupe', 'Guanajuato', 'Guaymas', 'Gustavo A Madero', 'Hermosillo', 
-  'Huixquilucan', 'Irapuato', 'Ixtapaluca', 'Iztacalco', 'Iztapalapa', 'Jiutepec', 
-  'Juriquilla', 'La Paz', 'La Piedad', 'León', 'Linares', 'Magdalena Contreras', 
-  'Manzanillo', 'Matamoros', 'Mazatlán', 'Mérida', 'Metepec', 'Mexicali', 'Minatitlán', 
-  'Miramar', 'Monclova', 'Monterrey', 'Morelia', 'Naucalpan', 'Nezahualcóyotl', 
-  'Nogales', 'Nuevo Casas Grandes', 'Nuevo Laredo', 'Oaxaca', 'Ojo de Agua', 
-  'Pachuca', 'Poza Rica', 'Puebla', 'Puerto Vallarta', 'Querétaro', 'Reynosa', 
-  'Salamanca', 'Saltillo', 'San Cristóbal', 'San Francisco Coacalco', 'San Juan del Río', 
-  'San Luis Potosí', 'San Nicolás', 'San Pedro Garza Garcia', 'Santa Catarina', 
-  'Soledad', 'Tapachula', 'Tehuacán', 'Tepic', 'Tijuana', 'Tlalnepantla', 'Tlalpan', 
-  'Tlaquepaque', 'Toluca', 'Tonalá', 'Torreón', 'Tuxtla Gutiérrez', 'Uruapan', 
-  'Veracruz', 'Villahermosa', 'Xalapa', 'Zacatecas', 'Zamora', 'Zapopan', 'Zapotlanejo'
+  'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 'Baja California Sur', 'Benito Juárez', 
+  'Buenavista', 'Cabo San Lucas', 'Cadereyta Jimenez', 'Campeche', 'Cancún', 'Chalco', 'Chiapas', 
+  'Chicoloapan', 'Chihuahua', 'Chilpancingo', 'Chimalhuacán', 'Ciudad Acuña', 'Ciudad Benito Juárez', 
+  'Ciudad de México', 'Ciudad del Carmen', 'Ciudad Juárez', 'Ciudad López Mateos', 'Ciudad Madero', 'Ciudad Obregón', 
+  'Ciudad Victoria', 'Coahuila', 'Coatzacoalcos', 'Colima', 'Coyoacán', 'Cuauhtémoc', 'Cuautitlán Izcalli', 'Cuautla', 
+  'Cuernavaca', 'Culiacán', 'Durango', 'Ecatepec', 'Ensenada', 'Fresnillo', 'García', 'General Escobedo', 
+  'Gómez Palacio', 'Guadalajara', 'Guadalupe', 'Guanajuato', 'Guaymas', 'Guerrero', 'Gustavo A Madero', 
+  'Hermosillo', 'Huixquilucan', 'Irapuato', 'Ixtapaluca', 'Iztacalco', 'Iztapalapa', 'Jiutepec', 
+  'Juriquilla', 'La Paz', 'La Piedad', 'León', 'Linares', 'Magdalena Contreras', 'Manzanillo', 
+  'Matamoros', 'Mazatlán', 'Mérida', 'Metepec', 'Mexicali', 'Michoacán', 'Minatitlán', 'Miramar', 
+  'Monclova', 'Monterrey', 'Morelia', 'Morelos', 'Naucalpan', 'Nayarit', 'Nezahualcóyotl', 
+  'Nogales', 'Nuevo Casas Grandes', 'Nuevo Laredo', 'Oaxaca', 'Ojo de Agua', 'Pachuca', 'Poza Rica', 
+  'Puebla', 'Puerto Vallarta', 'Querétaro', 'Quintana Roo', 'Reynosa', 'Salamanca', 'Saltillo', 
+  'San Cristóbal', 'San Francisco Coacalco', 'San Juan del Río', 'San Luis Potosí', 'San Nicolás', 
+  'San Pedro Garza Garcia', 'Santa Catarina', 'Sinaloa', 'Soledad', 'Sonora', 'Tabasco', 'Tamaulipas', 
+  'Tapachula', 'Tehuacán', 'Tepic', 'Tijuana', 'Tlalnepantla', 'Tlalpan', 'Tlaquepaque', 'Toluca', 
+  'Tonalá', 'Torreón', 'Tuxtla Gutiérrez', 'Uruapan', 'Veracruz', 'Villahermosa', 'Xalapa', 'Yucatán', 
+  'Zacatecas', 'Zamora', 'Zapopan', 'Zapotlanejo'
 ].sort();
 
 export const COMMON_SPECIALTIES = [
@@ -297,31 +296,1005 @@ export const slugify = (text: string) => {
 
 // Data for SEO Section & Mapping
 export const DISEASE_DETAILS: Record<string, { symptoms: string[], causes: string[] }> = {
-  'Ansiedad': {
-    symptoms: ['Nerviosismo persistente', 'Sensación de peligro inminente', 'Aumento del ritmo cardíaco', 'Sudoración y temblores'],
-    causes: ['Factores genéticos', 'Estrés acumulado', 'Traumas infantiles', 'Desequilibrios químicos en el cerebro']
-  },
-  'Depresión': {
-    symptoms: ['Tristeza profunda y constante', 'Pérdida de interés en actividades', 'Cambios en el apetito', 'Dificultad para dormir'],
-    causes: ['Bioquímica cerebral', 'Eventos traumáticos', 'Antecedentes familiares', 'Enfermedades crónicas']
-  },
-  'Diabetes': {
-    symptoms: ['Aumento de la sed (polidipsia)', 'Ganas frecuentes de orinar', 'Cansancio extremo', 'Visión borrosa'],
-    causes: ['Resistencia a la insulina', 'Factores genéticos', 'Sobrepeso', 'Páncreas ineficiente']
-  },
-  'Hipertensión': {
-    symptoms: ['Dolor de cabeza intenso', 'Visión borrosa', 'Zumbido en los oídos', 'Dolor en el pecho'],
-    causes: ['Consumo excesivo de sal', 'Sedentarismo', 'Obesidad', 'Factores hereditarios']
-  },
-  'Obesidad': {
-    symptoms: ['Aumento de masa corporal (IMC > 30)', 'Dificultad respiratoria al esfuerzo', 'Sudoración excesiva', 'Dolor articular'],
-    causes: ['Ingesta calórica excesiva', 'Falta de actividad física', 'Factores metabólicos', 'Genética']
-  },
-  // Default fallback
-  'General': {
-    symptoms: ['Los síntomas varían según el paciente', 'Malestar general', 'Cambios en la salud física o mental'],
-    causes: ['Factores genéticos', 'Factores ambientales', 'Estilo de vida', 'Condiciones preexistentes']
-  }
+ 'Ansiedad': { symptoms: ['Nerviosismo', 'Ritmo cardíaco rápido', 'Sudoración'], causes: ['Estrés', 'Trauma', 'Química cerebral'] },
+  'Depresión': { symptoms: ['Tristeza', 'Pérdida de interés', 'Fatiga'], causes: ['Química cerebral', 'Eventos vitales'] },
+  'Duelo': { symptoms: ['Dolor emocional', 'Shock'], causes: ['Pérdida de ser querido'] },
+  'Estrés': { symptoms: ['Tensión', 'Ansiedad'], causes: ['Presión externa', 'Sobrecarga'] },
+  'Codependencia': { symptoms: ['Baja autoestima', 'Complacencia excesiva'], causes: ['Dinámicas familiares disfuncionales'] },
+  'Hipertensión': { symptoms: ['Presión arterial alta'], causes: ['Resistencia vascular'] },
+  'Caries': { symptoms: ['Dolor dental', 'Agujeros visibles'], causes: ['Azúcar', 'Bacterias', 'Mala higiene'] },
+  'Estrés postraumático': { symptoms: ['Flashbacks', 'Evitación'], causes: ['Trauma grave'] },
+  'Trastorno de conducta': { symptoms: ['Comportamiento antisocial'], causes: ['Infancia', 'Entorno'] },
+  'Diabetes': { symptoms: ['Sed excesiva', 'Orina frecuente'], causes: ['Insulina insuficiente o ineficaz'] },
+  'Dislipidemia': { symptoms: ['Colesterol/triglicéridos altos'], causes: ['Dieta grasa', 'Genética'] },
+  'Depresión en adolescentes': { symptoms: ['Irritabilidad', 'Bajo rendimiento', 'Aislamiento'], causes: ['Hormonas', 'Presión social'] },
+  'Bruxismo': { symptoms: ['Rechinar dientes', 'Dolor mandibular'], causes: ['Estrés', 'Ansiedad', 'Maloclusión'] },
+  'Síndrome metabólico': { symptoms: ['Riesgo cardíaco/diabetes'], causes: ['Obesidad', 'Presión', 'Azúcar'] },
+  'Dolor de muelas': { symptoms: ['Dolor agudo dental'], causes: ['Caries', 'Infección'] },
+  'Obesidad': { symptoms: ['Exceso grasa corporal'], causes: ['Calorías', 'Genética'] },
+  'Trastorno obsesivo compulsivo (TOC)': { symptoms: ['Obsesiones', 'Rituales'], causes: ['Ansiedad'] },
+  'Infección dental': { symptoms: ['Absceso', 'Dolor'], causes: ['Bacterias diente'] },
+  'Sobrepeso': { symptoms: ['IMC 25-30'], causes: ['Exceso peso'] },
+  'Fracturas de dientes': { symptoms: ['Diente astillado/roto'], causes: ['Golpe', 'Morder duro'] },
+  'Desgaste dental': { symptoms: ['Dientes cortos', 'Bordes transparentes'], causes: ['Ácido', 'Fricción'] },
+  'Ataques de pánico': { symptoms: ['Miedo intenso', 'Palpitaciones', 'Sensación de muerte'], causes: ['Estrés severo', 'Genética', 'Ansiedad'] },
+  'Bullying (acoso escolar)': { symptoms: ['Miedo a ir a la escuela', 'Lesiones', 'Ansiedad'], causes: ['Agresión de pares', 'Desequilibrio de poder'] },
+  'Pérdida de dientes': { symptoms: ['Edentulismo'], causes: ['Enfermedad encías', 'Caries'] },
+  'Dientes desalineados': { symptoms: ['Problemas de mordida', 'Estética'], causes: ['Genética', 'Chupete'] },
+  'Dientes apiñados': { symptoms: ['Dientes montados', 'Dificultad para limpiar'], causes: ['Mandíbula pequeña', 'Dientes grandes'] },
+  'Estrés laboral': { symptoms: ['Agotamiento', 'Desmotivación'], causes: ['Trabajo excesivo', 'Ambiente tóxico'] },
+  'Angustia': { symptoms: ['Opresión torácica', 'Nudo estomacal', 'Inquietud'], causes: ['Crisis emocional', 'Miedo intenso'] },
+  'Enfermedad periodontal - piorrea': { symptoms: ['Dientes flojos', 'Pus', 'Pérdida ósea'], causes: ['Gingivitis avanzada'] },
+  'Lesiones deportivas': { symptoms: ['Esguinces', 'Fracturas deporte'], causes: ['Trauma actividad física'] },
+  'Trastorno de ansiedad': { symptoms: ['Ansiedad general'], causes: ['Miedo excesivo'] },
+  'Trastorno de ansiedad generalizada': { symptoms: ['Preocupación constante'], causes: ['Ansiedad crónica'] },
+  'Gastritis': { symptoms: ['Ardor estómago', 'Náuseas'], causes: ['Irritación mucosa gástrica'] },
+  'Colon irritable': { symptoms: ['Cólicos', 'Gases', 'Cambios en hábito intestinal'], causes: ['Intestino sensible', 'Estrés'] },
+  'Virus del papiloma humano (VPH)': { symptoms: ['Infección VPH'], causes: ['ETS común'] },
+  'Diabetes gestacional': { symptoms: ['Azúcar alto en embarazo'], causes: ['Resistencia a insulina por hormonas placentarias'] },
+  'Miomas uterinos': { symptoms: ['Tumores benignos útero'], causes: ['Sangrado', 'Dolor'] },
+  'Embarazo': { symptoms: ['Amenorrea', 'Náuseas'], causes: ['Gestación'] },
+  'Trastornos de la personalidad': { symptoms: ['Patrones conducta rígidos'], causes: ['Psicológico'] },
+  'Menopausia': { symptoms: ['Cese menstruación', 'Sofocos'], causes: ['Fin función ovárica'] },
+  'Ciática': { symptoms: ['Dolor irradiado a pierna', 'Entumecimiento'], causes: ['Hernia discal', 'Estenosis espinal'] },
+  'Trastorno de hiperactividad y déficit de atención (TDAH)': { symptoms: ['Inatención', 'Impulsividad'], causes: ['Neurológico'] },
+  'Depresión crónica': { symptoms: ['Tristeza persistente leve (años)'], causes: ['Distimia', 'Factores biológicos'] },
+  'Conducta agresiva': { symptoms: ['Violencia', 'Ira', 'Hostilidad'], causes: ['Frustración', 'Trastornos mentales'] },
+  'Embarazo de alto riesgo': { symptoms: ['Complicaciones potenciales'], causes: ['Edad', 'Salud materna'] },
+  'Desnutrición': { symptoms: ['Pérdida de peso', 'Debilidad'], causes: ['Dieta insuficiente', 'Malabsorción'] },
+  'Endometriosis': { symptoms: ['Dolor menstrual intenso'], causes: ['Tejido uterino fuera del útero'] },
+  'Insuficiencia cardíaca': { symptoms: ['Corazón no bombea bien'], causes: ['Debilidad cardíaca'] },
+  'Amenaza de aborto': { symptoms: ['Sangrado vaginal', 'Cólicos leves'], causes: ['Problemas cromosómicos', 'Hormonales'] },
+  'Adicciones': { symptoms: ['Compulsión', 'Pérdida de control', 'Abstinencia'], causes: ['Factores biológicos', 'Entorno', 'Desarrollo'] },
+  'Apendicitis': { symptoms: ['Dolor fosa ilíaca derecha', 'Náuseas', 'Fiebre'], causes: ['Obstrucción del apéndice', 'Infección'] },
+  'Comportamiento suicida': { symptoms: ['Hablar de muerte', 'Aislamiento'], causes: ['Depresión severa', 'Desesperanza'] },
+  'Síndrome de pinzamiento del hombro': { symptoms: ['Roce tendones hombro'], causes: ['Espacio reducido'] },
+  'Faringitis': { symptoms: ['Dolor garganta'], causes: ['Inflamación faringe'] },
+  'Diabetes tipo 2': { symptoms: ['Fatiga', 'Visión borrosa'], causes: ['Resistencia a la insulina', 'Obesidad'] },
+  'Sangrado uterino disfuncional': { symptoms: ['Sangrado hormonal'], causes: ['Sin causa orgánica'] },
+  'Asma': { symptoms: ['Sibilancias', 'Falta de aire', 'Opresión'], causes: ['Alergias', 'Ejercicio', 'Aire frío'] },
+  'Gingivitis': { symptoms: ['Encías rojas', 'Sangrado cepillado'], causes: ['Placa bacteriana leve'] },
+  'Maltrato psicológico y abandono infantil': { symptoms: ['Retraso', 'Miedo', 'Descuido'], causes: ['Negligencia', 'Abuso'] },
+  'Abdomen agudo': { symptoms: ['Dolor abdominal severo', 'Rigidez muscular', 'Fiebre'], causes: ['Apendicitis', 'Perforación', 'Infección'] },
+  'Desorden de ansiedad por separación': { symptoms: ['Angustia al separarse de hogar/padres'], causes: ['Inseguridad', 'Estrés ambiental'] },
+  'Hernia de disco': { symptoms: ['Dolor espalda', 'Ciática'], causes: ['Núcleo disco vertebral desplazado'] },
+  'Tendinitis del manguito de los rotadores': { symptoms: ['Dolor hombro tendón'], causes: ['Uso repetitivo'] },
+  'Fobia específica o simple': { symptoms: ['Miedo irracional a objeto/situación'], causes: ['Trauma', 'Aprendizaje'] },
+  'Hernia inguinal': { symptoms: ['Bulto en ingle'], causes: ['Intestino empuja canal inguinal'] },
+  'Neumonía': { symptoms: ['Infección pulmón', 'Fiebre', 'Tos'], causes: ['Bacteria', 'Virus', 'Hongo'] },
+  'Colecistitis aguda': { symptoms: ['Dolor severo abdomen superior derecho', 'Fiebre'], causes: ['Cálculos biliares bloqueando conducto'] },
+  'Cataratas': { symptoms: ['Visión nublada', 'Colores desteñidos'], causes: ['Envejecimiento', 'Diabetes', 'Sol'] },
+  'Reflujo gastroesofágico': { symptoms: ['ERGE', 'Acidez'], causes: ['Esfínter esofágico débil'] },
+  'Diverticulitis': { symptoms: ['Dolor abdomen izquierdo', 'Fiebre'], causes: ['Sacos intestinales inflamados/infectados'] },
+  'Enfermedad articular degenerativa': { symptoms: ['Dolor crónico articular'], causes: ['Osteoartritis'] },
+  'Tendinitis': { symptoms: ['Inflamación tendón'], causes: ['Sobrecarga'] },
+  'Radiculopatía lumbar': { symptoms: ['Nervio pinzado lumbar'], causes: ['Hernia', 'Ciática'] },
+  'Depresión neurótica (distimia)': { symptoms: ['Estado de ánimo bajo crónico'], causes: ['Rasgos de personalidad', 'Estrés'] },
+  'Infertilidad': { symptoms: ['No embarazo tras 1 año'], causes: ['Hormonal', 'Anatómico'] },
+  'Rinitis alérgica': { symptoms: ['Alergia nariz'], causes: ['Fiebre heno'] },
+  'Cálculos biliares': { symptoms: ['Dolor repentino en abdomen derecho', 'Náuseas'], causes: ['Exceso de colesterol', 'Bilis concentrada'] },
+  'Periodontitis': { symptoms: ['Infección encía profunda'], causes: ['Placa', 'Sarro'] },
+  'Manchas en dientes': { symptoms: ['Decoloración dental'], causes: ['Café', 'Tabaco', 'Tetraciclinas'] },
+  'Absceso dental': { symptoms: ['Dolor de muelas intenso', 'Sensibilidad', 'Hinchazón facial'], causes: ['Caries no tratada', 'Lesión dental'] },
+  'Dolor abdominal': { symptoms: ['Malestar estomacal', 'Calambres'], causes: ['Indigestión', 'Gas', 'Infección'] },
+  'Miopía': { symptoms: ['Mala visión lejos'], causes: ['Ojo largo', 'Enfoque delante retina'] },
+  'Osteoporosis': { symptoms: ['Huesos frágiles', 'Fracturas'], causes: ['Pérdida densidad ósea'] },
+  'Diente retenido': { symptoms: ['Diente que no sale'], causes: ['Bloqueo por otro diente o hueso'] },
+  'Lesión de Ligamentarias de Rodilla': { symptoms: ['Rodilla inestable', 'Dolor'], causes: ['Ligamento cruzado/colateral'] },
+  'Contractura cervical': { symptoms: ['Dolor de cuello', 'Rigidez'], causes: ['Mala postura', 'Estrés', 'Golpe'] },
+  'Lesiones de cartílago articular': { symptoms: ['Dolor articulación', 'Roce'], causes: ['Daño superficie ósea'] },
+  'Anorexia nerviosa': { symptoms: ['Restricción alimentaria', 'Bajo peso', 'Amenorrea'], causes: ['Factores psicológicos', 'Sociales', 'Genéticos'] },
+  'Asma pediátrico': { symptoms: ['Tos frecuente', 'Silbidos al respirar', 'Fatiga'], causes: ['Infecciones virales', 'Alérgenos'] },
+  'Trastornos de la articulación temporomandibular': { symptoms: ['Problemas ATM'], causes: ['Mandíbula'] },
+  'Lesiones de Menisco': { symptoms: ['Bloqueo rodilla', 'Dolor giro'], causes: ['Rotura cartílago rodilla'] },
+  'Luto': { symptoms: ['Duelo', 'Tristeza'], causes: ['Pérdida'] },
+  'Dermatitis atópica': { symptoms: ['Piel seca', 'Picazón intensa', 'Parches rojos'], causes: ['Eczema', 'Genética', 'Alergias'] },
+  'Astigmatismo': { symptoms: ['Visión borrosa', 'Fatiga visual', 'Entrecerrar ojos'], causes: ['Curvatura irregular de la córnea'] },
+  'Depresión grave': { symptoms: ['Incapacidad para funcionar', 'Pensamientos suicidas'], causes: ['Desequilibrio severo neurotransmisores'] },
+  'Colecistitis crónica': { symptoms: ['Dolor abdominal recurrente', 'Náuseas'], causes: ['Irritación repetida por cálculos'] },
+  'Hernia hiatal': { symptoms: ['Estómago sube al tórax', 'Reflujo'], causes: ['Debilidad diafragma'] },
+  'Faringitis bacteriana': { symptoms: ['Garganta roja', 'Pus', 'Fiebre'], causes: ['Estreptococo'] },
+  'Sensibilidad dentaria': { symptoms: ['Dolor frío/calor dientes'], causes: ['Dentina expuesta'] },
+  'Hernia': { symptoms: ['Bulto en abdomen/ingle'], causes: ['Debilidad pared muscular'] },
+  'Bulimia nerviosa': { symptoms: ['Atracones', 'Vómitos provocados', 'Uso de laxantes'], causes: ['Imagen corporal', 'Baja autoestima'] },
+  'Hernia umbilical': { symptoms: ['Bulto en ombligo'], causes: ['Defecto cierre pared abdominal'] },
+  'Reflujo gastroesofágico en bebés': { symptoms: ['Regurgitación frecuente'], causes: ['Inmadurez esfínter'] },
+  'Dermatitis del pañal': { symptoms: ['Nalgas rojas', 'Irritación'], causes: ['Humedad', 'Roce', 'Orina/heces'] },
+  'Cólico infantil': { symptoms: ['Llanto intenso', 'Puños cerrados'], causes: ['Gases', 'Sistema digestivo inmaduro'] },
+  'Alveolitis': { symptoms: ['Dolor intenso tras extracción', 'Mal sabor', 'Hueso expuesto'], causes: ['Pérdida del coágulo sanguíneo', 'Trauma'] },
+  'Colitis': { symptoms: ['Diarrea', 'Dolor abdominal', 'Sangre'], causes: ['Infección', 'Enfermedad inflamatoria'] },
+  'Dolor muscular': { symptoms: ['Mialgia', 'Sensibilidad'], causes: ['Ejercicio', 'Gripe', 'Lesión'] },
+  'Cáncer de piel': { symptoms: ['Lunar cambiante', 'Lesión que no sana'], causes: ['Exposición UV', 'Piel clara'] },
+  'Retinopatía diabética': { symptoms: ['Daño vasos retina'], causes: ['Diabetes descontrolada'] },
+  'Movilidad dentaria': { symptoms: ['Diente se mueve'], causes: ['Periodontitis', 'Trauma'] },
+  'Demencia': { symptoms: ['Pérdida de memoria', 'Confusión'], causes: ['Alzheimer', 'Daño vascular'] },
+  'Bronquiolitis': { symptoms: ['Congestión', 'Sibilancias', 'Fiebre leve'], causes: ['Virus sincitial respiratorio (VSR)'] },
+  'Conjuntivitis': { symptoms: ['Ojo rojo', 'Picazón', 'Secreción'], causes: ['Virus', 'Bacterias', 'Alergias'] },
+  'Nutrición inadecuada': { symptoms: ['Malnutrición'], causes: ['Dieta pobre'] },
+  'Mordida abierta': { symptoms: ['Dientes no tocan al cerrar'], causes: ['Chupete', 'Lengua'] },
+  'Diarrea': { symptoms: ['Heces líquidas', 'Cólicos'], causes: ['Virus', 'Bacterias', 'Alimentos'] },
+  'Cáncer de próstata': { symptoms: ['Problemas al orinar', 'Sangre en semen'], causes: ['Edad', 'Antecedentes familiares'] },
+  'Anemia': { symptoms: ['Fatiga', 'Piel pálida', 'Dificultad para respirar'], causes: ['Deficiencia de hierro', 'Pérdida de sangre'] },
+  'Cardiomiopatía isquémica': { symptoms: ['Fatiga', 'Hinchazón', 'Falta de aire'], causes: ['Enfermedad arterial coronaria'] },
+  'Trastornos del aprendizaje': { symptoms: ['Dificultad aprender'], causes: ['Dislexia', 'TDAH'] },
+  'Halitosis': { symptoms: ['Mal aliento crónico'], causes: ['Bacterias', 'Higiene', 'Problemas estomacales'] },
+  'Glaucoma': { symptoms: ['Pérdida visión periférica', 'Presión ocular'], causes: ['Daño nervio óptico'] },
+  'Síndrome del ojo seco': { symptoms: ['Falta lágrima'], causes: ['Mala lubricación'] },
+  'Fascitis plantar': { symptoms: ['Dolor talón matutino'], causes: ['Inflamación fascia pie'] },
+  'Amigdalitis': { symptoms: ['Dolor de garganta', 'Amígdalas rojas', 'Fiebre'], causes: ['Virus', 'Bacteria estreptococo'] },
+  'Fiebre en niños': { symptoms: ['Temperatura alta', 'Irritabilidad'], causes: ['Infección viral/bacteriana'] },
+  'Alergia alimentaria': { symptoms: ['Hormigueo en boca', 'Hinchazón', 'Dificultad respiratoria'], causes: ['Reacción inmune a ciertos alimentos'] },
+  'Diente impactado': { symptoms: ['Dolor', 'Encía hinchada', 'Mal aliento'], causes: ['Falta de espacio para erupcionar'] },
+  'Migraña': { symptoms: ['Dolor cabeza severo', 'Náuseas', 'Luz'], causes: ['Neurológico', 'Vascular'] },
+  'Hipermetropía': { symptoms: ['Mala visión cercana'], causes: ['Ojo corto', 'Enfoque detrás retina'] },
+  'Hiperlipidemia': { symptoms: ['Grasas altas en sangre'], causes: ['Lípidos elevados'] },
+  'Sinusitis': { symptoms: ['Dolor senos paranasales', 'Moco'], causes: ['Infección', 'Inflamación'] },
+  'Infección urinaria en niños': { symptoms: ['Fiebre sin foco', 'Orina olorosa'], causes: ['Bacterias', 'Reflujo'] },
+  'Oclusión dental defectuosa': { symptoms: ['Maloclusión'], causes: ['Dientes/hueso desalineados'] },
+  'Lesión de Manguito Rotador': { symptoms: ['Dolor hombro', 'Debilidad'], causes: ['Desgarro tendones hombro'] },
+  'Acné': { symptoms: ['Granos', 'Espinillas', 'Puntos negros'], causes: ['Exceso de grasa', 'Bacterias', 'Cambios hormonales'] },
+  'Pterigión': { symptoms: ['Tejido crece sobre córnea'], causes: ['Sol', 'Viento'] },
+  'Arritmias': { symptoms: ['Aleteo en el pecho', 'Latidos rápidos o lentos'], causes: ['Daño cardíaco', 'Desequilibrio electrolítico'] },
+  'Pie plano': { symptoms: ['Sin arco plantar'], causes: ['Colapso arco'] },
+  'Baja autoestima': { symptoms: ['Sentimientos de inferioridad', 'Sensibilidad a la crítica'], causes: ['Abuso', 'Bullying', 'Negligencia'] },
+  'Hipertiroidismo': { symptoms: ['Nerviosismo', 'Pérdida peso', 'Calor'], causes: ['Tiroides hiperactiva'] },
+  'Sobremordida': { symptoms: ['Dientes arriba cubren mucho abajo'], causes: ['Maloclusión'] },
+  'Hipercolesterolemia': { symptoms: ['Colesterol alto sangre'], causes: ['Dieta', 'Genética'] },
+  'Esquizofrenia': { symptoms: ['Alucinaciones', 'Delirios'], causes: ['Trastorno mental grave'] },
+  'Atrición dental': { symptoms: ['Dientes planos', 'Sensibilidad', 'Mandíbula dolorida'], causes: ['Bruxismo', 'Masticación fuerte'] },
+  'Trastorno bipolar': { symptoms: ['Manía y depresión'], causes: ['Enfermedad mental cíclica'] },
+  'Alergias': { symptoms: ['Estornudos', 'Picazón', 'Ojos llorosos'], causes: ['Polen', 'Ácaros', 'Caspa de mascotas'] },
+  'Vértigo postural benigno': { symptoms: ['Mareo al mover cabeza'], causes: ['VPPB', 'Cristales oído'] },
+  'Fracturas': { symptoms: ['Hueso roto', 'Dolor', 'Deformidad'], causes: ['Traumatismo', 'Osteoporosis'] },
+  'Lumbalgia': { symptoms: ['Dolor zona baja espalda'], causes: ['Muscular', 'Vertebral'] },
+  'Dolor de cabeza por contracción muscular': { symptoms: ['Banda apretada alrededor de cabeza'], causes: ['Tensión muscular cuello/cuero cabelludo'] },
+  'Cefalea tensional': { symptoms: ['Dolor opresivo en banda', 'Sensibilidad'], causes: ['Estrés', 'Mala postura'] },
+  'Infarto agudo de miocardio': { symptoms: ['Ataque cardíaco', 'Dolor pecho'], causes: ['Arteria coronaria bloqueada'] },
+  'Impactación dental': { symptoms: ['Diente bloqueado'], causes: ['Falta espacio'] },
+  'Angina': { symptoms: ['Dolor de pecho', 'Presión', 'Dolor en brazo izquierdo'], causes: ['Reducción de flujo sanguíneo al corazón'] },
+  'Prognatismo': { symptoms: ['Mandíbula prominente'], causes: ['Esquelético'] },
+  'Cáncer renal': { symptoms: ['Sangre en orina', 'Dolor lumbar', 'Masa abdominal'], causes: ['Tabaquismo', 'Obesidad', 'Hipertensión'] },
+  'Gastroenteritis': { symptoms: ['Vómitos', 'Diarrea'], causes: ['Inflamación estómago/intestino'] },
+  'Síntomas gastrointestinales': { symptoms: ['Malestar digestivo'], causes: ['General'] },
+  'Disfunción eréctil': { symptoms: ['Problemas para mantener erección'], causes: ['Vascular', 'Diabetes', 'Psicológico'] },
+  'Cáncer del colon': { symptoms: ['Diarrea/estreñimiento', 'Sangrado rectal'], causes: ['Dieta baja en fibra', 'Pólipos'] },
+  'Úlceras bucales': { symptoms: ['Llagas boca', 'Aftas'], causes: ['Estrés', 'Roce', 'Virus'] },
+  'Gastritis por estrés': { symptoms: ['Erosión gástrica'], causes: ['Enfermedad grave', 'Trauma', 'UCI'] },
+  'Trastornos de la ATM': { symptoms: ['Dolor mandíbula'], causes: ['ATM'] },
+  'Curvatura de la columna': { symptoms: ['Hombros desiguales', 'Cintura dispareja'], causes: ['Escoliosis', 'Cifosis'] },
+  'Alergias nasales': { symptoms: ['Congestión', 'Goteo nasal', 'Picazón nasal'], causes: ['Alérgenos inhalados'] },
+  'Otitis': { symptoms: ['Inflamación oído'], causes: ['Infección'] },
+  'Alopecia androgénica': { symptoms: ['Adelgazamiento del cabello', 'Entradas', 'Calvicie'], causes: ['Genética', 'Hormonas (DHT)'] },
+  'Epilepsia': { symptoms: ['Convulsiones recurrentes'], causes: ['Actividad eléctrica cerebral anormal'] },
+  'Alopecia areata': { symptoms: ['Parches redondos de pérdida de cabello'], causes: ['Ataque autoinmune a folículos'] },
+  'Incontinencia urinaria de esfuerzo': { symptoms: ['Escapes orina al toser/reír'], causes: ['Suelo pélvico débil'] },
+  'Enfermedad de transmisión sexual (ETS)': { symptoms: ['Secreción', 'Llagas', 'Picazón'], causes: ['Sexo sin protección', 'Bacterias/Virus'] },
+  'Bebé prematuro': { symptoms: ['Bajo peso', 'Piel fina', 'Problemas respiratorios'], causes: ['Parto antes de semana 37'] },
+  'Verrugas': { symptoms: ['Bultos piel rugosos'], causes: ['VPH piel'] },
+  'Infarto de miocardio': { symptoms: ['Daño corazón'], causes: ['Isquemia severa'] },
+  'Bronquitis crónica': { symptoms: ['Tos constante', 'Producción de moco', 'Fatiga'], causes: ['Tabaquismo', 'Irritantes pulmonares'] },
+  'Desprendimiento de retina': { symptoms: ['Destellos', 'Cortina negra'], causes: ['Desgarro retiniano', 'Trauma'] },
+  'Eyaculación precoz': { symptoms: ['Eyaculación rápida incontrolada'], causes: ['Ansiedad', 'Sensibilidad'] },
+  'Pólipos nasales': { symptoms: ['Bultos blandos nariz', 'Congestión'], causes: ['Inflamación crónica'] },
+  'Cáncer de pulmón': { symptoms: ['Tos persistente', 'Tos con sangre', 'Pérdida de peso'], causes: ['Fumar', 'Radón', 'Asbesto'] },
+  'Enfermedad de Parkinson': { symptoms: ['Temblores', 'Rigidez', 'Lentitud'], causes: ['Pérdida de dopamina'] },
+  'Fibrilación auricular': { symptoms: ['Latidos irregulares rápidos'], causes: ['Caos eléctrico en aurículas'] },
+  'Ausencia dentaria': { symptoms: ['Espacios entre dientes', 'Problemas de mordida'], causes: ['Agenesia', 'Extracciones', 'Trauma'] },
+  'Bursitis': { symptoms: ['Dolor articular', 'Hinchazón', 'Rigidez'], causes: ['Movimientos repetitivos', 'Presión prolongada'] },
+  'Laringitis': { symptoms: ['Ronquera', 'Pérdida voz'], causes: ['Inflamación laringe'] },
+  'Luxación Acromioclavicular': { symptoms: ['Dolor hombro superior'], causes: ['Separación hombro'] },
+  'Cáncer del cuello uterino': { symptoms: ['Sangrado vaginal anormal', 'Dolor pélvico'], causes: ['VPH', 'Tabaquismo'] },
+  'Cálculos en las vías urinarias': { symptoms: ['Dolor al orinar', 'Sangre en orina'], causes: ['Minerales concentrados en orina'] },
+  'Enfermedad de Alzheimer': { symptoms: ['Olvidos graves', 'Cambios personalidad'], causes: ['Degeneración cerebral', 'Placas amiloideas'] },
+  'Cáncer de mama': { symptoms: ['Bulto en el seno', 'Cambio de forma', 'Secreción'], causes: ['Genética (BRCA)', 'Edad', 'Hormonas'] },
+  'Quistes ováricos': { symptoms: ['Sacos líquido ovario'], causes: ['Ciclo menstrual'] },
+  'Bradicardia': { symptoms: ['Ritmo cardíaco lento', 'Mareos', 'Fatiga'], causes: ['Daño tejido cardíaco', 'Medicamentos'] },
+  'Neurosis histérica': { symptoms: ['Síntomas físicos sin causa (conversión)'], causes: ['Conflicto psíquico'] },
+  'Hígado graso': { symptoms: ['Fatiga', 'Dolor abdominal derecho'], causes: ['Acumulación grasa hígado'] },
+  'Melasma': { symptoms: ['Manchas oscuras cara'], causes: ['Hormonas', 'Sol', 'Embarazo'] },
+  'Depresión mayor': { symptoms: ['Desesperanza profunda', 'Cambios en apetito'], causes: ['Factores biológicos y psicosociales'] },
+  'Disoclusión de los dientes': { symptoms: ['Dientes no encajan al cerrar'], causes: ['Mandíbula desviada', 'Dientes chuecos'] },
+  'Gastroenteritis aguda': { symptoms: ['Inicio súbito vómitos/diarrea'], causes: ['Infección viral (Norovirus/Rotavirus)'] },
+  'Cáncer de tiroides': { symptoms: ['Bulto en el cuello', 'Cambios en la voz'], causes: ['Exposición a radiación', 'Genética'] },
+  'Varicocele': { symptoms: ['Venas hinchadas escroto'], causes: ['Válvulas venosas testículo'] },
+  'Estreñimiento': { symptoms: ['Heces duras', 'Poco frecuentes'], causes: ['Falta fibra/agua', 'Sedentarismo'] },
+  'Cáncer testicular': { symptoms: ['Agrandamiento testicular', 'Dolor'], causes: ['Antecedentes familiares', 'Criptorquidia'] },
+  'Cardiopatía hipertensiva': { symptoms: ['Dolor de pecho', 'Fatiga'], causes: ['Presión arterial alta crónica'] },
+  'Enfermedad benigna de las mamas': { symptoms: ['Bultos no cancerosos', 'Dolor'], causes: ['Cambios fibroquísticos'] },
+  'Cicatriz hipertrófica': { symptoms: ['Cicatriz elevada', 'Roja', 'Picazón'], causes: ['Tensión en la herida', 'Exceso de colágeno'] },
+  'Síndrome de los ovarios poliquísticos (PCOS)': { symptoms: ['SOP', 'Vello', 'Reglas raras'], causes: ['Hormonal'] },
+  'Contracturas musculares': { symptoms: ['Músculo duro', 'Dolor', 'Limitación'], causes: ['Sobrecarga', 'Deshidratación'] },
+  'Trastornos del sueño': { symptoms: ['Dormir mal'], causes: ['Insomnio', 'Apnea'] },
+  'Nefropatía diabética': { symptoms: ['Daño renal por diabetes'], causes: ['Proteína orina'] },
+  'Cáncer de los ovarios': { symptoms: ['Hinchazón abdominal', 'Saciedad rápida'], causes: ['Genética', 'Edad', 'Terapia hormonal'] },
+  'Cicatriz queloide': { symptoms: ['Tejido cicatricial excesivo', 'Duro'], causes: ['Predisposición genética', 'Heridas'] },
+  'Pancreatitis': { symptoms: ['Inflamación páncreas', 'Dolor'], causes: ['Cálculos', 'Alcohol'] },
+  'Apnea del sueño de tipo obstructivo': { symptoms: ['Despertares bruscos', 'Boca seca'], causes: ['Obesidad', 'Vías respiratorias estrechas'] },
+  'Cáncer vesical': { symptoms: ['Sangre en orina', 'Dolor al orinar'], causes: ['Tabaquismo', 'Exposición química'] },
+  'Cambios precancerosos del cuello uterino': { symptoms: ['Generalmente asintomático'], causes: ['Virus del Papiloma Humano (VPH)'] },
+  'Trastornos de la menstruación': { symptoms: ['Reglas anormales'], causes: ['Hormonas'] },
+  'Hipertrofia (hiperplasia) prostática benigna': { symptoms: ['Próstata agrandada'], causes: ['Crecimiento benigno (HBP)'] },
+  'Fobia social': { symptoms: ['Miedo intenso situaciones sociales'], causes: ['Ansiedad social'] },
+  'Trastorno de la conducta alimentaria': { symptoms: ['Comer mal'], causes: ['Anorexia', 'Bulimia'] },
+  'Cirrosis': { symptoms: ['Fatiga', 'Ictericia', 'Moretones fáciles'], causes: ['Alcoholismo', 'Hepatitis crónica'] },
+  'Psoriasis': { symptoms: ['Escamas plata', 'Piel roja'], causes: ['Autoinmune piel'] },
+  'Hemorroides': { symptoms: ['Bultos ano', 'Sangrado', 'Picazón'], causes: ['Venas hinchadas recto'] },
+  'Ovarios poliquísticos': { symptoms: ['SOP'], causes: ['Quistes ovarios'] },
+  'Obesidad mórbida': { symptoms: ['Obesidad severa riesgo salud'], causes: ['IMC >40'] },
+  'Depresión posparto': { symptoms: ['Llanto', 'Ansiedad', 'Dificultad para conectar con bebé'], causes: ['Cambios hormonales tras parto'] },
+  'Vitiligo': { symptoms: ['Manchas blancas piel'], causes: ['Pérdida pigmento'] },
+  'Síndrome de burnout': { symptoms: ['Quemado laboral'], causes: ['Estrés crónico trabajo'] },
+  'Pie Diabético': { symptoms: ['Úlceras pie', 'Infección'], causes: ['Neuropatía', 'Mala circulación'] },
+  'Osteoartrosis': { symptoms: ['Dolor hueso/articulación'], causes: ['Degeneración'] },
+  'Manchas de la edad': { symptoms: ['Manchas marrones piel'], causes: ['Sol', 'Envejecimiento'] },
+  'Distimia': { symptoms: ['Tristeza crónica leve'], causes: ['Depresión persistente'] },
+  'Conjuntivitis alérgica': { symptoms: ['Ojos llorosos', 'Picazón intensa'], causes: ['Polen', 'Mascotas'] },
+  'Fracturas por compresión o aplastamiento vertebral': { symptoms: ['Dolor espalda súbito', 'Pérdida altura'], causes: ['Osteoporosis'] },
+  'Hipotiroidismo': { symptoms: ['Fatiga', 'Aumento peso', 'Frio'], causes: ['Tiroides lenta'] },
+  'Desgaste de cadera': { symptoms: ['Dolor en ingle/cadera', 'Cojera'], causes: ['Artrosis', 'Edad'] },
+  'Resfriado común': { symptoms: ['Moco', 'Estornudos'], causes: ['Virus (Rinovirus)'] },
+  'Artritis reumatoide': { symptoms: ['Articulaciones sensibles', 'Rigidez matutina'], causes: ['Trastorno autoinmune'] },
+  'Hepatitis': { symptoms: ['Hígado inflamado', 'Ictericia'], causes: ['Virus A, B, C', 'Alcohol'] },
+  'Codo de tenista': { symptoms: ['Dolor en parte externa del codo'], causes: ['Movimientos repetitivos de muñeca'] },
+  'Diabetes tipo 1': { symptoms: ['Pérdida de peso', 'Cetosis'], causes: ['Destrucción autoinmune de células beta'] },
+  'Depresión en los ancianos': { symptoms: ['Confusión', 'Fatiga', 'Problemas de sueño'], causes: ['Soledad', 'Enfermedades crónicas'] },
+  'Preeclampsia': { symptoms: ['Presión alta embarazo', 'Proteína'], causes: ['Placenta', 'Vascular'] },
+  'Sangrado uterino anormal': { symptoms: ['Regla irregular/fuerte'], causes: ['Fibromas', 'Hormonas'] },
+  'Trastorno de adaptación': { symptoms: ['Estrés post-cambio'], causes: ['Dificultad afrontar evento'] },
+  'Urticaria': { symptoms: ['Ronchas rojas pican'], causes: ['Alergia piel'] },
+  'Dolor en la inserción del talón': { symptoms: ['Dolor talón al pisar'], causes: ['Fascitis plantar', 'Espolón'] },
+  'Cálculos renales': { symptoms: ['Dolor severo en espalda/costado', 'Orina turbia'], causes: ['Deshidratación', 'Dieta', 'Genética'] },
+  'Embarazo ectópico': { symptoms: ['Dolor pélvico agudo', 'Sangrado'], causes: ['Óvulo implantado fuera del útero'] },
+  'Dermatitis alérgica': { symptoms: ['Piel roja', 'Picazón', 'Ampollas'], causes: ['Contacto con alérgeno'] },
+  'Cáncer colorrectal': { symptoms: ['Cambios intestinales', 'Sangre en heces'], causes: ['Pólipos', 'Genética', 'Dieta'] },
+  'Asma bronquial': { symptoms: ['Tos', 'Dificultad respiratoria'], causes: ['Inflamación de vías aéreas'] },
+  'Enfermedad de la vesícula biliar': { symptoms: ['Dolor abdominal', 'Indigestión grasa'], causes: ['Cálculos', 'Inflamación'] },
+  'Lesión facial': { symptoms: ['Golpe cara', 'Fractura'], causes: ['Trauma'] },
+  'Heridas': { symptoms: ['Cortes', 'Rasguños'], causes: ['Trauma piel'] },
+  'Esofagitis por reflujo': { symptoms: ['Inflamación esófago por ácido'], causes: ['ERGE'] },
+  'EIP (infección genital femenina)': { symptoms: ['Dolor pélvico', 'Flujo anormal'], causes: ['ETS no tratada'] },
+  'Coronavirus COVID-19': { symptoms: ['Fiebre', 'Tos', 'Pérdida de gusto/olfato'], causes: ['Virus SARS-CoV-2'] },
+  'Coledocolitiasis': { symptoms: ['Dolor', 'Ictericia', 'Heces claras'], causes: ['Cálculo en conducto biliar común'] },
+  'Tumor cerebral en adultos': { symptoms: ['Dolor cabeza', 'Cambios neuro'], causes: ['Cáncer cerebro'] },
+  'Anorexia': { symptoms: ['Pérdida de peso extrema', 'Miedo a engordar'], causes: ['Imagen corporal distorsionada', 'Control'] },
+  'Tendinitis, esguinces articulares': { symptoms: ['Lesión tejido blando'], causes: ['Trauma'] },
+  'Fibromialgia': { symptoms: ['Dolor generalizado', 'Puntos sensibles'], causes: ['Procesamiento dolor alterado'] },
+  'Lunar': { symptoms: ['Mancha piel pigmentada'], causes: ['Cúmulo melanocitos'] },
+  'Queratocono': { symptoms: ['Córnea forma cono'], causes: ['Adelgazamiento córnea'] },
+  'Hemorragia cerebral': { symptoms: ['Dolor cabeza súbito', 'Pérdida conciencia'], causes: ['Sangrado en cerebro'] },
+  'Embarazo en la adolescencia': { symptoms: ['Gestación en <19 años'], causes: ['Actividad sexual sin protección'] },
+  'Enfermedad de los ovarios poliquísticos': { symptoms: ['Irregularidad menstrual', 'Acné'], causes: ['Desequilibrio hormonal'] },
+  'Delgadez': { symptoms: ['IMC bajo', 'Debilidad'], causes: ['Metabolismo', 'Dieta', 'Enfermedad'] },
+  'Colelitiasis': { symptoms: ['Cálculos en vesícula (a veces asintomático)'], causes: ['Colesterol alto', 'Obesidad'] },
+  'Fracturas de cadera': { symptoms: ['Dolor ingle', 'Incapacidad caminar'], causes: ['Caída', 'Hueso débil'] },
+  'Deseo sexual inhibido': { symptoms: ['Falta de libido persistente'], causes: ['Hormonas', 'Relación', 'Estrés'] },
+  'Abuso sexual': { symptoms: ['Miedo', 'Ansiedad', 'Comportamiento sexualizado inapropiado'], causes: ['Acto de violencia perpetrado por un agresor'] },
+  'Osteoartritis': { symptoms: ['Desgaste articular'], causes: ['Artrosis'] },
+  'Glomerulonefritis': { symptoms: ['Sangre orina', 'Espuma orina'], causes: ['Inflamación filtros riñón'] },
+  'Infección urinaria en adultos': { symptoms: ['Cistitis común'], causes: ['E. coli'] },
+  'Fisura anal': { symptoms: ['Dolor cortante al defecar', 'Sangre'], causes: ['Heces duras', 'Trauma'] },
+  'Muelas del juicio': { symptoms: ['Dolor traseros boca'], causes: ['Erupción terceros molares'] },
+  'Intolerancia a la lactosa': { symptoms: ['Gas', 'Diarrea tras lácteos'], causes: ['Falta enzima lactasa'] },
+  'Trastorno de alimentación en la lactancia y en la primera infancia': { symptoms: ['Dificultad comer bebé'], causes: ['Desarrollo', 'Reflujo'] },
+  'Aneurisma cerebral': { symptoms: ['Dolor de cabeza intenso', 'Náuseas', 'Rigidez de cuello'], causes: ['Pared arterial delgada', 'Genética'] },
+  'Síndrome del colon irritable (IBS)': { symptoms: ['Colon irritable'], causes: ['Funcional'] },
+  'Tabaquismo': { symptoms: ['Adicción tabaco'], causes: ['Nicotina'] },
+  'Gigantomastia': { symptoms: ['Senos excesivamente grandes'], causes: ['Crecimiento mamario desproporcionado'] },
+  'Prolapso uterino': { symptoms: ['Útero baja vagina'], causes: ['Suelo pélvico débil'] },
+  'Bocio': { symptoms: ['Hinchazón en el cuello', 'Dificultad para tragar'], causes: ['Deficiencia de yodo', 'Enfermedad de Graves'] },
+  'Celulitis': { symptoms: ['Piel roja', 'Hinchada', 'Caliente'], causes: ['Infección bacteriana en la piel'] },
+  'Parálisis facial': { symptoms: ['Caída de un lado cara'], causes: ['Parálisis Bell', 'Nervio facial'] },
+  'Bulímia': { symptoms: ['Comer en exceso', 'Purga'], causes: ['Factores psicológicos', 'Presión social'] },
+  'Derrame pleural': { symptoms: ['Dolor torácico', 'Tos', 'Falta de aire'], causes: ['Líquido alrededor del pulmón'] },
+  'Hipertensión inducida por el embarazo': { symptoms: ['Presión alta gestacional'], causes: ['Placenta', 'Inmune'] },
+  'Hipoacusia relacionada con la edad': { symptoms: ['Pérdida auditiva gradual'], causes: ['Presbiacusia'] },
+  'Fatiga crónica': { symptoms: ['Cansancio extremo >6 meses'], causes: ['Síndrome de fatiga crónica', 'Viral?'] },
+  'Aflicción': { symptoms: ['Tristeza profunda', 'Llanto', 'Aislamiento'], causes: ['Pérdida significativa', 'Evento traumático'] },
+  'Anomalía dentaria': { symptoms: ['Forma anormal', 'Número incorrecto de dientes'], causes: ['Genética', 'Desarrollo embrionario'] },
+  'Trastorno por atracón': { symptoms: ['Comer mucho sin purga'], causes: ['Ansiedad comida'] },
+  'Trastornos cardiovasculares': { symptoms: ['Enfermedades corazón/vasos'], causes: ['General'] },
+  'Hidrocefalia': { symptoms: ['Cabeza grande (bebé)', 'Presión'], causes: ['Exceso líquido cefalorraquídeo'] },
+  'Displasia cervical': { symptoms: ['Células anormales en cérvix'], causes: ['Infección por VPH'] },
+  'Epicondilitis humeral': { symptoms: ['Dolor codo tenista/golfista'], causes: ['Sobrecarga tendones'] },
+  'Apnea del sueño': { symptoms: ['Ronquidos fuertes', 'Pausas respiratorias', 'Cansancio'], causes: ['Relajación de músculos de garganta'] },
+  'Dermatitis seborreica': { symptoms: ['Caspa', 'Escamas', 'Piel grasa'], causes: ['Hongo Malassezia', 'Exceso de grasa'] },
+  'Enfermedades de la tiroides': { symptoms: ['Cambios de peso', 'Fatiga', 'Frio/Calor'], causes: ['Hipo/Hipertiroidismo'] },
+  'Artrosis': { symptoms: ['Dolor al moverse', 'Rigidez', 'Pérdida de flexibilidad'], causes: ['Desgaste del cartílago', 'Edad'] },
+  'Esguince': { symptoms: ['Dolor ligamento', 'Hinchazón'], causes: ['Torcedura articular'] },
+  'Dolor de espalda inespecífico': { symptoms: ['Dolor sin causa clara en imagen'], causes: ['Tejidos blandos', 'Mecánico'] },
+  'Verrugas genitales': { symptoms: ['Condilomas'], causes: ['VPH mucosas'] },
+  'Alergia a las proteínas de la leche (niño pequeño)': { symptoms: ['Urticaria', 'Vómitos', 'Diarrea con sangre'], causes: ['Reacción inmune a caseína o suero'] },
+  'Gastroenteritis bacteriana con diarrea infecciosa': { symptoms: ['Diarrea severa', 'Fiebre'], causes: ['Salmonella', 'E. coli'] },
+  'Cicatrices de acné': { symptoms: ['Marcas', 'Hoyuelos en la piel'], causes: ['Acné severo', 'Rascarse granos'] },
+  'Lupus': { symptoms: ['Fatiga', 'Dolor articular', 'Erupción mariposa'], causes: ['Enfermedad autoinmune sistémica'] },
+  'Artritis': { symptoms: ['Dolor articular', 'Rigidez', 'Hinchazón'], causes: ['Desgaste', 'Autoinmunidad', 'Infección'] },
+  'Enfermedad inflamatoria pélvica (EIP)': { symptoms: ['Dolor bajo vientre', 'Fiebre'], causes: ['Infección bacteriana útero/trompas'] },
+  'Degeneración macular relacionada con la edad (AMD)': { symptoms: ['Visión borrosa', 'Puntos ciegos'], causes: ['Envejecimiento', 'Genética'] },
+  'Trastorno del espectro autista (TEA)': { symptoms: ['Autismo'], causes: ['Neurodesarrollo'] },
+  'Cáncer del estómago': { symptoms: ['Indigestión', 'Dolor estomacal', 'Pérdida de peso'], causes: ['H. pylori', 'Dieta salada/ahumada'] },
+  'Falla renal crónica': { symptoms: ['Acumulación toxinas', 'Fatiga'], causes: ['Daño renal irreversible'] },
+  'Esterilidad': { symptoms: ['Incapacidad concebir'], causes: ['Problemas esperma/óvulos/trompas'] },
+  'Condiloma acuminado': { symptoms: ['Verrugas en genitales/ano'], causes: ['VPH'] },
+  'Resistencia a la insulina': { symptoms: ['Prediabetes', 'Manchas cuello'], causes: ['Células no responden insulina'] },
+  'Estrabismo': { symptoms: ['Ojos no alineados'], causes: ['Desequilibrio muscular ocular'] },
+  'Trastorno bipolar afectivo': { symptoms: ['Cambios ánimo extremos'], causes: ['Bipolaridad'] },
+  'Apatía sexual': { symptoms: ['Falta de interés sexual', 'Ausencia de fantasías'], causes: ['Estrés', 'Depresión', 'Medicamentos'] },
+  'Acné vulgar': { symptoms: ['Pústulas', 'Nódulos', 'Inflamación'], causes: ['Folículos obstruidos', 'Inflamación', 'Andrógenos'] },
+  'Trastornos del sueño en personas mayores': { symptoms: ['Sueño fragmentado vejez'], causes: ['Cambios ciclo'] },
+  'Desgaste de rodilla': { symptoms: ['Dolor al caminar', 'Crujidos'], causes: ['Osteoartritis', 'Sobrepeso'] },
+  'Labio leporino y paladar hendido': { symptoms: ['Hendidura labio/paladar'], causes: ['Defecto congénito facial'] },
+  'Traumatismo facial': { symptoms: ['Golpe cara'], causes: ['Lesión'] },
+  'EPOC': { symptoms: ['Tos crónica', 'Falta de aire'], causes: ['Enfermedad Pulmonar Obstructiva Crónica', 'Tabaco'] },
+  'Cistitis aguda': { symptoms: ['Dolor pélvico', 'Fiebre baja'], causes: ['Infección de vejiga repentina'] },
+  'Dislexia': { symptoms: ['Dificultad para leer', 'Confundir letras'], causes: ['Diferencias en procesamiento cerebral'] },
+  'Enfermedad fibroquística de las mamas': { symptoms: ['Senos grumosos y dolorosos'], causes: ['Cambios hormonales cíclicos'] },
+  'Enfermedades gastrointestinales': { symptoms: ['Vómitos', 'Diarrea', 'Dolor'], causes: ['Virus', 'Bacterias', 'Dieta'] },
+  'Envejecimiento cutáneo': { symptoms: ['Arrugas', 'Manchas', 'Flacidez'], causes: ['Sol', 'Edad', 'Pérdida colágeno'] },
+  'Escoliosis': { symptoms: ['Columna curvada en S o C'], causes: ['Genética', 'Crecimiento'] },
+  'Ictericia del recién nacido': { symptoms: ['Piel amarilla'], causes: ['Bilirrubina alta', 'Hígado inmaduro'] },
+  'Compresión de la médula espinal': { symptoms: ['Debilidad', 'Pérdida de sensibilidad'], causes: ['Hernia discal', 'Tumor', 'Trauma'] },
+  'Disco roto': { symptoms: ['Dolor de espalda', 'Hormigueo en extremidades'], causes: ['Hernia discal', 'Degeneración'] },
+  'Deshidratación': { symptoms: ['Sed', 'Boca seca', 'Orina oscura'], causes: ['Falta de líquidos', 'Calor', 'Diarrea'] },
+  'Blefaritis': { symptoms: ['Párpados rojos', 'Picazón', 'Costras en pestañas'], causes: ['Bacterias', 'Disfunción de glándulas sebáceas'] },
+  'Dolor post endodoncia': { symptoms: ['Sensibilidad tras tratamiento conducto'], causes: ['Inflamación residual'] },
+  'Dolor oncológico': { symptoms: ['Dolor por tumor o tratamiento'], causes: ['Compresión nerviosa', 'Metástasis'] },
+  'Cáncer de testículos': { symptoms: ['Bulto en testículo', 'Pesadez en escroto'], causes: ['Testículo no descendido', 'Genética'] },
+  'Masas cutáneas de grasa': { symptoms: ['Lipomas (bultos suaves)'], causes: ['Tumor benigno grasa'] },
+  'Presión arterial alta (Hipertensión)': { symptoms: ['Hipertensión'], causes: ['Vascular'] },
+  'Enuresis': { symptoms: ['Mojar la cama'], causes: ['Vejiga inmadura', 'Sueño profundo'] },
+  'Amelogénesis imperfecta': { symptoms: ['Dientes pequeños', 'Decoloración', 'Sensibilidad'], causes: ['Mutación genética en formación de esmalte'] },
+  'Criptorquidia': { symptoms: ['Testículo no palpable en escroto'], causes: ['Fallo en el descenso testicular'] },
+  'Cardiopatía congénita': { symptoms: ['Cianosis', 'Respiración rápida'], causes: ['Desarrollo fetal anormal'] },
+  'Hidrocele': { symptoms: ['Escroto hinchado (líquido)'], causes: ['Acumulación fluido alrededor testículo'] },
+  'Autismo': { symptoms: ['Dificultad social', 'Comportamientos repetitivos'], causes: ['Genética', 'Factores ambientales'] },
+  'Trombosis venosa profunda': { symptoms: ['Coágulo vena pierna'], causes: ['TVP', 'Riesgo embolia'] },
+  'Dolor en la espalda': { symptoms: ['Rigidez', 'Molestia'], causes: ['Sedentarismo', 'Esfuerzo'] },
+  'Hombro congelado': { symptoms: ['Hombro rígido', 'Doloroso'], causes: ['Capsulitis adhesiva'] },
+  'Avulsión dental': { symptoms: ['Diente salido completamente', 'Sangrado'], causes: ['Traumatismo', 'Golpe fuerte'] },
+  'Parálisis cerebral': { symptoms: ['Trastorno movimiento/postura'], causes: ['Daño cerebral infantil'] },
+  'Fractura coronal': { symptoms: ['Diente roto corona'], causes: ['Trauma dental'] },
+  'Obstrucción intestinal': { symptoms: ['No heces/gas', 'Vómitos'], causes: ['Bloqueo intestino'] },
+  'Espondilitis anquilosante': { symptoms: ['Dolor espalda baja', 'Fusión vertebral'], causes: ['Artritis inflamatoria columna'] },
+  'Insuficiencia arterial': { symptoms: ['Mala circulación arterias'], causes: ['Aterosclerosis'] },
+  'Nódulo tiroideo': { symptoms: ['Bulto tiroides'], causes: ['Crecimiento celular', 'Quiste'] },
+  'Trastorno depresivo grave': { symptoms: ['Depresión severa'], causes: ['Clínica'] },
+  'Esclerosis múltiple': { symptoms: ['Fatiga', 'Entumecimiento', 'Problemas visión'], causes: ['Daño mielina sistema nervioso'] },
+  'Síndrome nefrótico': { symptoms: ['Proteína orina', 'Hinchazón'], causes: ['Daño filtro renal'] },
+  'Enfermedad renal': { symptoms: ['Cambios orina', 'Hinchazón'], causes: ['Diabetes', 'Hipertensión'] },
+  'Abuso sexual infantil': { symptoms: ['Pesadillas', 'Cambios de humor', 'Miedo a ciertas personas'], causes: ['Perpetrado por adultos o pares'] },
+  'Quemaduras': { symptoms: ['Daño piel calor/químico'], causes: ['Accidente'] },
+  'Adenoides agrandadas': { symptoms: ['Respiración por la boca', 'Ronquidos', 'Voz nasal'], causes: ['Infección', 'Alergias'] },
+  'Cáncer de piel en célula basal': { symptoms: ['Bulto ceroso', 'Lesión plana marrón'], causes: ['Exposición solar intensa'] },
+  'Cistitis': { symptoms: ['Urgencia urinaria', 'Ardor', 'Orina turbia'], causes: ['Infección bacteriana (E. coli)'] },
+  'Síndrome de dolor miofascial': { symptoms: ['Puntos gatillo músculo'], causes: ['Dolor crónico muscular'] },
+  'Síndrome de caídas': { symptoms: ['Caídas frecuentes ancianos'], causes: ['Equilibrio', 'Vista', 'Debilidad'] },
+  'Lesiones ligamentarias en mano y muñeca': { symptoms: ['Dolor dedo/muñeca'], causes: ['Esguince'] },
+  'Nefritis lúpica': { symptoms: ['Inflamación riñón por lupus'], causes: ['LES'] },
+  'Rechazo al trasplante': { symptoms: ['Cuerpo ataca órgano nuevo'], causes: ['Incompatibilidad inmune'] },
+  'Trastorno límite de la personalidad': { symptoms: ['Inestabilidad emocional', 'Relaciones'], causes: ['TLP', 'Borderline'] },
+  'Alergias a fármacos': { symptoms: ['Erupción cutánea', 'Fiebre', 'Hinchazón'], causes: ['Reacción del sistema inmune al medicamento'] },
+  'Tuberculosis pulmonar': { symptoms: ['Tos sangre', 'Fiebre', 'Sudor'], causes: ['Bacteria TBC'] },
+  'Fibrosis pulmonar': { symptoms: ['Cicatrización pulmón', 'Falta aire'], causes: ['Daño pulmonar', 'Desconocido'] },
+  'Síndrome de Sjogren': { symptoms: ['Ojos/boca secos'], causes: ['Autoinmune glándulas'] },
+  'Ojo rojo': { symptoms: ['Vasos sanguíneos ojo visibles'], causes: ['Irritación', 'Infección'] },
+  'Comportamiento psicótico': { symptoms: ['Delirios', 'Alucinaciones'], causes: ['Esquizofrenia', 'Drogas', 'Trastorno bipolar'] },
+  'Amenorrea primaria': { symptoms: ['Ausencia de menarquia a los 15 años'], causes: ['Problemas genéticos', 'Problemas hormonales'] },
+  'Venas varicosas': { symptoms: ['Venas piernas visibles'], causes: ['Insuficiencia venosa'] },
+  'Linfoma de Hodgkin': { symptoms: ['Ganglios inflamados'], causes: ['Cáncer linfático'] },
+  'Dermatomiositis': { symptoms: ['Debilidad muscular', 'Erupción cutánea'], causes: ['Enfermedad inflamatoria rara'] },
+  'Enfermedad de Meniere': { symptoms: ['Vértigo', 'Zumbidos', 'Pérdida auditiva'], causes: ['Líquido en oído interno'] },
+  'Acalasia': { symptoms: ['Dificultad para tragar', 'Regurgitación', 'Dolor torácico'], causes: ['Daño en nervios del esófago', 'Pérdida de peristaltismo'] },
+  'Alta miopía': { symptoms: ['Visión borrosa lejana severa', 'Fatiga ocular'], causes: ['Globo ocular alargado', 'Genética'] },
+  'Infección aguda del oído': { symptoms: ['Dolor oído repentino'], causes: ['Otitis media aguda'] },
+  'Esofagitis': { symptoms: ['Dolor al tragar', 'Ardor'], causes: ['Reflujo', 'Infección', 'Pastillas'] },
+  'Trastorno de identidad de género': { symptoms: ['Disforia género'], causes: ['Incongruencia género-sexo'] },
+  'Cuello torcido': { symptoms: ['Cabeza inclinada', 'Dolor de cuello'], causes: ['Espasmo muscular', 'Tortícolis'] },
+  'Trauma ocular': { symptoms: ['Golpe ojo'], causes: ['Accidente'] },
+  'Melanoma': { symptoms: ['Cáncer piel agresivo', 'Lunar irregular'], causes: ['UV', 'Genética'] },
+  'Erosión Dental': { symptoms: ['Pérdida esmalte', 'Sensibilidad'], causes: ['Ácidos gástricos o dietéticos'] },
+  'Derrame cerebral': { symptoms: ['Parálisis', 'Habla arrastrada'], causes: ['Interrupción flujo sanguíneo cerebral'] },
+  'Adenomiosis': { symptoms: ['Sangrado menstrual abundante', 'Dolor pélvico'], causes: ['Crecimiento de tejido endometrial en el músculo uterino'] },
+  'Trastorno del sueño por ansiedad': { symptoms: ['No dormir por preocupación'], causes: ['Ansiedad nocturna'] },
+  'Absceso anal': { symptoms: ['Dolor constante y punzante', 'Hinchazón cerca del ano', 'Fiebre'], causes: ['Glándula anal infectada', 'Fisura anal'] },
+  'Enfermedad celíaca (esprúe)': { symptoms: ['Diarrea', 'Hinchazón por gluten'], causes: ['Reacción autoinmune al gluten'] },
+  'Insuficiencia renal aguda': { symptoms: ['Fallo renal rápido'], causes: ['Shock', 'Obstrucción'] },
+  'Cerumen (cera del oído)': { symptoms: ['Pérdida auditiva', 'Sensación de tapón'], causes: ['Producción excesiva', 'Uso de hisopos'] },
+  'Cáncer de cabeza y cuello': { symptoms: ['Bulto o llaga que no cura', 'Dolor de garganta'], causes: ['Alcohol', 'Tabaco', 'VPH'] },
+  'Intolerancia al gluten': { symptoms: ['Malestar tras comer trigo'], causes: ['Sensibilidad no celíaca'] },
+  'Juanetes': { symptoms: ['Bulto base dedo gordo pie'], causes: ['Hallux valgus', 'Calzado'] },
+  'Infección del oído': { symptoms: ['Otitis'], causes: ['Virus/Bacterias'] },
+  'Presbicia': { symptoms: ['Vista cansada (cerca)'], causes: ['Endurecimiento cristalino edad'] },
+  'Fistula dental o en encía': { symptoms: ['Grano en encía', 'Drenaje pus'], causes: ['Absceso crónico'] },
+  'Hipercolesterolemia familiar': { symptoms: ['Colesterol muy alto desde joven'], causes: ['Defecto genético receptor LDL'] },
+  'Espondiloartropatía': { symptoms: ['Dolor articular y columna'], causes: ['Grupo de enfermedades inflamatorias'] },
+  'Insuficiencia renal': { symptoms: ['Fallo función renal'], causes: ['Aguda o crónica'] },
+  'Insuficiencia aguda del riñón': { symptoms: ['Riñones dejan de filtrar de golpe'], causes: ['Deshidratación', 'Tóxicos'] },
+  'Enfermedad renal terminal': { symptoms: ['Fallo total riñón', 'Necesidad diálisis'], causes: ['Daño renal progresivo'] },
+  'Tenosinovitis': { symptoms: ['Inflamación vaina tendón'], causes: ['Movimiento repetitivo'] },
+  'Enfermedad inflamatoria intestinal': { symptoms: ['Diarrea crónica', 'Dolor', 'Pérdida peso'], causes: ['Crohn', 'Colitis ulcerosa'] },
+  'Dislalia': { symptoms: ['Dificultad para pronunciar sonidos'], causes: ['Problemas funcionales u orgánicos'] },
+  'Bursitis epitroclear': { symptoms: ['Dolor en el codo', 'Sensibilidad'], causes: ['Uso excesivo del codo', 'Trauma'] },
+  'Amenorrea secundaria': { symptoms: ['Cese de la menstruación por 3+ meses'], causes: ['Embarazo', 'Estrés', 'Pérdida de peso'] },
+  'Infarto cerebral': { symptoms: ['Muerte tejido cerebral'], causes: ['Ictus', 'Falta oxígeno'] },
+  'Cáncer de endometrio': { symptoms: ['Sangrado vaginal anormal'], causes: ['Desequilibrio hormonal', 'Obesidad'] },
+  'Insuficiencia crónica del riñón': { symptoms: ['Daño renal lento'], causes: ['ERC'] },
+  'Mieloma múltiple': { symptoms: ['Cáncer células plasmáticas hueso'], causes: ['Dolor óseo', 'Anemia'] },
+  'Nariz bulbosa': { symptoms: ['Rinofima (nariz grande roja)'], causes: ['Rosácea avanzada'] },
+  'Control de emociones': { symptoms: ['Dificultad para regular ira/llanto'], causes: ['TDAH', 'Trastornos del estado de ánimo'] },
+  'Pancreatitis aguda': { symptoms: ['Dolor abdominal súbito y severo'], causes: ['Enzimas atacan páncreas'] },
+  'Accidente cerebrovascular isquémico': { symptoms: ['Debilidad en un lado', 'Dificultad para hablar'], causes: ['Coágulo de sangre', 'Estrechamiento arterial'] },
+  'Inestabilidad Glenohumeral': { symptoms: ['Hombro se sale', 'Sensación suelto'], causes: ['Luxación recidivante'] },
+  'Litiasis renal': { symptoms: ['Piedras riñón'], causes: ['Minerales orina'] },
+  'Insomnio crónico': { symptoms: ['Problemas sueño >3 meses'], causes: ['Hábito', 'Ansiedad'] },
+  'Taquicardia': { symptoms: ['Corazón rápido >100'], causes: ['Estrés', 'Corazón', 'Fiebre'] },
+  'Leucemia': { symptoms: ['Cáncer sangre', 'Fatiga', 'Infecciones'], causes: ['Glóbulos blancos anormales'] },
+  'Drogadicción': { symptoms: ['Búsqueda compulsiva de drogas'], causes: ['Dependencia química'] },
+  'Acidez': { symptoms: ['Ardor en el pecho', 'Sabor amargo en la garganta'], causes: ['Comidas picantes', 'Hernia de hiato', 'Embarazo'] },
+  'Contractura de Dupuytren': { symptoms: ['Dedos doblados hacia palma', 'Nódulos'], causes: ['Engrosamiento del tejido palmar'] },
+  'Insuficiencia venosa crónica': { symptoms: ['Varices', 'Piernas hinchadas'], causes: ['Válvulas venosas fallan'] },
+  'Hipoacusia en bebés': { symptoms: ['No responde sonidos'], causes: ['Congénito', 'Infección'] },
+  'Trastornos en la alimentación del anciano': { symptoms: ['No comer vejez'], causes: ['Apetito', 'Dentadura'] },
+  'Lesión cerebral en bebés': { symptoms: ['Retraso desarrollo'], causes: ['Falta oxígeno', 'Trauma'] },
+  'Artritis psoriásica': { symptoms: ['Dolor articular', 'Parches de piel', 'Dedos hinchados'], causes: ['Psoriasis', 'Sistema inmune'] },
+  'Linfoma no Hodgkin': { symptoms: ['Cáncer linfático tipo B o T'], causes: ['Mutación linfocitos'] },
+  'Ausencia de la menstruación': { symptoms: ['Falta de periodo'], causes: ['Embarazo', 'Menopausia', 'Bajo peso'] },
+  'Infección aguda de las vías urinarias (IVU aguda)': { symptoms: ['Ardor orinar', 'Frecuencia'], causes: ['Bacterias tracto urinario'] },
+  'Orzuelo': { symptoms: ['Bulto rojo párpado'], causes: ['Infección glándula pestaña'] },
+  'Dentición': { symptoms: ['Encías inflamadas', 'Babeo', 'Irritabilidad'], causes: ['Dientes rompiendo encía'] },
+  'Hipertensión pulmonar': { symptoms: ['Presión alta en arterias pulmón'], causes: ['Corazón', 'Pulmón'] },
+  'Trastornos de la voz': { symptoms: ['Disfonía'], causes: ['Cuerdas vocales'] },
+  'Parálisis espástica': { symptoms: ['Músculos rígidos y tensos'], causes: ['Daño vía motora'] },
+  'Pinzamiento Subacromial': { symptoms: ['Dolor hombro al elevar'], causes: ['Compresión tendones'] },
+  'Trastornos por inmunodeficiencia': { symptoms: ['Infecciones frecuentes'], causes: ['Sistema inmune bajo'] },
+  'Niveles elevados de colesterol y triglicéridos': { symptoms: ['Riesgo cardiovascular'], causes: ['Dislipidemia'] },
+  'Estenosis aórtica': { symptoms: ['Soplo', 'Dolor pecho'], causes: ['Estrechamiento válvula aórtica'] },
+  'Hipotiroidismo en adultos': { symptoms: ['Piel seca', 'Estreñimiento'], causes: ['Hashimoto', 'Tratamiento previo'] },
+  'Síndrome de dificultad respiratoria en neonatos': { symptoms: ['Pulmón inmaduro bebé'], causes: ['Falta surfactante'] },
+  'Síndrome del túnel carpiano': { symptoms: ['Mano dormida'], causes: ['Nervio mediano atrapado'] },
+  'Atrofia muscular espinal': { symptoms: ['Debilidad muscular', 'Problemas para tragar'], causes: ['Defecto genético (gen SMN1)'] },
+  'Trastornos asociados con el vértigo': { symptoms: ['Mareo rotatorio'], causes: ['Oído interno', 'Cerebro'] },
+  'Bronconeumonía': { symptoms: ['Tos con moco', 'Fiebre', 'Falta de aire'], causes: ['Infección bacteriana o viral'] },
+  'Tumor cerebral en niños': { symptoms: ['Cáncer cerebro infantil'], causes: ['Desarrollo'] },
+  'Degeneración macular': { symptoms: ['Pérdida de visión central'], causes: ['Daño en retina', 'Edad'] },
+  'Agujero macular': { symptoms: ['Visión central borrosa', 'Distorsión visual'], causes: ['Envejecimiento', 'Tracción vítrea', 'Trauma ocular'] },
+  'Aneurisma': { symptoms: ['Dolor repentino severo (si rompe)', 'Visión doble'], causes: ['Debilidad en pared arterial', 'Hipertensión'] },
+  'Asimetría facial': { symptoms: ['Lados de la cara desiguales'], causes: ['Genética', 'Trauma', 'Parálisis', 'Desarrollo'] },
+  'Herpes zóster (culebrilla)': { symptoms: ['Erupción dolorosa en banda'], causes: ['Reactivación virus varicela'] },
+  'Abuso del alcohol': { symptoms: ['Deseo incontrolable de beber', 'Negligencia de responsabilidades'], causes: ['Genética', 'Factores ambientales', 'Salud mental'] },
+  'Esclerodermia': { symptoms: ['Piel dura y tensa'], causes: ['Autoinmune', 'Exceso colágeno'] },
+  'Falta de fluidez en el lenguaje': { symptoms: ['Tartamudeo', 'Bloqueos'], causes: ['Neurológico', 'Desarrollo'] },
+  'Insomnio psicofisiológico (aprendido)': { symptoms: ['Ansiedad por dormir'], causes: ['Asociación cama-vigilia'] },
+  'Fluorosis': { symptoms: ['Manchas blancas/marrones dientes'], causes: ['Exceso flúor en desarrollo'] },
+  'Miastenia grave': { symptoms: ['Debilidad muscular fluctuante'], causes: ['Fallo comunicación nervio-músculo'] },
+  'Coágulo en las piernas': { symptoms: ['Hinchazón', 'Dolor', 'Calor'], causes: ['Inmovilidad', 'Cirugía', 'Genética'] },
+  'Adherencias': { symptoms: ['Dolor pélvico o abdominal', 'Obstrucción intestinal'], causes: ['Cirugías previas', 'Infección', 'Endometriosis'] },
+  'Coagulopatía': { symptoms: ['Sangrado excesivo', 'Moretones'], causes: ['Deficiencia de factores de coagulación'] },
+  'Psicosis': { symptoms: ['Pérdida contacto realidad'], causes: ['Mental'] },
+  'Estenosis pilórica': { symptoms: ['Vómitos proyectivos (bebés)'], causes: ['Engrosamiento músculo píloro'] },
+  'Dolor de rodilla': { symptoms: ['Dolor al cargar peso', 'Hinchazón'], causes: ['Lesión', 'Artritis'] },
+  'Púrpura trombocitopénica idiopática (ITP)': { symptoms: ['Moretones', 'Plaquetas bajas'], causes: ['Inmune destruye plaquetas'] },
+  'Postura jorobada': { symptoms: ['Cifosis dorsal'], causes: ['Columna curvada'] },
+  'Tapón de cerumen': { symptoms: ['Oído tapado'], causes: ['Cera impactada'] },
+  'Violencia de género': { symptoms: ['Daño físico/psicológico pareja'], causes: ['Problema social/relacional'] },
+  'Varicela': { symptoms: ['Ampollas pican', 'Fiebre'], causes: ['Virus varicela-zóster'] },
+  'Queratoglobo': { symptoms: ['Córnea adelgazada y globosa'], causes: ['Raro, congénito'] },
+  'Accidente cerebrovascular': { symptoms: ['Entumecimiento repentino', 'Confusión', 'Problemas de visión'], causes: ['Bloqueo arterial', 'Ruptura de vaso sanguíneo'] },
+  'Úlcera gastroduodenal aguda': { symptoms: ['Dolor estómago', 'Sangrado'], causes: ['Ácido', 'H. pylori'] },
+  'Rodilla vara': { symptoms: ['Piernas en paréntesis'], causes: ['Genu varum'] },
+  'Dependencia del alcohol': { symptoms: ['Tolerancia', 'Abstinencia'], causes: ['Uso crónico', 'Neurobiología'] },
+  'Gota aguda': { symptoms: ['Dolor dedo gordo pie', 'Rojo', 'Caliente'], causes: ['Cristales ácido úrico'] },
+  'Absceso del ano y el recto': { symptoms: ['Dolor rectal', 'Hinchazón', 'Enrojecimiento'], causes: ['Infección bacteriana', 'Obstrucción de glándulas'] },
+  'Enfermedades y dolor crónico': { symptoms: ['Dolor persistente >3 meses'], causes: ['Artritis', 'Fibromialgia', 'Neuropatía'] },
+  'Rosácea': { symptoms: ['Cara roja', 'Vasos visibles'], causes: ['Piel sensible', 'Inflamación'] },
+  'Pie equino varo': { symptoms: ['Pie girado hacia dentro (bebé)'], causes: ['Congénito'] },
+  'Enfermedades renales': { symptoms: ['Edema', 'Fatiga'], causes: ['Daño nefronas'] },
+  'Trastornos de lenguaje': { symptoms: ['Problemas hablar/entender'], causes: ['Neurológico', 'Desarrollo'] },
+  'Agrandamiento de la próstata': { symptoms: ['Micción frecuente', 'Flujo débil', 'Dificultad para empezar'], causes: ['Envejecimiento', 'Cambios hormonales'] },
+  'Síndrome de Down': { symptoms: ['Rasgos faciales, retraso'], causes: ['Trisomía 21'] },
+  'Convulsiones febriles': { symptoms: ['Convulsión en fiebre'], causes: ['Fiebre alta rápida'] },
+  'Divertículo de Meckel': { symptoms: ['Sangrado rectal indoloro (niños)'], causes: ['Resto de tejido embrionario'] },
+  'Traumatismo dental': { symptoms: ['Golpe diente'], causes: ['Lesión'] },
+  'Cáncer': { symptoms: ['Bultos', 'Pérdida de peso', 'Fatiga'], causes: ['Mutaciones ADN', 'Tabaco', 'Radiación'] },
+  'Dolor de cabeza': { symptoms: ['Dolor pulsátil o presivo'], causes: ['Tensión', 'Deshidratación', 'Migraña'] },
+  'Úlceras e infecciones corneales': { symptoms: ['Dolor ocular severo', 'Enrojecimiento', 'Sensación de cuerpo extraño'], causes: ['Uso de lentes de contacto', 'Infecciones bacterianas o virales', 'Traumatismos'] },
+  'Cervicitis': { symptoms: ['Flujo vaginal anormal', 'Dolor pélvico', 'Sangrado entre periodos'], causes: ['Infecciones de transmisión sexual (ETS)', 'Alergias', 'Irritación química'] },
+  'Flebitis': { symptoms: ['Enrojecimiento a lo largo de una vena', 'Calor en la zona', 'Dolor y sensibilidad'], causes: ['Catéteres intravenosos', 'Inmovilidad prolongada', 'Varices'] },
+  'Crisis respiratoria en recién nacidos': { symptoms: ['Respiración rápida', 'Quejidos al respirar', 'Piel azulada (cianosis)'], causes: ['Pulmones inmaduros (falta de surfactante)', 'Infecciones', 'Aspiración de meconio'] },
+  'Fimosis': { symptoms: ['Dificultad para retraer el prepucio', 'Dolor al orinar', 'Inflamación'], causes: ['Congénita', 'Infecciones repetidas', 'Cicatrización'] },
+  'Bursitis retrocalcánea': { symptoms: ['Dolor en el talón', 'Hinchazón en la parte posterior del tobillo', 'Enrojecimiento'], causes: ['Uso de zapatos ajustados', 'Correr excesivamente', 'Artritis'] },
+  'Osteoporosis por Climaterio': { symptoms: ['Dolor de espalda', 'Pérdida de estatura', 'Fracturas óseas fáciles'], causes: ['Disminución de estrógenos', 'Menopausia', 'Edad avanzada'] },
+  'Tristeza': { symptoms: ['Llanto', 'Desánimo', 'Retraimiento social'], causes: ['Eventos vitales difíciles', 'Pérdidas', 'Decepción'] },
+  'Ronquido': { symptoms: ['Ruido fuerte al dormir', 'Boca seca al despertar', 'Sueño inquieto'], causes: ['Obstrucción nasal', 'Obesidad', 'Apnea del sueño'] },
+  'Dependencia emocional': { symptoms: ['Miedo excesivo a la soledad', 'Sumisión', 'Baja autoestima'], causes: ['Carencias afectivas en la infancia', 'Inseguridad', 'Creencias limitantes'] },
+  'Trastornos de las glándulas salivales': { symptoms: ['Boca seca', 'Hinchazón en cara/cuello', 'Mal sabor de boca'], causes: ['Cálculos salivales', 'Infecciones (paperas)', 'Tumores'] },
+  'Fibroadenoma de mama': { symptoms: ['Bulto indoloro en el seno', 'Móvil y firme', 'Bordes bien definidos'], causes: ['Hormonas reproductivas', 'Embarazo', 'Lactancia'] },
+  'Reducción de grasa (adiposidades)': { symptoms: ['Acumulación de grasa localizada', 'Aumento de volumen'], causes: ['Genética', 'Dieta calórica', 'Sedentarismo'] },
+  'Anemia ferropénica en niños': { symptoms: ['Palidez', 'Fatiga', 'Falta de apetito'], causes: ['Dieta baja en hierro', 'Crecimiento rápido', 'Problemas de absorción'] },
+  'Cardiopatías': { symptoms: ['Dolor de pecho', 'Falta de aire', 'Fatiga'], causes: ['Defectos congénitos', 'Enfermedad coronaria', 'Infecciones'] },
+  'Dermatitis por contacto': { symptoms: ['Erupción roja', 'Picazón intensa', 'Ampollas'], causes: ['Contacto con alérgenos (hiedra, níquel)', 'Irritantes (jabones)'] },
+  'Demencia vascular': { symptoms: ['Confusión', 'Dificultad para planificar', 'Lentitud de pensamiento'], causes: ['Accidente cerebrovascular', 'Daño en vasos sanguíneos cerebrales'] },
+  'Deseo sexual hipoactivo': { symptoms: ['Falta de interés sexual recurrente', 'Ausencia de fantasías'], causes: ['Estrés', 'Problemas de pareja', 'Desequilibrios hormonales'] },
+  'Aversión al sexo': { symptoms: ['Evitación extrema del contacto sexual', 'Ansiedad o pánico ante el sexo'], causes: ['Traumas sexuales previos', 'Educación restrictiva', 'Trastornos de ansiedad'] },
+  'Insuficiencia venosa': { symptoms: ['Hinchazón en piernas', 'Venas varicosas', 'Dolor o pesadez'], causes: ['Válvulas venosas dañadas', 'Trombosis previa', 'Edad'] },
+  'Pérdida auditiva relacionada con la edad': { symptoms: ['Dificultad para oír en ruido', 'Zumbidos', 'Voces suenan apagadas'], causes: ['Envejecimiento (presbiacusia)', 'Exposición crónica al ruido'] },
+  'Cardiomiopatía dilatada': { symptoms: ['Fatiga', 'Falta de aire', 'Hinchazón de piernas'], causes: ['Genética', 'Alcoholismo', 'Infecciones virales'] },
+  'Tumores o protuberancias en las mamas': { symptoms: ['Bulto palpable', 'Cambios en la piel del seno', 'Secreción'], causes: ['Quistes', 'Fibroadenomas', 'Cáncer'] },
+  'Dedos en garra': { symptoms: ['Dedos del pie doblados hacia abajo', 'Callos', 'Dolor'], causes: ['Zapatos inadecuados', 'Daño nervioso', 'Artritis'] },
+  'Anemia por deficiencia de hierro en los niños': { symptoms: ['Cansancio', 'Irritabilidad', 'Piel pálida'], causes: ['Ingesta insuficiente de hierro', 'Crecimiento rápido'] },
+  'Estreñimiento en niños': { symptoms: ['Heces duras y secas', 'Dolor al defecar', 'Menos de 3 deposiciones por semana'], causes: ['Retención voluntaria', 'Dieta baja en fibra', 'Cambios en la rutina'] },
+  'Influenza': { symptoms: ['Fiebre alta', 'Dolor muscular', 'Tos seca', 'Fatiga'], causes: ['Virus de la influenza (A o B)'] },
+  'Cifoescoliosis': { symptoms: ['Curvatura anormal de la columna', 'Joroba', 'Dolor de espalda'], causes: ['Congénita', 'Enfermedades neuromusculares', 'Envejecimiento'] },
+  'Estenosis mitral': { symptoms: ['Falta de aire', 'Fatiga', 'Pies hinchados'], causes: ['Fiebre reumática', 'Depósitos de calcio'] },
+  'Enfermedad cerebrovascular': { symptoms: ['Debilidad repentina', 'Problemas de habla', 'Pérdida de visión'], causes: ['Bloqueo arterial (isquemia)', 'Ruptura arterial (hemorragia)'] },
+  'Trombocitopenia': { symptoms: ['Moretones fáciles', 'Sangrado prolongado', 'Puntos rojos en la piel'], causes: ['Leucemia', 'Problemas inmunes', 'Medicamentos'] },
+  'Alopecia en hombres': { symptoms: ['Retroceso de la línea del cabello', 'Calvicie en la coronilla'], causes: ['Genética', 'Hormonas (DHT)', 'Edad'] },
+  'Absceso de Bartolino': { symptoms: ['Bulto doloroso en la abertura vaginal', 'Fiebre', 'Dolor al caminar'], causes: ['Infección bacteriana', 'Obstrucción de la glándula'] },
+  'Trastorno de oposición desafiante': { symptoms: ['Irritabilidad frecuente', 'Desafío a la autoridad', 'Venganza'], causes: ['Factores genéticos', 'Ambiente familiar disfuncional'] },
+  'Uveítis': { symptoms: ['Ojo rojo', 'Dolor ocular', 'Visión borrosa'], causes: ['Infección', 'Enfermedad autoinmune', 'Trauma'] },
+  'Edema macular': { symptoms: ['Visión borrosa o ondulada', 'Colores desvanecidos'], causes: ['Diabetes', 'Cirugía ocular', 'Inflamación'] },
+  'Atresia esofágica': { symptoms: ['Babeo excesivo', 'Ahogo al alimentar', 'Cianosis'], causes: ['Defecto congénito del desarrollo del esófago'] },
+  'Peritonitis': { symptoms: ['Dolor abdominal intenso', 'Abdomen rígido', 'Fiebre'], causes: ['Perforación intestinal', 'Apendicitis rota', 'Infección'] },
+  'Angina inestable': { symptoms: ['Dolor de pecho inesperado', 'No mejora con reposo'], causes: ['Obstrucción parcial de arterias coronarias', 'Coágulos'] },
+  'Colitis ulcerosa': { symptoms: ['Diarrea con sangre', 'Dolor abdominal', 'Urgencia para defecar'], causes: ['Respuesta inmune anormal', 'Genética'] },
+  'Tumor nasal': { symptoms: ['Congestión nasal de un lado', 'Sangrado nasal frecuente', 'Pérdida de olfato'], causes: ['Exposición a químicos', 'VPH', 'Tabaquismo'] },
+  'Abuso de drogas y farmacodependencia': { symptoms: ['Necesidad compulsiva de consumir', 'Tolerancia', 'Abstinencia'], causes: ['Factores genéticos', 'Presión social', 'Problemas de salud mental'] },
+  'Dolor de nervio o dolor nervioso': { symptoms: ['Sensación de quemazón', 'Hormigueo', 'Dolor punzante'], causes: ['Diabetes', 'Lesiones', 'Infecciones (culebrilla)'] },
+  'Trastornos hormonales': { symptoms: ['Aumento de peso', 'Fatiga', 'Cambios de humor', 'Acné'], causes: ['Problemas de tiroides', 'Diabetes', 'Pubertad/Menopausia'] },
+  'Retraso del desarrollo': { symptoms: ['Tardar en hablar o caminar', 'Problemas de aprendizaje'], causes: ['Genética', 'Problemas durante el embarazo', 'Parto prematuro'] },
+  'Amenaza de aborto espontáneo': { symptoms: ['Sangrado vaginal', 'Calambres abdominales'], causes: ['Anomalías cromosómicas', 'Problemas hormonales', 'Infecciones'] },
+  'Malabsorción': { symptoms: ['Diarrea crónica', 'Heces grasosas', 'Pérdida de peso'], causes: ['Enfermedad celíaca', 'Intolerancia a la lactosa', 'Fibrosis quística'] },
+  'Trastorno del desarrollo de la lectura': { symptoms: ['Dificultad para leer', 'Problemas para deletrear'], causes: ['Diferencias en el procesamiento cerebral (Dislexia)'] },
+  'Discapacidad intelectual': { symptoms: ['Retraso en hitos del desarrollo', 'Dificultad para resolver problemas'], causes: ['Genética', 'Problemas durante el embarazo', 'Enfermedades'] },
+  'Enfermedad vascular periférica': { symptoms: ['Dolor en piernas al caminar', 'Entumecimiento', 'Frío en extremidades'], causes: ['Aterosclerosis', 'Diabetes', 'Tabaquismo'] },
+  'Incontinencia fecal': { symptoms: ['Pérdida involuntaria de heces'], causes: ['Daño muscular o nervioso', 'Estreñimiento crónico', 'Cirugía'] },
+  'Parálisis del nervio facial': { symptoms: ['Caída de un lado de la cara', 'Dificultad para cerrar el ojo'], causes: ['Infección viral (Parálisis de Bell)', 'Trauma', 'Tumor'] },
+  'Celiaquía': { symptoms: ['Diarrea', 'Hinchazón', 'Fatiga', 'Pérdida de peso'], causes: ['Reacción inmune al gluten', 'Genética'] },
+  'Fractura de la pelvis': { symptoms: ['Dolor en la ingle o cadera', 'Incapacidad para caminar'], causes: ['Traumatismo de alta energía (accidentes)', 'Caídas en ancianos'] },
+  'Ambliopía': { symptoms: ['Ojo vago', 'Mala percepción de profundidad'], causes: ['Estrabismo', 'Errores de refracción no corregidos'] },
+  'Síndrome de dolor regional complejo': { symptoms: ['Dolor intenso y continuo', 'Cambios en la temperatura y color de la piel'], causes: ['Lesión nerviosa', 'Traumatismo', 'Cirugía'] },
+  'Hemofilia': { symptoms: ['Sangrado excesivo', 'Sangrado en articulaciones', 'Moretones grandes'], causes: ['Defecto genético en factores de coagulación'] },
+  'Síndrome del intestino corto': { symptoms: ['Diarrea', 'Desnutrición', 'Pérdida de peso'], causes: ['Extirpación quirúrgica de gran parte del intestino'] },
+  'Infección crónica de los senos paranasales': { symptoms: ['Congestión nasal prolongada', 'Dolor facial', 'Secreción espesa'], causes: ['Pólipos nasales', 'Desviación de tabique', 'Alergias'] },
+  'Síncope': { symptoms: ['Desmayo', 'Mareo previo', 'Visión borrosa'], causes: ['Bajada de presión', 'Problemas cardíacos', 'Estrés'] },
+  'Fractura de antebrazo': { symptoms: ['Dolor intenso', 'Deformidad', 'Hinchazón'], causes: ['Caídas sobre el brazo extendido', 'Golpes directos'] },
+  'Obesidad infantil': { symptoms: ['Peso muy por encima del promedio', 'Fatiga'], causes: ['Dieta calórica', 'Sedentarismo', 'Genética'] },
+  'Aborto incompleto': { symptoms: ['Sangrado vaginal intenso', 'Dolor abdominal fuerte', 'Tejido retenido'], causes: ['Anomalías cromosómicas', 'Fallo en la expulsión total'] },
+  'Agrandamiento de adenoides': { symptoms: ['Respiración por la boca', 'Ronquidos', 'Infecciones de oído frecuentes'], causes: ['Infecciones repetidas', 'Alergias'] },
+  'Hidrocele de la túnica vaginal del testículo (proceso vaginal)': { symptoms: ['Hinchazón indolora del escroto'], causes: ['Acumulación de líquido', 'Persistencia del conducto peritoneo-vaginal'] },
+  'Gingivitis ulceronecrosante aguda': { symptoms: ['Encías dolorosas y sangrantes', 'Úlceras', 'Mal aliento'], causes: ['Mala higiene', 'Estrés', 'Tabaco', 'Inmunodepresión'] },
+  'Estenosis de la válvula aórtica': { symptoms: ['Dolor de pecho', 'Desmayos', 'Falta de aire'], causes: ['Calcificación por edad', 'Fiebre reumática', 'Defecto congénito'] },
+  'Dolor somático': { symptoms: ['Dolor localizado en piel, músculo o hueso', 'Aumenta con el movimiento'], causes: ['Traumatismo', 'Inflamación', 'Quemaduras'] },
+  'Adherencia intraperitoneal': { symptoms: ['Dolor abdominal crónico', 'Obstrucción intestinal'], causes: ['Cirugías abdominales previas', 'Infección'] },
+  'Candidiasis vaginal': { symptoms: ['Picazón intensa', 'Flujo blanco y espeso', 'Ardor'], causes: ['Hongo Candida albicans', 'Antibióticos', 'Diabetes'] },
+  'Infección de las vías urinarias (IVU) en adultos': { symptoms: ['Ardor al orinar', 'Necesidad frecuente de orinar', 'Orina turbia'], causes: ['Bacterias (E. coli)', 'Actividad sexual', 'Retención urinaria'] },
+  'El tartamudeo y los niños': { symptoms: ['Repetición de sonidos', 'Bloqueos al hablar', 'Tensión facial'], causes: ['Genética', 'Diferencias en el procesamiento del lenguaje'] },
+  'Cálculos en el tracto urinario': { symptoms: ['Dolor severo en espalda/costado', 'Sangre en orina'], causes: ['Deshidratación', 'Exceso de minerales en orina'] },
+  'Ano imperforado': { symptoms: ['Ausencia de orificio anal', 'Ausencia de meconio'], causes: ['Defecto congénito del desarrollo'] },
+  'Neuronitis vestibular': { symptoms: ['Vértigo severo repentino', 'Náuseas', 'Pérdida de equilibrio'], causes: ['Infección viral del nervio vestibular'] },
+  'Falla cardíaca': { symptoms: ['Falta de aire', 'Fatiga', 'Hinchazón de piernas'], causes: ['Enfermedad coronaria', 'Hipertensión', 'Ataque cardíaco previo'] },
+  'Dedo del pie en martillo': { symptoms: ['Dedo doblado hacia abajo', 'Callos en la articulación'], causes: ['Zapatos ajustados', 'Desequilibrio muscular'] },
+  'Hipocondría': { symptoms: ['Miedo excesivo a tener una enfermedad grave', 'Revisión constante del cuerpo'], causes: ['Ansiedad', 'Experiencias pasadas', 'Rasgos de personalidad'] },
+  'Desregulación disruptiva del estado de ánimo': { symptoms: ['Arranques de ira frecuentes', 'Irritabilidad crónica'], causes: ['Problemas neurobiológicos', 'Factores ambientales'] },
+  'Trastorno de pánico con agorafobia': { symptoms: ['Ataques de pánico', 'Miedo a lugares públicos'], causes: ['Ansiedad severa', 'Genética', 'Trauma'] },
+  'Obstrucción del conducto lagrimal': { symptoms: ['Ojo lloroso', 'Legañas', 'Infección ocular'], causes: ['Membrana no abierta al nacer', 'Infección', 'Lesión'] },
+  'Capsulitis adhesiva': { symptoms: ['Hombro rígido y doloroso', 'Movimiento limitado'], causes: ['Inmovilización prolongada', 'Diabetes', 'Trauma'] },
+  'Sordera': { symptoms: ['Pérdida total o parcial de la audición'], causes: ['Genética', 'Enfermedad', 'Trauma acústico', 'Edad'] },
+  'Dolor terminal': { symptoms: ['Dolor severo en etapas finales de enfermedad'], causes: ['Cáncer avanzado', 'Fallo orgánico'] },
+  'Síndrome del intestino irritable': { symptoms: ['Dolor abdominal', 'Gases', 'Diarrea o estreñimiento'], causes: ['Intestino sensible', 'Estrés', 'Alimentación'] },
+  'Hiperhidrosis': { symptoms: ['Sudoración excesiva e impredecible'], causes: ['Genética', 'Nervios hiperactivos', 'Medicamentos'] },
+  'Displasia del desarrollo de la cadera': { symptoms: ['Piernas de diferente largo', 'Cojera', 'Click en la cadera'], causes: ['Posición en el útero', 'Genética', 'Primer embarazo'] },
+  'Lesión corneal': { symptoms: ['Dolor en el ojo', 'Sensibilidad a la luz', 'Lagrimeo'], causes: ['Rasguños', 'Cuerpos extraños', 'Lentes de contacto'] },
+  'Absceso periamigdalino': { symptoms: ['Dolor de garganta severo', 'Dificultad para abrir la boca', 'Fiebre'], causes: ['Complicación de amigdalitis', 'Infección bacteriana'] },
+  'Gastrosquisis': { symptoms: ['Intestinos fuera del abdomen al nacer'], causes: ['Defecto de la pared abdominal congénito'] },
+  'Cáncer del páncreas': { symptoms: ['Ictericia', 'Pérdida de peso', 'Dolor abdominal'], causes: ['Tabaquismo', 'Diabetes', 'Pancreatitis crónica'] },
+  'Mucocele': { symptoms: ['Bulto transparente o azulado en el labio/boca'], causes: ['Bloqueo de glándula salival', 'Mordedura del labio'] },
+  'Cervicalgía': { symptoms: ['Dolor de cuello', 'Rigidez', 'Dolor de cabeza'], causes: ['Mala postura', 'Estrés', 'Lesiones'] },
+  'Vulvovaginitis': { symptoms: ['Picazón', 'Flujo anormal', 'Irritación vaginal'], causes: ['Infecciones (hongos, bacterias)', 'Irritantes', 'Bajos estrógenos'] },
+  'Colesterol': { symptoms: ['Generalmente asintomático', 'Xantomas'], causes: ['Dieta grasa', 'Sedentarismo', 'Genética'] },
+  'Ascitis': { symptoms: ['Hinchazón abdominal', 'Aumento de peso', 'Falta de aire'], causes: ['Cirrosis hepática', 'Cáncer', 'Insuficiencia cardíaca'] },
+  'Neuropatía diabética': { symptoms: ['Entumecimiento', 'Hormigueo', 'Dolor en pies/manos'], causes: ['Niveles altos de azúcar en sangre prolongados'] },
+  'Cáncer bucal': { symptoms: ['Llaga que no sana', 'Mancha blanca/roja', 'Bulto en la boca'], causes: ['Tabaco', 'Alcohol', 'VPH'] },
+  'Onicomicosis': { symptoms: ['Uñas amarillas', 'Engrosadas', 'Quebradizas'], causes: ['Infección por hongos', 'Humedad', 'Pie de atleta'] },
+  'Perimenopausia': { symptoms: ['Periodos irregulares', 'Sofocos', 'Cambios de humor'], causes: ['Fluctuación hormonal previa a la menopausia'] },
+  'Distrofia muscular': { symptoms: ['Debilidad muscular progresiva', 'Pérdida de masa muscular'], causes: ['Mutaciones genéticas'] },
+  'Parto prematuro': { symptoms: ['Contracciones regulares antes de semana 37', 'Rotura de aguas'], causes: ['Infecciones', 'Problemas de útero/placenta', 'Embarazo múltiple'] },
+  'Alcoholismo': { symptoms: ['Incapacidad para controlar la bebida', 'Tolerancia', 'Síndrome de abstinencia'], causes: ['Genética', 'Factores psicológicos', 'Ambiente'] },
+  'Ateroesclerosis': { symptoms: ['Generalmente asintomática hasta bloqueo', 'Dolor de pecho', 'Claudicación'], causes: ['Colesterol alto', 'Hipertensión', 'Tabaquismo'] },
+  'Miocardiopatías': { symptoms: ['Falta de aire', 'Fatiga', 'Hinchazón'], causes: ['Genética', 'Hipertensión', 'Infecciones'] },
+  'Prolapso rectal': { symptoms: ['Tejido rojo que sobresale del ano', 'Incontinencia fecal'], causes: ['Debilidad muscular pélvica', 'Esfuerzo al defecar', 'Edad'] },
+  'Adenoma de tiroides': { symptoms: ['Bulto en el cuello', 'A veces síntomas de hipertiroidismo'], causes: ['Crecimiento celular benigno', 'Desconocida'] },
+  'Piedras en el riñón': { symptoms: ['Dolor intenso en espalda/costado', 'Sangre en orina'], causes: ['Deshidratación', 'Exceso de oxalato/calcio'] },
+  'Caspa': { symptoms: ['Escamas blancas en cuero cabelludo', 'Picazón'], causes: ['Piel seca', 'Dermatitis seborreica', 'Hongo'] },
+  'Angina crónica': { symptoms: ['Dolor de pecho predecible con esfuerzo'], causes: ['Enfermedad arterial coronaria estable'] },
+  'Linfedema': { symptoms: ['Hinchazón en brazo o pierna', 'Sensación de pesadez'], causes: ['Extirpación de ganglios linfáticos', 'Daño linfático', 'Infección'] },
+  'Cáncer de vejiga': { symptoms: ['Sangre en orina', 'Dolor al orinar', 'Urgencia urinaria'], causes: ['Tabaquismo', 'Exposición a químicos', 'Inflamación crónica'] },
+  'Cáncer de pene': { symptoms: ['Bulto o úlcera en el pene', 'Cambios en la piel'], causes: ['VPH', 'Falta de higiene', 'Tabaquismo'] },
+  'Fibrosis quística': { symptoms: ['Tos persistente', 'Infecciones pulmonares', 'Heces grasas'], causes: ['Defecto genético hereditario'] },
+  'Crup': { symptoms: ['Tos perruna', 'Estridor al respirar', 'Voz ronca'], causes: ['Infección viral en niños'] },
+  'Arrancamiento compulsivo del cabello': { symptoms: ['Pérdida de cabello irregular', 'Tensión antes de arrancar'], causes: ['Tricotilomanía (trastorno psicológico)'] },
+  'Verrugas del pene': { symptoms: ['Bultos color carne en el pene'], causes: ['Virus del Papiloma Humano (VPH)'] },
+  'Fractura de fémur': { symptoms: ['Dolor severo en muslo', 'Incapacidad para mover la pierna'], causes: ['Traumatismo fuerte', 'Osteoporosis en ancianos'] },
+  'Síndrome de resistencia a la insulina': { symptoms: ['Manchas oscuras en cuello (acantosis)', 'Fatiga'], causes: ['Obesidad', 'Sedentarismo', 'Genética'] },
+  'Acné rosácea': { symptoms: ['Enrojecimiento facial', 'Vasos sanguíneos visibles', 'Granos'], causes: ['Factores hereditarios', 'Ácaros', 'Desencadenantes ambientales'] },
+  'Pubertad precoz': { symptoms: ['Desarrollo sexual antes de los 8/9 años'], causes: ['Hormonal', 'Tumores', 'Desconocida'] },
+  'Retraso en el desarrollo psicomotor': { symptoms: ['Tardar en sentarse/caminar', 'Problemas de coordinación'], causes: ['Genética', 'Problemas neurológicos', 'Prematuridad'] },
+  'Infección urinaria recurrente': { symptoms: ['Infecciones frecuentes (3+ al año)'], causes: ['Anatomía', 'Menopausia', 'Higiene'] },
+  'Accidente cerebrovascular hemorrágico': { symptoms: ['Dolor de cabeza súbito y explosivo', 'Pérdida de conciencia'], causes: ['Hipertensión', 'Aneurisma roto'] },
+  'Diplopía (visión doble)': { symptoms: ['Ver dos imágenes de un solo objeto'], causes: ['Problemas musculares oculares', 'Nervios dañados', 'Cataratas'] },
+  'Hematoma epidural': { symptoms: ['Pérdida de conciencia tras golpe', 'Dolor de cabeza', 'Vómitos'], causes: ['Traumatismo craneal con ruptura arterial'] },
+  'Miedos y fobias': { symptoms: ['Ansiedad intensa ante objeto/situación específica', 'Evitación'], causes: ['Experiencias traumáticas', 'Aprendizaje'] },
+  'Comunicación interauricular': { symptoms: ['Soplo cardíaco', 'Fatiga', 'Infecciones respiratorias'], causes: ['Defecto congénito en el tabique auricular'] },
+  'Cáncer endometrial': { symptoms: ['Sangrado vaginal postmenopáusico', 'Dolor pélvico'], causes: ['Desequilibrio estrógeno/progesterona', 'Obesidad'] },
+  'Delirium': { symptoms: ['Confusión severa repentina', 'Desorientación', 'Alucinaciones'], causes: ['Infección grave', 'Medicamentos', 'Hospitalización'] },
+  'Balanitis': { symptoms: ['Inflamación del glande', 'Dolor', 'Picazón'], causes: ['Mala higiene', 'Infección (hongos/bacterias)', 'Alergias'] },
+  'Conducta': { symptoms: ['Patrones de comportamiento'], causes: ['Psicología', 'Entorno'] },
+  'Úlceras venosas': { symptoms: ['Herida abierta en tobillo/pierna', 'Dolor', 'Piel oscura alrededor'], causes: ['Insuficiencia venosa crónica'] },
+  'Codo de niñera': { symptoms: ['Niño no mueve el brazo', 'Dolor al moverlo'], causes: ['Tirón brusco del brazo (subluxación cabeza radio)'] },
+  'Aborto espontáneo': { symptoms: ['Pérdida del embarazo antes de semana 20', 'Sangrado'], causes: ['Anomalías cromosómicas', 'Problemas de salud'] },
+  'Trastornos del desarrollo sexual': { symptoms: ['Genitales ambiguos', 'Desarrollo puberal atípico'], causes: ['Anomalías cromosómicas o hormonales'] },
+  'Enfermedad de Osgood-Schlatter': { symptoms: ['Dolor e hinchazón debajo de la rodilla'], causes: ['Estirón de crecimiento', 'Deportes de impacto'] },
+  'Hiperplasia prostática': { symptoms: ['Dificultad para orinar', 'Flujo débil', 'Nicturia'], causes: ['Crecimiento benigno de próstata por edad'] },
+  'Oclusión de las venas retinianas': { symptoms: ['Visión borrosa repentina', 'Pérdida de visión'], causes: ['Coágulo en vena de la retina', 'Hipertensión'] },
+  'Laberíntitis': { symptoms: ['Vértigo', 'Náuseas', 'Pérdida de audición'], causes: ['Infección viral del oído interno'] },
+  'Hiperparatiroidismo': { symptoms: ['Huesos frágiles', 'Cálculos renales', 'Fatiga'], causes: ['Tumor en glándula paratiroides', 'Fallo renal'] },
+  'Cálculo en el conducto biliar': { symptoms: ['Dolor abdominal superior', 'Ictericia', 'Fiebre'], causes: ['Cálculo biliar que sale de la vesícula'] },
+  'Quiste sebáceo': { symptoms: ['Bulto indoloro bajo la piel', 'Material pastoso si se rompe'], causes: ['Glándula sebácea bloqueada'] },
+  'Artritis gotosa aguda': { symptoms: ['Dolor articular súbito e intenso', 'Enrojecimiento'], causes: ['Cristales de ácido úrico'] },
+  'Craneosinostosis': { symptoms: ['Forma anormal de la cabeza del bebé'], causes: ['Cierre prematuro de suturas craneales'] },
+  'Mastopatia fibroquística': { symptoms: ['Mamas dolorosas y con bultos', 'Cambios con el ciclo'], causes: ['Cambios hormonales normales'] },
+  'Subluxación vertebral': { symptoms: ['Dolor de espalda', 'Movilidad reducida'], causes: ['Desalineación menor de vértebras', 'Trauma'] },
+  'Restricción del crecimiento intrauterino': { symptoms: ['Bebé pequeño para edad gestacional'], causes: ['Problemas de placenta', 'Hipertensión materna'] },
+  'Ludopatía': { symptoms: ['Incapacidad para dejar de apostar', 'Problemas financieros'], causes: ['Adicción', 'Factores psicológicos'] },
+  'Afecciones asociadas con la ictericia': { symptoms: ['Piel y ojos amarillos'], causes: ['Hepatitis', 'Cálculos biliares', 'Hemólisis'] },
+  'Úlcera péptica': { symptoms: ['Ardor de estómago', 'Dolor', 'Náuseas'], causes: ['Infección H. pylori', 'Uso de AINEs'] },
+  'Defensas bajas': { symptoms: ['Infecciones frecuentes', 'Fatiga'], causes: ['Estrés', 'Mala alimentación', 'Enfermedades'] },
+  'Síndrome de apnea obstructiva del sueño': { symptoms: ['Ronquidos', 'Pausas respiratorias', 'Sueño diurno'], causes: ['Obstrucción vía aérea', 'Obesidad'] },
+  'Lesiones de Lefort': { symptoms: ['Fractura facial compleja', 'Maloclusión'], causes: ['Traumatismo facial severo'] },
+  'Molusco contagioso': { symptoms: ['Pequeñas protuberancias perladas en la piel'], causes: ['Infección viral de la piel'] },
+  'Embarazo abdominal': { symptoms: ['Dolor abdominal', 'Movimientos fetales dolorosos'], causes: ['Implantación del embrión en cavidad abdominal'] },
+  'Tos crónica': { symptoms: ['Tos por más de 8 semanas'], causes: ['Tabaquismo', 'Goteo postnasal', 'Asma', 'Reflujo'] },
+  'Angina estable': { symptoms: ['Dolor de pecho con esfuerzo, cede con reposo'], causes: ['Estrechamiento arterias coronarias'] },
+  'Colangitis': { symptoms: ['Fiebre', 'Ictericia', 'Dolor abdominal'], causes: ['Infección de conductos biliares bloqueados'] },
+  'Infección recurrente de las vías urinarias': { symptoms: ['Múltiples infecciones urinarias al año'], causes: ['Reinfección bacteriana', 'Problemas anatómicos'] },
+  'Displasia congénita de la cadera': { symptoms: ['Cadera inestable en bebé'], causes: ['Desarrollo anormal de la articulación'] },
+  'Encefalopatía hepática': { symptoms: ['Confusión', 'Cambios de personalidad', 'Temblor'], causes: ['Fallo hepático', 'Acumulación de toxinas'] },
+  'Enfermedad ovárica poliquística': { symptoms: ['Periodos irregulares', 'Exceso de vello', 'Quistes'], causes: ['Desequilibrio hormonal (SOP)'] },
+  'TEPT': { symptoms: ['Flashbacks', 'Pesadillas', 'Ansiedad severa'], causes: ['Trauma psicológico grave'] },
+  'Trauma': { symptoms: ['Shock', 'Dolor', 'Lesión física o psicológica'], causes: ['Accidente', 'Violencia', 'Evento impactante'] },
+  'Esclerosis sistémica': { symptoms: ['Piel dura', 'Daño en órganos internos'], causes: ['Enfermedad autoinmune (Esclerodermia)'] },
+  'Trastorno de personalidad narcisista': { symptoms: ['Grandiosidad', 'Falta de empatía', 'Necesidad de admiración'], causes: ['Factores genéticos', 'Crianza', 'Psicología'] },
+  'Lesión maxilofacial': { symptoms: ['Dolor facial', 'Hinchazón', 'Fractura ósea'], causes: ['Golpes', 'Accidentes'] },
+  'Pericarditis': { symptoms: ['Dolor punzante en el pecho', 'Fiebre'], causes: ['Infección viral', 'Inflamación del saco cardíaco'] },
+  'Síndrome de dolor pélvico': { symptoms: ['Dolor en la pelvis crónico'], causes: ['Endometriosis', 'Infección', 'Muscular'] },
+  'Ataque cardíaco': { symptoms: ['Dolor opresivo en pecho', 'Sudoración', 'Náuseas'], causes: ['Bloqueo flujo sanguíneo al corazón'] },
+  'Fibromiositis': { symptoms: ['Dolor muscular crónico', 'Inflamación'], causes: ['Uso excesivo', 'Inflamación tejido conectivo'] },
+  'Cetoacidosis diabética': { symptoms: ['Sed extrema', 'Aliento frutal', 'Confusión'], causes: ['Falta de insulina', 'Azúcar muy alto'] },
+  'Embarazo de bajo riesgo': { symptoms: ['Embarazo sin complicaciones'], causes: ['Salud materna óptima'] },
+  'Cáncer de útero': { symptoms: ['Sangrado anormal', 'Dolor pélvico'], causes: ['Hiperplasia endometrial', 'Obesidad', 'Hormonas'] },
+  'TAG': { symptoms: ['Preocupación excesiva y constante'], causes: ['Trastorno de Ansiedad Generalizada'] },
+  'Nefrolitiasis': { symptoms: ['Cálculos renales'], causes: ['Depósitos minerales'] },
+  'Sinusitis crónica': { symptoms: ['Congestión nasal > 12 semanas', 'Dolor facial'], causes: ['Inflamación persistente', 'Pólipos'] },
+  'Cáncer de piel escamocelular': { symptoms: ['Nódulo rojo y firme', 'Úlcera escamosa'], causes: ['Exposición solar acumulada'] },
+  'Adenomioma': { symptoms: ['Dolor pélvico', 'Sangrado menstrual fuerte'], causes: ['Foco de adenomiosis en el útero'] },
+  'Malformación anorrectal': { symptoms: ['Ano ausente o mal posicionado'], causes: ['Defecto congénito'] },
+  'Cardiopatía coronaria': { symptoms: ['Angina', 'Fatiga'], causes: ['Placa en arterias del corazón'] },
+  'Infección del riñón': { symptoms: ['Fiebre alta', 'Dolor de espalda', 'Escalofríos'], causes: ['Bacterias que suben de la vejiga (Pielonefritis)'] },
+  'Deficiencia de la hormona del crecimiento': { symptoms: ['Baja estatura', 'Crecimiento lento'], causes: ['Problema en la hipófisis', 'Genética'] },
+  'Infección por VIH': { symptoms: ['Fiebre', 'Fatiga', 'Ganglios inflamados (fase aguda)'], causes: ['Virus de Inmunodeficiencia Humana'] },
+  'Congoja': { symptoms: ['Angustia profunda', 'Opresión en el pecho'], causes: ['Sufrimiento emocional intenso'] },
+  'Lesiones ligamentarias de rodillas': { symptoms: ['Dolor', 'Inestabilidad', 'Hinchazón'], causes: ['Esguinces', 'Roturas (LCA, LCP)'] },
+  'Enfermedades terminales': { symptoms: ['Síntomas progresivos y severos'], causes: ['Condiciones incurables avanzadas'] },
+  'Enfermedad de von Willebrand': { symptoms: ['Sangrado excesivo', 'Hemorragias nasales'], causes: ['Deficiencia de factor de von Willebrand'] },
+  'Malformación arteriovenosa cerebral': { symptoms: ['Dolor de cabeza', 'Convulsiones'], causes: ['Conexión anormal venas-arterias congénita'] },
+  'Hematoma subdural crónico': { symptoms: ['Confusión gradual', 'Dolor de cabeza', 'Debilidad'], causes: ['Sangrado lento venoso en cerebro (ancianos)'] },
+  'Absceso de las amígdalas': { symptoms: ['Dolor severo un lado garganta', 'Fiebre'], causes: ['Complicación amigdalitis'] },
+  'Trastorno de la personalidad esquizoide': { symptoms: ['Desapego social', 'Rango emocional limitado'], causes: ['Genética', 'Ambiente'] },
+  'Relaciones insanas': { symptoms: ['Ansiedad', 'Manipulación', 'Malestar'], causes: ['Dinámicas tóxicas'] },
+  'Trastornos de la marcha': { symptoms: ['Caminar de forma anormal', 'Desequilibrio'], causes: ['Neurológico', 'Muscular', 'Articular'] },
+  'Nevos': { symptoms: ['Lunares'], causes: ['Agrupación de melanocitos'] },
+  'Enfermedad de Legg-Calve-Perthes': { symptoms: ['Cojera', 'Dolor en cadera (niños)'], causes: ['Falta de riego sanguíneo a cabeza fémur'] },
+  'Visión baja': { symptoms: ['Pérdida de visión no corregible'], causes: ['Degeneración macular', 'Glaucoma', 'Diabetes'] },
+  'Cáncer del hígado': { symptoms: ['Ictericia', 'Pérdida de peso', 'Dolor abdominal'], causes: ['Cirrosis', 'Hepatitis B/C'] },
+  'Hipospadias': { symptoms: ['Orificio uretral no en la punta del pene'], causes: ['Defecto congénito'] },
+  'Síndrome de distrofia simpática refleja': { symptoms: ['Dolor ardiente crónico', 'Sensibilidad'], causes: ['SDRC (Síndrome Dolor Regional Complejo)'] },
+  'Deformidad en valgo del dedo gordo': { symptoms: ['Juanete'], causes: ['Desviación del dedo gordo'] },
+  'Miedo': { symptoms: ['Ansiedad', 'Alerta'], causes: ['Percepción de peligro'] },
+  'Delirio': { symptoms: ['Creencias falsas fijas'], causes: ['Trastornos psicóticos', 'Enfermedad médica'] },
+  'Encopresis': { symptoms: ['Evacuación heces involuntaria (niños)'], causes: ['Estreñimiento crónico', 'Emocional'] },
+  'Inseguridad': { symptoms: ['Falta de confianza', 'Duda'], causes: ['Experiencias vitales', 'Autoestima'] },
+  'Alergia al moho, la caspa y el polvo': { symptoms: ['Estornudos', 'Congestión', 'Ojos llorosos'], causes: ['Inhalación de alérgenos ambientales'] },
+  'Aneurisma aórtico': { symptoms: ['A menudo asintomático', 'Dolor pecho/espalda'], causes: ['Debilidad pared aorta', 'Aterosclerosis'] },
+  'Accidente cardiovascular': { symptoms: ['Infarto', 'Ictus'], causes: ['Problemas corazón/vasos'] },
+  'Diarrea crónica': { symptoms: ['Diarrea > 4 semanas'], causes: ['SII', 'EII', 'Infecciones', 'Malabsorción'] },
+  'Cambios en la piel inducidos por el sol': { symptoms: ['Arrugas', 'Manchas', 'Piel curtida'], causes: ['Exposición UV crónica'] },
+  'Deficiencia de vitamina D': { symptoms: ['Debilidad ósea', 'Fatiga'], causes: ['Falta de sol', 'Dieta'] },
+  'Hombro doloroso': { symptoms: ['Dolor hombro'], causes: ['Tendinitis', 'Bursitis', 'Artritis'] },
+  'Cefalea en racimo': { symptoms: ['Dolor atroz alrededor de un ojo', 'Lagrimeo'], causes: ['Desconocida', 'Hipotalámico'] },
+  'Peritonitis asociada con diálisis': { symptoms: ['Dializado turbio', 'Dolor abdominal'], causes: ['Infección catéter diálisis peritoneal'] },
+  'Párpados caídos': { symptoms: ['Ptosis (párpado cubre ojo)'], causes: ['Debilidad muscular', 'Nervios', 'Edad'] },
+  'Lesión renal aguda': { symptoms: ['Disminución orina', 'Hinchazón'], causes: ['Fallo renal repentino'] },
+  'Meningioma en adultos': { symptoms: ['Dolor de cabeza', 'Convulsiones', 'Cambios visión'], causes: ['Tumor cerebral (generalmente benigno)'] },
+  'Personalidad psicopática': { symptoms: ['Conducta antisocial', 'Falta remordimiento'], causes: ['Trastorno antisocial personalidad'] },
+  'Neuralgia glosofaríngea': { symptoms: ['Dolor agudo en garganta/oído'], causes: ['Irritación nervio glosofaríngeo'] },
+  'Alergias a las mascotas': { symptoms: ['Estornudos', 'Picazón'], causes: ['Proteínas en caspa/saliva animales'] },
+  'Comunicación interventricular': { symptoms: ['Soplo cardíaco', 'Falta de aire'], causes: ['Defecto congénito tabique ventricular'] },
+  'Úlcera gástrica': { symptoms: ['Ardor estomacal'], causes: ['H. pylori', 'AINEs'] },
+  'Queratosis: tumores benignos de la piel': { symptoms: ['Manchas cerosas o escamosas elevadas'], causes: ['Queratosis seborreica (edad, genética)'] },
+  'Espondilitis': { symptoms: ['Inflamación vértebras'], causes: ['Infección', 'Artritis'] },
+  'Calvicie de patrón masculino': { symptoms: ['Pérdida cabello típica'], causes: ['Alopecia androgénica'] },
+  'Gestión de emociones': { symptoms: ['Dificultad manejo emocional'], causes: ['Habilidades afrontamiento'] },
+  'Infección complicada de las vías urinarias': { symptoms: ['Fiebre', 'Dolor', 'No responde a tratamiento simple'], causes: ['Bacterias resistentes', 'Anomalías'] },
+  'Deficiencia articulatoria': { symptoms: ['Problemas pronunciar sonidos'], causes: ['Dislalia'] },
+  'Trastorno fonológico': { symptoms: ['Dificultad patrones sonido habla'], causes: ['Desarrollo lenguaje'] },
+  'Gingivoestomatitis': { symptoms: ['Llagas boca', 'Encías inflamadas'], causes: ['Virus (Herpes simple)'] },
+  'Hepatitis C': { symptoms: ['Fatiga', 'Ictericia (crónico)'], causes: ['Virus VHC'] },
+  'Dermatitis y úlceras por estasis': { symptoms: ['Piel pierna decolorada', 'Úlceras'], causes: ['Mala circulación venosa'] },
+  'Celotipia': { symptoms: ['Celos patológicos'], causes: ['Inseguridad', 'Trastorno delirante'] },
+  'Infertilidad masculina': { symptoms: ['Incapacidad concebir'], causes: ['Esperma bajo', 'Bloqueos'] },
+  'Bacteriuria asintomática': { symptoms: ['Bacterias en orina sin síntomas'], causes: ['Colonización bacteriana'] },
+  'Hombro de tenista': { symptoms: ['Dolor hombro'], causes: ['Sobrecarga deporte raqueta'] },
+  'Displasia broncopulmonar': { symptoms: ['Problemas respiratorios en prematuros'], causes: ['Daño pulmonar por ventilación/oxígeno'] },
+  'Sonrisa gingival': { symptoms: ['Exceso encía al sonreír'], causes: ['Desarrollo maxilar', 'Labio corto'] },
+  'Desviación Septal': { symptoms: ['Nariz tapada un lado', 'Sangrado'], causes: ['Tabique nasal desviado'] },
+  'Enfermedad de Crohn': { symptoms: ['Dolor abdominal', 'Diarrea', 'Pérdida peso'], causes: ['Enfermedad inflamatoria intestinal'] },
+  'Cáncer laríngeo': { symptoms: ['Ronquera persistente', 'Dolor oído'], causes: ['Tabaco', 'Alcohol'] },
+  'Hipoglucemia': { symptoms: ['Temblor', 'Sudor', 'Hambre'], causes: ['Azúcar bajo sangre'] },
+  'Aborto electivo o terapéutico': { symptoms: ['Terminación embarazo'], causes: ['Procedimiento médico'] },
+  'Hiperlordosis': { symptoms: ['Curva lumbar excesiva'], causes: ['Postura', 'Obesidad', 'Muscular'] },
+  'Hombro de nadador': { symptoms: ['Dolor hombro'], causes: ['Tendinitis por natación'] },
+  'Artritis por gota crónica': { symptoms: ['Nódulos (tofos)', 'Dolor articular'], causes: ['Gota no tratada'] },
+  'Tumor de la médula espinal': { symptoms: ['Dolor espalda', 'Debilidad'], causes: ['Crecimiento celular en canal espinal'] },
+  'Trastorno de pánico': { symptoms: ['Ataques de pánico recurrentes'], causes: ['Ansiedad'] },
+  'Enfermedad de Hirschsprung': { symptoms: ['Estreñimiento severo recién nacido'], causes: ['Falta nervios intestino'] },
+  'Arterioesclerosis': { symptoms: ['Endurecimiento arterias'], causes: ['Edad', 'Presión alta'] },
+  'Dolor de hombro': { symptoms: ['Molestia hombro'], causes: ['Varias'] },
+  'Hernia crural': { symptoms: ['Bulto parte superior muslo'], causes: ['Hernia femoral'] },
+  'Infecciones frecuentes de garganta': { symptoms: ['Amigdalitis recurrentes'], causes: ['Bacterias/Virus'] },
+  'Acalasia esofágica': { symptoms: ['Dificultad tragar'], causes: ['Esfínter esofágico no relaja'] },
+  'Reflujo vesicoureteral': { symptoms: ['Orina regresa a riñón', 'IVU'], causes: ['Válvula ureteral defectuosa'] },
+  'Insuficiencia en el crecimiento': { symptoms: ['Fallo de medro'], causes: ['Nutrición', 'Enfermedad'] },
+  'Diarrea bacteriana': { symptoms: ['Diarrea', 'Fiebre'], causes: ['Salmonella', 'E. coli', 'etc'] },
+  'Leiomioma': { symptoms: ['Tumor benigno músculo liso (ej. fibroma)'], causes: ['Genética'] },
+  'Infección urinaria complicada': { symptoms: ['IVU con factores riesgo'], causes: ['Anomalía', 'Catéter'] },
+  'Trastorno Déficit de atención e hiperactividad': { symptoms: ['Inatención', 'Hiperactividad'], causes: ['TDAH'] },
+  'Nutrición y salud emocional': { symptoms: ['Relación comida-ánimo'], causes: ['Estilo vida'] },
+  'Ptosis': { symptoms: ['Párpado caído'], causes: ['Debilidad elevador'] },
+  'Tumor cerebral canceroso (metastásico)': { symptoms: ['Cefalea', 'Síntomas neuro'], causes: ['Cáncer diseminado al cerebro'] },
+  'Acumulación de placa en las arterias': { symptoms: ['Aterosclerosis'], causes: ['Colesterol'] },
+  'Almorranas': { symptoms: ['Hemorroides'], causes: ['Venas inflamadas ano'] },
+  'Lipoma cervical': { symptoms: ['Bulto grasa cuello'], causes: ['Benigno'] },
+  'Asma inducido por el ejercicio': { symptoms: ['Tos/ahogo al hacer deporte'], causes: ['Broncoconstricción'] },
+  'Enfermedad cardíaca isquémica': { symptoms: ['Angina'], causes: ['Falta riego corazón'] },
+  'Tartamudeo': { symptoms: ['Disfemia'], causes: ['Habla'] },
+  'Blefaroespasmo': { symptoms: ['Parpadeo involuntario excesivo'], causes: ['Espasmo muscular ojo'] },
+  'Diverticulosis': { symptoms: ['Bolsas en colon (generalmente sin síntomas)'], causes: ['Presión colon'] },
+  'Neoplasia intraepitelial cervical': { symptoms: ['Cambios precancerosos cérvix'], causes: ['VPH'] },
+  'Ectropión': { symptoms: ['Párpado girado hacia fuera'], causes: ['Edad', 'Laxitud'] },
+  'Neuropatía del nervio ciático': { symptoms: ['Ciática'], causes: ['Compresión nervio'] },
+  'Daño renal': { symptoms: ['Problema riñón'], causes: ['Varios'] },
+  'Absceso cerebral': { symptoms: ['Cefalea', 'Fiebre', 'Déficit neuro'], causes: ['Infección cerebro (pus)'] },
+  'Gastritis crónica': { symptoms: ['Inflamación estómago largo plazo'], causes: ['H. pylori', 'Autoimune'] },
+  'Neumotórax': { symptoms: ['Colapso pulmonar', 'Dolor pecho', 'Ahogo'], causes: ['Aire en espacio pleural'] },
+  'Neuralgia del trigémino': { symptoms: ['Dolor facial choque eléctrico'], causes: ['Irritación nervio trigémino'] },
+  'Exceso de flujo vaginal - leucorrea': { symptoms: ['Flujo abundante'], causes: ['Hormonal', 'Infección'] },
+  'Calvicie de patrón femenino': { symptoms: ['Adelgazamiento cabello mujer'], causes: ['Alopecia androgénica'] },
+  'Temblor inducido por fármacos': { symptoms: ['Temblor manos'], causes: ['Efecto secundario medicamentos'] },
+  'Patologías del crecimiento': { symptoms: ['Problemas altura'], causes: ['Hormonal', 'Genético'] },
+  'Hipotiroidismo congénito': { symptoms: ['Bebé inactivo', 'Lengua grande'], causes: ['Falta tiroides al nacer'] },
+  'Adherencia pélvica': { symptoms: ['Dolor pélvico'], causes: ['Cicatrices internas'] },
+  'Pesadillas constantes': { symptoms: ['Trastorno pesadillas'], causes: ['Estrés', 'Trauma'] },
+  'Cifosis': { symptoms: ['Joroba espalda'], causes: ['Curvatura columna'] },
+  'Tumor del riñón o Tumor renal': { symptoms: ['Sangre orina', 'Masa'], causes: ['Cáncer riñón'] },
+  'Atresia duodenal': { symptoms: ['Vómitos bebé'], causes: ['Bloqueo intestino congénito'] },
+  'Enfermedad coronaria (CHD)': { symptoms: ['Angina', 'Infarto'], causes: ['Arterias corazón bloqueadas'] },
+  'Fístula gastrointestinal': { symptoms: ['Fuga contenido intestinal'], causes: ['Conexión anormal intestino'] },
+  'Ronchas o habones': { symptoms: ['Urticaria'], causes: ['Alergia'] },
+  'Cardiopatía cianótica': { symptoms: ['Bebé azul'], causes: ['Defecto cardíaco baja oxígeno'] },
+  'Bocio multinodular tóxico': { symptoms: ['Hipertiroidismo', 'Nódulos cuello'], causes: ['Tiroides hiperactiva'] },
+  'Adenoma hipofisario secretor de prolactina': { symptoms: ['Prolactinoma (leche, infertilidad)'], causes: ['Tumor hipófisis'] },
+  'Hiperplasia suprarrenal congénita': { symptoms: ['Problemas hormonales/sexuales'], causes: ['Defecto enzimático suprarrenal'] },
+  'Parálisis de Erb-Duchenne': { symptoms: ['Brazo bebé inmóvil'], causes: ['Lesión plexo braquial parto'] },
+  'Síndrome de Williams': { symptoms: ['Rasgos faciales, retraso, sociable'], causes: ['Genético'] },
+  'Espasticidad': { symptoms: ['Músculos rígidos'], causes: ['Daño neurológico'] },
+  'Adenoma secretante': { symptoms: ['Hormonas extra'], causes: ['Tumor glandular activo'] },
+  'Mioma': { symptoms: ['Fibroma uterino'], causes: ['Tumor benigno'] },
+  'Eclampsia': { symptoms: ['Convulsiones en embarazo'], causes: ['Preeclampsia severa'] },
+  'Trastorno esquizoafectivo': { symptoms: ['Esquizofrenia + Trastorno ánimo'], causes: ['Mental'] },
+  'Estenosis raquídea': { symptoms: ['Dolor espalda/piernas'], causes: ['Canal espinal estrecho'] },
+  'Cataratas congénitas': { symptoms: ['Cristalino opaco al nacer'], causes: ['Genética', 'Infección'] },
+  'Próstata agrandada': { symptoms: ['HBP'], causes: ['Hiperplasia benigna'] },
+  'Infección crónica del oído': { symptoms: ['Otitis media crónica'], causes: ['Drenaje oído, pérdida auditiva'] },
+  'Sangrado nasal': { symptoms: ['Epistaxis'], causes: ['Vasos nariz rotos'] },
+  'Trastorno del control de los impulsos': { symptoms: ['Falta autocontrol'], causes: ['Conducta'] },
+  'Dolor de columna': { symptoms: ['Dolor espalda'], causes: ['Varios'] },
+  'Dolor de espalda': { symptoms: ['Lumbalgia/Dorsalgia'], causes: ['Muscular', 'Óseo'] },
+  'Absceso mamario': { symptoms: ['Bulto doloroso seno, pus'], causes: ['Mastitis complicada'] },
+  'Trastorno del desarrollo del lenguaje expresivo': { symptoms: ['Dificultad expresarse'], causes: ['Lenguaje'] },
+  'Ovario poliquístico': { symptoms: ['SOP'], causes: ['Hormonal'] },
+  'Condromalacia rotuliana': { symptoms: ['Dolor rodilla anterior'], causes: ['Desgaste cartílago rótula'] },
+  'Agorafobia': { symptoms: ['Miedo lugares sin escape'], causes: ['Ansiedad'] },
+  'Pielonefritis': { symptoms: ['Infección renal'], causes: ['IVU alta'] },
+  'Subluxación': { symptoms: ['Dislocación parcial'], causes: ['Articulación'] },
+  'Tromboflebitis': { symptoms: ['Vena inflamada con coágulo'], causes: ['Superficial'] },
+  'Pólipos colorrectales': { symptoms: ['Crecimientos en colon'], causes: ['Precursores cáncer'] },
+  'Cáncer de esófago': { symptoms: ['Dificultad tragar', 'Pérdida peso'], causes: ['Tabaco', 'Alcohol', 'Reflujo'] },
+  'Artritis bacteriana': { symptoms: ['Articulación séptica'], causes: ['Infección articular'] },
+  'Codo dislocado en niños': { symptoms: ['Codo niñera'], causes: ['Subluxación radio'] },
+  'Tumor medular': { symptoms: ['Tumor médula espinal'], causes: ['SNC'] },
+  'Síndrome de Turner': { symptoms: ['Baja estatura, infertilidad mujer'], causes: ['Falta cromosoma X'] },
+  'Poliquistosis ovárica': { symptoms: ['SOP'], causes: ['Quistes'] },
+  'Deseo sexual hiperactivo': { symptoms: ['Hipersexualidad'], causes: ['Conducta sexual compulsiva'] },
+  'Infección viral de las vías respiratorias bajas': { symptoms: ['Bronquiolitis, Neumonía viral'], causes: ['Virus'] },
+  'Displasia del desarrollo de la articulación de la cadera': { symptoms: ['Cadera inestable'], causes: ['Congénito'] },
+  'Disfunción de la trompa de Eustaquio': { symptoms: ['Oído tapado'], causes: ['Presión oído'] },
+  'Hernia diafragmática': { symptoms: ['Órganos suben a tórax'], causes: ['Defecto diafragma'] },
+  'Perforación gastrointestinal': { symptoms: ['Agujero intestino'], causes: ['Emergencia'] },
+  'Dolor de cadera': { symptoms: ['Coxalgia'], causes: ['Articulación'] },
+  'Absceso intraabdominal': { symptoms: ['Pus en abdomen'], causes: ['Infección'] },
+  'Laringotraqueobronquitis aguda': { symptoms: ['Crup'], causes: ['Viral'] },
+  'Conducto arterial persistente': { symptoms: ['Soplo'], causes: ['Vaso cardíaco no cierra'] },
+  'Estenosis uretral': { symptoms: ['Flujo orina débil'], causes: ['Uretra estrecha'] },
+  'Síndrome femororrotuliano': { symptoms: ['Dolor rodilla'], causes: ['Rótula'] },
+  'Cáncer de garganta': { symptoms: ['Tumor faringe/laringe'], causes: ['Tabaco', 'VPH'] },
+  'Trastorno de dolor': { symptoms: ['Dolor crónico psicológico'], causes: ['Somatomorfo'] },
+  'Amebiasis': { symptoms: ['Disentería amebiana'], causes: ['Parásito'] },
+  'Eccema': { symptoms: ['Dermatitis'], causes: ['Piel'] },
+  'Riñones poliquísticos': { symptoms: ['Quistes riñones'], causes: ['Genético'] },
+  'Arcos caídos': { symptoms: ['Pie plano'], causes: ['Pie'] },
+  'Dengue': { symptoms: ['Fiebre rompehuesos'], causes: ['Mosquito'] },
+  'Afasia': { symptoms: ['Pérdida lenguaje'], causes: ['Daño cerebral'] },
+  'Eliminación de amalgamas': { symptoms: ['Retiro empastes plata'], causes: ['Dental'] },
+  'Periimplantitis': { symptoms: ['Inflamación implante dental'], causes: ['Infección'] },
+  'Alergia de insectos': { symptoms: ['Reacción picadura'], causes: ['Veneno insecto'] },
+  'Gripe': { symptoms: ['Influenza'], causes: ['Virus'] },
+  'Inclusión dentaria': { symptoms: ['Diente impactado'], causes: ['Dental'] },
+  'Hidronefrosis': { symptoms: ['Riñón hinchado orina'], causes: ['Obstrucción'] },
+  'Pie cavo': { symptoms: ['Arco pie alto'], causes: ['Neurológico/Estructural'] },
+  'Síndrome antifosfolípido': { symptoms: ['Coágulos, abortos'], causes: ['Autoinmune'] },
+  'Eyaculación retrasada en el sexo': { symptoms: ['Dificultad eyacular'], causes: ['Sexual'] },
+  'Espondilolistesis': { symptoms: ['Vértebra desplazada'], causes: ['Columna'] },
+  'Temblor': { symptoms: ['Movimiento involuntario'], causes: ['Neurológico'] },
+  'Anquiloglosia': { symptoms: ['Frenillo corto'], causes: ['Lengua atada'] },
+  'Proctitis': { symptoms: ['Inflamación recto'], causes: ['Infección', 'EII'] },
+  'Condromalacia patelar': { symptoms: ['Rodilla corredor'], causes: ['Cartílago'] },
+  'Insuficiencia respiratoria': { symptoms: ['Fallo pulmón oxígeno'], causes: ['Grave'] },
+  'Polidactilia': { symptoms: ['Dedos extra'], causes: ['Congénito'] },
+  'Acromegalia': { symptoms: ['Crecimiento huesos cara/manos'], causes: ['Exceso hormona crecimiento'] },
+  'Adherencia intrauterina': { symptoms: ['Síndrome Asherman'], causes: ['Cicatrices útero'] },
+  'Anemia ferropénica': { symptoms: ['Falta hierro'], causes: ['Anemia'] },
+  'Posmenopausia': { symptoms: ['Etapa tras menopausia'], causes: ['Hormonal'] },
+  'Sinusitis aguda': { symptoms: ['Infección senos breve'], causes: ['Viral/Bacteriana'] },
+  'Enfermedad glomerular lúpica': { symptoms: ['Nefritis lupus'], causes: ['Lupus riñón'] },
+  'Osteosarcoma': { symptoms: ['Cáncer hueso'], causes: ['Maligno'] },
+  'Glioma en adultos': { symptoms: ['Tumor cerebral'], causes: ['Glía'] },
+  'Aneurisma de la aorta torácica': { symptoms: ['Aneurisma pecho'], causes: ['Aorta'] },
+  'Infecciones de vías respiratorias de repetición (o recurrentes)': { symptoms: ['Enfermar seguido'], causes: ['Inmune/Anatomía'] },
+  'Quiste pilonidal': { symptoms: ['Quiste rabadilla'], causes: ['Pelo encarnado'] },
+  'Fractura de mano': { symptoms: ['Hueso mano roto'], causes: ['Trauma'] },
+  'Hepatitis autoinmunitaria': { symptoms: ['Cuerpo ataca hígado'], causes: ['Inmune'] },
+  'Gonartrosis': { symptoms: ['Artrosis rodilla'], causes: ['Desgaste'] },
+  'Radiculopatía cervical': { symptoms: ['Nervio pinzado cuello'], causes: ['Hernia/Espolón'] },
+  'Enfisema pulmonar': { symptoms: ['Aire atrapado pulmón'], causes: ['EPOC', 'Tabaco'] },
+  'Rítides facial': { symptoms: ['Arrugas cara'], causes: ['Envejecimiento'] },
+  'Osteomielitis': { symptoms: ['Infección hueso'], causes: ['Bacteriana'] },
+  'Retinopatía hipertensiva': { symptoms: ['Daño ojo presión alta'], causes: ['HTA'] },
+  'Trastorno de personalidad histriónica': { symptoms: ['Búsqueda atención'], causes: ['Personalidad'] },
+  'Infecciones de vías urinarias': { symptoms: ['IVU'], causes: ['Infección'] },
+  'Aneurisma aórtico abdominal': { symptoms: ['Aneurisma abdomen'], causes: ['Aorta'] },
+  'Dolor crónico': { symptoms: ['Dolor larga duración'], causes: ['Varios'] },
+  'Tumor tiroideo': { symptoms: ['Nódulo tiroides'], causes: ['Endocrino'] },
+  'GERD': { symptoms: ['ERGE'], causes: ['Reflujo'] },
+  'Sindactilia': { symptoms: ['Dedos unidos'], causes: ['Congénito'] },
+  'Hipertensión renal': { symptoms: ['Presión alta por riñón'], causes: ['Renal'] },
+  'Prolactinoma': { symptoms: ['Tumor prolactina'], causes: ['Hipófisis'] },
+  'Evento vascular cerebral': { symptoms: ['Ictus'], causes: ['Cerebro'] },
+  'Enfermedad de Cushing': { symptoms: ['Exceso cortisol'], causes: ['Tumor hipófisis'] },
+  'Corea de Huntington': { symptoms: ['Movimientos, demencia'], causes: ['Genético'] },
+  'Anemia aplásica adquirida': { symptoms: ['Fallo médula ósea'], causes: ['No produce sangre'] },
+  'Desnutrición infantil': { symptoms: ['Falta crecimiento'], causes: ['Dieta'] },
+  'Defectos de refracción': { symptoms: ['Mala visión'], causes: ['Miopía/Hipermetropía'] },
+  'Cáncer tiroideo (carcinoma medular)': { symptoms: ['Cáncer tiroides raro'], causes: ['Genético'] },
+  'Accidente cerebrovascular cardioembólico': { symptoms: ['Embolia cerebral'], causes: ['Corazón'] },
+  'Alergias en ambientes interiores': { symptoms: ['Alergia polvo/moho'], causes: ['Interior'] },
+  'Prediabetes': { symptoms: ['Azúcar alto límite'], causes: ['Riesgo diabetes'] },
+  'Hemangioma': { symptoms: ['Mancha roja nacimiento'], causes: ['Vasos sanguíneos'] },
+  'Neuropatias Compresivas': { symptoms: ['Nervio atrapado'], causes: ['Túnel carpiano etc'] },
+  'Adenocarcinoma del útero': { symptoms: ['Cáncer endometrio'], causes: ['Útero'] },
+  'Bebé de madre diabética': { symptoms: ['Riesgos neonato'], causes: ['Diabetes materna'] },
+  'Anemia hemolítica': { symptoms: ['Destrucción glóbulos rojos'], causes: ['Inmune/Genético'] },
+  'Cistitis en niños': { symptoms: ['IVU niños'], causes: ['Infección'] },
+  'Eyaculación retrasada': { symptoms: ['Tardar eyacular'], causes: ['Sexual'] },
+  'Exotropía': { symptoms: ['Ojo desviado fuera'], causes: ['Estrabismo'] },
+  'Membrana epirretiniana macular': { symptoms: ['Tejido sobre retina'], causes: ['Ojo'] },
+  'Boca de trinchera': { symptoms: ['Gingivitis severa'], causes: ['Infección'] },
+  'Tinnitus': { symptoms: ['Zumbido oídos'], causes: ['Auditivo'] },
+  'Glaucoma de ángulo abierto': { symptoms: ['Glaucoma crónico'], causes: ['Presión ojo'] },
+  'Cifosis postural': { symptoms: ['Joroba postura'], causes: ['Mala postura'] },
+  'Manos entumidas': { symptoms: ['Hormigueo manos'], causes: ['Nervioso/Circulatorio'] },
+  'Arterioesclerosis de las extremidades': { symptoms: ['Mala circulación piernas'], causes: ['EVP'] },
+  'Soplo cardíaco': { symptoms: ['Ruido corazón'], causes: ['Flujo turbulento'] },
+  'Embolia arterial': { symptoms: ['Coágulo arteria'], causes: ['Isquemia'] },
+  'Hipertensión renovascular': { symptoms: ['HTA arteria renal'], causes: ['Estenosis renal'] },
+  'Tumor pituitario (tumor de la hipófisis)': { symptoms: ['Tumor hipófisis'], causes: ['Hormonal/Visual'] },
+  'Dolor lumbar inespecífico': { symptoms: ['Dolor espalda baja'], causes: ['Común'] },
+  'Cáncer de la vulva': { symptoms: ['Cáncer genital externo'], causes: ['Vulva'] },
+  'Embarazo múltiple': { symptoms: ['Gemelos+'], causes: ['Gestación'] },
+  'Síndrome de sueño y vigilia irregulares': { symptoms: ['Ritmo sueño caótico'], causes: ['Circadiano'] },
+  'Alcohol en el embarazo': { symptoms: ['Riesgo fetal'], causes: ['Teratogénico'] },
+  'Conducto nasolagrimal obstruido': { symptoms: ['Ojo lloroso bebé'], causes: ['Lagrimal'] },
+  'Pigmentación severa dental': { symptoms: ['Dientes manchados'], causes: ['Estético'] },
+  'Deslizamiento de la epífisis capital femoral': { symptoms: ['Problema cadera adolescente'], causes: ['Fémur'] },
+  'Cálculos vesicales': { symptoms: ['Piedras vejiga'], causes: ['Urinario'] },
+  'Acné quístico': { symptoms: ['Acné severo profundo'], causes: ['Piel'] },
+  'Esguince cervical': { symptoms: ['Latigazo cervical'], causes: ['Cuello'] },
+  'Infección de la piel por bacterias': { symptoms: ['Celulitis/Impétigo'], causes: ['Piel'] },
+  'Hipertensión arterial sistémica': { symptoms: ['HTA'], causes: ['Presión alta'] },
+  'Embarazo molar': { symptoms: ['Mola hidatiforme'], causes: ['Tumor trofoblástico'] },
+  'Arco alto': { symptoms: ['Pie cavo'], causes: ['Pie'] },
+  'Pérdida gestacional recurrente': { symptoms: ['Abortos repetición'], causes: ['Embarazo'] },
+  'Síndrome de dolor pélvico crónico': { symptoms: ['Prostatitis crónica/Dolor pélvico'], causes: ['Urológico'] },
+  'Enfermedad del sueño': { symptoms: ['Tripanosomiasis'], causes: ['Parásito mosca tsetsé'] },
+  'Terror nocturno': { symptoms: ['Miedo sueño profundo'], causes: ['Parasomnia'] },
+  'Trastornos neurocognitivos': { symptoms: ['Demencia/Delirium'], causes: ['Cognitivo'] },
+  'Tetralogía de Fallot': { symptoms: ['Defecto cardíaco complejo'], causes: ['Congénito'] },
+  'Infecciones de la glándula salival': { symptoms: ['Sialadenitis'], causes: ['Glándula inflamada'] },
+  'Gangrena': { symptoms: ['Tejido muerto'], causes: ['Falta sangre/Infección'] },
+  'Gangrena de tejidos blandos': { symptoms: ['Infección necrotizante'], causes: ['Grave'] },
+  'Adenocarcinoma del estómago': { symptoms: ['Cáncer gástrico'], causes: ['Estómago'] },
+  'Cirrosis biliar primaria': { symptoms: ['Colangitis biliar'], causes: ['Hígado autoinmune'] },
+  'Uña del pie encarnada': { symptoms: ['Uñero'], causes: ['Dedo pie'] },
+  'Pólipos cervicales': { symptoms: ['Crecimiento cérvix'], causes: ['Benigno'] },
+  'Demencia senil': { symptoms: ['Demencia vejez'], causes: ['Término antiguo'] },
+  'Cáncer de vagina': { symptoms: ['Cáncer genital raro'], causes: ['Vagina'] },
+  'Acidosis metabólica': { symptoms: ['Acidez sangre'], causes: ['Metabólico'] },
+  'Apnea en recién nacidos': { symptoms: ['Bebé deja respirar'], causes: ['Prematurez'] },
+  'Vaginitis': { symptoms: ['Inflamación vagina'], causes: ['Infección'] },
+  'Tuberculosis': { symptoms: ['TBC'], causes: ['Infección'] },
+  'Herpes genital': { symptoms: ['ETS virus'], causes: ['Herpes'] },
+  'Hipertensión arterial pulmonar': { symptoms: ['Presión alta pulmón'], causes: ['Vascular pulmonar'] },
+  'Endotropía': { symptoms: ['Ojo desviado dentro'], causes: ['Estrabismo'] },
+  'Gota crónica': { symptoms: ['Artritis gotosa'], causes: ['Ácido úrico'] },
+  'Prolapso de disco intervertebral': { symptoms: ['Hernia discal'], causes: ['Columna'] },
+  'Acidosis tubular distal renal': { symptoms: ['Problema ácido riñón'], causes: ['Renal'] },
+  'Hemorragia subaracnoidea': { symptoms: ['Sangrado cerebro grave'], causes: ['Aneurisma'] },
+  'Eritema tóxico del neonato': { symptoms: ['Sarpullido bebé'], causes: ['Benigno'] },
+  'Submordida': { symptoms: ['Mandíbula salida'], causes: ['Dental'] },
+  'Tendinitis bicipital': { symptoms: ['Dolor bíceps hombro'], causes: ['Tendón'] },
+  'Glaucoma de ángulo cerrado': { symptoms: ['Glaucoma agudo emergencia'], causes: ['Ojo'] },
+  'Reacción anafiláctica': { symptoms: ['Alergia grave shock'], causes: ['Anafilaxia'] },
+  'Amebiasis hepática': { symptoms: ['Absceso hígado ameba'], causes: ['Infección'] },
+  'Hipotensión': { symptoms: ['Presión baja'], causes: ['Circulatorio'] },
+  'Cardiomiopatía hipertrófica (CMH)': { symptoms: ['Corazón engrosado'], causes: ['Genético'] },
+  'Pseudoartrosis': { symptoms: ['Hueso no suelda'], causes: ['Fractura fallida'] },
+  'Espolón calcáneo y fascitis plantar': { symptoms: ['Dolor talón'], causes: ['Pie'] },
+  'Síndrome de Edwards': { symptoms: ['Trisomía 18'], causes: ['Genético letal'] },
+  'Hiperplasia endometrial benigna': { symptoms: ['Engrosamiento útero'], causes: ['Hormonal'] },
+  'Trastorno de la personalidad evasiva': { symptoms: ['Timidez extrema'], causes: ['Personalidad'] },
+  'Entropión': { symptoms: ['Párpado girado dentro'], causes: ['Ojo'] },
+  'Visión corta': { symptoms: ['Miopía'], causes: ['Ojo'] },
+  'Trastorno de la personalidad pasivo-agresiva': { symptoms: ['Resistencia indirecta'], causes: ['Conducta'] },
+  'Enterocolitis necrosante': { symptoms: ['Intestino muere (prematuros)'], causes: ['Grave'] },
+  'Angiodisplasia del colon': { symptoms: ['Vasos sangrantes colon'], causes: ['Digestivo'] },
+  'Carcinoma hepatocelular': { symptoms: ['Cáncer hígado primario'], causes: ['Hígado'] },
+  'Fractura de la base del metatarso': { symptoms: ['Fractura pie (Jones)'], causes: ['Trauma'] },
+  'Vértigo Central': { symptoms: ['Mareo origen cerebral'], causes: ['Neurológico'] },
+  'Absceso hepático bacteriano': { symptoms: ['Pus en hígado'], causes: ['Infección'] },
+  'Agua en el pulmón': { symptoms: ['Edema pulmonar/Derrame'], causes: ['Líquido'] },
+  'Shock séptico': { symptoms: ['Sepsis grave'], causes: ['Infección sistémica'] },
+  'Colestasis': { symptoms: ['Flujo bilis bloqueado'], causes: ['Hígado/Vesícula'] },
+  'Andropausia': { symptoms: ['Menopausia masculina'], causes: ['Baja testosterona'] },
+  'Artritis reactiva': { symptoms: ['Artritis tras infección'], causes: ['Reiter'] },
+  'Infección sinusal': { symptoms: ['Sinusitis'], causes: ['Infección'] },
+  'Conjuntivitis aguda': { symptoms: ['Ojo rosa repentino'], causes: ['Infección'] },
+  'Pinguécula': { symptoms: ['Bulto amarillo ojo'], causes: ['Sol'] },
+  'Angina de Ludwig': { symptoms: ['Infección suelo boca grave'], causes: ['Dental'] },
+  'Hiperacusia': { symptoms: ['Sensibilidad ruido'], causes: ['Auditivo'] },
+  'Síndrome de bradicardia-taquicardia': { symptoms: ['Ritmo corazón irregular'], causes: ['Seno enfermo'] },
+  'Hernia discales': { symptoms: ['Hernia disco'], causes: ['Columna'] },
+  'Síndrome de Ehlers-Danlos': { symptoms: ['Hiperlaxitud, piel elástica'], causes: ['Tejido conectivo'] },
+  'Codependencia emocional y heridas de infancia': { symptoms: ['Dependencia'], causes: ['Psicológico'] },
+  'HIV/SIDA': { symptoms: ['Inmunodeficiencia'], causes: ['Virus VIH'] },
+  'Enfermedad pulmonar intersticial difusa': { symptoms: ['Cicatriz pulmón'], causes: ['EPID'] }
 };
 
 export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
@@ -1326,93 +2299,1266 @@ export const DISEASE_RELATED_SPECIALTIES: Record<string, string[]> = {
 };
 
 export const SPECIALTY_PROCEDURES: Record<string, string[]> = {
+  'Acupuntor': ['Aplicación de agujas', 'Alivio del dolor', 'Relajación corporal', 'Estimulación de puntos'],
+  'Alergólogo': ['Pruebas de alergia', 'Tratamiento de alergias', 'Control del asma', 'Inmunoterapia'],
+  'Algólogo': ['Tratamiento del dolor', 'Bloqueos nerviosos', 'Manejo del dolor crónico'],
+  'Anatomopatólogo': ['Análisis de biopsias', 'Estudio de tejidos', 'Diagnóstico de enfermedades'],
+  'Anestesiólogo': ['Aplicación de anestesia', 'Control del dolor', 'Monitoreo en cirugía'],
+  'Angiólogo': ['Estudio de venas', 'Tratamiento de várices', 'Ultrasonido vascular'],
+  'Audiólogo': ['Pruebas de audición', 'Adaptación de auxiliares auditivos', 'Evaluación del oído'],
+  'Cardiólogo': ['Electrocardiograma', 'Ecocardiograma', 'Control de presión', 'Consulta del corazón'],
+  'Cardiólogo pediátrico': ['Ecocardiograma infantil', 'Control cardíaco infantil', 'Consulta pediátrica'],
+  'Cirujano bariatra': ['Cirugía para bajar de peso', 'Bypass gástrico', 'Manga gástrica'],
+  'Cirujano cardiovascular': ['Cirugía del corazón', 'Cirugía de arterias', 'Colocación de bypass'],
+  'Cirujano cardiovascular y torácico': ['Cirugía del corazón', 'Cirugía pulmonar', 'Cirugía del tórax'],
+  'Cirujano de la mano': ['Cirugía de dedos', 'Reparación de tendones', 'Tratamiento de fracturas'],
+  'Cirujano estético y cosmético': ['Liposucción', 'Cirugía estética', 'Rellenos faciales'],
+  'Cirujano general': ['Cirugía abdominal', 'Apendicectomía', 'Hernias'],
+  'Cirujano maxilofacial': ['Cirugía facial', 'Extracción de muelas', 'Cirugía de mandíbula'],
+  'Cirujano oncólogo': ['Cirugía de cáncer', 'Extirpación de tumores'],
+  'Cirujano pediátrico': ['Cirugía infantil', 'Corrección de malformaciones'],
+  'Cirujano plástico': ['Cirugía reconstructiva', 'Cirugía estética', 'Corrección de cicatrices'],
+  'Cirujano torácico': ['Cirugía pulmonar', 'Cirugía del tórax'],
+  'Cirujano vascular': ['Cirugía de venas', 'Tratamiento de várices'],
   'Dentista - Odontólogo': ['Limpieza dental profunda', 'Empastes y resinas', 'Extracciones dentales', 'Blanqueamiento dental', 'Endodoncia', 'Coronas dentales'],
+  'Dermatólogo': ['Tratamiento de acné', 'Revisión de lunares', 'Enfermedades de la piel'],
+  'Dermatólogo pediátrico': ['Tratamiento de piel infantil', 'Alergias cutáneas'],
+  'Diabetólogo': ['Control de diabetes', 'Ajuste de medicamentos', 'Educación del paciente'],
+  'Endocrinólogo': ['Control hormonal', 'Tratamiento tiroideo', 'Diabetes'],
+  'Endocrinólogo pediátrico': ['Control hormonal infantil', 'Problemas de crecimiento'],
+  'Endoscopista': ['Endoscopía digestiva', 'Colonoscopía'],
+  'Enfermero': ['Aplicación de inyecciones', 'Curaciones', 'Toma de signos vitales'],
+  'Especialidad en Medicina del Enfermo Pediátrico en Estado Crítico': ['Atención en terapia intensiva infantil', 'Soporte vital'],
+  'Especialista en Medicina Crítica y Terapia Intensiva': ['Atención en terapia intensiva', 'Soporte vital'],
+  'Especialista en Medicina del Deporte': ['Evaluación física', 'Prevención de lesiones'],
+  'Especialista en Medicina del Trabajo': ['Exámenes laborales', 'Evaluación de riesgos'],
+  'Especialista en Medicina Integrada': ['Atención integral', 'Tratamientos combinados'],
+  'Especialista en Obesidad y Delgadez': ['Control de peso', 'Planes de adelgazamiento'],
+  'Especialista en Rehabilitación y Medicina Física': ['Rehabilitación física', 'Terapia de movimiento'],
+  'Especialista en Retina Médica y Quirúrgica': ['Cirugía de retina', 'Tratamiento visual'],
+  'Fisioterapeuta': ['Ejercicios de rehabilitación', 'Masoterapia', 'Terapia física'],
+  'Foniatra': ['Terapia de voz', 'Problemas del habla'],
+  'Gastroenterólogo': ['Tratamiento digestivo', 'Endoscopía', 'Colonoscopía'],
+  'Gastroenterólogo pediátrico': ['Tratamiento digestivo infantil'],
+  'Genetista': ['Estudios genéticos', 'Diagnóstico hereditario'],
+  'Geriatra': ['Atención al adulto mayor', 'Control de enfermedades'],
+  'Gerontólogo': ['Cuidado del envejecimiento', 'Orientación al adulto mayor'],
   'Ginecólogo': ['Papanicolaou', 'Colposcopia', 'Ultrasonido pélvico', 'Colocación de DIU', 'Examen mamario', 'Control prenatal'],
-  'Cardiólogo': ['Electrocardiograma (EKG)', 'Ecocardiograma', 'Prueba de esfuerzo', 'Holter de ritmo', 'Monitoreo de presión arterial'],
-  'Dermatólogo': ['Biopsia de piel', 'Crioterapia', 'Eliminación de verrugas', 'Peeling químico', 'Dermatoscopia', 'Control de acné'],
-  'Pediatra': ['Vacunación', 'Evaluación del crecimiento', 'Tamiz neonatal', 'Revisión de oído y garganta', 'Certificados médicos escolares'],
-  'Oftalmólogo': ['Examen de agudeza visual', 'Fondo de ojo', 'Tonometría (presión ocular)', 'Prueba de refracción', 'Evaluación de cataratas'],
-  'Traumatólogo': ['Inmovilización con férula o yeso', 'Infiltraciones articulares', 'Artrocentesis', 'Reducción de fracturas', 'Evaluación de postura'],
-  'Psicólogo': ['Evaluación psicométrica', 'Terapia cognitivo-conductual', 'Entrevista clínica', 'Terapia de pareja', 'Manejo de estrés'],
-  'Médico general': ['Certificado médico', 'Control de diabetes e hipertensión', 'Lavado de oídos', 'Curación de heridas', 'Suturas menores'],
-  'Urólogo': ['Examen de próstata', 'Ultrasonido vesical', 'Vasectomía', 'Tratamiento de infecciones urinarias', 'Litotricia'],
-  'Nutricionista': ['Plan de alimentación personalizado', 'Evaluación antropométrica', 'Control de peso', 'Educación nutricional', 'Dieta para deportistas']
+  'Ginecólogo oncológico': ['Cáncer ginecológico', 'Cirugía oncológica'],
+  'Hematólogo': ['Estudios de sangre', 'Tratamiento de anemia'],
+  'Hematólogo pediatra': ['Enfermedades de la sangre infantil'],
+  'Homeópata': ['Tratamiento homeopático', 'Consulta integral'],
+  'Infectólogo': ['Tratamiento de infecciones', 'Control de enfermedades infecciosas'],
+  'Infectólogo pediatra': ['Infecciones infantiles'],
+  'Inmunólogo': ['Estudio del sistema inmune', 'Tratamiento inmunológico'],
+  'Internista': ['Atención integral del adulto', 'Diagnóstico general'],
+  'Logopeda': ['Terapia del lenguaje', 'Corrección del habla'],
+  'Médico de familia': ['Consulta general', 'Atención preventiva'],
+  'Médico estético': ['Tratamientos faciales', 'Aplicación de botox'],
+  'Médico general': ['Consulta general', 'Diagnóstico básico'],
+  'Naturista': ['Tratamientos naturales', 'Orientación saludable'],
+  'Neonatólogo': ['Atención al recién nacido', 'Cuidados neonatales'],
+  'Nefrólogo': ['Tratamiento renal', 'Control de riñones'],
+  'Nefrólogo pediatra': ['Enfermedades renales infantiles'],
+  'Neumólogo': ['Tratamiento pulmonar', 'Espirometría'],
+  'Neumólogo pediatra': ['Problemas respiratorios infantiles'],
+  'Neurocirujano': ['Cirugía cerebral', 'Cirugía de columna'],
+  'Neurofisiólogo': ['Estudios neurológicos', 'Electromiografía'],
+  'Neurólogo': ['Tratamiento neurológico', 'Epilepsia', 'Migraña'],
+  'Neurólogo pediatra': ['Problemas neurológicos infantiles'],
+  'Nutricionista': ['Planes de alimentación', 'Educación nutricional'],
+  'Nutriólogo': ['Control de dieta', 'Plan alimenticio'],
+  'Nutriólogo clínico': ['Nutrición terapéutica', 'Dietas médicas'],
+  'Odontólogo pediatra': ['Limpieza infantil', 'Selladores dentales'],
+  'Oftalmólogo': ['Examen visual', 'Cirugía ocular'],
+  'Oftalmólogo pediátrico': ['Revisión visual infantil'],
+  'Oncólogo médico': ['Tratamiento con medicamentos', 'Quimioterapia'],
+  'Oncólogo pediátrico': ['Cáncer infantil', 'Quimioterapia pediátrica'],
+  'Optometrista': ['Examen de la vista', 'Lentes'],
+  'Ortodoncista': ['Brackets', 'Corrección dental'],
+  'Ortopedista': ['Tratamiento óseo', 'Fracturas'],
+  'Ortopedista infantil': ['Huesos infantiles', 'Corrección postural'],
+  'Otorrinolaringólogo': ['Problemas de oído', 'Nariz y garganta'],
+  'Otorrinolaringólogo Pediátrico': ['Oído y garganta infantil'],
+  'Patólogo Bucal': ['Enfermedades de la boca', 'Biopsias orales'],
+  'Patólogo clínico': ['Análisis de laboratorio', 'Estudios clínicos'],
+  'Pediatra': ['Consulta infantil', 'Vacunación'],
+  'Podiatra': ['Tratamiento del pie', 'Uñas encarnadas'],
+  'Podólogo': ['Cuidado de pies', 'Callos y uñas'],
+  'Proctólogo': ['Enfermedades del recto', 'Hemorroides'],
+  'Psicoanalista': ['Terapia psicológica', 'Análisis emocional'],
+  'Psicólogo': ['Terapia emocional', 'Evaluación psicológica'],
+  'Psicopedagogo': ['Apoyo escolar', 'Problemas de aprendizaje'],
+  'Psiquiatra': ['Tratamiento mental', 'Medicamentos psiquiátricos'],
+  'Psiquiatra infantil': ['Salud mental infantil'],
+  'Quiropráctico': ['Ajustes de columna', 'Dolor de espalda'],
+  'Radio Oncólogo': ['Radioterapia', 'Tratamiento de cáncer'],
+  'Radiólogo': ['Rayos X', 'Ultrasonido', 'Tomografía'],
+  'Radioterapeuta': ['Aplicación de radiación', 'Tratamiento oncológico'],
+  'Reumatólogo': ['Artritis', 'Dolor articular'],
+  'Reumatólogo pediátrico': ['Enfermedades reumáticas infantiles'],
+  'Sexólogo': ['Orientación sexual', 'Terapia sexual'],
+  'Técnico en diagnóstico e imagen': ['Rayos X', 'Tomografías'],
+  'Terapeuta complementario': ['Terapias alternativas', 'Relajación'],
+  'Terapeuta ocupacional': ['Rehabilitación funcional', 'Actividades diarias'],
+  'Traumatólogo': ['Lesiones', 'Fracturas'],
+  'Urgenciólogo': ['Atención de urgencias', 'Emergencias médicas'],
+  'Urólogo': ['Enfermedades urinarias', 'Próstata'],
+  'Urólogo pediátrico': ['Problemas urinarios infantiles']
 };
 
 export const SPECIALTY_FIRST_VISIT: Record<string, string> = {
-  'Dentista - Odontólogo': 'En tu primera visita, el dentista revisará tu historial médico y realizará un examen completo de tus dientes y encías. Es posible que tome radiografías para detectar problemas ocultos como caries entre los dientes o problemas en la mandíbula.',
-  'Ginecólogo': 'La primera consulta suele incluir una revisión de antecedentes familiares y personales. Dependiendo de tu edad y necesidades, se puede realizar un examen físico, papanicolaou o exploración mamaria, siempre en un ambiente de respeto y confidencialidad.',
-  'Cardiólogo': 'El cardiólogo escuchará tu corazón y pulmones, tomará tu presión arterial y revisará tus antecedentes de salud. Es común que se realice un electrocardiograma en el consultorio para analizar el ritmo cardíaco de forma inmediata.',
-  'Dermatólogo': 'El especialista examinará tu piel, cabello y uñas. Si tienes lunares o manchas preocupantes, utilizará un dermatoscopio para verlos en detalle. Prepárate para responder preguntas sobre tu exposición al sol y productos que usas.',
-  'Pediatra': 'El médico medirá y pesará al niño para evaluar su crecimiento. Revisará hitos del desarrollo, esquemas de vacunación y resolverá dudas sobre alimentación, sueño y comportamiento. Es importante llevar la cartilla de vacunación.',
-  'Traumatólogo': 'Se evaluará la movilidad, fuerza y dolor en la zona afectada. El médico puede realizar maniobras específicas para detectar lesiones en ligamentos o meniscos y solicitar radiografías o resonancias magnéticas si es necesario.',
-  'Psicólogo': 'La primera sesión es una entrevista para conocerte. Hablarás sobre las razones que te trajeron a consulta, tus síntomas y lo que esperas lograr con la terapia. Es un espacio seguro para expresarte sin juicios.',
-  'Oftalmólogo': 'Se realizarán pruebas para medir tu visión y la presión intraocular. Es posible que dilaten tus pupilas para examinar el fondo del ojo, por lo que se recomienda llevar gafas de sol y no conducir inmediatamente después.',
-  'Médico general': 'El médico realizará un interrogatorio completo sobre tus síntomas actuales y antecedentes. Hará una exploración física general (signos vitales, garganta, abdomen, pulmones) para llegar a un diagnóstico o referirte a un especialista.',
-  'Nutricionista': 'Se realizará una evaluación de tu estilo de vida, hábitos alimenticios y actividad física. El especialista tomará medidas corporales (peso, talla, pliegues) para establecer metas realistas y diseñar un plan a tu medida.'
+  'Acupuntor': 'Te preguntará qué te duele o qué te molesta. Luego te acostarás y te pondrá unas agujitas muy finas en la piel para que te sientas mejor. ¡Son tan delgadas que casi no se sienten!',
+  'Alergólogo': 'El doctor te preguntará si estornudas mucho o te pica la piel. Es posible que te haga pequeñas marcas en el brazo con gotitas para ver a qué le tienes alergia.',
+  'Algólogo': 'Este doctor es experto en dolor. Te preguntará dónde te duele y qué tan fuerte es. Buscará la mejor medicina para que ya no sufras y puedas moverte bien.',
+  'Anatomopatólogo': 'A este doctor casi no lo ves. Él estudia las muestras (como un pedacito de piel o sangre) que te sacan otros doctores para saber exactamente qué enfermedad tienes.',
+  'Anestesiólogo': 'Hablarás con él antes de una operación. Te preguntará sobre tu salud para elegir la mejor medicina para dormirte, así no sentirás nada ni te dolerá durante la cirugía.',
+  'Angiólogo': 'Revisará tus piernas para ver si tienes venas hinchadas o moretes. Tal vez use un aparato con gel frío para ver cómo pasa la sangre por tus venas.',
+  'Audiólogo': 'Te pondrá unos audífonos y te hará escuchar sonidos, unos bajitos y otros fuertes. Tú levantarás la mano cuando escuches algo para saber qué tan bien oyen tus oídos.',
+  'Cardiólogo': 'Te preguntará si te cansas al correr. Escuchará tu corazón con un aparato frío en el pecho y tal vez te ponga unas pegatinas con cables para ver cómo late tu corazón en una pantalla.',
+  'Cardiólogo pediátrico': 'Es igual que el de adultos, pero especial para niños. Escuchará tu corazón con mucho cuidado y revisará que tengas mucha energía para jugar sin cansarte rápido.',
+  'Cirujano bariatra': 'Te pesará y platicará contigo sobre tu alimentación. Te explicará cómo una operación puede ayudarte a bajar de peso para que estés más sano.',
+  'Cirujano cardiovascular': 'Revisará los estudios de tu corazón. Te explicará con dibujos cómo va a arreglar tu corazón o tus arterias para que la sangre circule mejor.',
+  'Cirujano cardiovascular y torácico': 'Platicará contigo sobre tus pulmones o tu corazón. Verá tus radiografías y te dirá cómo será la operación para arreglar lo que tienes dentro del pecho.',
+  'Cirujano de la mano': 'Revisará tus dedos y muñeca. Te pedirá que muevas la mano, aprietes cosas o estires los dedos para ver qué tan fuerte estás y qué le duele a tu mano.',
+  'Cirujano estético y cosmético': 'Te preguntará qué parte de tu cuerpo te gustaría cambiar o mejorar. Te mirará con cuidado y te explicará qué puede hacer para que te veas como quieres.',
+  'Cirujano general': 'Te tocará la panza o revisará la parte que te duele. Te explicará si necesitas una operación para sacar lo que te enferma y cómo te vas a curar después.',
+  'Cirujano maxilofacial': 'Revisará tu boca, tus dientes y tu mandíbula. Verá radiografías de tu cara para saber cómo arreglar tu mordida o sacar muelas que están atoradas.',
+  'Cirujano oncólogo': 'Revisará los bultitos o bolitas que tengas en el cuerpo. Te explicará cómo va a quitarlos con una operación para que te pongas bien.',
+  'Cirujano pediátrico': 'Es un doctor que opera solo a niños. Te revisará la pancita o la parte que duele y te explicará que te va a dormir un ratito para arreglar tu cuerpo.',
+  'Cirujano plástico': 'Verá si tienes cicatrices o heridas en la piel. Te explicará cómo puede arreglar tu piel para que se vea bonita y funcione bien otra vez.',
+  'Cirujano torácico': 'Escuchará cómo respiras y verá fotos de tus pulmones. Te explicará cómo es la operación en el pecho para ayudarte a respirar mejor.',
+  'Cirujano vascular': 'Te revisará el cuello, los brazos o las piernas para sentir tu pulso. Verá si la sangre llega bien a todas partes de tu cuerpo.',
+  'Dentista - Odontólogo': 'Te sentará en una silla especial que se mueve. Revisará tus dientes con un espejito y contará cuántos tienes. Verá si tienes caries y te enseñará a cepillarte mejor.',
+  'Dermatólogo': 'Revisará tu piel, tus uñas y tu pelo con una luz especial. Verá si tienes granitos, lunares o manchas y te dará cremas para curarlos.',
+  'Dermatólogo pediátrico': 'Revisará tu piel con mucho cuidado para ver si tienes ronchitas o granitos. Te dará medicinas suaves especiales para la piel de los niños.',
+  'Diabetólogo': 'Te pedirá una gotita de sangre del dedo para ver tu azúcar. Te preguntará qué comes y te enseñará a elegir alimentos que no te hagan daño.',
+  'Endocrinólogo': 'Te medirá y te pesará. Te preguntará si tienes mucho frío o calor y revisará tu cuello. A veces pide análisis de sangre para ver cómo funcionan tus hormonas.',
+  'Endocrinólogo pediátrico': 'Te medirá para ver cuánto has crecido. Revisará si estás creciendo muy rápido o muy lento y te ayudará si tu cuerpo está cambiando.',
+  'Endoscopista': 'En la primera cita solo platicarán. Te explicará cómo usará una camarita especial (manguerita) para ver tu estómago por dentro mientras estás dormido.',
+  'Enfermero': 'Te preguntará cómo te sientes, te tomará la temperatura y la presión del brazo. Te ayudará a prepararte para ver al doctor.',
+  'Especialidad en Medicina del Enfermo Pediátrico en Estado Crítico': 'Este doctor atiende a niños muy enfermitos en el hospital. Hablará mucho con tus papás y usará máquinas para cuidarte todo el tiempo.',
+  'Especialista en Medicina Crítica y Terapia Intensiva': 'Este doctor trabaja en el hospital con pacientes graves. Vigila las máquinas que ayudan a respirar y al corazón para salvar vidas.',
+  'Especialista en Medicina del Deporte': 'Te preguntará qué deporte haces. Te pedirá que muevas los brazos y piernas para ver si tienes una lesión y te dirá cuándo puedes volver a jugar.',
+  'Especialista en Medicina del Trabajo': 'Te hará un chequeo general para ver si estás sano para trabajar. Revisará tu vista, tu espalda y tus pulmones.',
+  'Especialista en Medicina Integrada': 'Te revisará todo el cuerpo. Verá tu peso, tu presión y te preguntará de todo para cuidarte y evitar que te enfermes en el futuro.',
+  'Especialista en Obesidad y Delgadez': 'Te pesará y medirá cuánta grasa tiene tu cuerpo. Platicarán sobre lo que comes y te hará un plan para llegar a un peso saludable.',
+  'Especialista en Rehabilitación y Medicina Física': 'Te pedirá que camines y muevas los brazos. Verá qué tan fuerte eres y te hará un plan de ejercicios para que te muevas mejor.',
+  'Especialista en Retina Médica y Quirúrgica': 'Te pondrá unas gotas en los ojos que hacen que veas borroso un rato. Usará una luz fuerte y una lupa para ver el fondo de tu ojo.',
+  'Fisioterapeuta': 'Te tocará donde te duele y te pedirá que hagas movimientos. Te enseñará ejercicios fáciles para hacer en casa y fortalecer tus músculos.',
+  'Foniatra': 'Te pedirá que digas palabras, que leas algo o que abras la boca para ver tu garganta. Escuchará cómo suena tu voz.',
+  'Gastroenterólogo': 'Te acostarás y te tocará la barriga para ver si duele. Te preguntará si tienes dolor de estómago o agruras después de comer.',
+  'Gastroenterólogo pediátrico': 'Preguntará si te duele la pancita al comer. Te revisará el estómago suavemente y te dará medicinas para que la comida no te caiga mal.',
+  'Genetista': 'Te hará muchas preguntas sobre tu familia (abuelos, tíos). Te revisará rasgos físicos y tal vez pida una prueba de sangre especial para ver tu ADN.',
+  'Geriatra': 'Platicará contigo sobre cómo te sientes y qué medicinas tomas. Te hará preguntas de memoria y revisará que puedas caminar sin caerte.',
+  'Gerontólogo': 'No te dará medicinas, sino que platicará contigo para ver cómo vives. Te dará consejos para que estés feliz y activo mientras te haces mayor.',
+  'Ginecólogo': 'Te hará preguntas sobre tu salud íntima. Si eres mayor, te revisará con cuidado y respeto para asegurar que todo esté sano.',
+  'Ginecólogo oncológico': 'Revisará tus estudios y te examinará con mucho cuidado. Te explicará el plan para quitar o tratar cualquier bolita mala que tengas.',
+  'Hematólogo': 'Revisará tus análisis de sangre con atención. Te revisará para ver si estás pálido o si tienes moretones fáciles.',
+  'Hematólogo pediatra': 'Revisará a los niños que se ven muy pálidos o sangran mucho. Verá sus análisis de sangre y revisará si tienen bolitas en el cuello.',
+  'Homeópata': 'Te hará una entrevista muy larga sobre cómo eres, qué te gusta y qué te da miedo, no solo sobre qué te duele, para darte un remedio natural.',
+  'Infectólogo': 'Te revisará si tienes fiebre que no se quita. Verá tus análisis para encontrar qué microbio te está enfermando y cómo matarlo.',
+  'Infectólogo pediatra': 'Revisará a los niños con infecciones fuertes. Verá su cartilla de vacunas y buscará el mejor antibiótico para curarlos rápido.',
+  'Inmunólogo': 'Te preguntará si te enfermas muy seguido. Tal vez te haga pruebas en la piel o de sangre para ver cómo están tus defensas.',
+  'Internista': 'Es como un detective médico para adultos. Te revisará de pies a cabeza y verá todos tus estudios para encontrar por qué te sientes mal.',
+  'Logopeda': 'Jugará contigo con letras y palabras. Te pedirá que nombres dibujos o repitas sonidos para ayudarte a hablar o leer mejor.',
+  'Médico de familia': 'Es el doctor de todos en la casa. Te pesará, te medirá, revisará tu garganta y oídos, y te pondrá vacunas si te tocan.',
+  'Médico estético': 'Te mirará la cara o el cuerpo y te preguntará qué quieres mejorar. Te propondrá tratamientos sencillos sin cirugía para que te veas mejor.',
+  'Médico general': 'Te preguntará qué te duele hoy. Te revisará con el estetoscopio, te verá la garganta y te dará una receta para que te cures pronto.',
+  'Naturista': 'Te preguntará sobre tu estilo de vida y qué comes. Te recomendará plantas, tés o cambios en tu dieta para sanar de forma natural.',
+  'Neonatólogo': 'Este doctor revisa a los bebés recién nacidos. Los pesa, los mide y revisa que respiren y coman bien en sus primeros días de vida.',
+  'Nefrólogo': 'Te preguntará sobre tu orina y si te hinchas. Te pedirá análisis de pipí y sangre para ver qué tan bien limpian tu sangre tus riñones.',
+  'Nefrólogo pediatra': 'Revisará a niños que tienen problemas para hacer pipí. Verá que sus riñones funcionen bien y que no tengan infecciones.',
+  'Neumólogo': 'Te pedirá que soples fuerte en un tubo conectado a una computadora. Escuchará tu espalda mientras respiras hondo.',
+  'Neumólogo pediatra': 'Escuchará el pechito del niño con cuidado. Preguntará si tiene tos o se agita al correr y revisará sus pulmones.',
+  'Neurocirujano': 'Revisará tus reflejos (te pegará despacito en la rodilla) y verá imágenes de tu cabeza o espalda para ver si necesitas una operación.',
+  'Neurofisiólogo': 'Te pondrá unos cables en la cabeza o brazos (no duelen). Te pedirá que te relajes para ver cómo funcionan tus nervios y cerebro.',
+  'Neurólogo': 'Te pedirá que camines de puntitas y talones. Revisará tu fuerza, tus reflejos y te hará preguntas para ver qué tan buena es tu memoria.',
+  'Neurólogo pediatra': 'Jugará con el niño para ver cómo se mueve y habla. Revisará su cabecita y sus reflejos para ver que su cerebro crezca bien.',
+  'Nutricionista': 'Te preguntará qué desayunas, comes y cenas. Te pesará y te dará una lista de comidas ricas y sanas para ti.',
+  'Nutriólogo': 'Analizará tu salud y tu peso. Te enseñará a combinar los alimentos para que tu cuerpo tenga toda la energía y vitaminas que necesita.',
+  'Nutriólogo clínico': 'Revisará tus análisis médicos y tu enfermedad. Te dirá exactamente qué debes comer para ayudar a tu cuerpo a recuperarse en el hospital.',
+  'Odontólogo pediatra': 'Es un dentista divertido. Contará tus dientes, buscará "bichitos" de azúcar (caries) y te enseñará a cepillarte. A veces te regala un cepillo.',
+  'Oftalmólogo': 'Te pedirá que leas letras grandes y chiquitas en la pared. Te pondrá una luz en el ojo para ver adentro y saber si necesitas lentes.',
+  'Oftalmólogo pediátrico': 'Usará juguetes o luces para ver cómo mueves los ojos. Revisará si necesitas lentes para ver mejor el pizarrón en la escuela.',
+  'Oncólogo médico': 'Platicará contigo sobre tu enfermedad y revisará tus estudios. Te explicará con calma qué medicinas usarán para combatir el cáncer.',
+  'Oncólogo pediátrico': 'Es muy amable y revisará al niño con cuidado. Explicará a los papás y al niño cómo usarán medicinas especiales para curarlo.',
+  'Optometrista': 'Te pondrá unos lentes de prueba gigantes y te cambiará las lunas mientras lees letras, hasta que veas todo clarito.',
+  'Ortodoncista': 'Tomará fotos y moldes de tus dientes (te pone una pasta suave en la boca). Te dirá si necesitas frenos para enderezar tu sonrisa.',
+  'Ortopedista': 'Moverá tu brazo o pierna para ver dónde duele. Verá tus radiografías para saber si hay algún hueso roto o lastimado.',
+  'Ortopedista infantil': 'Revisará cómo camina el niño y la forma de sus pies y piernas. Verá si sus huesitos están creciendo derechos.',
+  'Otorrinolaringólogo': 'Usará una lamparita para ver dentro de tu nariz y oídos. Te pedirá que abras la boca para ver tu garganta y cuerdas vocales.',
+  'Otorrinolaringólogo Pediátrico': 'Revisará los oídos y las anginas de los niños. Lo hará con cuidado para que no les moleste y revisará si escuchan bien.',
+  'Patólogo Bucal': 'Revisará muy bien tu boca, lengua y encías. Si ve alguna manchita rara, te explicará cómo tomará una muestrita para estudiarla.',
+  'Patólogo clínico': 'Probablemente no lo veas. Él es el jefe del laboratorio que revisa tu sangre y orina para darle los resultados a tu doctor.',
+  'Pediatra': 'Te pesará, te medirá y escuchará tu corazón. Te preguntará si comes bien y revisará que estés creciendo sano y fuerte.',
+  'Podiatra': 'Te pedirá que te quites los zapatos. Revisará la forma de tus pies y cómo pisas para ver si necesitas plantillas especiales.',
+  'Podólogo': 'Te sentará en un sillón cómodo. Te cortará las uñas de los pies correctamente y quitará cualquier callito que te lastime al caminar.',
+  'Proctólogo': 'Te hará preguntas sobre tu digestión. Te revisará con cuidado la parte final de tu intestino para ver por qué tienes dolor o sangrado.',
+  'Psicoanalista': 'Te sentarás o acostarás cómodo. Te pedirá que hables de lo que quieras, de tus sueños o recuerdos, para entenderte mejor.',
+  'Psicólogo': 'Es como charlar con un amigo experto. Te preguntará cómo te sientes, si estás triste o enojado, y te ayudará a entender tus emociones.',
+  'Psicopedagogo': 'Te pondrá a hacer actividades divertidas, como rompecabezas o leer. Verá cómo aprendes mejor para ayudarte en la escuela.',
+  'Psiquiatra': 'Platicará contigo sobre tus sentimientos y problemas. Si es necesario, te dará una medicina para ayudar a tu cerebro a sentirse más tranquilo.',
+  'Psiquiatra infantil': 'Jugará y platicará con el niño y sus papás. Verá si el niño está muy inquieto o triste y buscará formas de ayudarlo a ser feliz.',
+  'Quiropráctico': 'Te tocará la espalda y el cuello para ver qué huesos no se mueven bien. Te acostará y presionará con sus manos para "ajustar" tu cuerpo.',
+  'Radio Oncólogo': 'Te explicará cómo usarán una máquina grande de rayos (como una foto) para tratar tu enfermedad sin que te duela nada.',
+  'Radiólogo': 'Te pedirá que no te muevas para tomarte una foto de tus huesos (radiografía) o te pasará un aparatito con gel (ultrasonido) por la panza.',
+  'Radioterapeuta': 'Te ayudará a acomodarte en una máquina grande. Se asegurará de que estés cómodo y quieto mientras la máquina te da tu tratamiento.',
+  'Reumatólogo': 'Te tocará las articulaciones (codos, rodillas, manos) para ver si están hinchadas o calientes. Te preguntará si te duelen al moverte.',
+  'Reumatólogo pediátrico': 'Revisará si al niño le duelen las piernas o manos. Verá si se le hinchan las rodillas y buscará medicinas para que pueda correr y jugar.',
+  'Sexólogo': 'Platicará contigo en un lugar privado y seguro. Te ayudará a resolver dudas o problemas sobre tu vida íntima y de pareja.',
+  'Técnico en diagnóstico e imagen': 'Te dirá cómo ponerte para la foto de rayos X. Te pedirá que aguantes la respiración un segundito y ¡listo!',
+  'Terapeuta complementario': 'Te preguntará qué te duele y cómo te sientes. Usará cosas naturales como masajes, aceites o imanes para relajarte.',
+  'Terapeuta ocupacional': 'Verá qué cosas te cuesta trabajo hacer (como abotonarte la camisa). Te pondrá ejercicios para que tus manos y cuerpo aprendan a hacerlo solos.',
+  'Traumatólogo': 'Si te caíste, revisará dónde te golpeaste. Verá las radiografías para saber si tienes un hueso roto y si necesitas un yeso.',
+  'Urgenciólogo': 'Te atenderá rápido si tuviste un accidente. Te revisará de inmediato para calmar el dolor y arreglar lo que sea urgente.',
+  'Urólogo': 'Te preguntará sobre problemas al orinar. Si eres hombre, te revisará para asegurar que todo tu sistema urinario esté sano.',
+  'Urólogo pediátrico': 'Revisará las partes privadas de los niños con mucho respeto. Verá que todo esté en su lugar y que puedan hacer pipí sin problemas.'
 };
 
 export const CITY_HEALTH_DATA: Record<string, { overview: string, hospitals: string[], transport: string }> = {
+  'acapulco': {
+    overview: 'Es una ciudad con playa muy famosa. Tiene hospitales buenos para atender a los turistas y a la gente que vive ahí.',
+    hospitals: ['Hospital General Regional 1', 'Hospital Santa Lucía', 'Hospital Magallanes'],
+    transport: 'Hay muchos camiones y taxis. En las zonas de hoteles hay tráfico, así que es mejor salir con tiempo.'
+  },
+  'aguascalientes': {
+    overview: 'Es una ciudad muy limpia y tranquila. Sus hospitales son modernos y la gente recibe muy buena atención médica.',
+    hospitals: ['Hospital Miguel Hidalgo', 'Clínica MAC', 'Hospital Star Médica'],
+    transport: 'Es fácil moverse en carro. Las calles están bien señaladas y casi no hay tráfico pesado.'
+  },
+  'apizaco': {
+    overview: 'Es una ciudad pequeña que ayuda a mucha gente de los pueblos cercanos a ir al doctor.',
+    hospitals: ['Hospital General de Apizaco', 'Clínica San Francisco'],
+    transport: 'Puedes caminar a muchos lados o tomar una combi. Es un lugar pequeño y muy tranquilo.'
+  },
+  'apodaca': {
+    overview: 'Está junto a Monterrey. Tiene muchas fábricas y por eso hay hospitales nuevos para los trabajadores.',
+    hospitals: ['Hospital General de Zona 67', 'Clínica Nova'],
+    transport: 'Se necesita usar carro o taxi porque las distancias son largas. Hay calles muy grandes para manejar.'
+  },
+  'baja-california-sur': {
+    overview: 'Es un estado con mucha naturaleza y mar. Tiene clínicas en las ciudades pequeñas para cuidar a todos.',
+    hospitals: ['Hospital Juan María de Salvatierra', 'Clínica de Especialidades'],
+    transport: 'Lo mejor es usar carro propio. Hay carreteras largas y bonitas para ir de un pueblo a otro.'
+  },
+  'benito-juarez': {
+    overview: 'Es un lugar con muchos doctores. Hay muchas farmacias y clínicas cerca de las casas de las personas.',
+    hospitals: ['Hospital San José', 'Clínica Londres', 'Hospital General Xoco'],
+    transport: 'Lo mejor es usar el Metro o el Metrobús. Hay muchos carros y es difícil estacionarse.'
+  },
+  'buenavista': {
+    overview: 'Es un lugar pequeño pero cuenta con clínicas básicas para que la gente no tenga que viajar lejos.',
+    hospitals: ['Centro de Salud Buenavista', 'Clínica Médica Familiar'],
+    transport: 'La gente se mueve en bicicletas o camiones pequeños. Todo queda muy cerca.'
+  },
+  'cabo-san-lucas': {
+    overview: 'Es una ciudad donde vienen muchos turistas. Por eso, los doctores hablan español e inglés.',
+    hospitals: ['Hospital AMC', 'BlueNet Hospitals', 'Hospital Saint Luke’s'],
+    transport: 'Hay muchos taxis para los turistas. Es una ciudad pequeña pero con muchas subidas y bajadas.'
+  },
+  'cadereyta-jimenez': {
+    overview: 'Es una ciudad famosa por su petróleo. Tiene hospitales especiales para los trabajadores de las fábricas.',
+    hospitals: ['Hospital de Pemex', 'Hospital General Cadereyta'],
+    transport: 'Hay muchos camiones que llevan a los trabajadores. El centro es pequeño y fácil de recorrer.'
+  },
+  'campeche': {
+    overview: 'Es una ciudad con murallas muy vieja y bonita. Sus hospitales son tranquilos y atienden bien a los abuelitos.',
+    hospitals: ['Hospital General Dr. Javier Buenfil', 'Clínica del ISSSTE'],
+    transport: 'Puedes caminar por el centro. Hay camiones que te llevan a los hospitales más grandes.'
+  },
+  'cancun': {
+    overview: 'Es el lugar de vacaciones más conocido. Tiene hospitales muy modernos que parecen hoteles.',
+    hospitals: ['Hospital Galenia', 'Amerimed', 'Hospital Hospiten'],
+    transport: 'Hay muchos camiones que pasan todo el día. Si vas al doctor, es mejor tomar un taxi.'
+  },
+  'chalco': {
+    overview: 'Es una ciudad donde vive mucha gente. Sus hospitales siempre están trabajando para ayudar a los niños.',
+    hospitals: ['Hospital General de Chalco', 'Clínica 71 del IMSS'],
+    transport: 'Hay muchas combis y camiones. A veces hay mucho tráfico para entrar y salir de la ciudad.'
+  },
+  'chiapas': {
+    overview: 'Es un estado con mucha selva. Tienen clínicas que viajan a las montañas para ayudar a la gente.',
+    hospitals: ['Hospital de las Culturas', 'Hospital Dr. Pascacio Gamboa'],
+    transport: 'Para ir a los hospitales grandes hay que viajar en camión por caminos con muchas curvas.'
+  },
+  'chicoloapan': {
+    overview: 'Es un lugar tranquilo donde la gente se conoce. Tiene centros de salud para las familias del barrio.',
+    hospitals: ['Clínica Materno Infantil', 'Centro de Salud San Vicente'],
+    transport: 'La mayoría usa mototaxis o combis. Es una forma divertida y rápida de moverse por ahí.'
+  },
+  'chihuahua': {
+    overview: 'Es una ciudad muy grande del norte. Tiene hospitales fuertes y doctores que saben mucho de cirugías.',
+    hospitals: ['Hospital Central Universitario', 'Christus Muguerza del Parque', 'Hospital Angeles'],
+    transport: 'Se usa mucho el carro porque la ciudad es muy espaciosa. También hay un camión llamado ViveBús.'
+  },
+  'chilpancingo': {
+    overview: 'Es la capital de Guerrero. Tiene hospitales que ayudan a la gente que baja de las montañas.',
+    hospitals: ['Hospital General Raymundo Abarca', 'Clínica del IMSS'],
+    transport: 'Hay muchas combis de colores. La ciudad tiene muchas subidas porque está entre cerros.'
+  },
+  'chimalhuacan': {
+    overview: 'Es una ciudad con muchísima gente. Sus doctores trabajan duro para que todos los niños estén sanos.',
+    hospitals: ['Hospital General de Chimalhuacán', 'Hospital San Agustín'],
+    transport: 'El Mexibús es la mejor opción para no quedar atrapado en el tráfico de los carros.'
+  },
+  'ciudad-acuna': {
+    overview: 'Está justo en la frontera con Estados Unidos. Muchos doctores ayudan a personas de los dos países.',
+    hospitals: ['Hospital General de Zona 13', 'Clínica de la Amistad'],
+    transport: 'Es una ciudad pequeña. La gente usa su propio carro o taxis para ir rápido al doctor.'
+  },
+  'ciudad-benito-juarez': {
+    overview: 'Es una ciudad nueva que está creciendo. Están haciendo clínicas nuevas para todas las familias que llegan.',
+    hospitals: ['Hospital General de Juárez', 'Centros de Salud Municipales'],
+    transport: 'Hay camiones que te llevan a Monterrey. Se recomienda usar carro porque hay zonas en construcción.'
+  },
   'ciudad-de-mexico': {
     overview: 'La Ciudad de México concentra la infraestructura médica más avanzada del país, albergando los Institutos Nacionales de Salud y hospitales privados de renombre internacional. Es el principal destino para procedimientos de alta complejidad y turismo médico nacional.',
     hospitals: ['Hospital General de México', 'Centro Médico Nacional Siglo XXI', 'Hospital Ángeles', 'Médica Sur', 'Centro Médico ABC'],
     transport: 'Zonas como la Colonia Roma y Tlalpan (Zona de Hospitales) tienen alta congestión. Se recomienda utilizar el Metrobús para la zona centro o el Metro para el sur. El estacionamiento suele ser limitado, por lo que el uso de apps de movilidad es aconsejable.'
   },
-  'monterrey': {
-    overview: 'Monterrey se ha consolidado como un hub de turismo médico en el norte, conocido por su tecnología de vanguardia en cardiología y oncología. La ciudad combina atención hospitalaria de primer mundo con una fuerte formación universitaria.',
-    hospitals: ['Hospital Universitario', 'Doctors Hospital', 'Hospital San José Tec de Monterrey', 'Christus Muguerza Alta Especialidad'],
-    transport: 'La zona médica del Obispado concentra gran parte de los especialistas. El acceso es principalmente vehicular. Se recomienda prever tiempos de traslado en horas pico en las avenidas Constitución y Gonzalitos.'
+  'ciudad-del-carmen': {
+    overview: 'Es una isla muy bonita donde hay mucho petróleo. Tiene hospitales buenos para cuidar a la gente que trabaja en el mar.',
+    hospitals: ['Hospital General de Zona 4', 'Hospital de Pemex'],
+    transport: 'Se usa mucho el carro y hay un puente muy grande para entrar y salir. Es una ciudad pequeña y tranquila.'
+  },
+  'ciudad-juarez': {
+    overview: 'Es una ciudad muy grande que está en la frontera. Tiene hospitales muy importantes donde doctores operan a muchas personas.',
+    hospitals: ['Hospital General de Ciudad Juárez', 'Centro Médico de Especialidades', 'Hospital Ángeles'],
+    transport: 'Hay muchos carros y el tráfico puede ser pesado cerca de los puentes que van a Estados Unidos. Usa taxi si no conoces.'
+  },
+  'ciudad-lopez-mateos': {
+    overview: 'Es un lugar donde viven muchas familias cerca de la capital. Hay clínicas nuevas y modernas en las zonas de centros comerciales.',
+    hospitals: ['Hospital Herrejón', 'Sanatorio San Jerónimo'],
+    transport: 'La gente usa su propio carro. Hay avenidas grandes pero a veces se llenan mucho en las mañanas.'
+  },
+  'ciudad-madero': {
+    overview: 'Está junto al mar y tiene una playa muy famosa. Sus hospitales atienden a las personas de la zona de barcos y refinerías.',
+    hospitals: ['Hospital Regional de Pemex', 'Hospital Civil de Madero'],
+    transport: 'Es fácil moverse en carro o en los carros públicos que se comparten. Todo queda cerca de la playa.'
+  },
+  'ciudad-obregon': {
+    overview: 'Es una ciudad donde se siembra mucha comida. Tiene hospitales muy grandes que ayudan a toda la gente del estado de Sonora.',
+    hospitals: ['Hospital General de Ciudad Obregón', 'Centro Médico de Sonora', 'Hospital San José'],
+    transport: 'Las calles son muy anchas y derechas. Es muy difícil perderse y es fácil manejar por ahí.'
+  },
+  'ciudad-victoria': {
+    overview: 'Es la capital de Tamaulipas. Tiene hospitales especiales para niños y para personas que necesitan medicina avanzada.',
+    hospitals: ['Hospital Infantil de Tamaulipas', 'Hospital General Norberto Treviño'],
+    transport: 'Hay muchos camiones pequeños llamados microbuses. La ciudad es tranquila para manejar.'
+  },
+  'coahuila': {
+    overview: 'Es un estado muy grande con desiertos. Tienen hospitales en las ciudades para que nadie tenga que viajar tanto.',
+    hospitals: ['Hospital General de Saltillo', 'Clínica 1 del IMSS'],
+    transport: 'Las distancias entre ciudades son muy largas, así que siempre se necesita un carro o camión de viaje.'
+  },
+  'coatzacoalcos': {
+    overview: 'Es una ciudad con un río muy grande. Sus hospitales son importantes para la zona sur de Veracruz.',
+    hospitals: ['Hospital General Valentín Gómez Farías', 'Clínica 36 del IMSS'],
+    transport: 'Hay muchos taxis amarillos. Se puede caminar por el malecón para llegar a algunas clínicas.'
+  },
+  'colima': {
+    overview: 'Es una ciudad pequeña y muy verde. Sus hospitales son tranquilos y la atención es muy rápida porque no hay tanta gente.',
+    hospitals: ['Hospital Regional Universitario', 'Clínica de Especialidades'],
+    transport: 'Es de las ciudades donde es más fácil manejar. Casi no hay tráfico y puedes cruzar la ciudad muy rápido.'
+  },
+  'coyoacan': {
+    overview: 'Es un lugar muy viejo y bonito de la Ciudad de México. Tiene hospitales famosos donde estudian muchos doctores.',
+    hospitals: ['Hospital General de México', 'Hospital de Pediatría', 'Hospital Médica Sur'],
+    transport: 'Las calles son angostas y empedradas. Es mejor caminar o usar el Metro porque no hay donde estacionarse.'
+  },
+  'cuauhtemoc': {
+    overview: 'Es el centro de la Ciudad de México. Aquí están los hospitales más viejos y conocidos de todo el país.',
+    hospitals: ['Hospital de San Juan de Dios', 'Clínica Londres'],
+    transport: 'Hay muchísima gente y carros. No lleves carro; usa el Metro o camina para llegar más rápido.'
+  },
+  'cuautitlan-izcalli': {
+    overview: 'Es una ciudad con muchos parques y lagos. Tiene hospitales seguros para las familias que viven en los fraccionamientos.',
+    hospitals: ['Hospital General de Zona 57', 'Hospital San Rafael'],
+    transport: 'Se usa mucho el carro para ir a las plazas. También hay camiones que te llevan rápido a la autopista.'
+  },
+  'cuautla': {
+    overview: 'Es un lugar donde hace calorcito. Mucha gente viene aquí para descansar y por eso hay clínicas de salud muy buenas.',
+    hospitals: ['Hospital General de Cuautla', 'Clínica del ISSSTE'],
+    transport: 'Hay muchas combis que te llevan a todos lados. El centro es pequeño y se puede caminar.'
+  },
+  'cuernavaca': {
+    overview: 'Le dicen la ciudad de la eterna primavera. Tiene hospitales muy bonitos rodeados de árboles y jardines.',
+    hospitals: ['Hospital General de Cuernavaca', 'Hospital Henri Dunant', 'Hospital Center'],
+    transport: 'Las calles tienen muchas subidas y bajadas. Hay muchos camiones, pero lo más cómodo es el taxi.'
+  },
+  'culiacan': {
+    overview: 'Es una ciudad con mucha vida. Sus hospitales tienen tecnología de punta para atender problemas del corazón y otras cosas.',
+    hospitals: ['Hospital Civil de Culiacán', 'Hospital Ángeles', 'Centro de Salud de Culiacán'],
+    transport: 'La gente maneja mucho sus propios carros. Hay avenidas muy modernas que cruzan toda la ciudad.'
+  },
+  'durango': {
+    overview: 'Es una ciudad con mucha historia. Sus hospitales son grandes y atienden a las personas que viven en el campo y la ciudad.',
+    hospitals: ['Hospital General 450', 'Hospital del Niño', 'Clínica de Especialidades'],
+    transport: 'Es una ciudad muy tranquila. Se puede usar el carro sin problemas y hay muchos camiones públicos.'
+  },
+  'ecatepec': {
+    overview: 'Es un lugar donde vive muchísima gente. Sus hospitales son muy grandes para poder atender a miles de personas cada día.',
+    hospitals: ['Hospital General Las Américas', 'Hospital José María Rodríguez'],
+    transport: 'El Mexibús es lo más rápido. Hay muchísimos carros, por lo que ir en transporte público ahorra mucho tiempo.'
+  },
+  'ensenada': {
+    overview: 'Es una ciudad junto al mar en el norte. Los doctores aquí son muy buenos para atender a personas que vienen de otros países.',
+    hospitals: ['Hospital General de Ensenada', 'Hospital Velmar'],
+    transport: 'Se puede caminar por la zona del puerto. Para ir a los hospitales, es mejor usar carro o taxi.'
+  },
+  'fresnillo': {
+    overview: 'Es una ciudad donde hay muchas minas. Tienen hospitales que saben mucho sobre cómo cuidar a los trabajadores.',
+    hospitals: ['Hospital General de Fresnillo', 'Clínica del IMSS'],
+    transport: 'Es una ciudad pequeña. La mayoría de la gente usa su carro o camiones locales para ir al doctor.'
+  },
+  'garcia': {
+    overview: 'Es una zona nueva cerca de Monterrey. Están construyendo muchas clínicas para los niños que viven ahí.',
+    hospitals: ['Centros de Salud García', 'Clínicas Periféricas'],
+    transport: 'Está un poco lejos de todo, así que se necesita carro. Hay camiones que te llevan hasta el Metro de Monterrey.'
+  },
+  'general-escobedo': {
+    overview: 'Es una ciudad industrial. Sus hospitales son muy eficientes y rápidos para atender emergencias.',
+    hospitals: ['Hospital General de Escobedo', 'Clínicas Médicas'],
+    transport: 'Hay muchas avenidas para camiones de carga, así que hay que manejar con cuidado. Se usa mucho el carro.'
+  },
+  'gomez-palacio': {
+    overview: 'Está junto a otra ciudad llamada Torreón. Los hospitales de aquí trabajan juntos para cuidar a todos en la zona.',
+    hospitals: ['Hospital General de Gómez Palacio', 'Clínica 46 del IMSS'],
+    transport: 'Hay camiones que cruzan de una ciudad a otra. Es fácil moverse entre las dos ciudades en taxi.'
   },
   'guadalajara': {
-    overview: 'Guadalajara ofrece un ecosistema de salud robusto, destacando en especialidades como cirugía plástica y ortopedia. Sus hospitales universitarios y privados colaboran estrechamente, garantizando atención de calidad.',
-    hospitals: ['Hospital Civil de Guadalajara', 'Centro Médico Puerta de Hierro', 'Hospital San Javier', 'Hospital Real San José'],
-    transport: 'Las zonas de Providencia y Chapalita son accesibles y seguras. El sistema de Tren Eléctrico Urbano facilita la llegada a hospitales céntricos, aunque el auto particular sigue siendo el medio más común para zonas residenciales.'
+    overview: 'Es una ciudad muy grande con doctores muy importantes. Tienen escuelas muy buenas para aprender a ser médico.',
+    hospitals: ['Hospital Civil de Guadalajara', 'Hospital Real San José', 'Centro Médico de Occidente'],
+    transport: 'Hay un tren ligero muy rápido. En el centro hay mucho tráfico, así que usa el transporte público si puedes.'
+  },
+  'guadalupe': {
+    overview: 'Está pegada a Monterrey. Tiene el estadio de fútbol más nuevo y hospitales muy buenos para las familias.',
+    hospitals: ['Hospital General de Guadalupe', 'Clínica 4 del IMSS'],
+    transport: 'El Metro llega hasta aquí, es la forma más fácil de viajar sin preocuparse por el tráfico.'
+  },
+  'guanajuato': {
+    overview: 'Es una ciudad con túneles y callejones. Los hospitales están en las partes altas y son muy tranquilos.',
+    hospitals: ['Hospital General de Guanajuato', 'Clínica del ISSSTE'],
+    transport: '¡Se camina muchísimo! Para ir al hospital es mejor tomar un taxi que conozca bien los túneles.'
+  },
+  'guaymas': {
+    overview: 'Es un puerto con muchos barcos. Los doctores aquí saben mucho sobre la salud de los marineros.',
+    hospitals: ['Hospital General de Guaymas', 'Hospital Naval'],
+    transport: 'La ciudad es alargada junto al mar. Se usa mucho el camión o el carro para ir de un lado a otro.'
+  },
+  'guerrero': {
+    overview: 'Es un estado con muchas montañas. Tienen doctores que viajan mucho para llevar medicinas a los pueblos lejanos.',
+    hospitals: ['Hospital General de Acapulco', 'Hospital de Chilpancingo'],
+    transport: 'Moverse entre ciudades toma tiempo por las curvas. Siempre es mejor viajar de día.'
+  },
+  'gustavo-a-madero': {
+    overview: 'Es donde está la Basílica de Guadalupe. Tiene hospitales muy grandes que atienden a miles de personas.',
+    hospitals: ['Hospital General La Villa', 'Hospital Pediátrico San Juan de Aragón'],
+    transport: 'El Metrobús y el Metro son las mejores opciones. Hay mucha gente caminando por las iglesias cercanas.'
+  },
+  'hermosillo': {
+    overview: 'Es una ciudad donde hace mucho calor. Sus hospitales son muy frescos y modernos para que los pacientes estén cómodos.',
+    hospitals: ['Hospital General del Estado de Sonora', 'Hospital San José', 'CIMA Hermosillo'],
+    transport: 'Todo el mundo usa carro con aire acondicionado. Las calles son rectas y fáciles de seguir.'
+  },
+  'huixquilucan': {
+    overview: 'Es una zona con casas muy bonitas y hospitales que parecen de película, con la mejor tecnología.',
+    hospitals: ['Hospital Ángeles Lomas', 'Clínicas de Especialidades'],
+    transport: 'Hay muchas subidas y bajadas en los cerros. Es necesario tener carro para llegar a los hospitales.'
+  },
+  'irapuato': {
+    overview: 'Es la ciudad de las fresas. Tiene hospitales importantes para la gente que trabaja en el campo y en fábricas de carros.',
+    hospitals: ['Hospital General de Irapuato', 'Hospital MAC', 'Hospital General de Zona 2'],
+    transport: 'Se puede cruzar la ciudad rápido en carro. Hay muchos camiones que te llevan al centro médico.'
+  },
+  'ixtapaluca': {
+    overview: 'Es una ciudad que ha crecido mucho. Tiene un hospital muy grande que atiende muchas especialidades diferentes.',
+    hospitals: ['Hospital Regional de Alta Especialidad', 'Hospital General de Ixtapaluca'],
+    transport: 'La carretera principal siempre tiene muchos carros. Es mejor salir con mucho tiempo de anticipación.'
+  },
+  'iztacalco': {
+    overview: 'Es un lugar pequeño en medio de la ciudad. Tiene centros deportivos y clínicas de salud para los jóvenes.',
+    hospitals: ['Hospital General de Zona 2-A', 'Unidades Médicas Familiares'],
+    transport: 'El Metro y el Metrobús pasan por todos lados. Es muy fácil llegar sin usar carro.'
+  },
+  'iztapalapa': {
+    overview: 'Es el lugar donde vive más gente en la capital. Tienen muchos hospitales para que todos alcancen a ver al doctor.',
+    hospitals: ['Hospital General de Iztapalapa', 'Hospital de Especialidades Dr. Belisario Domínguez'],
+    transport: 'Hay un Cablebús (teleférico) que vuela por encima del tráfico. Es la forma más divertida y rápida de viajar.'
+  },
+  'jiutepec': {
+    overview: 'Es un lugar con muchas fábricas y jardines para fiestas. Sus clínicas atienden a los trabajadores de la zona.',
+    hospitals: ['Centro de Salud Jiutepec', 'Clínicas Particulares'],
+    transport: 'Se usan mucho los camiones llamados "rutas". Es un lugar pequeño pegado a Cuernavaca.'
+  },
+  'juriquilla': {
+    overview: 'Es una zona muy moderna y bonita. Tiene hospitales nuevos con mucha tecnología y doctores que hablan varios idiomas.',
+    hospitals: ['Idaly Medical', 'Hospital Moscati'],
+    transport: 'Se necesita carro para moverse porque las calles son muy amplias. Es un lugar muy tranquilo y seguro para manejar.'
+  },
+  'la-paz': {
+    overview: 'Es una ciudad junto al mar donde siempre hace sol. Sus hospitales son buenos y atienden a mucha gente que viene de vacaciones.',
+    hospitals: ['Hospital Juan María de Salvatierra', 'Hospital Médica de la Paz'],
+    transport: 'Hay muchos camiones y taxis. El malecón es muy largo, pero para ir al doctor es mejor usar carro con aire acondicionado.'
+  },
+  'la-piedad': {
+    overview: 'Es una ciudad que está en la orilla de dos estados. Tiene clínicas que ayudan a la gente de muchos ranchos cercanos.',
+    hospitals: ['Hospital General La Piedad', 'Hospital de Especialidades'],
+    transport: 'Es una ciudad pequeña. Puedes usar las "combis" para llegar rápido a las clínicas del centro.'
+  },
+  'leon': {
+    overview: 'Es la ciudad de los zapatos. Tiene hospitales de los más grandes del país y doctores expertos en muchas enfermedades.',
+    hospitals: ['Hospital General de León', 'Hospital Aranda de la Parra', 'Hospital Médica Campestre'],
+    transport: 'Tienen un sistema de camiones muy bueno llamado "Optibús". Es como un metro pero de puros camiones rápidos.'
+  },
+  'linares': {
+    overview: 'Es un pueblo mágico famoso por sus dulces. Tiene hospitales tranquilos donde cuidan muy bien a los niños y abuelitos.',
+    hospitals: ['Hospital General de Linares', 'Clínicas Municipales'],
+    transport: 'Es muy fácil moverse. La gente usa mucho su carro o camina por el centro porque todo queda cerca.'
+  },
+  'magdalena-contreras': {
+    overview: 'Es una zona con muchas montañas y árboles en la capital. Tiene hospitales importantes especializados en ayudar a la gente mayor.',
+    hospitals: ['Hospital General de Zona 33', 'Hospital Angeles Casa Blanca'],
+    transport: 'Las calles tienen muchas curvas y son de subida. Es mejor usar taxi o camiones pequeños para no perderse.'
+  },
+  'manzanillo': {
+    overview: 'Es un puerto donde llegan barcos muy grandes. Sus hospitales están preparados para ayudar en cualquier emergencia del mar.',
+    hospitals: ['Hospital General de Manzanillo', 'Hospital Naval'],
+    transport: 'La ciudad está junto a la costa. Hay muchos taxis y camiones que recorren toda la zona de las playas.'
+  },
+  'matamoros': {
+    overview: 'Es una ciudad que está en la frontera con Texas. Muchos doctores de aquí ayudan a personas que cruzan el puente para curarse.',
+    hospitals: ['Hospital General de Matamoros', 'Centro Médico Internacional'],
+    transport: 'Hay muchos carros. Es importante salir con tiempo si el hospital está cerca de los puentes internacionales.'
+  },
+  'mazatlan': {
+    overview: 'Es una ciudad con playa y mucha música. Tiene hospitales modernos y clínicas especiales para los turistas.',
+    hospitals: ['Hospital General de Mazatlán', 'Hospital Sharp', 'Marina Mazatlán'],
+    transport: 'Existen unas camionetas muy divertidas llamadas "Pulmonías". Son como carritos de golf grandes que te llevan a todos lados.'
+  },
+  'merida': {
+    overview: 'Es de las ciudades más seguras y con mejores doctores del sur. Mucha gente viene aquí porque los hospitales son excelentes.',
+    hospitals: ['Hospital O’Horán', 'Star Médica Mérida', 'Hospital El Faro'],
+    transport: 'Hace mucho calor, así que todos prefieren ir en carro con aire. Hay camiones nuevos y muy cómodos para viajar.'
+  },
+  'metepec': {
+    overview: 'Es un lugar de artistas que hacen figuras de barro. Está junto a Toluca y tiene hospitales de lujo muy bonitos.',
+    hospitals: ['Centro Médico de Metepec', 'Hospital San Juan'],
+    transport: 'Se usa mucho el carro particular. Hay plazas comerciales grandes y es fácil encontrar estacionamiento en los hospitales.'
+  },
+  'mexicali': {
+    overview: 'Es una ciudad donde hace muchísimo calor. Los hospitales están muy bien equipados para que los pacientes no sientan el clima de afuera.',
+    hospitals: ['Hospital General de Mexicali', 'Hospital Almater', 'Hospital de la Familia'],
+    transport: 'Casi nadie camina por el calor. Se necesita carro o taxi con aire acondicionado para llegar fresco al doctor.'
+  },
+  'michoacan': {
+    overview: 'Es un estado con muchos lagos y bosques. Tienen clínicas que cuidan mucho la salud de las mamás y los bebés.',
+    hospitals: ['Hospital Civil de Morelia', 'Hospital Infantil de Morelia'],
+    transport: 'Para ir de un pueblo a otro se usan camiones de viaje. En las ciudades hay muchas combis de colores.'
+  },
+  'minatitlan': {
+    overview: 'Es una ciudad donde hay una refinería de petróleo. Sus hospitales son muy buenos atendiendo a los trabajadores de la zona.',
+    hospitals: ['Hospital Regional de Pemex', 'Hospital General de Minatitlán'],
+    transport: 'Se usan mucho los taxis. Es una ciudad con mucha lluvia, así que siempre es bueno llevar paraguas para ir al doctor.'
+  },
+  'miramar': {
+    overview: 'Es una zona tranquila junto a la playa. Tiene clínicas pequeñas para atender cortadas o malestares rápidos de los visitantes.',
+    hospitals: ['Centros de Salud Locales', 'Clínicas de Emergencia'],
+    transport: 'Se puede caminar por la arena o usar los carros públicos que pasan por la avenida principal.'
+  },
+  'monclova': {
+    overview: 'Es la ciudad del acero. Tiene hospitales muy fuertes que saben mucho sobre medicina para el trabajo y huesos.',
+    hospitals: ['Hospital General de Zona 7', 'Hospital Especialidades'],
+    transport: 'Las avenidas son rápidas para los carros. Es una ciudad fácil de recorrer si vas en taxi.'
+  },
+  'monterrey': {
+    overview: 'Tienen hospitales de los más modernos del mundo. Los equipos médicos son nuevos y de mucha tecnología.',
+    hospitals: ['Hospital Universitario', 'Hospital San José', 'Christus Muguerza', 'Doctors Hospital'],
+    transport: 'La mayoría de la gente usa su carro. Las avenidas son muy rápidas, pero en la tarde se llenan mucho de carros.'
+  },
+  'morelia': {
+    overview: 'Es una ciudad de piedra rosa muy antigua. Sus hospitales son muy buenos y hay doctores que saben mucho de medicinas naturales.',
+    hospitals: ['Hospital General Dr. Miguel Silva', 'Hospital Ángeles Morelia', 'Star Médica'],
+    transport: 'Hay muchísimas combis que te llevan a cualquier parte. El centro es para caminar y ver los edificios viejos.'
+  },
+  'morelos': {
+    overview: 'Es un estado donde siempre hace calorcito. Tienen muchas clínicas donde la gente va a recuperarse después de una cirugía.',
+    hospitals: ['Hospital General de Cuernavaca', 'Hospital del Niño Morelense'],
+    transport: 'Se usan mucho los camiones llamados "Rutas". Es fácil moverse entre los pueblos porque están cerca.'
+  },
+  'naucalpan': {
+    overview: 'Es una zona con muchas fábricas y casas junto a la capital. Tiene hospitales muy grandes para miles de personas.',
+    hospitals: ['Hospital General de Zona 194', 'Hospital Satélite'],
+    transport: 'Hay mucho tráfico. Se recomienda usar las autopistas elevadas si vas en carro para llegar más rápido al hospital.'
+  },
+  'nayarit': {
+    overview: 'Es un estado con playas y selva. Tienen hospitales que ayudan a la gente del campo y a los turistas que visitan el mar.',
+    hospitals: ['Hospital General de Tepic', 'Hospital de San Pancho'],
+    transport: 'Hay camiones que viajan por la costa. En la capital (Tepic) es fácil moverse en taxi.'
+  },
+  'nezahualcoyotl': {
+    overview: 'Es una ciudad muy grande y famosa. Sus hospitales siempre están llenos de vida y ayudan a muchísimas familias.',
+    hospitals: ['Hospital General Gustavo Baz', 'Hospital La Perla'],
+    transport: 'Hay muchas bicicletas con carrito llamadas "bicitaxis". Son muy útiles para entrar a las calles donde no pasan camiones.'
+  },
+  'nogales': {
+    overview: 'Es una ciudad en la frontera sobre cerros. Sus doctores son expertos en atender a personas que viajan mucho.',
+    hospitals: ['Hospital General de Nogales', 'Centro Médico de Nogales'],
+    transport: 'Las calles suben y bajan mucho. Se recomienda usar un carro con buen motor o tomar taxis locales.'
+  },
+  'nuevo-casas-grandes': {
+    overview: 'Es una ciudad pequeña en el desierto. Sus clínicas son muy importantes para toda la gente que vive alrededor.',
+    hospitals: ['Hospital General Nuevo Casas Grandes', 'Clínica Dublán'],
+    transport: 'Casi no hay tráfico. Se puede manejar muy tranquilo y llegar al doctor en pocos minutos.'
+  },
+  'nuevo-laredo': {
+    overview: 'Es una ciudad fronteriza por donde pasan muchos camiones de carga. Los hospitales son rápidos y eficientes.',
+    hospitals: ['Hospital General de Nuevo Laredo', 'Hospital San Gerardo'],
+    transport: 'Hay que tener cuidado con los trailers grandes en las avenidas. Se usa mucho el carro propio.'
+  },
+  'oaxaca': {
+    overview: 'Es una ciudad con comida deliciosa y mucha cultura. Sus hospitales son amables y respetan mucho las tradiciones de la gente.',
+    hospitals: ['Hospital General Dr. Aurelio Valdivieso', 'Hospital Regional de Alta Especialidad'],
+    transport: 'Hay camiones urbanos que llegan a todos lados. El centro es para caminar despacio y disfrutar.'
+  },
+  'ojo-de-agua': {
+    overview: 'Es un lugar tranquilo para vivir. Tiene clínicas familiares donde los doctores conocen a todos los vecinos.',
+    hospitals: ['Clínica Ojo de Agua', 'Centros Médicos Locales'],
+    transport: 'Se usan mucho las combis que van hacia la Ciudad de México. Es una zona de muchas casas.'
+  },
+  'pachuca': {
+    overview: 'Es una ciudad con aire fresco. Tiene hospitales que han crecido mucho y atienden muy bien a las personas.',
+    hospitals: ['Hospital General de Pachuca', 'Hospital Intermédica', 'Clínica Colón'],
+    transport: 'El Tuzobús es el transporte que más se usa. Es fácil llegar a los hospitales usando las avenidas principales.'
+  },
+  'poza-rica': {
+    overview: 'Es una ciudad donde hay mucho petróleo. Sus hospitales son expertos en cuidar la salud de los trabajadores industriales.',
+    hospitals: ['Hospital Regional de Poza Rica', 'Hospital de Pemex'],
+    transport: 'Hay muchísimos taxis blancos con rojo. Son la forma más común de moverse por toda la ciudad.'
   },
   'puebla': {
-    overview: 'Puebla ha crecido como un centro de salud regional, atrayendo pacientes del sureste del país. Cuenta con una moderna zona hospitalaria en la Reserva Territorial Atlixcáyotl, además de hospitales tradicionales en el centro.',
-    hospitals: ['Hospital Puebla', 'Hospital Ángeles Puebla', 'Hospital UPAEP', 'Beneficencia Española de Puebla'],
-    transport: 'La zona de Angelópolis cuenta con amplios estacionamientos y vialidades rápidas. Para el centro histórico y la zona de la Paz, el transporte público es abundante, aunque el tráfico puede ser denso.'
+    overview: 'Es una ciudad muy grande con volcanes cerca. Tiene hospitales de alta tecnología que parecen de otros países.',
+    hospitals: ['Hospital General del Sur', 'Hospital Ángeles Puebla', 'Hospital Puebla'],
+    transport: 'Tienen un sistema de camiones rápidos llamado "RUTA". Es mejor usarlo porque hay muchas calles de un solo sentido.'
+  },
+  'puerto-vallarta': {
+    overview: 'Es una ciudad de playa donde vienen muchos extranjeros. Los hospitales son excelentes y muy limpios.',
+    hospitals: ['Hospital General de Vallarta', 'Hospital Joya', 'Hospital San Javier'],
+    transport: 'Hay camiones que dicen "Centro" o "Hoteles". Los taxis son seguros pero hay que preguntar el precio antes.'
   },
   'queretaro': {
-    overview: 'Querétaro se distingue por su rápido crecimiento en infraestructura sanitaria moderna y segura. Es ideal para tratamientos programados debido a su tranquilidad y cercanía con la capital del país.',
-    hospitals: ['Hospital Star Médica', 'Hospital San José', 'Hospital Ángeles Querétaro', 'Hospital General de Querétaro'],
-    transport: 'La movilidad en Querétaro depende en gran medida del vehículo particular. Las clínicas modernas suelen contar con estacionamiento propio. Las vías principales como Bernardo Quintana conectan rápidamente las zonas hospitalarias.'
+    overview: 'Es una ciudad que está creciendo muy rápido. Tiene hospitales muy modernos con jardines y tecnología nueva.',
+    hospitals: ['Hospital General de Querétaro', 'Hospital San José', 'Star Médica'],
+    transport: 'Hay un sistema de camiones llamado "Qrobús". Las carreteras son muy buenas pero a veces hay mucho tráfico.'
+  },
+  'quintana-roo': {
+    overview: 'Es el estado donde está el mar Caribe. Sus hospitales están listos para atender cualquier emergencia de los turistas.',
+    hospitals: ['Hospital General de Cancún', 'Hospital General de Playa del Carmen'],
+    transport: 'Se usan mucho las camionetas llamadas "Playa Express" para ir de una ciudad a otra por la costa.'
+  },
+  'reynosa': {
+    overview: 'Es una ciudad de frontera con mucha industria. Tiene hospitales muy grandes para atender a todos los trabajadores.',
+    hospitals: ['Hospital General de Reynosa', 'Hospital Santander'],
+    transport: 'Se usa mucho el carro. Hay zonas con mucho tráfico cerca de las fábricas (maquiladoras).'
+  },
+  'salamanca': {
+    overview: 'Es una ciudad con una refinería muy grande. Sus hospitales son especialistas en medicina para el trabajo.',
+    hospitals: ['Hospital General de Salamanca', 'Hospital Regional de Pemex'],
+    transport: 'Es una ciudad pequeña. Es fácil moverse en bicicleta o en los camiones locales que pasan seguido.'
+  },
+  'saltillo': {
+    overview: 'Es una ciudad entre montañas donde hace frío. Tienen hospitales muy buenos para cirugías y medicina avanzada.',
+    hospitals: ['Hospital General de Saltillo', 'Christus Muguerza', 'Hospital Muguerza Saltillo'],
+    transport: 'La gente usa mucho su carro. Hay avenidas muy largas que conectan toda la ciudad rápidamente.'
+  },
+  'san-cristobal': {
+    overview: 'Es una ciudad muy bonita en las montañas donde hace frío. Sus hospitales ayudan a mucha gente que viene de los pueblos cercanos.',
+    hospitals: ['Hospital de las Culturas', 'Hospital de la Mujer'],
+    transport: 'Las calles son de piedra y muy angostas. Lo mejor es caminar por el centro o usar los camiones locales llamados "colectivos".'
+  },
+  'san-francisco-coacalco': {
+    overview: 'Es un lugar con muchas tiendas y plazas. Tiene clínicas modernas que son muy fáciles de encontrar cerca de las avenidas principales.',
+    hospitals: ['Clínica 198 del IMSS', 'Hospital de Especialidades Coacalco'],
+    transport: 'El Mexibús es la forma más rápida de moverse. Hay muchos carros, así que siempre hay que salir con tiempo.'
+  },
+  'san-juan-del-rio': {
+    overview: 'Es una ciudad tranquila famosa por sus palomas. Tiene hospitales nuevos que están muy bien equipados para cirugías.',
+    hospitals: ['Hospital General de San Juan del Río', 'Hospital Guadalupano'],
+    transport: 'Es muy fácil manejar aquí porque las calles son amplias. También hay muchos taxis disponibles.'
+  },
+  'san-luis-potosi': {
+    overview: 'Es una ciudad muy grande e importante. Sus hospitales son de los mejores y tienen doctores que saben mucho de medicina avanzada.',
+    hospitals: ['Hospital Central Dr. Ignacio Morones', 'Hospital Lomas', 'Hospital Star Médica'],
+    transport: 'Se usa mucho el carro. Hay avenidas muy rápidas que cruzan toda la ciudad para llegar pronto al doctor.'
+  },
+  'san-nicolas': {
+    overview: 'Está junto a Monterrey y es donde está la universidad más grande. Tiene hospitales muy modernos y seguros.',
+    hospitals: ['Hospital Clínica Nova', 'Hospital General de Zona 6'],
+    transport: 'El Metro pasa por aquí, así que es muy fácil llegar a los hospitales sin preocuparse por el tráfico.'
+  },
+  'san-pedro-garza-garcia': {
+    overview: 'Es de las zonas más modernas de todo México. Sus hospitales parecen hoteles de lujo y tienen la mejor tecnología del mundo.',
+    hospitals: ['Hospital Zambrano Hellion', 'Hospital Ángeles Valle Oriente'],
+    transport: 'Casi todo el mundo se mueve en su propio carro. Las calles son muy bonitas y es fácil encontrar estacionamiento.'
+  },
+  'santa-catarina': {
+    overview: 'Es una ciudad entre montañas muy grandes. Tiene clínicas nuevas para las familias que trabajan en las fábricas cercanas.',
+    hospitals: ['Clínica 64 del IMSS', 'Centros Médicos Locales'],
+    transport: 'Hay muchos camiones que van hacia Monterrey. Se recomienda usar carro para subir a las zonas más altas.'
+  },
+  'sinaloa': {
+    overview: 'Es un estado con mucha agricultura y mar. Sus ciudades tienen hospitales importantes que cuidan mucho a los niños.',
+    hospitals: ['Hospital General de Culiacán', 'Hospital Pediátrico de Sinaloa'],
+    transport: 'Para ir de una ciudad a otra se usan camiones de viaje muy cómodos con aire acondicionado.'
+  },
+  'soledad': {
+    overview: 'Está pegada a San Luis Potosí. Es un lugar donde vive mucha gente y tiene clínicas familiares muy amables.',
+    hospitals: ['Hospital General de Soledad', 'Centros de Salud Municipales'],
+    transport: 'Se usan mucho los camiones urbanos. Es muy fácil pasar de Soledad a la capital en pocos minutos.'
+  },
+  'sonora': {
+    overview: 'Es un estado muy grande con desierto. Tienen doctores expertos en cuidar a la gente cuando hace muchísimo calor.',
+    hospitals: ['Hospital General del Estado', 'Hospital Infantil de Sonora'],
+    transport: 'Se necesita carro con aire acondicionado. Las carreteras son largas y muy derechas.'
+  },
+  'tabasco': {
+    overview: 'Es un lugar con mucha agua y calor. Sus hospitales son expertos en medicina para zonas con mucha naturaleza.',
+    hospitals: ['Hospital Regional de Alta Especialidad Juan Graham', 'Hospital del Niño'],
+    transport: 'Se usan mucho los taxis y las lanchas en algunos pueblos. En la capital hay camiones todo el día.'
+  },
+  'tamaulipas': {
+    overview: 'Es un estado junto al mar y la frontera. Tienen hospitales muy rápidos para atender cualquier emergencia.',
+    hospitals: ['Hospital General de Victoria', 'Hospital General de Tampico'],
+    transport: 'Se recomienda viajar en carro o camiones de línea entre las ciudades grandes.'
+  },
+  'tapachula': {
+    overview: 'Es una ciudad muy tropical cerca de Centroamérica. Sus hospitales atienden a personas de muchos países diferentes.',
+    hospitals: ['Hospital General de Tapachula', 'Ciudad Salud'],
+    transport: 'Hay muchísimas combis que te llevan a todos lados. Es una ciudad con mucha lluvia, ten cuidado al caminar.'
+  },
+  'tehuacan': {
+    overview: 'Es famosa por su agua mineral. Sus hospitales son tranquilos y atienden muy bien a la gente de la región.',
+    hospitals: ['Hospital General de Tehuacán', 'Clínica 9 del IMSS'],
+    transport: 'La ciudad es pequeña y se puede recorrer en combi. El clima es muy rico para caminar.'
+  },
+  'tepic': {
+    overview: 'Es la capital de Nayarit. Tiene hospitales que han crecido mucho y tienen doctores muy amables.',
+    hospitals: ['Hospital General de Tepic', 'Hospital Puerta de Hierro'],
+    transport: 'Hay camiones y taxis por toda la ciudad. Es un lugar muy tranquilo para manejar.'
+  },
+  'tijuana': {
+    overview: 'Es la ciudad más visitada de la frontera. Tiene muchísimos hospitales donde vienen personas de todo el mundo a curarse.',
+    hospitals: ['Hospital General de Tijuana', 'Hospital Ángeles', 'Excel Medical Center'],
+    transport: 'Hay mucho tráfico y muchas subidas. Lo mejor es usar taxis de aplicación o camiones públicos.'
+  },
+  'tlalnepantla': {
+    overview: 'Es una zona con mucha industria. Sus hospitales son muy grandes y expertos en atender fracturas y golpes.',
+    hospitals: ['Hospital General de Zona 72', 'Hospital de Valle Ceylán'],
+    transport: 'Pasa el Tren Suburbano, que es muy rápido. En carro hay que tener paciencia porque hay muchos camiones grandes.'
+  },
+  'tlalpan': {
+    overview: 'Es la zona de los hospitales más importantes de México. Aquí vienen los doctores más sabios a estudiar.',
+    hospitals: ['Instituto Nacional de Cardiología', 'Instituto de Nutrición', 'Hospital Gea González'],
+    transport: 'Es muy difícil estacionarse. Lo mejor es llegar en el Metrobús o en taxi para no perder tiempo.'
+  },
+  'tlaquepaque': {
+    overview: 'Es un lugar famoso por sus artesanías. Tiene clínicas muy bonitas cerca del centro donde cuidan a los turistas.',
+    hospitals: ['Hospital General de Tlaquepaque', 'Clínicas de Especialidades'],
+    transport: 'El centro es para caminar. Para ir a los hospitales más grandes es mejor tomar un camión o taxi.'
+  },
+  'toluca': {
+    overview: 'Es una ciudad donde hace mucho frío porque está muy alto. Sus hospitales son muy modernos y grandes.',
+    hospitals: ['Hospital General Dr. Nicolás San Juan', 'Centro Médico de Toluca'],
+    transport: 'Se usa mucho el carro. Hay camiones rojos que te llevan a todas las clínicas del centro.'
+  },
+  'tonala': {
+    overview: 'Es el lugar donde hacen los platos y jarros de barro. Tiene hospitales sencillos pero con doctores muy dedicados.',
+    hospitals: ['Hospital Civil de Tonalá', 'Centros Médicos Locales'],
+    transport: 'Se usan mucho los camiones. Es una zona con muchas subidas y bajadas, mejor usa el transporte público.'
+  },
+  'torreon': {
+    overview: 'Es una ciudad en el desierto con mucha industria. Sus hospitales son excelentes en tecnología para el corazón.',
+    hospitals: ['Hospital General de Torreón', 'Sanatorio Español', 'Hospital Ángeles'],
+    transport: 'Las calles son muy derechas y es difícil perderse. La gente usa mucho su carro con aire acondicionado.'
+  },
+  'tuxtla-gutierrez': {
+    overview: 'Es la capital de Chiapas y hace mucho calor. Sus hospitales son muy grandes y modernos.',
+    hospitals: ['Hospital General Dr. Jesús Gilberto Gómez', 'Hospital de Especialidades Pediátricas'],
+    transport: 'Hay muchos camiones llamados "conejobús". Es una ciudad con avenidas largas y fáciles de usar.'
+  },
+  'uruapan': {
+    overview: 'Es la ciudad del aguacate. Sus hospitales atienden a mucha gente que trabaja en el campo.',
+    hospitals: ['Hospital General de Uruapan', 'Clínica del IMSS'],
+    transport: 'Hay muchas combis que recorren toda la ciudad. El centro tiene muchas flores y es bonito para caminar.'
+  },
+  'veracruz': {
+    overview: 'Es el puerto más grande del país. Sus hospitales son expertos en enfermedades del calor y del mar.',
+    hospitals: ['Hospital de Alta Especialidad de Veracruz', 'Hospital Ángeles', 'Hospital Millenium'],
+    transport: 'Se usan mucho los camiones. El malecón es muy largo, así que toma un taxi si vas lejos.'
+  },
+  'villahermosa': {
+    overview: 'Es una ciudad con mucha selva y ríos. Tienen hospitales muy modernos y frescos.',
+    hospitals: ['Hospital Regional de Alta Especialidad Dr. Gustavo A. Rovirosa', 'Hospital Ángeles'],
+    transport: 'Hay muchos taxis amarillos. Cuando llueve mucho, es mejor usar transporte público para no mojarse.'
+  },
+  'xalapa': {
+    overview: 'Es una ciudad con mucha niebla y cultura. Sus hospitales son muy buenos y están rodeados de flores.',
+    hospitals: ['Hospital General Dr. Luis F. Nachón', 'Centro de Especialidades Médicas'],
+    transport: 'Las calles suben y bajan mucho. Hay muchos camiones, pero prepárate para caminar por cuestas.'
+  },
+  'yucatan': {
+    overview: 'Es un estado con mucha historia maya. Sus hospitales son de los mejores de todo el sur de México.',
+    hospitals: ['Hospital O’Horán', 'Hospital Regional de Alta Especialidad'],
+    transport: 'Se recomienda usar carro o camiones nuevos. Las carreteras son muy seguras.'
+  },
+  'zacatecas': {
+    overview: 'Es una ciudad de piedra con minas. Sus hospitales están en zonas altas y son muy tranquilos.',
+    hospitals: ['Hospital General de Zacatecas', 'Hospital de Especialidades'],
+    transport: 'Hay un teleférico muy famoso. Para ir al doctor es mejor usar taxi por las calles empinadas.'
+  },
+  'zamora': {
+    overview: 'Es famosa por sus dulces de leche. Sus clínicas son pequeñas pero muy eficientes.',
+    hospitals: ['Hospital General de Zamora', 'Clínica del IMSS'],
+    transport: 'Es una ciudad pequeña y plana. Mucha gente usa bicicleta o camina para ir a sus citas médicas.'
+  },
+  'zapopan': {
+    overview: 'Es una ciudad muy rica y moderna. Sus hospitales son excelentes y tienen mucha tecnología nueva.',
+    hospitals: ['Hospital General de Zapopan', 'Hospital Real San José', 'Hospital Ángeles'],
+    transport: 'Hay avenidas muy grandes. Se recomienda usar carro o el tren ligero para llegar rápido.'
+  },
+  'zapotlanejo': {
+    overview: 'Es famosa por la ropa. Tiene clínicas familiares muy buenas para la gente que viene de compras.',
+    hospitals: ['Centro de Salud Zapotlanejo', 'Clínicas Particulares'],
+    transport: 'Es un pueblo pequeño. Se puede caminar por las zonas de tiendas y usar taxi para ir a las clínicas.'
   }
 };
 
 
 export const SPECIALTY_COMPARISONS: Record<string, { title: string, text: string }> = {
-  'Psicólogo': {
-    title: '¿Buscas un Psicólogo o un Psiquiatra?',
-    text: 'Los psicólogos en MediBusca se enfocan en terapia conductual, emocional y del habla. Si requieres diagnóstico médico y tratamiento farmacológico (medicamentos), un Psiquiatra es el especialista médico indicado.'
+  'Acupuntor': {
+    'title': '¿Acupuntor o Médico General?',
+    'text': 'El Acupuntor usa agujitas y técnicas naturales para aliviar el dolor o el estrés. Si tienes una infección fuerte o necesitas medicinas de farmacia, debes ir con un Médico General.'
   },
-  'Psiquiatra': {
-    title: '¿Psiquiatra o Psicólogo?',
-    text: 'Los psiquiatras son médicos que pueden recetar medicamentos para desequilibrios químicos y condiciones mentales complejas. Para terapia conversacional intensiva sin medicación, suelen trabajar en conjunto con Psicólogos.'
+  'Alergólogo': {
+    'title': '¿Alergólogo o Dermatólogo?',
+    'text': 'Si estornudas mucho o tienes asma por el polvo, ve al Alergólogo. Si tu problema es solo una mancha o un grano en la piel que no se quita, el Dermatólogo es el indicado.'
   },
-  'Ortopedista': {
-    title: '¿Ortopedista o Traumatólogo?',
-    text: 'Aunque suelen trabajar juntos, el Traumatólogo se enfoca en lesiones agudas (golpes, fracturas recientes, accidentes), mientras que el Ortopedista trata condiciones crónicas, deformidades y enfermedades del sistema musculoesquelético.'
+  'Algólogo': {
+    'title': '¿Algólogo o Anestesiólogo?',
+    'text': 'El Algólogo es un experto en quitar dolores fuertes que duran mucho tiempo (crónicos). El Anestesiólogo regular se dedica más a dormir a los pacientes antes de una operación.'
   },
-  'Traumatólogo': {
-    title: '¿Traumatólogo u Ortopedista?',
-    text: 'El Traumatólogo es ideal para emergencias, fracturas y golpes recientes. Si tu dolor es crónico, de larga duración o relacionado con el desarrollo óseo, un Ortopedista podría ser más adecuado.'
+  'Anatomopatólogo': {
+    'title': '¿Anatomopatólogo o Patólogo Clínico?',
+    'text': 'El Anatomopatólogo estudia pedacitos de cuerpo (biopsias) bajo el microscopio. El Patólogo Clínico se encarga de analizar tu sangre y orina en el laboratorio.'
   },
-  'Oftalmólogo': {
-    title: '¿Oftalmólogo u Optometrista?',
-    text: 'El Oftalmólogo es un médico cirujano que trata enfermedades oculares (glaucoma, cataratas) y realiza cirugías. El Optometrista se enfoca principalmente en medir tu vista, graduar lentes y corregir defectos refractivos.'
+  'Anestesiólogo': {
+    'title': '¿Anestesiólogo o Algólogo?',
+    'text': 'Buscas a un Anestesiólogo si te van a operar y necesitan dormirte. Si tienes un dolor de espalda que no se quita con nada, busca a un Algólogo (Especialista en Dolor).'
+  },
+  'Angiólogo': {
+    'title': '¿Angiólogo o Cardiólogo?',
+    'text': 'El Angiólogo cuida las "tuberías" (venas y arterias) de tus piernas y brazos (várices). El Cardiólogo se enfoca solo en la bomba principal: el corazón.'
+  },
+  'Audiólogo': {
+    'title': '¿Audiólogo u Otorrino?',
+    'text': 'Si sientes que no escuchas bien o necesitas aparatos para oír, ve al Audiólogo. Si te duele el oído por una infección o tienes moquito, ve al Otorrinolaringólogo.'
+  },
+  'Cardiólogo': {
+    'title': '¿Cardiólogo o Cirujano Cardiovascular?',
+    'text': 'El Cardiólogo revisa tu corazón y te da pastillas para controlarlo. Si tu corazón necesita una reparación física (operación de corazón abierto), el Cirujano es quien la hace.'
+  },
+  'Cardiólogo pediátrico': {
+    'title': '¿Cardiólogo Pediátrico o Pediatra?',
+    'text': 'El Pediatra ve enfermedades comunes. Si el niño nació con un problema en el corazón o se cansa mucho al jugar, necesita al Cardiólogo Pediátrico.'
+  },
+  'Cirujano bariatra': {
+    'title': '¿Cirujano Bariatra o Nutriólogo?',
+    'text': 'El Nutriólogo te ayuda con dietas. El Cirujano Bariatra opera tu estómago para hacerlo más pequeño cuando la dieta ya no es suficiente para bajar mucho peso.'
+  },
+  'Cirujano cardiovascular': {
+    'title': '¿Cirujano Cardiovascular o Cardiólogo?',
+    'text': 'El Cirujano es quien opera y abre el pecho para arreglar el corazón. El Cardiólogo es quien detecta el problema y te cuida antes y después de la operación.'
+  },
+  'Cirujano cardiovascular y torácico': {
+    'title': '¿Torácico o Neumólogo?',
+    'text': 'El Neumólogo trata los pulmones con medicinas. Este cirujano es quien opera los pulmones o el corazón si hay que quitar o arreglar algo por dentro.'
+  },
+  'Cirujano de la mano': {
+    'title': '¿Cirujano de Mano u Ortopedista?',
+    'text': 'Un Ortopedista ve huesos grandes. El Cirujano de Mano es experto en los huesitos, nervios y tendones pequeñitos de tus dedos y muñeca.'
+  },
+  'Cirujano estético y cosmético': {
+    'title': '¿Estético o Reconstructivo?',
+    'text': 'El Cirujano Estético se enfoca en mejorar tu apariencia (nariz, pecho) para que te veas mejor. El Reconstructivo arregla daños por accidentes o quemaduras.'
+  },
+  'Cirujano general': {
+    'title': '¿Cirujano General o Médico Internista?',
+    'text': 'El Internista busca qué tienes y te da medicinas. Si el problema (como una apendicitis o hernia) se arregla abriendo y quitando, necesitas al Cirujano General.'
+  },
+  'Cirujano maxilofacial': {
+    'title': '¿Maxilofacial o Dentista?',
+    'text': 'El Dentista cuida dientes y encías. El Maxilofacial es un cirujano que arregla problemas grandes de los huesos de la cara, mandíbula rota o muelas muy difíciles.'
+  },
+  'Cirujano oncólogo': {
+    'title': '¿Cirujano Oncólogo u Oncólogo Médico?',
+    'text': 'El Oncólogo Médico usa quimioterapia (medicinas). El Cirujano Oncólogo es quien opera para quitar el tumor o la bolita mala del cuerpo.'
+  },
+  'Cirujano pediátrico': {
+    'title': '¿Cirujano Pediátrico o Pediatra?',
+    'text': 'El Pediatra cura con medicinas. Si el niño tiene algo que debe operarse (como el apéndice), este cirujano es el experto en operar cuerpos chiquitos.'
+  },
+  'Cirujano plástico': {
+    'title': '¿Cirujano Plástico o Dermatólogo?',
+    'text': 'El Dermatólogo cura enfermedades de la piel. El Cirujano Plástico repara la piel después de quemaduras o accidentes, o cambia la forma del cuerpo.'
+  },
+  'Cirujano torácico': {
+    'title': '¿Cirujano Torácico o Cardiólogo?',
+    'text': 'El Cardiólogo ve el corazón. El Cirujano Torácico opera todo lo que está dentro del pecho, como los pulmones o las costillas, no solo el corazón.'
+  },
+  'Cirujano vascular': {
+    'title': '¿Cirujano Vascular o Angiólogo?',
+    'text': 'Son casi lo mismo, pero el Cirujano Vascular se especializa en operaciones grandes de las arterias, mientras el Angiólogo suele tratar venas y varices.'
+  },
+  'Dentista - Odontólogo': {
+    'title': '¿Dentista u Ortodoncista?',
+    'text': 'El Dentista tapa caries y limpia dientes. Si necesitas frenos (brackets) para enderezar tus dientes, debes ver al Ortodoncista.'
+  },
+  'Dermatólogo': {
+    'title': '¿Dermatólogo o Cosmetólogo?',
+    'text': 'El Cosmetólogo limpia tu piel para que se vea bonita. El Dermatólogo es un doctor que cura enfermedades de la piel, acné severo y revisa lunares peligrosos.'
+  },
+  'Dermatólogo pediátrico': {
+    'title': '¿Dermatólogo Pediátrico o Pediatra?',
+    'text': 'El Pediatra ve de todo un poco. Si tu hijo tiene un problema en la piel que no se quita o es raro, el Dermatólogo Pediátrico es el experto.'
+  },
+  'Diabetólogo': {
+    'title': '¿Diabetólogo o Endocrinólogo?',
+    'text': 'El Endocrinólogo ve todas las hormonas. El Diabetólogo es un experto enfocado solamente en controlar el azúcar en la sangre y la diabetes.'
+  },
+  'Endocrinólogo': {
+    'title': '¿Endocrinólogo o Médico Internista?',
+    'text': 'El Internista ve todo el cuerpo. El Endocrinólogo es especial para problemas de hormonas, como cuando la tiroides falla o no creces bien.'
+  },
+  'Endocrinólogo pediátrico': {
+    'title': '¿Endocrinólogo Pediátrico o Pediatra?',
+    'text': 'Si el niño no crece como sus amigos o tiene diabetes infantil, este especialista sabe más de hormonas de niños que un Pediatra normal.'
+  },
+  'Endoscopista': {
+    'title': '¿Endoscopista o Gastroenterólogo?',
+    'text': 'Generalmente es el mismo doctor. El Endoscopista es el experto en usar la camarita (tubo) para ver tu estómago por dentro.'
+  },
+  'Enfermero': {
+    'title': '¿Enfermero o Médico?',
+    'text': 'El Médico diagnostica y receta. El Enfermero es quien te cuida día a día, pone las inyecciones, cura las heridas y vigila que estés bien.'
+  },
+  'Especialidad en Medicina del Enfermo Pediátrico en Estado Crítico': {
+    'title': '¿Cuidados Intensivos o Urgencias?',
+    'text': 'Urgencias recibe al niño cuando llega grave. Este especialista lo cuida después, manteniéndolo vivo con máquinas mientras está muy delicado.'
+  },
+  'Especialista en Medicina Crítica y Terapia Intensiva': {
+    'title': '¿Terapista Intensivo o Internista?',
+    'text': 'El Internista te ve en el consultorio o cuarto normal. El Intensivista te cuida solo cuando estás muy grave y necesitas máquinas para vivir.'
+  },
+  'Especialista en Medicina del Deporte': {
+    'title': '¿Medicina del Deporte u Ortopedista?',
+    'text': 'El Ortopedista opera huesos rotos. El Médico del Deporte ayuda a mejorar tu rendimiento y curar lesiones musculares sin operar.'
+  },
+  'Especialista en Medicina del Trabajo': {
+    'title': '¿Medicina del Trabajo o Médico General?',
+    'text': 'El Médico General cura gripes. El Médico del Trabajo revisa que estés sano para cumplir con tu empleo y previene accidentes en la oficina o fábrica.'
+  },
+  'Especialista en Medicina Integrada': {
+    'title': '¿Medicina Integrada o General?',
+    'text': 'El General atiende enfermedades rápidas. El de Medicina Integrada vigila tu salud a largo plazo, cuidando dieta, prevención y enfermedades crónicas.'
+  },
+  'Especialista en Obesidad y Delgadez': {
+    'title': '¿Bariatra o Nutriólogo?',
+    'text': 'El Nutriólogo usa comida. Este especialista (Bariatra clínico) puede usar medicinas fuertes para ayudarte a bajar de peso si tienes obesidad.'
+  },
+  'Especialista en Rehabilitación y Medicina Física': {
+    'title': '¿Rehabilitación o Fisioterapeuta?',
+    'text': 'Este especialista es el médico que diseña el plan de recuperación. El Fisioterapeuta es quien hace los ejercicios contigo.'
+  },
+  'Especialista en Retina Médica y Quirúrgica': {
+    'title': '¿Retinólogo u Oftalmólogo?',
+    'text': 'Todos son oftalmólogos, pero el Retinólogo es el experto en la parte de hasta atrás del ojo. Si tienes diabetes, es mejor ver al Retinólogo.'
+  },
+  'Fisioterapeuta': {
+    'title': '¿Fisioterapeuta o Quiropráctico?',
+    'text': 'El Quiropráctico ajusta huesos. El Fisioterapeuta usa ejercicios, masajes y calor para que tus músculos y cuerpo vuelvan a moverse bien.'
+  },
+  'Foniatra': {
+    'title': '¿Foniatra o Logopeda?',
+    'text': 'El Foniatra es un médico que revisa tu garganta. El Logopeda es el maestro que te enseña a pronunciar y hablar bien con ejercicios.'
+  },
+  'Gastroenterólogo': {
+    'title': '¿Gastroenterólogo o Proctólogo?',
+    'text': 'El "Gastro" ve estómago e intestinos. Si el problema es dolor o sangrado justo al ir al baño (en el recto), el Proctólogo es el especialista.'
+  },
+  'Gastroenterólogo pediátrico': {
+    'title': '¿Gastro Pediátrico o Pediatra?',
+    'text': 'El Pediatra cura el dolor de panza común. Si el bebé tiene reflujo fuerte o alergias a la leche, el Gastro Pediátrico es el indicado.'
+  },
+  'Genetista': {
+    'title': '¿Genetista o Pediatra?',
+    'text': 'El Pediatra ve el crecimiento. El Genetista busca en el ADN enfermedades raras que vienen de familia o problemas de nacimiento.'
+  },
+  'Geriatra': {
+    'title': '¿Geriatra o Gerontólogo?',
+    'text': 'El Geriatra es médico y cura enfermedades de abuelitos. El Gerontólogo ayuda a mejorar su calidad de vida y entorno social, pero no receta medicina.'
+  },
+  'Gerontólogo': {
+    'title': '¿Gerontólogo o Geriatra?',
+    'text': 'El Geriatra da medicinas. El Gerontólogo te ayuda a planear una vejez feliz, activa y a resolver problemas sociales de la edad.'
+  },
+  'Ginecólogo': {
+    'title': '¿Ginecólogo u Obstetra?',
+    'text': 'El Ginecólogo cuida la salud de la mujer. El Obstetra se especializa en cuidar a la mujer embarazada y atender el parto.'
+  },
+  'Ginecólogo oncológico': {
+    'title': '¿Gine-Oncólogo o Ginecólogo?',
+    'text': 'El Ginecólogo normal hace revisiones. Si hay cáncer o tumores en la mujer, el Gine-Oncólogo es el experto en operarlos y curarlos.'
+  },
+  'Hematólogo': {
+    'title': '¿Hematólogo o Patólogo?',
+    'text': 'El Patólogo analiza sangre en laboratorio. El Hematólogo es el doctor que te atiende y da tratamiento si tu sangre está enferma (como anemia).'
+  },
+  'Hematólogo pediatra': {
+    'title': '¿Hematólogo Pediátrico o Pediatra?',
+    'text': 'Si el niño tiene moretones raros, sangra mucho o tiene anemia que no se cura, este especialista sabe más de la sangre infantil que un Pediatra.'
+  },
+  'Homeópata': {
+    'title': '¿Homeópata o Médico Alópata?',
+    'text': 'El Médico Alópata (normal) usa medicinas de farmacia. El Homeópata usa remedios naturales muy diluidos para estimular que el cuerpo se cure solo.'
+  },
+  'Infectólogo': {
+    'title': '¿Infectólogo o Internista?',
+    'text': 'El Internista ve de todo. El Infectólogo es el experto en bichos (bacterias y virus) difíciles que los antibióticos normales no pueden matar.'
+  },
+  'Infectólogo pediatra': {
+    'title': '¿Infectólogo Pediátrico o Pediatra?',
+    'text': 'Para gripes normales ve al Pediatra. Para infecciones graves o raras que no ceden con medicina común, ve al Infectólogo Pediátrico.'
+  },
+  'Inmunólogo': {
+    'title': '¿Inmunólogo o Alergólogo?',
+    'text': 'Son muy parecidos. El Inmunólogo se enfoca más en por qué tus defensas están bajas (te enfermas mucho) o si tus defensas te atacan a ti mismo.'
+  },
+  'Internista': {
+    'title': '¿Internista o Médico General?',
+    'text': 'El General atiende cosas leves. El Internista es el experto en adultos para enfermedades complicadas o cuando tienes varias enfermedades a la vez.'
+  },
+  'Logopeda': {
+    'title': '¿Logopeda o Foniatra?',
+    'text': 'El Foniatra revisa la salud de tu garganta. El Logopeda te da terapia y ejercicios para que aprendas a hablar, leer o escribir mejor.'
+  },
+  'Médico de familia': {
+    'title': '¿Médico de Familia o General?',
+    'text': 'El General te atiende a ti. El Médico de Familia está entrenado para cuidar a papás, hijos y abuelos, conociendo el historial de toda la casa.'
+  },
+  'Médico estético': {
+    'title': '¿Médico Estético o Cirujano Plástico?',
+    'text': 'El Cirujano Plástico opera (corta). El Médico Estético mejora tu belleza con tratamientos suaves, como inyecciones o láser, sin cirugía.'
+  },
+  'Médico general': {
+    'title': '¿Médico General o Especialista?',
+    'text': 'Siempre empieza con el Médico General. Él te cura lo común y te dice con qué especialista ir si tu problema es más difícil.'
+  },
+  'Naturista': {
+    'title': '¿Naturista u Homeópata?',
+    'text': 'El Homeópata usa "chochitos" especiales. El Naturista usa plantas, hierbas y alimentos naturales para ayudarte a sanar.'
+  },
+  'Neonatólogo': {
+    'title': '¿Neonatólogo o Pediatra?',
+    'text': 'El Pediatra ve niños de todas las edades. El Neonatólogo es el experto exclusivo en bebés recién nacidos o prematuros (que nacieron antes).'
   },
   'Nefrólogo': {
-    title: '¿Nefrólogo o Urólogo?',
-    text: 'El Nefrólogo es un médico internista que trata el funcionamiento de los riñones (insuficiencia renal, diálisis). El Urólogo es un cirujano que trata las vías urinarias (cálculos, vejiga) y el sistema reproductor masculino.'
+    'title': '¿Nefrólogo o Urólogo?',
+    'text': 'El Urólogo ve las "tuberías" de la orina. El Nefrólogo es el experto en el riñón mismo, viendo cómo limpia la sangre y evitando la diálisis.'
   },
-  'Urólogo': {
-    title: '¿Urólogo o Nefrólogo?',
-    text: 'Busca un Urólogo para problemas quirúrgicos o estructurales de las vías urinarias (cálculos, próstata). Si el problema es cómo filtran la sangre tus riñones (enfermedad renal crónica), el Nefrólogo es el especialista.'
+  'Nefrólogo pediatra': {
+    'title': '¿Nefrólogo Pediátrico o Urólogo Pediátrico?',
+    'text': 'Si el niño tiene infección urinaria o problemas en su pene, ve al Urólogo. Si sus riñones no filtran bien la sangre, ve al Nefrólogo.'
+  },
+  'Neumólogo': {
+    'title': '¿Neumólogo u Otorrino?',
+    'text': 'El Otorrino ve garganta y nariz. El Neumólogo se encarga de los pulmones, la tos profunda y problemas como el asma o bronquitis.'
+  },
+  'Neumólogo pediatra': {
+    'title': '¿Neumólogo Pediátrico o Alergólogo?',
+    'text': 'Si el asma es por alergia, ambos ayudan. Pero si el problema es daño en el pulmón o neumonía, el Neumólogo es el mejor para el niño.'
+  },
+  'Neurocirujano': {
+    'title': '¿Neurocirujano o Neurólogo?',
+    'text': 'El Neurólogo trata dolores de cabeza con medicina. El Neurocirujano es quien opera si hay que abrir para quitar un tumor o arreglar la columna.'
+  },
+  'Neurofisiólogo': {
+    'title': '¿Neurofisiólogo o Neurólogo?',
+    'text': 'El Neurólogo te revisa en consulta. El Neurofisiólogo es quien maneja las máquinas para medir la electricidad de tu cerebro y nervios.'
+  },
+  'Neurólogo': {
+    'title': '¿Neurólogo o Psiquiatra?',
+    'text': 'El Psiquiatra ve emociones y mente. El Neurólogo ve el cerebro como órgano: dolores de cabeza, epilepsia o problemas para moverte.'
+  },
+  'Neurólogo pediatra': {
+    'title': '¿Neurólogo Pediátrico o Pediatra?',
+    'text': 'Si el niño se tarda en hablar, caminar o tiene convulsiones, el Neurólogo Pediátrico revisa su cerebro mejor que un Pediatra general.'
   },
   'Nutricionista': {
-    title: '¿Nutricionista o Nutriólogo Clínico?',
-    text: 'Ambos se enfocan en la alimentación. Sin embargo, un Nutriólogo Clínico suele tener un enfoque más orientado al manejo de enfermedades específicas (diabetes, hipertensión) a través de la dieta en un entorno hospitalario o médico.'
+    'title': '¿Nutricionista o Nutriólogo?',
+    'text': 'A veces son lo mismo. Generalmente, el Nutriólogo es un médico que ve enfermedades y el Nutricionista se enfoca más en enseñarte a comer sano.'
+  },
+  'Nutriólogo': {
+    'title': '¿Nutriólogo o Bariatra?',
+    'text': 'El Nutriólogo usa dieta para bajar de peso. El Bariatra es un doctor que puede usar cirugía si la obesidad es muy peligrosa.'
+  },
+  'Nutriólogo clínico': {
+    'title': '¿Nutriólogo Clínico o General?',
+    'text': 'El general te ayuda a bajar de peso. El Clínico trabaja en hospitales alimentando a personas que están enfermas o no pueden comer normal.'
+  },
+  'Odontólogo pediatra': {
+    'title': '¿Odontopediatra o Dentista General?',
+    'text': 'El Dentista General atiende adultos. El Odontopediatra sabe tratar a los niños para que no tengan miedo y cuidar sus dientes de leche.'
+  },
+  'Oftalmólogo': {
+    'title': '¿Oftalmólogo u Optometrista?',
+    'text': 'El Optometrista te gradúa lentes. El Oftalmólogo es un médico que además de lentes, opera los ojos y cura enfermedades como cataratas.'
+  },
+  'Oftalmólogo pediátrico': {
+    'title': '¿Oftalmólogo Pediátrico u Optometrista?',
+    'text': 'A los niños les cuesta decir qué ven mal. Este doctor tiene técnicas especiales para revisar los ojos de los niños sin que tengan que leer letras.'
+  },
+  'Oncólogo médico': {
+    'title': '¿Oncólogo Médico o Cirujano?',
+    'text': 'El Cirujano quita el tumor cortando. El Oncólogo Médico es quien dirige todo el tratamiento y receta la quimioterapia para matar el cáncer.'
+  },
+  'Oncólogo pediátrico': {
+    'title': '¿Oncólogo Pediátrico o Pediatra?',
+    'text': 'El Pediatra cuida la salud general. El Oncólogo Pediátrico es el experto en curar tipos de cáncer que solo les dan a los niños.'
+  },
+  'Optometrista': {
+    'title': '¿Optometrista u Oftalmólogo?',
+    'text': 'Si solo quieres saber si necesitas lentes, el Optometrista es más rápido. Si tienes dolor de ojos u ojo rojo, ve al Oftalmólogo.'
+  },
+  'Ortodoncista': {
+    'title': '¿Ortodoncista o Dentista?',
+    'text': 'El Dentista cuida la salud de los dientes. El Ortodoncista es el especialista en poner frenos (brackets) para que los dientes queden derechos.'
+  },
+  'Ortopedista': {
+    'title': '¿Ortopedista o Traumatólogo?',
+    'text': 'Son casi lo mismo. Traumatólogo suena más a urgencias (huesos rotos por golpes) y Ortopedista a corregir defectos de los huesos o articulaciones.'
+  },
+  'Ortopedista infantil': {
+    'title': '¿Ortopedista Infantil o Pediatra?',
+    'text': 'El Pediatra revisa todo. El Ortopedista Infantil es experto en corregir pie plano, piernas chuecas o problemas de huesos en crecimiento.'
+  },
+  'Otorrinolaringólogo': {
+    'title': '¿Otorrino o Audiólogo?',
+    'text': 'El Audiólogo mide cuánto escuchas. El Otorrino es el médico que cura infecciones de oído, opera las anginas y arregla la nariz.'
+  },
+  'Otorrinolaringólogo Pediátrico': {
+    'title': '¿Otorrino Pediátrico o Pediatra?',
+    'text': 'El Pediatra cura dolor de oído simple. Si el niño siempre tiene mocos, ronca o no escucha bien, necesita al Otorrino Pediátrico.'
+  },
+  'Patólogo Bucal': {
+    'title': '¿Patólogo Bucal o Dentista?',
+    'text': 'El Dentista ve dientes. El Patólogo Bucal analiza bultos, manchas o heridas raras en la boca para ver si son enfermedades serias.'
+  },
+  'Patólogo clínico': {
+    'title': '¿Patólogo o Médico?',
+    'text': 'Tu Médico te revisa a ti. El Patólogo revisa tus muestras (sangre, pipí) en el laboratorio para decirle a tu médico qué tienes.'
+  },
+  'Pediatra': {
+    'title': '¿Pediatra o Médico General?',
+    'text': 'El Médico General ve adultos y niños. El Pediatra estudió años extra solo para entender y curar el cuerpo de los niños y bebés.'
+  },
+  'Podiatra': {
+    'title': '¿Podiatra o Podólogo?',
+    'text': 'El Podólogo corta uñas y quita callos. El Podiatra es un médico que puede hacer cirugías pequeñas en los pies y recetar plantillas médicas.'
+  },
+  'Podólogo': {
+    'title': '¿Podólogo o Pedicurista?',
+    'text': 'El pedicurista pinta uñas. El Podólogo es un experto de salud que sabe cortar uñas enterradas y curar hongos sin lastimarte.'
+  },
+  'Proctólogo': {
+    'title': '¿Proctólogo o Gastroenterólogo?',
+    'text': 'El Gastroenterólogo ve todo el sistema digestivo. El Proctólogo es el especialista exclusivo del recto y ano (hemorroides, fístulas).'
+  },
+  'Psicoanalista': {
+    'title': '¿Psicoanalista o Psicólogo?',
+    'text': 'El Psicólogo te ayuda con problemas actuales. El Psicoanalista hace una terapia profunda y larga para entender tu mente desde la infancia.'
+  },
+  'Psicólogo': {
+    'title': '¿Buscas un Psicólogo o un Psiquiatra?',
+    'text': 'Los psicólogos se enfocan en terapia emocional y del habla. Si requieres diagnóstico médico y medicinas, un Psiquiatra es el indicado.'
+  },
+  'Psicopedagogo': {
+    'title': '¿Psicopedagogo o Maestro?',
+    'text': 'El maestro enseña materias. El Psicopedagogo descubre por qué a un niño le cuesta aprender y busca formas especiales para enseñarle.'
+  },
+  'Psiquiatra': {
+    'title': '¿Psiquiatra o Psicólogo?',
+    'text': 'Los psiquiatras son médicos que recetan medicinas para la mente. Para terapia de plática sin medicación, suelen trabajar con Psicólogos.'
+  },
+  'Psiquiatra infantil': {
+    'title': '¿Psiquiatra Infantil o Psicólogo?',
+    'text': 'El Psicólogo da terapia con juegos. El Psiquiatra Infantil es médico y puede dar medicinas si el cerebro del niño las necesita para estar tranquilo.'
+  },
+  'Quiropráctico': {
+    'title': '¿Quiropráctico u Ortopedista?',
+    'text': 'El Ortopedista es un médico que opera y da medicinas. El Quiropráctico usa sus manos para ajustar la columna y aliviar dolor sin cirugía.'
+  },
+  'Radio Oncólogo': {
+    'title': '¿Radio Oncólogo o Radiólogo?',
+    'text': 'El Radiólogo toma fotos (rayos X). El Radio Oncólogo usa rayos muy potentes como tratamiento para destruir el cáncer.'
+  },
+  'Radiólogo': {
+    'title': '¿Radiólogo o Técnico?',
+    'text': 'El Técnico te toma la foto (radiografía). El Radiólogo es el médico experto que analiza esa imagen para encontrar enfermedades.'
+  },
+  'Radioterapeuta': {
+    'title': '¿Radioterapeuta o Radio Oncólogo?',
+    'text': 'El Radio Oncólogo es el médico que planea el tratamiento. El Radioterapeuta es quien maneja la máquina todos los días para dártelo.'
+  },
+  'Reumatólogo': {
+    'title': '¿Reumatólogo u Ortopedista?',
+    'text': 'El Ortopedista ve golpes y fracturas. El Reumatólogo ve enfermedades internas que causan dolor e inflamación en las articulaciones (artritis).'
+  },
+  'Reumatólogo pediátrico': {
+    'title': '¿Reumatólogo Pediátrico u Ortopedista?',
+    'text': 'Si al niño le duelen las rodillas por crecer o jugar, es ortopedia. Si se le hinchan sin razón y tiene fiebre, necesita al Reumatólogo.'
+  },
+  'Sexólogo': {
+    'title': '¿Sexólogo o Urólogo/Ginecólogo?',
+    'text': 'Urólogos y Ginecólogos ven la salud física. El Sexólogo ayuda con los problemas psicológicos, de educación y disfrute de la vida íntima.'
+  },
+  'Técnico en diagnóstico e imagen': {
+    'title': '¿Técnico o Radiólogo?',
+    'text': 'El Técnico opera la máquina y te acomoda. El Radiólogo es el doctor que estudia las imágenes que tomó el Técnico.'
+  },
+  'Terapeuta complementario': {
+    'title': '¿Terapeuta o Médico?',
+    'text': 'El Médico usa ciencia y medicinas. El Terapeuta Complementario usa técnicas naturales (flores, energía) para ayudarte a sentirte mejor junto con tu médico.'
+  },
+  'Terapeuta ocupacional': {
+    'title': '¿Ocupacional o Fisioterapeuta?',
+    'text': 'El Fisioterapeuta hace que muevas el brazo. El Terapeuta Ocupacional te enseña a usar ese brazo para comer, vestirte y ser independiente.'
+  },
+  'Traumatólogo': {
+    'title': '¿Traumatólogo u Ortopedista?',
+    'text': 'Generalmente son lo mismo. Traumatólogo se usa más para accidentes (golpes, fracturas) y Ortopedista para correcciones de huesos.'
+  },
+  'Urgenciólogo': {
+    'title': '¿Urgenciólogo o Médico General?',
+    'text': 'El General ve enfermedades tranquilas. El Urgencíologo es experto en salvar vidas rápido cuando hay accidentes graves o infartos.'
+  },
+  'Urólogo': {
+    'title': '¿Urólogo o Nefrólogo?',
+    'text': 'El Nefrólogo cuida que el riñón funcione. El Urólogo opera y arregla las vías por donde sale la orina, la vejiga y la próstata.'
+  },
+  'Urólogo pediátrico': {
+    'title': '¿Urólogo Pediátrico o Pediatra?',
+    'text': 'El Pediatra ve infecciones simples. El Urólogo Pediátrico opera defectos de nacimiento en las partes privadas o vías urinarias de los niños.'
   }
 };
 
