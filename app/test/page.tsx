@@ -366,7 +366,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     return (
                         <Link 
                             key={city}
-                            href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
+                            href={`/enfermedads/${diseaseSlug}/${slugify(city)}`}
                             className="
                                 flex items-center justify-between p-5 
                                 bg-white border border-slate-200 rounded-2xl 
