@@ -335,7 +335,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                         <Link 
                             key={spec}
                             // Link Logic: Specialty -> Location
-                            href={`/doctores/${paramSlug}/${slugify(spec)}`}
+                            href={`/doctores/${slugify(cityName)}/${slugify(spec)}`}
                             className="
                                 flex flex-col items-center justify-center p-4 text-center
                                 bg-white border border-slate-200 rounded-xl
@@ -461,7 +461,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                             {['Dentista - Odontólogo', 'Ginecólogo', 'Pediatra'].map(spec => (
                                 <Link 
                                     key={spec}
-                                    href={`/doctores/${paramSlug}/${slugify(spec)}`}
+                                    href={`/doctores/${slugify(cityName)}/${slugify(spec)}`}
                                     className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 hover:border-[#0071e3] transition-all group"
                                 >
                                     <span className="font-medium text-[#1d1d1f]">{spec}s en {cityName}</span>
