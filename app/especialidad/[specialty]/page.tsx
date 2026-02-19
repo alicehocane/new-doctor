@@ -352,32 +352,6 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
             </div>
         </section>
 
-        {/* Other Popular Specialties in Cities */}
-        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
-            <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-                Búsquedas populares en otras ciudades
-            </h3>
-            <div className="flex flex-wrap gap-x-3 gap-y-3">
-                {POPULAR_CITIES.slice(0, 6).flatMap((city, cIdx) => 
-                    POPULAR_SPECIALTIES.slice((cIdx % 3), (cIdx % 3) + 3).map(spec => ({
-                        city,
-                        spec
-                    }))
-                )
-                .slice(0, 10) 
-                .map((item, idx) => (
-                    <Link 
-                        key={idx}
-                        href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
-                        className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
-                    >
-                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
-                        <span>{item.spec} en {item.city}</span>
-                    </Link>
-                ))}
-            </div>
-        </section>
-
 
 
         {/* 3️⃣ Section: Padecimientos Comunes */}
@@ -412,28 +386,32 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         </div>
                     </section>
                 )}
-        
-        
-                {/* 5️⃣ Section: Recursos Adicionales */}
-                <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6">
-                    <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">Más Información Médica</h2>
-                    <p className="text-[#86868b] mb-8 max-w-2xl mx-auto text-lg">
-                        Aprovecha nuestros recursos educativos para tomar decisiones informadas sobre tu salud.
-                    </p>
-                    <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <Link href={`/especialidad/${searchTerm}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
-                            <BookOpen className="w-5 h-5" /> Guía de {searchTerm}
-                        </Link>
-                        <Link href="/enfermedad" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
-                            <Activity className="w-5 h-5" /> Padecimientos Comunes
-                        </Link>
-                        <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
-                            <Info className="w-5 h-5" /> Enciclopedia Médica
-                        </Link>
-                    </div>
-                </section>
-        
 
+        {/* Other Popular Specialties in Cities */}
+        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
+            <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                Búsquedas populares en otras ciudades
+            </h3>
+            <div className="flex flex-wrap gap-x-3 gap-y-3">
+                {POPULAR_CITIES.slice(0, 6).flatMap((city, cIdx) => 
+                    POPULAR_SPECIALTIES.slice((cIdx % 3), (cIdx % 3) + 3).map(spec => ({
+                        city,
+                        spec
+                    }))
+                )
+                .slice(0, 10) 
+                .map((item, idx) => (
+                    <Link 
+                        key={idx}
+                        href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
+                        className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    >
+                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                        <span>{item.spec} en {item.city}</span>
+                    </Link>
+                ))}
+            </div>
+        </section>
 
 
 
