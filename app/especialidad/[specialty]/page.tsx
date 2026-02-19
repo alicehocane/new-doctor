@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale } from 'lucide-react';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
