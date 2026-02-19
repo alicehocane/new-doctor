@@ -68,9 +68,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   }
 
   const doctor = currentDoctor as Doctor;
-  const mainPhone = doctor.contact_info.phones?.[0];
-  // Format phone for WhatsApp: remove non-digits
-  const waPhone = mainPhone?.replace(/\D/g, '');
+  
 
   // 3. Parallel Data Fetching for Related Content
   // We need the doctor data first to know which city/specialty to query
@@ -170,6 +168,10 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     "dateModified": doctor.updated_at
   };
 
+
+  const mainPhone = doctor.contact_info.phones?.[0];
+  // Format phone for WhatsApp: remove non-digits
+  const waPhone = mainPhone?.replace(/\D/g, '');
   // --- Render ---
 
   return (
@@ -368,6 +370,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Related Articles Section */}
