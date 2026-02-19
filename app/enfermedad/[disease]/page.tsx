@@ -11,7 +11,7 @@ import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
-
+export const revalidate = 86400;
 // --- Helpers ---
 
 const slugify = (text: string) => {

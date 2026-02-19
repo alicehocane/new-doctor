@@ -6,6 +6,7 @@ import { POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 
+
 export const metadata: Metadata = {
   title: "Diccionario de Enfermedades y Guía de Síntomas",
   description: "Guía médica completa de enfermedades y síntomas en México. Aprende a identificar cuándo acudir a un especialista y encuentra doctores verificados.",

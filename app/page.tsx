@@ -6,6 +6,8 @@ import { Metadata } from 'next';
 import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 
+
+
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',

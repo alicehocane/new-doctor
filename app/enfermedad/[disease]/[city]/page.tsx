@@ -9,6 +9,7 @@ import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
+export const revalidate = 86400;
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()

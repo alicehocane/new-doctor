@@ -8,6 +8,8 @@ import { notFound } from 'next/navigation'; // For 404 handling
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES } from '../../../lib/constants';
 
+export const revalidate = 86400;
+
 // --- Utility Functions ---
 
 const slugify = (text: string) => {
