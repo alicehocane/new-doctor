@@ -461,7 +461,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                             {['Dentista - Odontólogo', 'Ginecólogo', 'Pediatra'].map(spec => (
                                 <Link 
                                     key={spec}
-                                    href={`/doctores/${stateSlug}/${paramSlug}/${slugify(spec)}`}
+                                    href={`/doctores/${paramSlug}/${slugify(spec)}`}
                                     className="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200 hover:border-[#0071e3] transition-all group"
                                 >
                                     <span className="font-medium text-[#1d1d1f]">{spec}s en {cityName}</span>
