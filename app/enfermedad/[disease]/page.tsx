@@ -513,32 +513,26 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         )}
 
 
-        {/* 4️⃣ Local Treatment */}
-        <section className="mb-20 border-t border-slate-200 pt-16 animate-in fade-in slide-in-from-bottom-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-                <div className="max-w-2xl">
-                    <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">Encuentra Tratamiento en Tu Ciudad</h2>
-                    <p className="text-lg text-[#86868b] leading-relaxed">
-                        Una vez que comprendas tu padecimiento, consulta nuestros listados de doctores y especialistas en tu ciudad para recibir atención confiable y cercana.
-                    </p>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {TOP_CITIES.map((city) => {
+        {/* 9️⃣ Local Treatment Links */}
+        <section className="pt-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-6">Tratamiento de {diseaseName} en tu Ciudad</h2>
+            <p className="text-lg text-[#86868b] mb-8">
+                Si buscas atención médica o psicológica especializada, puedes explorar opciones de tratamiento disponibles cerca de ti:
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4 mb-12">
+                {POPULAR_CITIES.slice(0, 6).map((city) => {
                     return (
                         <Link 
                             key={city}
-                            href={`/doctores/${slugify(city)}`}
+                            href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
                             className="
-                                group flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl
-                                hover:border-[#0071e3] hover:shadow-md transition-all
+                                flex items-center justify-between p-5 
+                                bg-white border border-slate-200 rounded-2xl 
+                                hover:border-[#0071e3] hover:shadow-md transition-all group
                             "
                         >
-                            <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f] group-hover:bg-[#0071e3] group-hover:text-white transition-colors">
-                                <MapPin className="w-5 h-5" />
-                            </div>
-                            <span className="font-semibold text-[#1d1d1f]">{city}</span>
+                            <span className="font-semibold text-[#1d1d1f]">{diseaseName} en {city}</span>
+                            <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
                         </Link>
                     );
                 })}
