@@ -317,7 +317,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
 
  {/* 3️⃣ Section: Padecimientos Comunes */}
-        {relatedConditions.length > 0 && (
+        {conditions.length > 0 && (
             <section className="animate-in fade-in slide-in-from-bottom-4">
                 <div className="mb-8">
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
@@ -330,7 +330,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {relatedConditions.slice(0, 9).map((condition) => (
+                    {conditions.slice(0, 9).map((condition) => (
                         <Link 
                             key={condition}
                             // Link Logic: /padecimientos/[disease]/[state]/[city]
