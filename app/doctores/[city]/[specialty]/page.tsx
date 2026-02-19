@@ -349,19 +349,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </section>
         )}
 
-        {/* 4️⃣ Section: Doctor Listings */}
-        <section className="pt-8 animate-in fade-in slide-in-from-bottom-5">
-            <div className="mb-10">
-                <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4">
-                    {searchTerm}s Disponibles en {cityName}
-                </h2>
-                <p className="text-lg text-[#86868b] leading-relaxed max-w-4xl">
-                    A continuación, encontrarás {searchTerm.toLowerCase()}s certificados en {cityName}. Infórmate primero sobre la especialidad y sus padecimientos, luego elige un especialista que se adapte a tus necesidades.
-                </p>
-            </div>
-
-            <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
-        </section>
 
         {/* 5️⃣ Section: Recursos Adicionales */}
         <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6">
@@ -381,29 +368,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </Link>
             </div>
         </section>
-
-        {/* Nearby Cities Links */}
-        <section className="pt-12 border-t border-slate-200/60 mt-8">
-            <h3 className="text-sm font-bold text-[#86868b] uppercase tracking-wide mb-6">
-                {searchTerm}s en ciudades cercanas
-            </h3>
-            <div className="flex flex-wrap gap-3">
-                {POPULAR_CITIES
-                    .filter(c => slugify(c) !== citySlug)
-                    .slice(0, 10)
-                    .map((city) => (
-                        <Link 
-                            key={city}
-                            href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                            className="text-sm text-[#0071e3] hover:underline bg-white px-3 py-1.5 rounded-md border border-slate-100"
-                        >
-                            {city}
-                        </Link>
-                    ))
-                }
-            </div>
-        </section>
-
 
 
 
