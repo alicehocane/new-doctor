@@ -14,7 +14,12 @@ export const metadata: Metadata = {
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
-  'Monterrey'
+  'Monterrey',
+  'Benito Juárez',
+  'Cuauhtémoc',
+  'Pachuca',
+  'Zapopan',
+  'Tlalpan'
 ];
 
 const DISEASE_CATEGORIES = [
