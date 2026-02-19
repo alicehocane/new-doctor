@@ -169,8 +169,8 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   };
 
 
-  const mainPhone = doctor.contact_info.phones?.[0];
-  // Format phone for WhatsApp: remove non-digits
+  const phones = doctor.contact_info.phones || [];
+  const mainPhone = phones[0];
   const waPhone = mainPhone?.replace(/\D/g, '');
   const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, vi su perfil en MediBusca y me gustaría solicitar más información.`);
   // --- Render ---
@@ -362,7 +362,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               )}
             </div>
           </section>
-          
+
 
           {/* FAQ Section */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
