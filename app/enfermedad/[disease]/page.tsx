@@ -435,6 +435,33 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </section>
         )}
 
+
+         {/* 9️⃣ Local Treatment Links */}
+        <section className="pt-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-6">Tratamiento de {diseaseName} en tu Ciudad</h2>
+            <p className="text-lg text-[#86868b] mb-8">
+                Si buscas atención médica o psicológica especializada, puedes explorar opciones de tratamiento disponibles cerca de ti:
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4 mb-12">
+                {POPULAR_CITIES.slice(0, 6).map((city) => {
+                    return (
+                        <Link 
+                            key={city}
+                            href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
+                            className="
+                                flex items-center justify-between p-5 
+                                bg-white border border-slate-200 rounded-2xl 
+                                hover:border-[#0071e3] hover:shadow-md transition-all group
+                            "
+                        >
+                            <span className="font-semibold text-[#1d1d1f]">{diseaseName} en {city}</span>
+                            <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
+                        </Link>
+                    );
+                })}
+            </div>
+        </section>
+
         {/* Specialties that treat {Disease} Section */}
         {relatedSpecialties.length > 0 && (
             <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
@@ -513,29 +540,19 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         )}
 
 
-        {/* 9️⃣ Local Treatment Links */}
-        <section className="pt-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-6">Tratamiento de {diseaseName} en tu Ciudad</h2>
-            <p className="text-lg text-[#86868b] mb-8">
-                Si buscas atención médica o psicológica especializada, puedes explorar opciones de tratamiento disponibles cerca de ti:
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4 mb-12">
-                {POPULAR_CITIES.slice(0, 6).map((city) => {
-                    return (
-                        <Link 
-                            key={city}
-                            href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
-                            className="
-                                flex items-center justify-between p-5 
-                                bg-white border border-slate-200 rounded-2xl 
-                                hover:border-[#0071e3] hover:shadow-md transition-all group
-                            "
-                        >
-                            <span className="font-semibold text-[#1d1d1f]">{diseaseName} en {city}</span>
-                            <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
-                        </Link>
-                    );
-                })}
+        {/* 🔟 Related Resources */}
+        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-8">Recursos Relacionados</h2>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link href="/especialidades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <Stethoscope className="w-5 h-5" /> Especialistas Médicos
+                </Link>
+                <Link href="/padecimientos" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <Activity className="w-5 h-5" /> Otros Padecimientos
+                </Link>
+                <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                    <BookOpen className="w-5 h-5" /> Guías Médicas
+                </Link>
             </div>
         </section>
 
