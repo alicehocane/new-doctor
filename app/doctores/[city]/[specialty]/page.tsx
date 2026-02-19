@@ -372,7 +372,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                         <Link 
                             key={disease}
                             // Link Logic: Disease -> Location
-                            href={`/padecimientos/${slugify(disease)}/${paramSlug}`}
+                            href={`/enfermedad/${slugify(disease)}/${paramSlug}`}
                             className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-[#0071e3] transition-all group"
                         >
                             <span className="font-medium text-[#1d1d1f]">{disease}</span>
