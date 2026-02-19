@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck, User, HelpCircle } from 'lucide-react';
+import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck, User, HelpCircle, HeartPulse } from 'lucide-react';
 import { COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
