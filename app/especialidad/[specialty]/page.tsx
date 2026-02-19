@@ -386,10 +386,10 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         <div className="mb-8">
                             <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
                                 <Activity className="w-7 h-7 text-[#0071e3]" />
-                                Problemas de Salud que Atiende
+                                Condiciones que Trata la Especialidad de {searchTerm}
                             </h2>
                             <p className="text-lg text-[#86868b] max-w-3xl">
-                                Conoce los síntomas, prevención y tratamiento recomendado para cada condición antes de consultar a un especialista en {cityName}.
+                                Conoce los síntomas, las formas de prevención y los tratamientos más recomendados en el área de {searchTerm} antes de consultar a un especialista en {searchTerm}.
                             </p>
                         </div>
         
