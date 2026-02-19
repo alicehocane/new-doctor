@@ -400,7 +400,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                       Búsquedas populares en {cityName}
                   </h3>
                   <div className="flex flex-wrap gap-x-3 gap-y-3">
-                      {GLOBAL_POPULAR_SPECIALTIES.map((spec, idx) => (
+                      {GLOBAL_POPULAR_SPECIALTIES.slice(0, 6).flatMap((spec, idx) => (
                           <Link 
                               key={idx}
                                href={`/doctores/${citySlug}/${slugify(spec)}`}
