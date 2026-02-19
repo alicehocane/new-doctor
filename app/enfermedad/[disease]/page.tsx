@@ -6,7 +6,7 @@ import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldChe
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES } from '../../../lib/constants';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, ALL_CITIES } from '../../../lib/constants';
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
 const PAGE_SIZE = 12;
@@ -525,7 +525,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {CITY_HUBS.map((city) => {
+                {TOP_CITIES.map((city) => {
                     return (
                         <Link 
                             key={city}
