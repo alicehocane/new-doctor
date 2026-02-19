@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Script from 'next/script';
 import { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import SiteHeader from '../components/SiteHeader';
@@ -155,6 +156,21 @@ export default function RootLayout({
     </div>
   </div>
 </footer>
+
+<Script
+    src="https://www.googletagmanager.com/gtag/js?id=G-GM3L4PKEQV"
+    strategy="afterInteractive"
+  />
+  <Script id="google-analytics" strategy="afterInteractive">
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GM3L4PKEQV');
+    `}
+  </Script>
+
       </body>
     </html>
   );
