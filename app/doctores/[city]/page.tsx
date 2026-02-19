@@ -6,7 +6,7 @@ import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCir
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA } from '../../../lib/constants';
+import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA, POPULAR_SPECIALTIES } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
@@ -324,63 +324,6 @@ export default async function CityPage({ params }: { params: { city: string } })
         </div>
       </section>
 
-      {/* Informational Sections */}
-      <section className="py-16 bg-white border-t border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-            <div className="space-y-6">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                        <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
-                    </div>
-                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Encuentra Especialistas en {cityName} sin Costo</h2>
-                </div>
-                <div className="prose text-[#86868b] leading-relaxed">
-                    <p className="font-medium text-[#1d1d1f] mb-3">
-                        Sin intermediarios ni comisiones ocultas.
-                    </p>
-                    <p>
-                        En MediBusca, nuestra misión es facilitar el acceso a la salud. No somos una plataforma de reservas ni cobramos por agendar. Ofrecemos un directorio verificado de doctores en {cityName} para que puedas contactarlos directamente por teléfono o a través de su perfil profesional. 
-                    </p>
-                    <p className="mt-4">
-                        Información transparente, gratuita y actualizada para tu bienestar.
-                    </p>
-                </div>
-            </div>
-
-            <div className="space-y-6">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center">
-                        <Search className="w-5 h-5 text-[#0071e3]" />
-                    </div>
-                    <h2 className="text-2xl font-semibold text-[#1d1d1f]">Cómo encontrar doctor en {cityName}</h2>
-                </div>
-                <ul className="space-y-4">
-                    <li className="flex gap-4">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center text-xs font-bold">1</div>
-                        <div>
-                            <h3 className="font-semibold text-[#1d1d1f] Selecciona la especialidad">Selecciona la especialidad</h3>
-                            <p className="text-sm text-[#86868b] mt-1">Usa nuestros filtros para encontrar cardiólogos, pediatras o cualquier especialista que necesites en {cityName}.</p>
-                        </div>
-                    </li>
-                    <li className="flex gap-4">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center text-xs font-bold">2</div>
-                        <div>
-                            <h3 className="font-semibold text-[#1d1d1f]">Revisa perfiles verificados</h3>
-                            <p className="text-sm text-[#86868b] mt-1">Consulta la experiencia, cédulas profesionales y ubicaciones de consultorios de cada doctor.</p>
-                        </div>
-                    </li>
-                    <li className="flex gap-4">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center text-xs font-bold">3</div>
-                        <div>
-                            <h3 className="font-semibold text-[#1d1d1f]">Contacta directamente</h3>
-                            <p className="text-sm text-[#86868b] mt-1">Contacta directamente al consultorio a través de MediBusca para obtener la información que necesitas y comunicarte con el doctor sin intermediarios.</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-      </section>
-
       {/* Medical Zones Section */}
       {medicalZones.length > 0 && (
         <section className="py-16 bg-[#f5f5f7] border-t border-slate-200">
@@ -453,24 +396,27 @@ export default async function CityPage({ params }: { params: { city: string } })
 
             {/* Popular Searches SEO Text Links */}
             <div>
-                 <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-[#86868b]" />
-                    Búsquedas populares en {cityName}
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2">
-                    {GLOBAL_POPULAR_SPECIALTIES.map((spec, idx) => (
-                        <Link 
-                            key={idx}
-                            href={`/doctores/${citySlug}/${slugify(spec)}`}
-                            className="text-[13px] text-[#86868b] hover:text-[#0071e3] hover:underline truncate transition-colors"
-                        >
-                            {spec} en {cityName}
-                        </Link>
-                    ))}
-                </div>
+                 <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                      Búsquedas populares en {cityName}
+                  </h3>
+                  <div className="flex flex-wrap gap-x-3 gap-y-3">
+                      {GLOBAL_POPULAR_SPECIALTIES.map((spec, idx) => (
+                          <Link 
+                              key={idx}
+                               href={`/doctores/${citySlug}/${slugify(spec)}`}
+                              className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                          >
+                              <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                              <span>{spec} en {cityName}</span>
+                          </Link>
+                      ))}
+                  </div>
             </div>
         </div>
       </section>
+
+
+
     </div>
   );
 }
