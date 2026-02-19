@@ -11,7 +11,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas',
-  description: 'Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.',
+  description: 'Explora nuestro directorio médico confiable. Busca especialistas por nombre, enfermedad o síntoma. Consulta información de salud y obtén contacto directo.',
 };
 
 const FEATURED_CITIES = [

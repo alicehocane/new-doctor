@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: { city: string, spe
 
   return {
     title: `${searchTerm}s en ${cityName}`,
-    description: `Lista de los mejores ${searchTerm.toLowerCase()}s en ${cityName}. Consulta opiniones, direcciones y teléfonos de consultorios verificados.`,
+    description: `Encuentra información detallada sobre médicos ${searchTerm.toLowerCase()}s en ${cityName}. Explora nuestro directorio de especialistas, conoce las enfermedades que tratan y obtén su contacto directo.`,
   };
 }
 
