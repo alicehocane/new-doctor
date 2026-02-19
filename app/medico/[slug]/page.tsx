@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle } from 'lucide-react';
 import Link from 'next/link'; // Replaced wouter
 import { notFound } from 'next/navigation'; // For 404 handling
 import { Metadata } from 'next';
@@ -68,6 +68,9 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   }
 
   const doctor = currentDoctor as Doctor;
+  const mainPhone = doctor.contact_info.phones?.[0];
+  // Format phone for WhatsApp: remove non-digits
+  const waPhone = mainPhone?.replace(/\D/g, '');
 
   // 3. Parallel Data Fetching for Related Content
   // We need the doctor data first to know which city/specialty to query
@@ -337,22 +340,31 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
         {/* Desktop Sidebar: Contact */}
         <div className="hidden md:block md:col-span-1">
-          <div className="bg-white rounded-[24px] shadow-sm p-6 sticky top-24">
-            <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
-            <div className="space-y-3">
-              {doctor.contact_info.phones?.map((phone, idx) => (
+        <div className="bg-white rounded-[24px] shadow-sm p-6 sticky top-24">
+          <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
+          <div className="space-y-3">
+            {mainPhone && (
+              <>
                 <a 
-                  key={idx}
-                  href={`tel:${phone}`} 
+                  href={`tel:${mainPhone}`} 
                   className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
                 >
                   <Phone className="w-4 h-4 fill-current" />
                   Llamar
                 </a>
-              ))}
-              <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
-                Al contactar, menciona que lo viste en MediBusca para mejor atención.
-              </div>
+                <a 
+                  href={`https://wa.me/${waPhone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
+                >
+                  <MessageCircle className="w-4 h-4 fill-current" />
+                  WhatsApp
+                </a>
+              </>
+            )}
+            <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
+              Al contactar, menciona que lo viste en MediBusca para mejor atención.
             </div>
           </div>
         </div>
@@ -524,38 +536,44 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       </section>
 
       {/* MOBILE ACTION DOCK */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[200]">
-        <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2.5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10">
+      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
+        <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
           <Link 
             href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
-            className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+            className="w-11 h-11 shrink-0 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
             aria-label="Volver"
           >
             <ChevronLeft className="w-5 h-5" />
           </Link>
           
-          <div className="flex-1 text-center px-3 overflow-hidden">
-            <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-white/50 mb-0.5 truncate">
-              {doctor.specialties[0]}
-            </span>
-            <span className="block text-[13px] font-bold text-white tracking-tight leading-none truncate">
+          <div className="flex-1 min-w-0 px-1">
+            <span className="block text-[12px] font-bold text-white truncate leading-none">
               {doctor.full_name}
             </span>
           </div>
 
-          {doctor.contact_info.phones?.[0] ? (
-            <a 
-                href={`tel:${doctor.contact_info.phones[0]}`}
-                className="w-12 h-12 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
-                aria-label="Llamar"
-            >
-                <Phone className="w-5 h-5 fill-current" />
-            </a>
-          ) : (
-             <button disabled className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white/20 cursor-not-allowed">
-                <Phone className="w-5 h-5" />
-             </button>
-          )}
+          <div className="flex items-center gap-2">
+            {mainPhone ? (
+              <>
+                <a 
+                  href={`https://wa.me/${waPhone}`}
+                  className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                  aria-label="WhatsApp"
+                >
+                  <MessageCircle className="w-5 h-5 fill-current" />
+                </a>
+                <a 
+                  href={`tel:${mainPhone}`}
+                  className="w-11 h-11 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                  aria-label="Llamar"
+                >
+                  <Phone className="w-5 h-5 fill-current" />
+                </a>
+              </>
+            ) : (
+               <div className="text-white/30 text-xs pr-4 italic">No hay contacto</div>
+            )}
+          </div>
         </div>
       </div>
     </div>
