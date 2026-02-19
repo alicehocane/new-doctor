@@ -510,9 +510,10 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     ))}
                 </div>
             </section>
+        )}
 
 
-{/* 4️⃣ Local Treatment */}
+        {/* 4️⃣ Local Treatment */}
         <section className="mb-20 border-t border-slate-200 pt-16 animate-in fade-in slide-in-from-bottom-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                 <div className="max-w-2xl">
@@ -524,7 +525,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {TOP_CITIES.map((city) => {
+                {CITY_HUBS.map((city) => {
                     return (
                         <Link 
                             key={city}
@@ -544,7 +545,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
         </section>
 
-        )}
 
       </div>
     </div>
