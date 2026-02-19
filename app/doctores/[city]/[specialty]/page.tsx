@@ -331,7 +331,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                    {displayedSpecialties.map((spec) => (
+                    {POPULAR_SPECIALTIES.map((spec) => (
                         <Link 
                             key={spec}
                             // Link Logic: Specialty -> Location
@@ -353,6 +353,34 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </div>
             </section>
 
+            {/* Section 3: Padecimientos Comunes */}
+            <section className="animate-in fade-in slide-in-from-bottom-5">
+                <div className="mb-8">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-full bg-[#0071e3]/10 flex items-center justify-center text-[#0071e3]">
+                            <Activity className="w-5 h-5" />
+                        </div>
+                        <h2 className="text-2xl font-bold text-[#1d1d1f]">Condiciones y Enfermedades Frecuentes</h2>
+                    </div>
+                    <p className="text-[#86868b] max-w-3xl text-lg">
+                        Conoce los padecimientos más frecuentes y accede a información confiable sobre sus síntomas, prevención y tratamiento.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {POPULAR_SPECIALTIES.map((disease) => (
+                        <Link 
+                            key={disease}
+                            // Link Logic: Disease -> Location
+                            href={`/enfermedad/${slugify(disease)}/${paramSlug}`}
+                            className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-[#0071e3] transition-all group"
+                        >
+                            <span className="font-medium text-[#1d1d1f]">{disease}</span>
+                            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
+                        </Link>
+                    ))}
+                </div>
+            </section>
 
             {/* Section 4: Guías Médicas y Enciclopedia */}
             <section className="animate-in fade-in slide-in-from-bottom-6">
