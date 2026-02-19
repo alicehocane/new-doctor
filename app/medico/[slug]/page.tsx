@@ -172,7 +172,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const phones = doctor.contact_info.phones || [];
   const mainPhone = phones[0];
   const waPhone = mainPhone?.replace(/\D/g, '');
-  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, vi su perfil en MediBusca y me gustaría solicitar más información.`);
+  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, encontré su perfil en MediBusca. Quisiera realizar una consulta sobre su especialidad en ${doctor.specialties}.`);
   // --- Render ---
 
   return (
