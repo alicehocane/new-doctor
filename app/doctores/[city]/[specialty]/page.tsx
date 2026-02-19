@@ -1,7 +1,7 @@
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity } from 'lucide-react';
+import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity, Info, BookOpen} from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -313,6 +313,98 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 }
             </div>
         </section>
+
+
+
+ {/* 3️⃣ Section: Padecimientos Comunes */}
+        {relatedConditions.length > 0 && (
+            <section className="animate-in fade-in slide-in-from-bottom-4">
+                <div className="mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
+                        <Activity className="w-7 h-7 text-[#0071e3]" />
+                        Problemas de Salud que Atiende
+                    </h2>
+                    <p className="text-lg text-[#86868b] max-w-3xl">
+                        Conoce los síntomas, prevención y tratamiento recomendado para cada condición antes de consultar a un especialista en {cityName}.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {relatedConditions.slice(0, 9).map((condition) => (
+                        <Link 
+                            key={condition}
+                            // Link Logic: /padecimientos/[disease]/[state]/[city]
+                            // Usually padecimientos routes are /padecimientos/[slug] or /padecimientos/[slug]/[city-slug]
+                            // The requested structure was /padecimientos/[disease]/[state]/[city], but typical pattern in this app has been /padecimientos/[disease]/[city] (deducing state from city)
+                            // We will follow existing pattern: /padecimientos/[disease-slug]/[city-slug]
+                            // Note: State slug is usually implicit in city lookups or handled via redirection in the disease [city] page.
+                            href={`/enfermedad/${slugify(condition)}/${citySlug}`}
+                            className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 hover:border-[#0071e3] hover:shadow-sm transition-all group"
+                        >
+                            <span className="font-medium text-[#1d1d1f]">{condition}</span>
+                            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
+                        </Link>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        {/* 4️⃣ Section: Doctor Listings */}
+        <section className="pt-8 animate-in fade-in slide-in-from-bottom-5">
+            <div className="mb-10">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4">
+                    {specialtyName}s Disponibles en {cityName}
+                </h2>
+                <p className="text-lg text-[#86868b] leading-relaxed max-w-4xl">
+                    A continuación, encontrarás {specialtyName.toLowerCase()}s certificados en {cityName}. Infórmate primero sobre la especialidad y sus padecimientos, luego elige un especialista que se adapte a tus necesidades.
+                </p>
+            </div>
+
+            <CityDoctorList initialDoctors={doctors} city={cityName} specialty={specialtyName} />
+        </section>
+
+        {/* 5️⃣ Section: Recursos Adicionales */}
+        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">Más Información Médica</h2>
+            <p className="text-[#86868b] mb-8 max-w-2xl mx-auto text-lg">
+                Aprovecha nuestros recursos educativos para tomar decisiones informadas sobre tu salud.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link href={`/especialidad/${specialtySlug}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <BookOpen className="w-5 h-5" /> Guía de {specialtyName}
+                </Link>
+                <Link href="/enfermedad" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <Activity className="w-5 h-5" /> Padecimientos Comunes
+                </Link>
+                <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                    <Info className="w-5 h-5" /> Enciclopedia Médica
+                </Link>
+            </div>
+        </section>
+
+        {/* Nearby Cities Links */}
+        <section className="pt-12 border-t border-slate-200/60 mt-8">
+            <h3 className="text-sm font-bold text-[#86868b] uppercase tracking-wide mb-6">
+                {specialtyName}s en ciudades cercanas
+            </h3>
+            <div className="flex flex-wrap gap-3">
+                {POPULAR_CITIES
+                    .filter(c => slugify(c) !== citySlug)
+                    .slice(0, 10)
+                    .map((city) => (
+                        <Link 
+                            key={city}
+                            href={`/doctores/${slugify(city)}/${specialtySlug}`}
+                            className="text-sm text-[#0071e3] hover:underline bg-white px-3 py-1.5 rounded-md border border-slate-100"
+                        >
+                            {city}
+                        </Link>
+                    ))
+                }
+            </div>
+        </section>
+
+
 
 
       </div>
