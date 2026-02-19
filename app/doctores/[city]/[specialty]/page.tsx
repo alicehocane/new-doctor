@@ -335,7 +335,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                         <Link 
                             key={spec}
                             // Link Logic: Specialty -> Location
-                            href={`/doctores/${stateSlug}/${paramSlug}/${slugify(spec)}`}
+                            href={`/doctores/${paramSlug}/${slugify(spec)}`}
                             className="
                                 flex flex-col items-center justify-center p-4 text-center
                                 bg-white border border-slate-200 rounded-xl
