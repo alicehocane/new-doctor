@@ -524,7 +524,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {CITY_HUBS.map((city) => {
+                {TOP_CITIES.map((city) => {
                     return (
                         <Link 
                             key={city}
