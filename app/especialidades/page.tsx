@@ -6,21 +6,6 @@ import { COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../l
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 
-const COMMON_DISEASES = [
-  { name: 'Diabetes', category: 'Endocrinología' },
-  { name: 'Hipertensión', category: 'Cardiología' },
-  { name: 'Acné', category: 'Dermatología' },
-  { name: 'Ansiedad', category: 'Psiquiatría' },
-  { name: 'Dolor de espalda', category: 'Traumatología' },
-  { name: 'Embarazo', category: 'Ginecología' },
-  { name: 'Gastritis', category: 'Gastroenterología' },
-  { name: 'Migraña', category: 'Neurología' },
-  { name: 'Alergias', category: 'Alergología' },
-  { name: 'Varices', category: 'Angiología' },
-  { name: 'Obesidad', category: 'Bariatría' },
-  { name: 'Asma', category: 'Neumología' }
-];
-
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
