@@ -172,6 +172,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const mainPhone = doctor.contact_info.phones?.[0];
   // Format phone for WhatsApp: remove non-digits
   const waPhone = mainPhone?.replace(/\D/g, '');
+  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, vi su perfil en MediBusca y me gustaría solicitar más información.`);
   // --- Render ---
 
   return (
@@ -321,6 +322,47 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               ))}
             </div>
           </section>
+
+          {/* NEW: MOBILE-ONLY CONTACT SECTION (Shown only on mobile) */}
+          <section className="md:hidden bg-white rounded-[24px] shadow-sm p-8">
+            <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+              <Phone className="w-5 h-5 text-[#86868b]" />
+              Contacto Directo
+            </h2>
+            <div className="space-y-4">
+              {phones.length > 0 ? (
+                phones.map((phone, idx) => {
+                  const cleanPhone = phone.replace(/\D/g, '');
+                  return (
+                    <div key={idx} className="flex flex-col gap-3 p-4 bg-[#f5f5f7] rounded-2xl">
+                      <p className="text-sm font-bold text-[#1d1d1f] flex items-center gap-2">
+                         Teléfono {phones.length > 1 ? idx + 1 : ''}: <span className="text-[#0071e3] font-medium">{phone}</span>
+                      </p>
+                      <div className="flex gap-2">
+                        <a 
+                          href={`tel:${phone}`}
+                          className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#0071e3] text-white rounded-xl text-sm font-medium active:scale-95 transition-all"
+                        >
+                          <Phone className="w-4 h-4" /> Llamar
+                        </a>
+                        <a 
+                          href={`https://wa.me/${cleanPhone}?text=${waMessage}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white rounded-xl text-sm font-medium active:scale-95 transition-all"
+                        >
+                          <MessageCircle className="w-4 h-4" /> WhatsApp
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="text-sm text-[#86868b]">No hay números de contacto disponibles.</p>
+              )}
+            </div>
+          </section>
+          
 
           {/* FAQ Section */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
