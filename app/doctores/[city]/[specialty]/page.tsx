@@ -353,14 +353,14 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         <section className="pt-8 animate-in fade-in slide-in-from-bottom-5">
             <div className="mb-10">
                 <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4">
-                    {specialtyName}s Disponibles en {cityName}
+                    {searchTerm}s Disponibles en {cityName}
                 </h2>
                 <p className="text-lg text-[#86868b] leading-relaxed max-w-4xl">
-                    A continuación, encontrarás {specialtyName.toLowerCase()}s certificados en {cityName}. Infórmate primero sobre la especialidad y sus padecimientos, luego elige un especialista que se adapte a tus necesidades.
+                    A continuación, encontrarás {searchTerm.toLowerCase()}s certificados en {cityName}. Infórmate primero sobre la especialidad y sus padecimientos, luego elige un especialista que se adapte a tus necesidades.
                 </p>
             </div>
 
-            <CityDoctorList initialDoctors={doctors} city={cityName} specialty={specialtyName} />
+            <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
         </section>
 
         {/* 5️⃣ Section: Recursos Adicionales */}
@@ -370,8 +370,8 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 Aprovecha nuestros recursos educativos para tomar decisiones informadas sobre tu salud.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link href={`/especialidad/${specialtySlug}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
-                    <BookOpen className="w-5 h-5" /> Guía de {specialtyName}
+                <Link href={`/especialidad/${searchTerm}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                    <BookOpen className="w-5 h-5" /> Guía de {searchTerm}
                 </Link>
                 <Link href="/enfermedad" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <Activity className="w-5 h-5" /> Padecimientos Comunes
@@ -385,7 +385,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         {/* Nearby Cities Links */}
         <section className="pt-12 border-t border-slate-200/60 mt-8">
             <h3 className="text-sm font-bold text-[#86868b] uppercase tracking-wide mb-6">
-                {specialtyName}s en ciudades cercanas
+                {searchTerm}s en ciudades cercanas
             </h3>
             <div className="flex flex-wrap gap-3">
                 {POPULAR_CITIES
@@ -394,7 +394,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                     .map((city) => (
                         <Link 
                             key={city}
-                            href={`/doctores/${slugify(city)}/${specialtySlug}`}
+                            href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
                             className="text-sm text-[#0071e3] hover:underline bg-white px-3 py-1.5 rounded-md border border-slate-100"
                         >
                             {city}
