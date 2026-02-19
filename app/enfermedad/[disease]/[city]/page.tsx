@@ -252,7 +252,8 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             </p>
             
             <div className="flex flex-wrap gap-3 md:gap-4">
-                {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).map((city) => (
+                {POPULAR_CITIES.filter(c => slugify(c) !== citySlug).slice(0, 8) 
+                    .map((city) => (
                     <Link 
                         key={city}
                         href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
