@@ -349,10 +349,10 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 }
             </div>
         </section>
-        
+
 
         {/* 5️⃣ Section: Recursos Adicionales */}
-        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6">
+        <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6 mt-16 pt-12">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">Más Información Médica</h2>
             <p className="text-[#86868b] mb-8 max-w-2xl mx-auto text-lg">
                 Aprovecha nuestros recursos educativos para tomar decisiones informadas sobre tu salud.
