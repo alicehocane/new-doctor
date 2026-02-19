@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck, User, HelpCircle, HeartPulse } from 'lucide-react';
-import { COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../lib/constants';
+import { ALL_DISEASES, COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 
@@ -289,6 +289,45 @@ export default function SpecialtiesIndexPage() {
                 })}
             </div>
         </section>
+
+
+         {/* Popular Diseases by City (SEO Cross-Linking) */}
+      <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8 w-full max-w-4xl">
+           <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
+              Encuentra tratamiento en tu ciudad
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {FEATURED_CITIES.map((city) => (
+                  <div key={city} className="space-y-3">
+                      <h3 className="font-semibold text-[#1d1d1f] border-b border-slate-100 pb-2 mb-3">
+                          {city}
+                      </h3>
+                      <ul className="space-y-2.5">
+                          {/* Show top 5 diseases for each city */}
+                          {ALL_DISEASES.slice(0, 5).map((disease) => (
+                              <li key={disease}>
+                                  <Link 
+                                      href={`/enfermedad/${slugify(disease)}/${slugify(city)}`}
+                                      className="text-[14px] text-[#86868b] hover:text-[#0071e3] hover:underline flex items-center gap-2 transition-colors"
+                                  >
+                                      <div className="w-1.5 h-1.5 rounded-full bg-[#d2d2d7]"></div>
+                                      {disease} en {city}
+                                  </Link>
+                              </li>
+                          ))}
+                          <li>
+                              <Link 
+                                  href={`/doctores/${slugify(city)}`}
+                                  className="text-[13px] font-medium text-[#0071e3] hover:underline mt-1 inline-block"
+                              >
+                                  Ver todos en {city}
+                              </Link>
+                          </li>
+                      </ul>
+                  </div>
+              ))}
+          </div>
+      </section>
 
 
       </div>
