@@ -9,6 +9,8 @@ import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SP
 import CityDoctorList from '../../../../components/CityDoctorList';
 
 const PAGE_SIZE = 12;
+const POPULAR_SPECIALTIES_DISPLAY = 12;
+
 
 // --- Constants & Helpers ---
 
@@ -30,7 +32,8 @@ const getCanonicalSpecialty = (input: string) => {
     // Try to find exact match by slug (handles dentista-odontologo -> Dentista - Odontólogo)
     const targetSlug = slugify(input);
     const found = COMMON_SPECIALTIES.find(s => slugify(s) === targetSlug);
-    
+    const displayedSpecialties = COMMON_SPECIALTIES.slice(0, POPULAR_SPECIALTIES_DISPLAY);
+
     if (found) return found;
 
     // Fallback
