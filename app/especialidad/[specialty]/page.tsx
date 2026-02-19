@@ -356,7 +356,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* 3️⃣ Section: Padecimientos Comunes */}
                 {conditions.length > 0 && (
-                    <section className="animate-in fade-in slide-in-from-bottom-4">
+                    <section className="animate-in fade-in slide-in-from-bottom-4 mt-16 pt-12 border-t border-[#d2d2d7]/30">
                         <div className="mb-8">
                             <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
                                 <Activity className="w-7 h-7 text-[#0071e3]" />
