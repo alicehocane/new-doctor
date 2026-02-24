@@ -50,7 +50,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
