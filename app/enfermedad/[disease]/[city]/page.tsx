@@ -8,7 +8,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 22;
 export const revalidate = 86400;
 
 const slugify = (text: string) => {
