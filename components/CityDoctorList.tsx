@@ -6,7 +6,7 @@ import { MapPin, Phone, User, CheckCircle, Loader2, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Doctor } from '../types';
 
-const PAGE_SIZE = 22;
+const PAGE_SIZE = 12;
 
 interface CityDoctorListProps {
   initialDoctors: Doctor[];

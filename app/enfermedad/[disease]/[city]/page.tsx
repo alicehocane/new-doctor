@@ -8,7 +8,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
-const PAGE_SIZE = 22;
+const PAGE_SIZE = 12;
 export const revalidate = 86400;
 
 const slugify = (text: string) => {
@@ -57,7 +57,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   // Tell Supabase to sort by has_phone first, then alphabetically
   query = query
       .order('has_phone', { ascending: false });
-      
+
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors as Doctor[] || [];
 

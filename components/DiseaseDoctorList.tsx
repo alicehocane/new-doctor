@@ -6,7 +6,7 @@ import { MapPin, Phone, User, CheckCircle, Loader2, Plus, Stethoscope } from 'lu
 import { supabase } from '../lib/supabase';
 import { Doctor } from '../types';
 
-const PAGE_SIZE = 22;
+const PAGE_SIZE = 12;
 
 interface DiseaseDoctorListProps {
   initialDoctors: Doctor[];
