@@ -24,15 +24,6 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
-
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
@@ -64,8 +55,12 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
   }
 
+  // Tell Supabase to sort by has_phone first, then alphabetically
+  query = query
+      .order('has_phone', { ascending: false });
+
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+  const doctors = rawDoctors as Doctor[] || [];
 
   // Logic to prevent Thin Content indexing
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);

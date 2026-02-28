@@ -13,15 +13,6 @@ interface SpecialtyDoctorListProps {
   specialty: string;
 }
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
-
 export default function SpecialtyDoctorList({ initialDoctors, specialty }: SpecialtyDoctorListProps) {
   const [doctors, setDoctors] = useState<Doctor[]>(initialDoctors);
   const [page, setPage] = useState(0);
@@ -36,17 +27,19 @@ export default function SpecialtyDoctorList({ initialDoctors, specialty }: Speci
     const from = nextPage * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
 
-    // Filter strictly by specialty
+    // Filter strictly by specialty and SORT BY DATABASE
     const { data } = await supabase
         .from('doctors')
         .select('*')
         .contains('specialties', [specialty])
+        .order('has_phone', { ascending: false }) // 1. Doctors with phones first
+        .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
         .range(from, to);
 
     if (data) {
         if (data.length > 0) {
-            const sortedNew = sortDoctorsByPhone(data as Doctor[]);
-            setDoctors(prev => [...prev, ...sortedNew]);
+            // Append DB results directly without manual JS sorting
+            setDoctors(prev => [...prev, ...(data as Doctor[])]);
             setPage(nextPage);
         }
         if (data.length < PAGE_SIZE) {

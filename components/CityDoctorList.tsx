@@ -14,15 +14,6 @@ interface CityDoctorListProps {
   specialty?: string;
 }
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
-
 export default function CityDoctorList({ initialDoctors, city, specialty }: CityDoctorListProps) {
   const [doctors, setDoctors] = useState<Doctor[]>(initialDoctors);
   const [page, setPage] = useState(0);
@@ -40,7 +31,10 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
     let query = supabase
         .from('doctors')
         .select('*')
-        .contains('cities', [city]);
+        .contains('cities', [city])
+        // 1. Tell Supabase to sort by has_phone first, then alphabetically
+        .order('has_phone', { ascending: false })
+        .order('full_name', { ascending: true });
 
     if (specialty) {
         query = query.contains('specialties', [specialty]);
@@ -50,8 +44,8 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
 
     if (data) {
         if (data.length > 0) {
-            const sortedNew = sortDoctorsByPhone(data as Doctor[]);
-            setDoctors(prev => [...prev, ...sortedNew]);
+            // 2. No more manual sorting needed! Just append the DB results directly.
+            setDoctors(prev => [...prev, ...(data as Doctor[])]);
             setPage(nextPage);
         }
         if (data.length < PAGE_SIZE) {

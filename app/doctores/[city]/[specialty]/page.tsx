@@ -43,15 +43,6 @@ const getCanonicalSpecialty = (input: string) => {
     return foundFallback || input;
 };
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
-
 // --- Metadata ---
 
 export async function generateMetadata({ params }: { params: { city: string, specialty: string } }): Promise<Metadata> {
@@ -86,9 +77,10 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
     .select('*')
     .contains('cities', [cityName])
     .contains('specialties', [searchTerm])
+    .order('has_phone', { ascending: false }) // 1. Doctors with phones first
     .range(0, PAGE_SIZE - 1);
 
-  const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+  const doctors = rawDoctors as Doctor[] || [];
 
   // Logic to prevent Thin Content indexing
   // If no doctors are found AND the specialty is not in our known list (meaning it's likely gibberish or a typo), return 404.

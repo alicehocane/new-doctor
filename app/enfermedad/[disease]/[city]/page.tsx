@@ -25,14 +25,6 @@ const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
 
 export async function generateMetadata({ params }: { params: { disease: string, city: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
@@ -62,8 +54,12 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
       query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
   }
 
+  // Tell Supabase to sort by has_phone first, then alphabetically
+  query = query
+      .order('has_phone', { ascending: false });
+
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+  const doctors = rawDoctors as Doctor[] || [];
 
   // Logic to prevent Thin Content indexing
   // If no doctors are found AND (disease is unknown OR city is unknown), return 404.

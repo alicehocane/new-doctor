@@ -36,14 +36,6 @@ const getCanonicalSpecialty = (input: string) => {
     return foundFallback || input;
 };
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
 
 // --- Metadata ---
 
@@ -74,9 +66,11 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
     .from('doctors')
     .select('*')
     .contains('specialties', [searchTerm])
+    .order('has_phone', { ascending: false }) // 1. Doctors with phones first
+    // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
     .range(0, PAGE_SIZE - 1);
 
-  const doctors = rawDoctors ? sortDoctorsByPhone(rawDoctors as Doctor[]) : [];
+  const doctors = rawDoctors as Doctor[] || [];
 
   // 2. Fetch Related Articles
   const { data: articles } = await supabase

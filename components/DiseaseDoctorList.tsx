@@ -15,15 +15,6 @@ interface DiseaseDoctorListProps {
   city?: string;
 }
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
-
 export default function DiseaseDoctorList({ initialDoctors, diseaseName, targetSpecialty, city }: DiseaseDoctorListProps) {
   const [doctors, setDoctors] = useState<Doctor[]>(initialDoctors);
   const [page, setPage] = useState(0);
@@ -52,12 +43,17 @@ export default function DiseaseDoctorList({ initialDoctors, diseaseName, targetS
         query = query.contains('medical_profile', { diseases_treated: [diseaseName] });
     }
 
+    // 1. Tell Supabase to sort by has_phone first, then alphabetically
+    query = query
+        .order('has_phone', { ascending: false })
+        .order('full_name', { ascending: true });
+
     const { data } = await query.range(from, to);
 
     if (data) {
         if (data.length > 0) {
-            const sortedNew = sortDoctorsByPhone(data as Doctor[]);
-            setDoctors(prev => [...prev, ...sortedNew]);
+            // 2. Append DB results directly without manual JS sorting
+            setDoctors(prev => [...prev, ...(data as Doctor[])]);
             setPage(nextPage);
         }
         if (data.length < PAGE_SIZE) {
