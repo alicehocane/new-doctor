@@ -4,6 +4,7 @@ export interface RawDoctorRecord {
   name: string;
   specialty: string;
   license: string;
+  has_phone: boolean;
   cities: string[];
   contact: {
     phones: string[];
@@ -65,7 +66,7 @@ export type Doctor = {
 };
 
 // The payload sent to Supabase (omitting generated fields like id and created_at)
-export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at'>;
+export type DoctorUpsertPayload = Omit<Doctor, 'id' | 'created_at' | 'has_phone'>;
 
 export type UploadStatus = 'idle' | 'uploading' | 'completed' | 'error';
 
