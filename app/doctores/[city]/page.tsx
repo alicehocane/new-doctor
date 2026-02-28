@@ -456,14 +456,6 @@ const getCityHealthData = (citySlug: string, cityName: string) => {
   };
 };
 
-const sortDoctorsByPhone = (doctors: Doctor[]) => {
-  return [...doctors].sort((a, b) => {
-    const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-    if (aHas === bHas) return 0;
-    return aHas ? -1 : 1;
-  });
-};
 
 // --- Metadata ---
 
