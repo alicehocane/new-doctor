@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
 import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle } from 'lucide-react';
-import Link from 'next/link'; // Replaced wouter
-import { notFound } from 'next/navigation'; // For 404 handling
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES } from '../../../lib/constants';
 
@@ -32,7 +31,7 @@ const formatDate = (dateString?: string) => {
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: doctor } = await supabase
     .from('doctors')
-    .select('full_name, specialties, seo_metadata')
+    .select('full_name, specialties, cities, medical_profile')
     .eq('slug', params.slug)
     .single();
 
@@ -45,10 +44,34 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const doc = doctor as Doctor;
   
+  // 1. Extract base variables
+  const cityDisp = doc.cities?.[0] || "Monterrey";
+  const specDisp = doc.specialties?.[0] || "";
+  const diseases = doc.medical_profile?.diseases_treated || [];
+
+  // 2. Generate Title
+  const metaTitle = specDisp 
+    ? `${doc.full_name} - ${specDisp} en ${cityDisp}` 
+    : `${doc.full_name} en ${cityDisp}`;
+
+  // 3. Generate Description
+  let metaDesc = `Agenda cita con ${doc.full_name}`;
+  if (specDisp) metaDesc += `, especialista en ${specDisp}`;
+  metaDesc += ` en ${cityDisp}.`;
+  
+  if (diseases.length > 0) {
+    metaDesc += ` Experto en ${diseases.slice(0, 3).join(', ')}.`;
+  }
+
+  // 4. Generate Keywords
+  const keywords = [];
+  if (specDisp) keywords.push(specDisp);
+  if (diseases.length > 0) keywords.push(...diseases.slice(0, 9));
+
   return {
-    title: doc.seo_metadata?.meta_title || `${doc.full_name} - ${doc.specialties[0] || 'Doctor'}`,
-    description: doc.seo_metadata?.meta_description || `Agenda una cita con ${doc.full_name}, especialista en ${doc.specialties.join(', ')}. Consulta opiniones, ubicaciones y disponibilidad.`,
-    keywords: doc.seo_metadata?.keywords ? doc.seo_metadata.keywords.split(',') : undefined,
+    title: metaTitle,
+    description: metaDesc,
+    keywords: keywords.length > 0 ? keywords : undefined,
   };
 }
 
@@ -69,9 +92,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
   const doctor = currentDoctor as Doctor;
   
-
   // 3. Parallel Data Fetching for Related Content
-  // We need the doctor data first to know which city/specialty to query
   const relatedDoctorsPromise = (async () => {
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
       const { data: related } = await supabase
@@ -83,7 +104,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         .limit(20);
       
       if (related) {
-        // Sort by phone availability (Server-side sort)
         return (related as Doctor[])
           .sort((a, b) => {
             const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
@@ -91,7 +111,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             if (aHas === bHas) return 0;
             return aHas ? -1 : 1;
           })
-          .slice(0, 4); // Take top 4
+          .slice(0, 4);
       }
     }
     return [];
@@ -112,8 +132,19 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
   const [relatedDoctors, relatedArticles] = await Promise.all([relatedDoctorsPromise, relatedArticlesPromise]);
 
-  // --- Logic & Schema Generation ---
+  // --- Dynamic SEO Description for UI & Schema ---
+  const cityDisp = doctor.cities?.[0] || "Monterrey";
+  const specDisp = doctor.specialties?.[0] || "";
+  const diseases = doctor.medical_profile?.diseases_treated || [];
+  
+  let generatedDescription = `Agenda cita con ${doctor.full_name}`;
+  if (specDisp) generatedDescription += `, especialista en ${specDisp}`;
+  generatedDescription += ` en ${cityDisp}.`;
+  if (diseases.length > 0) {
+    generatedDescription += ` Experto en ${diseases.slice(0, 3).join(', ')}.`;
+  }
 
+  // --- Logic & Schema Generation ---
   const faqs = [
     {
       question: `¿Cuál es la especialidad de ${doctor.full_name}?`,
@@ -121,17 +152,17 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     },
     {
       question: `¿Qué enfermedades trata ${doctor.full_name}?`,
-      answer: doctor.medical_profile.diseases_treated && doctor.medical_profile.diseases_treated.length > 0
+      answer: doctor.medical_profile?.diseases_treated && doctor.medical_profile.diseases_treated.length > 0
         ? `Algunas de las principales enfermedades que trata incluyen: ${doctor.medical_profile.diseases_treated.slice(0, 8).join(', ')}, entre otras condiciones relacionadas con su especialidad.`
         : `${doctor.full_name} trata una amplia gama de condiciones médicas relacionadas con ${doctor.specialties[0]}.`
     },
     {
       question: `¿Dónde se encuentran los consultorios de ${doctor.full_name}?`,
-      answer: `${doctor.full_name} ofrece consulta en: ${doctor.contact_info.locations.map(l => `${l.clinic_name} en ${l.address}`).join('; ')}.`
+      answer: `${doctor.full_name} ofrece consulta en: ${doctor.contact_info?.locations?.map(l => `${l.clinic_name} en ${l.address}`).join('; ')}.`
     },
     {
       question: `¿Cómo puedo agendar una cita con ${doctor.full_name}?`,
-      answer: `Puedes agendar una cita llamando al teléfono ${doctor.contact_info.phones?.[0] || 'de contacto'} o visitando directamente sus instalaciones.`
+      answer: `Puedes agendar una cita llamando al teléfono ${doctor.contact_info?.phones?.[0] || 'de contacto'} o visitando directamente sus instalaciones.`
     }
   ];
 
@@ -148,33 +179,60 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     }))
   };
 
+  // 1. Sort cities by length (longest first) for smart matching
+  const sortedCities = [...(doctor.cities || [])].sort((a, b) => b.length - a.length);
+
+  // 2. Build the locations (worksFor) with Smart City Detection
+  const worksFor = doctor.contact_info?.locations?.map(loc => {
+    let matchedCity = sortedCities.find(city => 
+      loc.address.toLowerCase().includes(city.toLowerCase())
+    );
+    if (!matchedCity && doctor.cities?.length > 0) {
+      matchedCity = doctor.cities[0];
+    }
+    return {
+      "@type": "MedicalOrganization",
+      "name": loc.clinic_name || "Consultorio Privado",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": loc.address,
+        "addressLocality": matchedCity || "",
+        "addressCountry": "MX"
+      },
+      ...(loc.map_url && { "hasMap": loc.map_url })
+    };
+  });
+
+  // 3. Build the diseases array
+  const conditionsTreated = doctor.medical_profile?.diseases_treated?.map(disease => ({
+    "@type": "MedicalCondition",
+    "name": disease
+  }));
+
+  // 4. Assemble the final Physician Schema
   const physicianSchema = {
     "@context": "https://schema.org",
     "@type": "Physician",
-    ...(doctor.schema_data || {}), 
+    "@id": `https://medibusca.com/medico/${params.slug}`,
     "name": doctor.full_name,
+    "description": generatedDescription,
     "image": "https://medibusca.com/icon-512.png",
-    "medicalSpecialty": doctor.specialties.map(s => ({
+    "medicalSpecialty": doctor.specialties?.map(s => ({
       "@type": "MedicalSpecialty",
       "name": s
     })),
-    "address": doctor.contact_info.locations && doctor.contact_info.locations.length > 0 ? {
-        "@type": "PostalAddress",
-        "streetAddress": doctor.contact_info.locations[0].address,
-        "addressLocality": doctor.cities[0] || "",
-        "addressCountry": "MX"
-    } : undefined,
-    "telephone": doctor.contact_info.phones?.[0] || undefined,
+    ...(doctor.contact_info?.phones?.[0] && { "telephone": doctor.contact_info.phones[0] }),
+    ...(conditionsTreated?.length > 0 && { "medicalConditionTreated": conditionsTreated }),
+    ...(worksFor?.length > 0 && { "worksFor": worksFor }),
     "dateModified": doctor.updated_at
   };
 
-
-  const phones = doctor.contact_info.phones || [];
+  const phones = doctor.contact_info?.phones || [];
   const mainPhone = phones[0];
   const waPhone = mainPhone?.replace(/\D/g, '');
-  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, encontré su perfil en MediBusca. Quisiera realizar una consulta sobre su especialidad en ${doctor.specialties}.`);
+  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, encontré su perfil en MediBusca. Quisiera realizar una consulta sobre su especialidad en ${doctor.specialties[0]}.`);
+  
   // --- Render ---
-
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
       
@@ -259,7 +317,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
               {/* Description */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
-                {doctor.seo_metadata?.meta_description || 'Especialista médico certificado dedicado a brindar la mejor atención a sus pacientes.'}
+                {generatedDescription}
               </p>
             </div>
           </div>
@@ -278,7 +336,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               Información Médica
             </h2>
             <div className="space-y-4">
-              {doctor.medical_profile.diseases_treated?.length > 0 ? (
+              {doctor.medical_profile?.diseases_treated?.length > 0 ? (
                 <div>
                   <h3 className="text-[13px] font-semibold text-[#86868b] mb-3 uppercase tracking-wider">Enfermedades Tratadas</h3>
                   <div className="flex flex-wrap gap-2">
@@ -302,7 +360,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               Ubicaciones
             </h2>
             <div className="space-y-6">
-              {doctor.contact_info.locations?.map((loc, idx) => (
+              {doctor.contact_info?.locations?.map((loc, idx) => (
                 <div key={idx} className="flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-start p-5 bg-[#f5f5f7] rounded-2xl">
                   <div>
                     <h3 className="font-semibold text-[#1d1d1f] text-lg">{loc.clinic_name}</h3>
@@ -362,7 +420,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               )}
             </div>
           </section>
-
 
           {/* FAQ Section */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
@@ -472,7 +529,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                                         {doc.full_name}
                                     </h3>
                                 </Link>
-                                {doc.license_numbers.length > 0 && (
+                                {doc.license_numbers && doc.license_numbers.length > 0 && (
                                     <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-1" />
                                 )}
                             </div>
@@ -501,7 +558,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                             Ver Perfil
                           </Link>
                           
-                          {doc.contact_info.phones?.[0] ? (
+                          {doc.contact_info?.phones?.[0] ? (
                             <a 
                               href={`tel:${doc.contact_info.phones[0]}`}
                               className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#0071e3] text-white rounded-xl font-medium text-sm hover:bg-[#0077ED] transition-colors active:scale-95"
@@ -567,7 +624,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                     className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                  >
                  <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
-                  <span>{spec} en {doctor.cities[0]}</span>  
+                 <span>{spec} en {doctor.cities[0]}</span>  
                  </Link>
              ))}
         </div>
