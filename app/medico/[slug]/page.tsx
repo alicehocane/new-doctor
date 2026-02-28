@@ -541,23 +541,19 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       {/* SEO Cross-Linking Section */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
-            <Search className="w-5 h-5 text-[#86868b]" />
             Búsquedas Relacionadas
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
+        <div className="flex flex-wrap gap-x-3 gap-y-3">
              {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla']
                 .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
                 .map((city, idx) => (
                  <Link
                     key={`spec-${idx}`}
                     href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
-                    className="
-                        text-[13px] text-[#86868b] hover:text-[#0071e3] 
-                        transition-colors hover:underline truncate
-                        py-1 block
-                    "
+                    className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                  >
-                    {doctor.specialties[0]} en {city}
+                  <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                  <span>{doctor.specialties[0]} en {city}</span>
                  </Link>
              ))}
 
@@ -568,13 +564,10 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                  <Link
                     key={`city-${idx}`}
                     href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
-                    className="
-                        text-[13px] text-[#86868b] hover:text-[#0071e3] 
-                        transition-colors hover:underline truncate
-                        py-1 block
-                    "
+                    className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                  >
-                    {spec} en {doctor.cities[0]}
+                 <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                  <span>{spec} en {doctor.cities[0]}</span>  
                  </Link>
              ))}
         </div>

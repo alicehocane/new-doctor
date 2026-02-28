@@ -8,7 +8,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 22;
 export const revalidate = 86400;
 
 const slugify = (text: string) => {
@@ -50,7 +50,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty, details } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
