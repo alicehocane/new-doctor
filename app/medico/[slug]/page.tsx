@@ -137,7 +137,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const specDisp = doctor.specialties?.[0] || "";
   const diseases = doctor.medical_profile?.diseases_treated || [];
   
-  let generatedDescription = `Agenda cita con ${doctor.full_name}`;
+  let generatedDescription = `Conoce a ${doctor.full_name}`;
   if (specDisp) generatedDescription += `, especialista en ${specDisp}`;
   generatedDescription += ` en ${cityDisp}.`;
   if (diseases.length > 0) {
