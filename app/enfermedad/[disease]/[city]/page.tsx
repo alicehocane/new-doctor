@@ -336,9 +336,11 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
-                {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
-                <div className="grid-cols-1 or md:grid-cols-2/3 gap-8">
+                
+                {/* FIXED: Added 'grid', made it 1 column on mobile, 2 on desktop, with a clean gap of 24px (gap-6) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+                    {/* NEW: Dynamic Treatment FAQ */}
                     {dynamicTreatmentText && (
                         <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
                             <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
