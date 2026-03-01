@@ -43,10 +43,20 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty, emergencyCategory } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, emergencyCategory, detailedInfo } = getDiseaseInfo(diseaseSlug);
 
   // Get the dynamic comparison text if a primary specialty exists
   const specialtyComparison = targetSpecialty ? SPECIALTY_COMPARISONS[targetSpecialty] : null;
+
+  // NEW: Generate the dynamic treatment text
+  const treatmentItems = detailedInfo?.treatment?.subsections?.[0]?.items;
+  let dynamicTreatmentText = null;
+  
+  if (treatmentItems && treatmentItems.length > 0) {
+      const treatmentList = treatmentItems.join(', ').toLowerCase();
+      const treatmentNote = detailedInfo.treatment.note ? ` ${detailedInfo.treatment.note}` : '';
+      dynamicTreatmentText = `Nuestros especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
+  }
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
@@ -73,9 +83,12 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
   const metroCities = getMetroAreaForCity(cityName);
 
+  
+
   if (doctors.length === 0 && (!isKnownCity || !isKnownDisease)) {
     notFound();
   }
+
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -112,6 +125,20 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
           }
       });
   }
+
+  // NEW: Dynamically add the Treatment FAQ to the Schema
+  if (dynamicTreatmentText) {
+      faqSchema.mainEntity.push({
+          "@type": "Question",
+          "name": `¿Qué tipos de tratamiento para ${diseaseName.toLowerCase()} ofrecen los especialistas en ${cityName}?`,
+          "acceptedAnswer": {
+              "@type": "Answer",
+              "text": dynamicTreatmentText
+          }
+      });
+  }
+  
+
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -298,7 +325,18 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
                 {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
-                <div className="grid gap-6 md:grid-cols-3">
+                <div className="grid-cols-1 or md:grid-cols-2/3">
+
+                    {dynamicTreatmentText && (
+                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
+                                ¿Qué tipos de tratamiento para {diseaseName.toLowerCase()} ofrecen en {cityName}?
+                            </h4>
+                            <p className="text-[#86868b] leading-relaxed">
+                                <span className="capitalize">{dynamicTreatmentText.charAt(0)}</span>{dynamicTreatmentText.slice(1)}
+                            </p>
+                        </div>
+                    )}
 
                     {/* NEW: Dynamic Specialty Comparison FAQ */}
                     {specialtyComparison && (
