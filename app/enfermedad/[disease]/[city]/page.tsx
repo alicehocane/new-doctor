@@ -299,22 +299,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 </h3>
                 {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
                 <div className="grid gap-6 md:grid-cols-3">
-                    
-                    {/* Your Existing Price FAQ */}
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta un tratamiento para {diseaseName} en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">
-                            Los precios de las consultas en {cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
-                        </p>
-                    </div>
-
-                    {/* Your Existing Location FAQ */}
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro especialistas en {diseaseName} cerca de mi zona en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">
-                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
-                        </p>
-                    </div>
 
                     {/* NEW: Dynamic Specialty Comparison FAQ */}
                     {specialtyComparison && (
@@ -327,6 +311,22 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                             </p>
                         </div>
                     )}
+
+                    {/* Your Existing Location FAQ */}
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro especialistas en {diseaseName} cerca de mi zona en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
+                        </p>
+                    </div>
+
+                    {/* Your Existing Price FAQ */}
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta un tratamiento para {diseaseName} en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Los precios de las consultas en {cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
+                        </p>
+                    </div>
 
                 </div>
             </div>
