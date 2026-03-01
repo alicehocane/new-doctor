@@ -178,7 +178,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             {/* Mobile: Horizontal scroll edge-to-edge, hidden scrollbar, snap scrolling
               Desktop (md): Wrap naturally, no scrolling needed
             */}
-            <div className="pl-2 flex overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:flex-wrap gap-2 md:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory">
+            <div className="flex overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:flex-wrap gap-2 md:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory">
               {metroCities.map((metroCity) => {
                 const isActive = metroCity === cityName;
                 return (
