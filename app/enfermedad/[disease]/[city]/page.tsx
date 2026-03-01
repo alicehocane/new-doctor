@@ -332,7 +332,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
         {/* 3. Localized FAQs */}
             <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2 mt-24 pt-12">
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
