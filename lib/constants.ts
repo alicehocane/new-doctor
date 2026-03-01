@@ -20,15 +20,39 @@ export const POPULAR_CITIES = [
 export const METRO_AREAS: Record<string, string[]> = {
   'Monterrey': [
     'Monterrey', 'San Pedro Garza Garcia', 'San Nicolás', 'Santa Catarina', 
-    'Apodaca', 'Guadalupe', 'General Escobedo', 'García', 'Ciudad Benito Juárez'
+    'Apodaca', 'Guadalupe', 'General Escobedo', 'García', 'Ciudad Benito Juárez', 
+    'Cadereyta Jimenez'
   ],
   'Ciudad de México': [
-    'Ciudad de México', 'Benito Juárez', 'Coyoacán', 'Cuauhtémoc', 'Tlalpan', 
-    'Gustavo A Madero', 'Iztacalco', 'Iztapalapa', 'Magdalena Contreras',
-    'Naucalpan', 'Huixquilucan', 'Tlalnepantla', 'Ecatepec', 'Nezahualcóyotl'
+    // CDMX Alcaldías
+    'Ciudad de México', 'Benito Juárez', 'Coyoacán', 'Cuauhtémoc', 'Gustavo A Madero', 
+    'Iztacalco', 'Iztapalapa', 'Magdalena Contreras', 'Tlalpan',
+    // Estado de México (Edomex) Municipios
+    'Naucalpan', 'Huixquilucan', 'Tlalnepantla', 'Ecatepec', 'Nezahualcóyotl', 
+    'Chalco', 'Chicoloapan', 'Chimalhuacán', 'Ciudad López Mateos', 'Cuautitlán Izcalli', 
+    'Ixtapaluca', 'San Francisco Coacalco', 'Ojo de Agua', 'Buenavista'
   ],
   'Guadalajara': [
     'Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá', 'Zapotlanejo'
+  ],
+  'Toluca': [
+    'Toluca', 'Metepec'
+  ],
+  'Querétaro': [
+    'Querétaro', 'Juriquilla' 
+  ],
+  'La Laguna': [
+    'Torreón', 'Gómez Palacio'
+  ],
+  'Cuernavaca': [
+    'Cuernavaca', 'Jiutepec'
+  ],
+  // --- The 2 New Groups from your full list ---
+  'San Luis Potosí': [
+    'San Luis Potosí', 'Soledad' // Soledad de Graciano Sánchez
+  ],
+  'Tampico / Madero': [
+    'Ciudad Madero', 'Miramar' // These are geographically unified
   ]
 };
 
