@@ -5,7 +5,7 @@ import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucid
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, getMetroAreaForCity } from '../../../../lib/constants';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, getMetroAreaForCity, SPECIALTY_COMPARISONS } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 
@@ -44,6 +44,9 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   
   // Use helper to get disease info
   const { name: diseaseName, primarySpecialty: targetSpecialty, emergencyCategory } = getDiseaseInfo(diseaseSlug);
+
+  // Get the dynamic comparison text if a primary specialty exists
+  const specialtyComparison = targetSpecialty ? SPECIALTY_COMPARISONS[targetSpecialty] : null;
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
@@ -96,6 +99,19 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
       }
     ]
   };
+
+  // Dynamically add the comparison FAQ to the Schema if it exists
+  if (specialtyComparison) {
+      faqSchema.mainEntity.push({
+          "@type": "Question",
+          // Replace the closing '?' to inject the city name seamlessly
+          "name": specialtyComparison.title.replace('?', ` en ${cityName}?`),
+          "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `${specialtyComparison.text} Muchos de nuestros especialistas en ${cityName} trabajan en conjunto para ofrecer un tratamiento integral.`
+          }
+      });
+  }
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -281,19 +297,37 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
-                <div className="grid gap-6 md:grid-cols-2">
+                {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
+                <div className="grid gap-6 md:grid-cols-3">
+                    
+                    {/* Your Existing Price FAQ */}
                     <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
                         <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta un tratamiento para {diseaseName} en {cityName}?</h4>
                         <p className="text-[#86868b] leading-relaxed">
                             Los precios de las consultas en {cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
                         </p>
                     </div>
+
+                    {/* Your Existing Location FAQ */}
                     <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
                         <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro especialistas en {diseaseName} cerca de mi zona en {cityName}?</h4>
                         <p className="text-[#86868b] leading-relaxed">
                             Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
                         </p>
                     </div>
+
+                    {/* NEW: Dynamic Specialty Comparison FAQ */}
+                    {specialtyComparison && (
+                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
+                                {specialtyComparison.title.replace('?', ` en ${cityName}?`)}
+                            </h4>
+                            <p className="text-[#86868b] leading-relaxed">
+                                {specialtyComparison.text} Muchos de nuestros especialistas en <span className="font-medium text-[#1d1d1f]">{cityName}</span> trabajan en conjunto para ofrecer un tratamiento integral.
+                            </p>
+                        </div>
+                    )}
+
                 </div>
             </div>
 
