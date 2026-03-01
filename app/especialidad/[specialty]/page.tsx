@@ -174,21 +174,10 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     <p className="text-lg text-[#86868b] leading-relaxed mb-6">
                         {firstVisitText}
                     </p>
-                    <div className="flex flex-wrap gap-4">
-                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f] bg-[#f5f5f7] px-4 py-2 rounded-full">
-                            <Clock className="w-4 h-4 text-[#0071e3]" />
-                            Duración: 30 - 60 min
-                        </div>
-                        <div className="flex items-center gap-2 text-sm font-medium text-[#1d1d1f] bg-[#f5f5f7] px-4 py-2 rounded-full">
-                            <ClipboardList className="w-4 h-4 text-[#0071e3]" />
-                            Llevar estudios previos
-                        </div>
-                    </div>
                 </div>
                 {/* Procedures Mini-Grid */}
                 <div className="flex-1 w-full bg-[#f9f9fb] rounded-2xl p-6 md:p-8">
                     <h3 className="font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                        <Stethoscope className="w-5 h-5 text-[#86868b]" />
                         Procedimientos Comunes
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
