@@ -26,11 +26,7 @@ export const METRO_AREAS: Record<string, string[]> = {
   'Ciudad de México': [
     // CDMX Alcaldías
     'Ciudad de México', 'Benito Juárez', 'Coyoacán', 'Cuauhtémoc', 'Gustavo A Madero', 
-    'Iztacalco', 'Iztapalapa', 'Magdalena Contreras', 'Tlalpan',
-    // Estado de México (Edomex) Municipios
-    'Naucalpan', 'Huixquilucan', 'Tlalnepantla', 'Ecatepec', 'Nezahualcóyotl', 
-    'Chalco', 'Chicoloapan', 'Chimalhuacán', 'Ciudad López Mateos', 'Cuautitlán Izcalli', 
-    'Ixtapaluca', 'San Francisco Coacalco', 'Ojo de Agua', 'Buenavista'
+    'Iztacalco', 'Iztapalapa', 'Magdalena Contreras', 'Tlalpan'
   ],
   'Guadalajara': [
     'Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá', 'Zapotlanejo'
