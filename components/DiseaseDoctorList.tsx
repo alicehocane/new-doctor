@@ -45,8 +45,8 @@ export default function DiseaseDoctorList({ initialDoctors, diseaseName, targetS
 
     // 1. Tell Supabase to sort by has_phone first, then alphabetically
     query = query
-        .order('has_phone', { ascending: false })
-        .order('full_name', { ascending: true });
+        .order('has_phone', { ascending: false });
+        // .order('full_name', { ascending: true });
 
     const { data } = await query.range(from, to);
 

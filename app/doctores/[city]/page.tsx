@@ -481,7 +481,7 @@ export default async function CityPage({ params }: { params: { city: string } })
     .select('*')
     .contains('cities', [cityName])
     .order('has_phone', { ascending: false }) // 1. Doctors with phones first
-    .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
+    // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors as Doctor[] || [];
