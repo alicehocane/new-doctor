@@ -318,14 +318,29 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 </div>
             </div>
 
-            {/* 3. Localized FAQs */}
+            
+
+            {/* Disclaimer */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
+                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-900/80">
+                    <strong>Aviso Importante:</strong> La información aquí presentada es de carácter educativo. Para diagnóstico y tratamiento de {diseaseName}, siempre consulta directamente a un profesional de la salud.
+                </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        {/* 3. Localized FAQs */}
+        <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <div>
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
                 {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
-                <div className="grid-cols-1 or md:grid-cols-2/3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     {dynamicTreatmentText && (
                         <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
@@ -368,18 +383,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
                 </div>
             </div>
-
-            {/* Disclaimer */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
-                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                <div className="text-sm text-amber-900/80">
-                    <strong>Aviso Importante:</strong> La información aquí presentada es de carácter educativo. Para diagnóstico y tratamiento de {diseaseName}, siempre consulta directamente a un profesional de la salud.
-                </div>
-            </div>
-
-          </div>
         </section>
-
 
         {/* Educational Cross-Link Banner */}
         <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
