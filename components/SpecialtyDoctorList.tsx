@@ -33,7 +33,7 @@ export default function SpecialtyDoctorList({ initialDoctors, specialty }: Speci
         .select('*')
         .contains('specialties', [specialty])
         .order('has_phone', { ascending: false }) // 1. Doctors with phones first
-        .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
+        // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
         .range(from, to);
 
     if (data) {

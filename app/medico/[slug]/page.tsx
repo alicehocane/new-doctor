@@ -9,7 +9,7 @@ import { POPULAR_SPECIALTIES } from '../../../lib/constants';
 
 export const revalidate = 86400;
 
-// --- Utility Functions ---
+// --- Utility Function ---
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()

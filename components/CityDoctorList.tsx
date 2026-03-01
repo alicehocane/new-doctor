@@ -34,7 +34,7 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
         .contains('cities', [city])
         // 1. Tell Supabase to sort by has_phone first, then alphabetically
         .order('has_phone', { ascending: false })
-        .order('full_name', { ascending: true });
+        // .order('full_name', { ascending: true });
 
     if (specialty) {
         query = query.contains('specialties', [specialty]);

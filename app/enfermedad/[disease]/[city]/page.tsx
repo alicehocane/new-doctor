@@ -57,6 +57,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   // Tell Supabase to sort by has_phone first, then alphabetically
   query = query
       .order('has_phone', { ascending: false });
+       // .order('full_name', { ascending: true });  // 2. Alphabetical secondary sort
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors as Doctor[] || [];
