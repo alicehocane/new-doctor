@@ -338,7 +338,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 </h3>
                 
                 {/* FIXED: Added 'grid', made it 1 column on mobile, 2 on desktop, with a clean gap of 24px (gap-6) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
 
                     {/* NEW: Dynamic Treatment FAQ */}
                     {dynamicTreatmentText && (
