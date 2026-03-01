@@ -74,6 +74,29 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
     notFound();
   }
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `¿Cuánto cuesta un tratamiento para ${diseaseName} en ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Los precios de las consultas en ${cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `¿Cómo encuentro especialistas en ${diseaseName} cerca de mi zona en ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en ${cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.`
+        }
+      }
+    ]
+  };
+
   // Schema Markup
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -134,6 +157,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
