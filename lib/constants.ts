@@ -2560,6 +2560,7 @@ export const SPECIALTY_COMPARISONS: Record<string, { title: string, text: string
     'text': 'El Pediatra ve infecciones simples. El Urólogo Pediátrico opera defectos de nacimiento en las partes privadas o vías urinarias de los niños.'
   }
 };
+export type EmergencyCategory = 'mental_health' | 'cardiac' | 'general_urgent' | 'dental' | null;
 
 export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
@@ -2575,6 +2576,24 @@ export const getDiseaseInfo = (slug: string) => {
   const relatedSpecialties = DISEASE_RELATED_SPECIALTIES[name] || [];
   const primarySpecialty = relatedSpecialties.length > 0 ? relatedSpecialties[0] : null;
 
+  // --- 3. DYNAMIC EMERGENCY INFERENCE ---
+  const mentalHealthSpecs = ['Psicólogo', 'Psiquiatra', 'Psiquiatra infantil', 'Psicoanalista'];
+  const cardiacSpecs = ['Cardiólogo', 'Cardiólogo pediátrico', 'Cirujano cardiovascular', 'Cirujano cardiovascular y torácico'];
+  const urgentSpecs = ['Urgenciólogo', 'Traumatólogo', 'Neurocirujano'];
+  const dentalSpecs = ['Dentista - Odontólogo', 'Odontólogo pediatra', 'Cirujano maxilofacial'];
+
+  let emergencyCategory: EmergencyCategory = null;
+
+  if (relatedSpecialties.some(s => mentalHealthSpecs.includes(s))) {
+      emergencyCategory = 'mental_health';
+  } else if (relatedSpecialties.some(s => cardiacSpecs.includes(s))) {
+      emergencyCategory = 'cardiac';
+  } else if (relatedSpecialties.some(s => urgentSpecs.includes(s))) {
+      emergencyCategory = 'general_urgent';
+  } else if (relatedSpecialties.some(s => dentalSpecs.includes(s))) {
+      emergencyCategory = 'dental';
+  }
+
   // Look up in DISEASE_INFORMATION using the slugified key or the name if keys match
   const infoKey = Object.keys(DISEASE_INFORMATION).find(k => slugify(k) === slug) || slug;
   const detailedInfo = DISEASE_INFORMATION[infoKey] || null;
@@ -2583,7 +2602,8 @@ export const getDiseaseInfo = (slug: string) => {
     name,
     primarySpecialty,
     relatedSpecialties,
-    detailedInfo
+    detailedInfo,
+    emergencyCategory
   };
 };
 

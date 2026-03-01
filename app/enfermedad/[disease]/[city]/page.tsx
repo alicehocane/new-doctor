@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
+import EmergencyBanner from '../../../../components/EmergencyBanner';
 
 const PAGE_SIZE = 12;
 export const revalidate = 86400;
@@ -42,7 +43,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const cityName = getCanonicalCity(citySlug);
   
   // Use helper to get disease info
-  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(diseaseSlug);
+  const { name: diseaseName, primarySpecialty: targetSpecialty, emergencyCategory } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Data Server-Side
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
@@ -158,6 +159,13 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 }
             </p>
         </div>
+
+        {/* EmergencyBanner Component */}
+        <EmergencyBanner 
+            diseaseName={diseaseName} 
+            cityName={cityName} 
+            category={emergencyCategory} 
+        />
 
         {/* Doctor Grid (Client Component) */}
         <DiseaseDoctorList 
