@@ -317,7 +317,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         {detailedInfo.diagnosis && (
                             <div className="space-y-4">
                                 <h3 className="text-lg font-bold text-[#1d1d1f] flex items-center gap-2">
-                                    <Stethoscope className="w-5 h-5 text-[#0071e3]" />
                                     {detailedInfo.diagnosis.title}
                                 </h3>
                                 <p className="text-[#86868b] text-[15px]">{detailedInfo.diagnosis.intro}</p>
@@ -335,7 +334,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         {detailedInfo.treatment && (
                             <div className="space-y-4">
                                 <h3 className="text-lg font-bold text-[#1d1d1f] flex items-center gap-2">
-                                    <HeartPulse className="w-5 h-5 text-[#0071e3]" />
                                     {detailedInfo.treatment.title}
                                 </h3>
                                 <p className="text-[#86868b] text-[15px]">{detailedInfo.treatment.intro}</p>
@@ -359,7 +357,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     {detailedInfo.whenToSeekHelp && (
                         <div className="border border-blue-100 bg-blue-50/50 rounded-2xl p-8">
                             <h3 className="text-lg font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                                <Info className="w-5 h-5 text-[#0071e3]" />
                                 {detailedInfo.whenToSeekHelp.title}
                             </h3>
                             <p className="text-[#86868b] mb-4">{detailedInfo.whenToSeekHelp.intro}</p>
