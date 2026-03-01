@@ -318,57 +318,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 </div>
             </div>
 
-            {/* 3. Localized FAQs */}
-            <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
-                    <HelpCircle className="w-6 h-6 text-[#0071e3]" />
-                    Preguntas Frecuentes sobre {diseaseName} en {cityName}
-                </h3>
-                {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
-                <div className="grid-cols-1 or md:grid-cols-2/3 gap-8">
-
-                    {dynamicTreatmentText && (
-                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
-                                ¿Qué tipos de tratamiento para {diseaseName.toLowerCase()} ofrecen en {cityName}?
-                            </h4>
-                            <p className="text-[#86868b] leading-relaxed">
-                                <span className="capitalize">{dynamicTreatmentText.charAt(0)}</span>{dynamicTreatmentText.slice(1)}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* NEW: Dynamic Specialty Comparison FAQ */}
-                    {specialtyComparison && (
-                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
-                                {specialtyComparison.title.replace('?', ` en ${cityName}?`)}
-                            </h4>
-                            <p className="text-[#86868b] leading-relaxed">
-                                {specialtyComparison.text} Muchos de nuestros especialistas en <span className="font-medium text-[#1d1d1f]">{cityName}</span> trabajan en conjunto para ofrecer un tratamiento integral.
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Your Existing Location FAQ */}
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro especialistas en {diseaseName} cerca de mi zona en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">
-                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
-                        </p>
-                    </div>
-
-                    {/* Your Existing Price FAQ */}
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta un tratamiento para {diseaseName} en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">
-                            Los precios de las consultas en {cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-
             {/* Disclaimer */}
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
                 <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
@@ -378,6 +327,60 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             </div>
 
           </div>
+        </section>
+
+
+        {/* 3. Localized FAQs */}
+        <section className="py-16 bg-white border-t border-slate-200">
+        <div className="max-w-4xl mx-auto px-6">
+            <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                <HelpCircle className="w-6 h-6 text-[#0071e3]" />
+                Preguntas Frecuentes sobre {diseaseName} en {cityName}
+            </h3>
+            {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
+            <div className="grid-cols-1 or md:grid-cols-2/3 gap-8">
+
+                {dynamicTreatmentText && (
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
+                            ¿Qué tipos de tratamiento para {diseaseName.toLowerCase()} ofrecen en {cityName}?
+                        </h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            <span className="capitalize">{dynamicTreatmentText.charAt(0)}</span>{dynamicTreatmentText.slice(1)}
+                        </p>
+                    </div>
+                )}
+
+                {/* NEW: Dynamic Specialty Comparison FAQ */}
+                {specialtyComparison && (
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
+                            {specialtyComparison.title.replace('?', ` en ${cityName}?`)}
+                        </h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            {specialtyComparison.text} Muchos de nuestros especialistas en <span className="font-medium text-[#1d1d1f]">{cityName}</span> trabajan en conjunto para ofrecer un tratamiento integral.
+                        </p>
+                    </div>
+                )}
+
+                {/* Your Existing Location FAQ */}
+                <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                    <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro especialistas en {diseaseName} cerca de mi zona en {cityName}?</h4>
+                    <p className="text-[#86868b] leading-relaxed">
+                        Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
+                    </p>
+                </div>
+
+                {/* Your Existing Price FAQ */}
+                <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                    <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta un tratamiento para {diseaseName} en {cityName}?</h4>
+                    <p className="text-[#86868b] leading-relaxed">
+                        Los precios de las consultas en {cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
+                    </p>
+                </div>
+
+            </div>
+        </div>
         </section>
 
 
