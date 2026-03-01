@@ -171,10 +171,14 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
         {/* Metro Area Sub-filters */}
         {metroCities && metroCities.length > 1 && (
           <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <h3 className="text-sm font-medium text-[#86868b] mb-3 uppercase tracking-wider">
+            <h3 className="text-sm font-medium text-[#86868b] mb-3 md:mb-4 uppercase tracking-wider">
               Filtrar por zona metropolitana
             </h3>
-            <div className="flex flex-wrap gap-2">
+            
+            {/* Mobile: Horizontal scroll edge-to-edge, hidden scrollbar, snap scrolling
+              Desktop (md): Wrap naturally, no scrolling needed
+            */}
+            <div className="flex overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:flex-wrap gap-2 md:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory">
               {metroCities.map((metroCity) => {
                 const isActive = metroCity === cityName;
                 return (
@@ -182,7 +186,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     key={metroCity}
                     href={`/enfermedad/${diseaseSlug}/${slugify(metroCity)}`}
                     className={`
-                      inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                      shrink-0 snap-start inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium transition-all
                       ${isActive 
                         ? 'bg-[#0071e3] text-white shadow-sm' 
                         : 'bg-white border border-[#d2d2d7] text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3]'
