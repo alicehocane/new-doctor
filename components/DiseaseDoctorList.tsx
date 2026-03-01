@@ -102,7 +102,7 @@ export default function DiseaseDoctorList({ initialDoctors, diseaseName, targetS
 
                         <div className="flex items-center gap-1.5 text-sm font-medium text-[#86868b]">
                             <MapPin className="w-4 h-4 text-[#86868b]/70" /> 
-                            {doc.cities[0] || 'México'}
+                            {city && doc.cities.includes(city) ? city : (doc.cities[0] || 'México')}
                         </div>
                     </div>
 
