@@ -333,7 +333,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
 
         {/* 3. Localized FAQs */}
-        <section>
             <div className="p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
@@ -383,7 +382,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
                 </div>
             </div>
-        </section>
 
         {/* Educational Cross-Link Banner */}
         <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
