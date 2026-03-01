@@ -209,20 +209,24 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 </div>
             </div>
 
-            {/* 3. FAQs */}
+            {/* 3. Localized FAQs */}
             <div>
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
-                    Preguntas Frecuentes
+                    Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
-                <div className="grid gap-6">
+                <div className="grid gap-6 md:grid-cols-2">
                     <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo contacto a un especialista en {diseaseName} en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">Simplemente elige al profesional que prefieras de nuestra lista y haz clic en el botón "Llamar". La conexión es inmediata con su consultorio.</p>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta un tratamiento para {diseaseName} en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Los precios de las consultas en {cityName} varían según la zona y la experiencia del especialista. Generalmente, una consulta inicial oscila entre $600 y $1,500 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
+                        </p>
                     </div>
                     <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Necesito una cuenta para usar MediBusca?</h4>
-                        <p className="text-[#86868b] leading-relaxed">No. Puedes navegar por todas nuestras especialidades y ver los datos de contacto de los doctores sin registrarte.</p>
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro especialistas en {diseaseName} cerca de mi zona en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
+                        </p>
                     </div>
                 </div>
             </div>
