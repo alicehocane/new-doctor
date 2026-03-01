@@ -17,6 +17,51 @@ export const POPULAR_CITIES = [
   'Magdalena Contreras'
 ];
 
+export const METRO_AREAS: Record<string, string[]> = {
+  'Monterrey': [
+    'Monterrey', 'San Pedro Garza Garcia', 'San Nicolás', 'Santa Catarina', 
+    'Apodaca', 'Guadalupe', 'General Escobedo', 'García', 'Ciudad Benito Juárez', 
+    'Cadereyta Jimenez'
+  ],
+  'Ciudad de México': [
+    // CDMX Alcaldías
+    'Ciudad de México', 'Benito Juárez', 'Coyoacán', 'Cuauhtémoc', 'Gustavo A Madero', 
+    'Iztacalco', 'Iztapalapa', 'Magdalena Contreras', 'Tlalpan'
+  ],
+  'Guadalajara': [
+    'Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá', 'Zapotlanejo'
+  ],
+  'Toluca': [
+    'Toluca', 'Metepec'
+  ],
+  'Querétaro': [
+    'Querétaro', 'Juriquilla' 
+  ],
+  'La Laguna': [
+    'Torreón', 'Gómez Palacio'
+  ],
+  'Cuernavaca': [
+    'Cuernavaca', 'Jiutepec'
+  ],
+  // --- The 2 New Groups from your full list ---
+  'San Luis Potosí': [
+    'San Luis Potosí', 'Soledad' // Soledad de Graciano Sánchez
+  ],
+  'Tampico / Madero': [
+    'Ciudad Madero', 'Miramar' // These are geographically unified
+  ]
+};
+
+// Helper function to find if a city belongs to a metro area
+export const getMetroAreaForCity = (cityName: string): string[] | null => {
+  for (const [metroName, cities] of Object.entries(METRO_AREAS)) {
+    if (cities.includes(cityName)) {
+      return cities;
+    }
+  }
+  return null;
+};
+
 export const ALL_CITIES = [
   'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 'Baja California Sur', 'Benito Juárez', 
   'Buenavista', 'Cabo San Lucas', 'Cadereyta Jimenez', 'Campeche', 'Cancún', 'Chalco', 'Chiapas', 
@@ -2560,6 +2605,7 @@ export const SPECIALTY_COMPARISONS: Record<string, { title: string, text: string
     'text': 'El Pediatra ve infecciones simples. El Urólogo Pediátrico opera defectos de nacimiento en las partes privadas o vías urinarias de los niños.'
   }
 };
+export type EmergencyCategory = 'mental_health' | 'cardiac' | 'general_urgent' | 'dental' | null;
 
 export const ALL_DISEASES = Object.keys(DISEASE_RELATED_SPECIALTIES);
 
@@ -2575,6 +2621,24 @@ export const getDiseaseInfo = (slug: string) => {
   const relatedSpecialties = DISEASE_RELATED_SPECIALTIES[name] || [];
   const primarySpecialty = relatedSpecialties.length > 0 ? relatedSpecialties[0] : null;
 
+  // --- 3. DYNAMIC EMERGENCY INFERENCE ---
+  const mentalHealthSpecs = ['Psicólogo', 'Psiquiatra', 'Psiquiatra infantil', 'Psicoanalista'];
+  const cardiacSpecs = ['Cardiólogo', 'Cardiólogo pediátrico', 'Cirujano cardiovascular', 'Cirujano cardiovascular y torácico'];
+  const urgentSpecs = ['Urgenciólogo', 'Traumatólogo', 'Neurocirujano'];
+  const dentalSpecs = ['Dentista - Odontólogo', 'Odontólogo pediatra', 'Cirujano maxilofacial'];
+
+  let emergencyCategory: EmergencyCategory = null;
+
+  if (relatedSpecialties.some(s => mentalHealthSpecs.includes(s))) {
+      emergencyCategory = 'mental_health';
+  } else if (relatedSpecialties.some(s => cardiacSpecs.includes(s))) {
+      emergencyCategory = 'cardiac';
+  } else if (relatedSpecialties.some(s => urgentSpecs.includes(s))) {
+      emergencyCategory = 'general_urgent';
+  } else if (relatedSpecialties.some(s => dentalSpecs.includes(s))) {
+      emergencyCategory = 'dental';
+  }
+
   // Look up in DISEASE_INFORMATION using the slugified key or the name if keys match
   const infoKey = Object.keys(DISEASE_INFORMATION).find(k => slugify(k) === slug) || slug;
   const detailedInfo = DISEASE_INFORMATION[infoKey] || null;
@@ -2583,7 +2647,8 @@ export const getDiseaseInfo = (slug: string) => {
     name,
     primarySpecialty,
     relatedSpecialties,
-    detailedInfo
+    detailedInfo,
+    emergencyCategory
   };
 };
 
