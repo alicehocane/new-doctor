@@ -55,7 +55,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   if (treatmentItems && treatmentItems.length > 0) {
       const treatmentList = treatmentItems.join(', ').toLowerCase();
       const treatmentNote = detailedInfo.treatment.note ? ` ${detailedInfo.treatment.note}` : '';
-      dynamicTreatmentText = `Nuestros especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
+      dynamicTreatmentText = `especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
   }
 
   // 1. Fetch Initial Data Server-Side
