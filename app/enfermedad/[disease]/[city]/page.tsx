@@ -242,6 +242,23 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
           </div>
         </section>
 
+
+        {/* Educational Cross-Link Banner */}
+        <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+            <h3 className="text-2xl font-semibold text-[#1d1d1f] mb-3">
+                Aprende más sobre la {diseaseName}
+            </h3>
+            <p className="text-[#86868b] mb-6 max-w-2xl mx-auto">
+                ¿Quieres entender mejor los síntomas, causas y diferentes tipos de tratamientos disponibles antes de agendar tu cita?
+            </p>
+            <Link 
+                href={`/enfermedad/${diseaseSlug}`}
+                className="inline-flex items-center px-6 py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-colors"
+            >
+                Leer guía médica completa
+            </Link>
+        </section>
+
         {/* Nearby Cities Section */}
         <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
