@@ -325,7 +325,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
                 {/* Changed to grid-cols-1 or md:grid-cols-2/3 depending on how many FAQs you have */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid-cols-1 or md:grid-cols-2/3 gap-8">
 
                     {dynamicTreatmentText && (
                         <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
