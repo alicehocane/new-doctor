@@ -5,7 +5,7 @@ import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucid
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo } from '../../../../lib/constants';
+import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, getMetroAreaForCity } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 
@@ -68,6 +68,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   // This prevents URL manipulation like /enfermedad/foobar/fake-city from generating indexable pages.
   const isKnownCity = ALL_CITIES.includes(cityName);
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
+  const metroCities = getMetroAreaForCity(cityName);
 
   if (doctors.length === 0 && (!isKnownCity || !isKnownDisease)) {
     notFound();
@@ -166,6 +167,35 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             cityName={cityName} 
             category={emergencyCategory} 
         />
+
+        {/* Metro Area Sub-filters */}
+        {metroCities && metroCities.length > 1 && (
+          <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <h3 className="text-sm font-medium text-[#86868b] mb-3 uppercase tracking-wider">
+              Filtrar por zona metropolitana
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {metroCities.map((metroCity) => {
+                const isActive = metroCity === cityName;
+                return (
+                  <Link 
+                    key={metroCity}
+                    href={`/enfermedad/${diseaseSlug}/${slugify(metroCity)}`}
+                    className={`
+                      inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                      ${isActive 
+                        ? 'bg-[#0071e3] text-white shadow-sm' 
+                        : 'bg-white border border-[#d2d2d7] text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3]'
+                      }
+                    `}
+                  >
+                    {metroCity}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Doctor Grid (Client Component) */}
         <DiseaseDoctorList 

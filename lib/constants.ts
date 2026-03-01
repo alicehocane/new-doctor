@@ -17,6 +17,31 @@ export const POPULAR_CITIES = [
   'Magdalena Contreras'
 ];
 
+export const METRO_AREAS: Record<string, string[]> = {
+  'Monterrey': [
+    'Monterrey', 'San Pedro Garza Garcia', 'San Nicolás', 'Santa Catarina', 
+    'Apodaca', 'Guadalupe', 'General Escobedo', 'García', 'Ciudad Benito Juárez'
+  ],
+  'Ciudad de México': [
+    'Ciudad de México', 'Benito Juárez', 'Coyoacán', 'Cuauhtémoc', 'Tlalpan', 
+    'Gustavo A Madero', 'Iztacalco', 'Iztapalapa', 'Magdalena Contreras',
+    'Naucalpan', 'Huixquilucan', 'Tlalnepantla', 'Ecatepec', 'Nezahualcóyotl'
+  ],
+  'Guadalajara': [
+    'Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá', 'Zapotlanejo'
+  ]
+};
+
+// Helper function to find if a city belongs to a metro area
+export const getMetroAreaForCity = (cityName: string): string[] | null => {
+  for (const [metroName, cities] of Object.entries(METRO_AREAS)) {
+    if (cities.includes(cityName)) {
+      return cities;
+    }
+  }
+  return null;
+};
+
 export const ALL_CITIES = [
   'Acapulco', 'Aguascalientes', 'Apizaco', 'Apodaca', 'Baja California Sur', 'Benito Juárez', 
   'Buenavista', 'Cabo San Lucas', 'Cadereyta Jimenez', 'Campeche', 'Cancún', 'Chalco', 'Chiapas', 
