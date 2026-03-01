@@ -55,7 +55,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   if (treatmentItems && treatmentItems.length > 0) {
       const treatmentList = treatmentItems.join(', ').toLowerCase();
       const treatmentNote = detailedInfo.treatment.note ? ` ${detailedInfo.treatment.note}` : '';
-      dynamicTreatmentText = `especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
+      dynamicTreatmentText = `Nuestros especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
   }
 
   // 1. Fetch Initial Data Server-Side
@@ -318,22 +318,8 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 </div>
             </div>
 
-            
-
-            {/* Disclaimer */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
-                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                <div className="text-sm text-amber-900/80">
-                    <strong>Aviso Importante:</strong> La información aquí presentada es de carácter educativo. Para diagnóstico y tratamiento de {diseaseName}, siempre consulta directamente a un profesional de la salud.
-                </div>
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* 3. Localized FAQs */}
-            <div className="p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+            {/* 3. Localized FAQs */}
+            <div>
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
@@ -382,6 +368,18 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
                 </div>
             </div>
+
+            {/* Disclaimer */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex gap-4 mt-8">
+                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-900/80">
+                    <strong>Aviso Importante:</strong> La información aquí presentada es de carácter educativo. Para diagnóstico y tratamiento de {diseaseName}, siempre consulta directamente a un profesional de la salud.
+                </div>
+            </div>
+
+          </div>
+        </section>
+
 
         {/* Educational Cross-Link Banner */}
         <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
