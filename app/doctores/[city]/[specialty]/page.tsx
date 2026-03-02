@@ -1,11 +1,11 @@
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity, Info, BookOpen} from 'lucide-react';
+import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity, Info, BookOpen, Building2, Bus, HeartPulse} from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS } from '../../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
 
 
@@ -77,6 +77,8 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
   // NEW: Get the metro cities for the filter
   const metroCities = getMetroAreaForCity(cityName);
+  // NEW: Extract local health data
+  const cityHealthInfo = CITY_HEALTH_DATA[citySlug] || null;
 
   // Fetch Data
   const { data: rawDoctors } = await supabase
@@ -128,6 +130,17 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
           "acceptedAnswer": {
               "@type": "Answer",
               "text": `${specialtyComparison.text} Muchos de nuestros especialistas en ${cityName} trabajan en conjunto para ofrecer un tratamiento integral.`
+          }
+      });
+  }
+
+  if (cityHealthInfo && cityHealthInfo.hospitals.length > 0) {
+      faqSchema.mainEntity.push({
+          "@type": "Question",
+          "name": `¿Cuáles son los principales hospitales y clínicas en ${cityName}?`,
+          "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `Algunos de los principales centros de salud en ${cityName} incluyen: ${cityHealthInfo.hospitals.join(', ')}. Recuerda consultar el perfil del ${searchTerm} para ver en qué clínica u hospital específico atiende.`
           }
       });
   }
@@ -345,6 +358,49 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
                 </div>
             </div>
+
+            {/* NEW: Guía Local de Salud (Dynamic City Data) */}
+            {cityHealthInfo && (
+                <div className="mt-16 pt-16 border-t border-slate-100">
+                    <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                        <MapPin className="w-6 h-6 text-[#0071e3]" />
+                        Guía de Salud Local en {cityName}
+                    </h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Panorama */}
+                        <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                                <HeartPulse className="w-5 h-5" />
+                            </div>
+                            <h4 className="font-bold text-[#1d1d1f] mb-2">Panorama Médico</h4>
+                            <p className="text-[#86868b] text-sm leading-relaxed">{cityHealthInfo.overview}</p>
+                        </div>
+
+                        {/* Hospitales */}
+                        <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-4">
+                                <Building2 className="w-5 h-5" />
+                            </div>
+                            <h4 className="font-bold text-[#1d1d1f] mb-2">Hospitales de Referencia</h4>
+                            <ul className="text-[#86868b] text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+                                {cityHealthInfo.hospitals.map((hospital, i) => (
+                                    <li key={i} className="truncate" title={hospital}>{hospital}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Transporte */}
+                        <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
+                                <Bus className="w-5 h-5" />
+                            </div>
+                            <h4 className="font-bold text-[#1d1d1f] mb-2">Movilidad para tus Citas</h4>
+                            <p className="text-[#86868b] text-sm leading-relaxed">{cityHealthInfo.transport}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
           </div>
         </section>
