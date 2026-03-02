@@ -293,7 +293,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
             {/* NEW: Guía Local de Salud (Dynamic City Data) */}
             {cityHealthInfo && (
-                <div className="mt-16 pt-16">
+                <div>
                     <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
                         <MapPin className="w-6 h-6 text-[#0071e3]" />
                         Guía de Salud Local en {cityName}
