@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
+import EmergencyBanner from '../../../../components/EmergencyBanner';
 
 
 export const revalidate = 86400;
@@ -244,6 +245,13 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             {description}
             </p>
         </div>
+
+        {/* EmergencyBanner Component */}
+                <EmergencyBanner 
+                    diseaseName={diseaseName} 
+                    cityName={cityName} 
+                    category={emergencyCategory} 
+                />
 
 
         {/* NEW: Metro Area Sub-filters */}
