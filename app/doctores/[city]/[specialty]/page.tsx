@@ -111,7 +111,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   };
   // Extract the exact type expected by the EmergencyBanner component
   type BannerCategory = React.ComponentProps<typeof EmergencyBanner>['category'];
-  
+
   // Cast our dictionary result to perfectly match that type
   const emergencyCategory = (SPECIALTY_EMERGENCY_MAP[searchTerm] || null) as BannerCategory;
 
@@ -528,7 +528,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 <Link href={`/especialidad/${searchTerm}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <BookOpen className="w-5 h-5" /> Guía de {searchTerm}
                 </Link>
-                <Link href="/enfermedad" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                <Link href="/enfermedades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <Activity className="w-5 h-5" /> Padecimientos Comunes
                 </Link>
                 <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
