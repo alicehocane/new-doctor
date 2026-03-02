@@ -13,14 +13,14 @@ export default function HomeSearch() {
   // Autocomplete & Focus state
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isFocused, setIsFocused] = useState(false); // <-- New state
+  const [isFocused, setIsFocused] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
-        setIsFocused(false); // <-- Close focus mode when clicking outside
+        setIsFocused(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -35,6 +35,22 @@ export default function HomeSearch() {
       .replace(/\-\-+/g, '-')
       .replace(/^-+/, '')
       .replace(/-+$/, '');
+  };
+
+  // --- NEW: Extracted routing logic so it can be reused ---
+  const executeSearch = (searchCity: string, searchTerm: string) => {
+    if (searchCity && searchTerm.trim()) {
+      const citySlug = slugify(searchCity);
+      const termSlug = slugify(searchTerm.trim()); 
+      
+      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
+
+      if (isDisease) {
+        router.push(`/enfermedad/${termSlug}/${citySlug}`);
+      } else {
+        router.push(`/doctores/${citySlug}/${termSlug}`);
+      }
+    }
   };
 
   const handleSpecialtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,33 +76,25 @@ export default function HomeSearch() {
   };
 
   const handleSelectSuggestion = (suggestion: string) => {
-    setSpecialty(suggestion);
-    setShowSuggestions(false);
-    setIsFocused(false); // <-- Reset focus mode when an option is selected
+    setSpecialty(suggestion); // Update input visually
+    setShowSuggestions(false); // Hide dropdown
+    setIsFocused(false); // Reset mobile focus layout
+    
+    // --- NEW: Trigger search immediately with the clicked suggestion ---
+    executeSearch(city, suggestion); 
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsFocused(false); // <-- Reset focus mode on submit
+    setIsFocused(false);
     
-    if (city && specialty.trim()) {
-      const citySlug = slugify(city);
-      const termSlug = slugify(specialty.trim()); 
-      
-      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
-
-      if (isDisease) {
-        router.push(`/enfermedad/${termSlug}/${citySlug}`);
-      } else {
-        router.push(`/doctores/${citySlug}/${termSlug}`);
-      }
-    }
+    // Trigger search with the currently typed specialty
+    executeSearch(city, specialty);
   };
 
   return (
     <div 
       ref={wrapperRef}
-      // Dynamic classes: Pins to top on mobile when focused, standard relative positioning otherwise
       className={`mx-auto max-w-3xl w-full z-50 transition-all duration-300 ${
         isFocused 
           ? 'fixed top-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-md shadow-lg md:relative md:p-0 md:bg-transparent md:shadow-none md:mt-12' 
@@ -111,7 +119,7 @@ export default function HomeSearch() {
             id="city-select"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            onFocus={() => setIsFocused(true)} // <-- Trigger focus mode
+            onFocus={() => setIsFocused(true)}
             className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-base appearance-none cursor-pointer pr-4 truncate"
           >
             {ALL_CITIES.map(c => (
@@ -131,7 +139,7 @@ export default function HomeSearch() {
             value={specialty}
             onChange={handleSpecialtyChange}
             onFocus={() => { 
-              setIsFocused(true); // <-- Trigger focus mode
+              setIsFocused(true);
               if (specialty.length > 0) setShowSuggestions(true); 
             }}
             placeholder="Especialidad (ej. Cardiólogo) o Padecimiento" 
@@ -140,7 +148,6 @@ export default function HomeSearch() {
           />
         </div>
 
-        {/* Search Button - Now hidden on mobile (hidden md:flex) */}
         <button 
           type="submit" 
           aria-label="Buscar doctores"
