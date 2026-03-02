@@ -385,7 +385,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         </section>
 
         {/* Nearby Cities Section */}
-        <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
+        <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
                 También disponible en ciudades cercanas
             </h2>
