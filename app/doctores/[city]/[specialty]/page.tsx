@@ -5,7 +5,7 @@ import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS } from '../../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
 
 
@@ -71,6 +71,13 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || [];
   const conditionText = conditions.slice(0, 2).join(', ').toLowerCase() || 'tus síntomas';
 
+
+  // NEW: Get the dynamic comparison text
+  const specialtyComparison = SPECIALTY_COMPARISONS[searchTerm] || null;
+
+  // NEW: Get the metro cities for the filter
+  const metroCities = getMetroAreaForCity(cityName);
+
   // Fetch Data
   const { data: rawDoctors } = await supabase
     .from('doctors')
@@ -88,6 +95,41 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
   if (doctors.length === 0 && !isKnownSpecialty) {
     notFound();
+  }
+
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `¿Cuánto cuesta una consulta con un ${searchTerm} en ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `El precio de una consulta con un ${searchTerm} en ${cityName} varía según su experiencia y la zona. Generalmente, una valoración inicial oscila entre $800 y $2,000 MXN. Te sugerimos contactar directamente al especialista para confirmar sus honorarios.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `¿Cómo encuentro un ${searchTerm} cerca de mí en ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Revisa los perfiles verificados de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en ${cityName} también ofrecen videoconsulta si prefieres no desplazarte.`
+        }
+      }
+    ]
+  };
+
+  if (specialtyComparison) {
+      faqSchema.mainEntity.push({
+          "@type": "Question",
+          "name": specialtyComparison.title.replace('?', ` en ${cityName}?`),
+          "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `${specialtyComparison.text} Muchos de nuestros especialistas en ${cityName} trabajan en conjunto para ofrecer un tratamiento integral.`
+          }
+      });
   }
 
   // Schema
@@ -164,6 +206,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       {doctors.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
@@ -188,6 +231,37 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             {description}
             </p>
         </div>
+
+
+        {/* NEW: Metro Area Sub-filters */}
+        {metroCities && metroCities.length > 1 && (
+          <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <h3 className="text-sm font-medium text-[#86868b] mb-3 md:mb-4 uppercase tracking-wider">
+              Filtrar por zona metropolitana
+            </h3>
+            
+            <div className="flex overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 md:flex-wrap gap-2 md:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory">
+              {metroCities.map((metroCity) => {
+                const isActive = metroCity === cityName;
+                return (
+                  <Link 
+                    key={metroCity}
+                    href={`/doctores/${slugify(metroCity)}/${specialtySlug}`}
+                    className={`
+                      shrink-0 snap-start inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium transition-all
+                      ${isActive 
+                        ? 'bg-[#0071e3] text-white shadow-sm' 
+                        : 'bg-white border border-[#d2d2d7] text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3]'
+                      }
+                    `}
+                  >
+                    {metroCity}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Doctor Grid (Interactive Component) */}
         <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
@@ -232,22 +306,43 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </div>
             </div>
 
-            {/* 3. FAQs */}
+            {/* 3. Localized FAQs */}
             <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Preguntas Frecuentes sobre {searchTerm}</h3>
-                <div className="space-y-4">
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Qué hace un {searchTerm}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">{description}</p>
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                    <HelpCircle className="w-6 h-6 text-[#0071e3]" />
+                    Preguntas Frecuentes sobre {searchTerm} en {cityName}
+                </h3>
+                
+                <div className="grid grid-cols-1 gap-6">
+
+                    {/* Dynamic Specialty Comparison FAQ */}
+                    {specialtyComparison && (
+                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
+                                {specialtyComparison.title.replace('?', ` en ${cityName}?`)}
+                            </h4>
+                            <p className="text-[#86868b] leading-relaxed">
+                                {specialtyComparison.text} Muchos de nuestros especialistas en <span className="font-medium text-[#1d1d1f]">{cityName}</span> trabajan en conjunto para ofrecer atención integral.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Localized Location FAQ */}
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro un {searchTerm} cerca de mí en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
+                        </p>
                     </div>
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cuánto dura una consulta?</h4>
-                        <p className="text-[#86868b] leading-relaxed">Por lo general, una consulta dura entre 30 y 60 minutos. Esto puede variar dependiendo del especialista que elijas en {cityName}.</p>
+
+                    {/* Localized Price FAQ */}
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta una consulta con un {searchTerm} en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            El precio de una consulta en {cityName} varía según la experiencia y la zona del consultorio. Generalmente, una valoración inicial oscila entre $800 y $2,000 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
+                        </p>
                     </div>
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">¿Cómo contacto a un doctor en MediBusca?</h4>
-                        <p className="text-[#86868b] leading-relaxed">Solo haz clic en el botón "Llamar" o "Ver Perfil". Te conectarás de inmediato con el consultorio para pedir informes o agendar.</p>
-                    </div>
+
                 </div>
             </div>
 
