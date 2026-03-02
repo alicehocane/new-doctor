@@ -334,6 +334,15 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 </div>
             )}
 
+            
+
+            
+
+          </div>
+        </section>
+
+
+        <section>
             {/* 3. Localized FAQs */}
             <div>
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
@@ -373,10 +382,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
                 </div>
             </div>
-
-            
-
-          </div>
         </section>
 
         {/* Nearby Cities Section */}
