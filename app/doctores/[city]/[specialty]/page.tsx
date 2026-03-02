@@ -291,74 +291,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                </p>
             </div>
 
-            {/* 2. What you should know */}
-            <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Lo que debes saber</h3>
-                <div className="grid md:grid-cols-3 gap-8">
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <ShieldCheck className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Sin costos ocultos</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">MediBusca no te cobra nada por buscar o contactar a un especialista.</p>
-                    </div>
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <Phone className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Contacto directo</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">Hablas directamente con el consultorio del doctor para agendar tu cita.</p>
-                    </div>
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <CheckCircle className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Perfiles reales</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">Verificamos que los especialistas sean profesionales certificados en {cityName}.</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* 3. Localized FAQs */}
-            <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
-                    <HelpCircle className="w-6 h-6 text-[#0071e3]" />
-                    Preguntas Frecuentes sobre {searchTerm} en {cityName}
-                </h3>
-                
-                <div className="grid grid-cols-1 gap-6">
-
-                    {/* Dynamic Specialty Comparison FAQ */}
-                    {specialtyComparison && (
-                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
-                                {specialtyComparison.title.replace('?', ` en ${cityName}?`)}
-                            </h4>
-                            <p className="text-[#86868b] leading-relaxed">
-                                {specialtyComparison.text} Muchos de nuestros especialistas en <span className="font-medium text-[#1d1d1f]">{cityName}</span> trabajan en conjunto para ofrecer atención integral.
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Localized Location FAQ */}
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro un {searchTerm} cerca de mí en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">
-                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
-                        </p>
-                    </div>
-
-                    {/* Localized Price FAQ */}
-                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
-                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta una consulta con un {searchTerm} en {cityName}?</h4>
-                        <p className="text-[#86868b] leading-relaxed">
-                            El precio de una consulta en {cityName} varía según la experiencia y la zona del consultorio. Generalmente, una valoración inicial oscila entre $800 y $2,000 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-
             {/* NEW: Guía Local de Salud (Dynamic City Data) */}
             {cityHealthInfo && (
                 <div className="mt-16 pt-16 border-t border-slate-100">
@@ -401,6 +333,48 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                     </div>
                 </div>
             )}
+
+            {/* 3. Localized FAQs */}
+            <div>
+                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                    <HelpCircle className="w-6 h-6 text-[#0071e3]" />
+                    Preguntas Frecuentes sobre {searchTerm} en {cityName}
+                </h3>
+                
+                <div className="grid grid-cols-1 gap-6">
+
+                    {/* Dynamic Specialty Comparison FAQ */}
+                    {specialtyComparison && (
+                        <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                            <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">
+                                {specialtyComparison.title.replace('?', ` en ${cityName}?`)}
+                            </h4>
+                            <p className="text-[#86868b] leading-relaxed">
+                                {specialtyComparison.text} Muchos de nuestros especialistas en <span className="font-medium text-[#1d1d1f]">{cityName}</span> trabajan en conjunto para ofrecer atención integral.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Localized Location FAQ */}
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cómo encuentro un {searchTerm} cerca de mí en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            Revisa los perfiles de arriba para ver la ubicación exacta del consultorio. Muchos de nuestros especialistas en {cityName} también ofrecen la opción de videoconsulta si prefieres no desplazarte.
+                        </p>
+                    </div>
+
+                    {/* Localized Price FAQ */}
+                    <div className="border border-slate-200 rounded-2xl p-6 bg-white shadow-sm hover:border-[#0071e3]/30 transition-colors">
+                        <h4 className="font-bold text-[#1d1d1f] mb-2 text-lg">¿Cuánto cuesta una consulta con un {searchTerm} en {cityName}?</h4>
+                        <p className="text-[#86868b] leading-relaxed">
+                            El precio de una consulta en {cityName} varía según la experiencia y la zona del consultorio. Generalmente, una valoración inicial oscila entre $800 y $2,000 MXN. Te recomendamos contactar directamente al especialista para confirmar sus honorarios.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            
 
           </div>
         </section>
