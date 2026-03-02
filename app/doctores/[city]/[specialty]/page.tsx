@@ -350,7 +350,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                     Preguntas Frecuentes sobre {searchTerm} en {cityName}
                 </h3>
                 
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 gap-4">
 
                     {/* Dynamic Specialty Comparison FAQ */}
                     {specialtyComparison && (
