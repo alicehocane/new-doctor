@@ -37,7 +37,6 @@ export default function HomeSearch() {
       .replace(/-+$/, '');
   };
 
-  // --- NEW: Extracted routing logic so it can be reused ---
   const executeSearch = (searchCity: string, searchTerm: string) => {
     if (searchCity && searchTerm.trim()) {
       const citySlug = slugify(searchCity);
@@ -80,8 +79,12 @@ export default function HomeSearch() {
     setShowSuggestions(false); // Hide dropdown
     setIsFocused(false); // Reset mobile focus layout
     
-    // --- NEW: Trigger search immediately with the clicked suggestion ---
-    executeSearch(city, suggestion); 
+    // --- NEW: Check if screen is mobile (< 768px, matching Tailwind's 'md' breakpoint) ---
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      // Mobile: Trigger search immediately since there is no button
+      executeSearch(city, suggestion); 
+    }
+    // Desktop: Do nothing else, let the user click the "Buscar" button manually
   };
 
   const handleSearch = (e: React.FormEvent) => {
