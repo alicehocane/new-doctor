@@ -81,6 +81,20 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   // NEW: Extract local health data
   const cityHealthInfo = CITY_HEALTH_DATA[citySlug] || null;
 
+  // NEW: Map high-risk specialties to their emergency categories
+  const SPECIALTY_EMERGENCY_MAP: Record<string, string> = {
+      'Cardiólogo': 'cardiac',
+      'Neumólogo': 'respiratory',
+      'Traumatólogo': 'trauma',
+      'Ortopedista': 'trauma',
+      'Psiquiatra': 'mental_health',
+      'Ginecólogo': 'obgyn_urgent',
+      'Urgenciólogo': 'general_urgent'
+      // You can add more specialties here as needed
+  };
+  
+  const emergencyCategory = SPECIALTY_EMERGENCY_MAP[searchTerm] || null;
+
   // Fetch Data
   const { data: rawDoctors } = await supabase
     .from('doctors')
@@ -246,12 +260,12 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </p>
         </div>
 
-        {/* EmergencyBanner Component */}
-                <EmergencyBanner 
-                    diseaseName={diseaseName} 
-                    cityName={cityName} 
-                    category={emergencyCategory} 
-                />
+        {/* NEW: Emergency Banner Component */}
+        <EmergencyBanner 
+            diseaseName={searchTerm} 
+            cityName={cityName} 
+            category={emergencyCategory} 
+        />
 
 
         {/* NEW: Metro Area Sub-filters */}
