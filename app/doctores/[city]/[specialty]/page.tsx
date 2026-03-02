@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
-import EmergencyBanner from '../../../../components/EmergencyBanner';
+import EmergencyBanner from '@/components/EmergencyBanner';
 
 
 export const revalidate = 86400;
@@ -83,17 +83,37 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
   // NEW: Map high-risk specialties to their emergency categories
   const SPECIALTY_EMERGENCY_MAP: Record<string, string> = {
+      // Heart & Lungs (Heart attacks, anaphylaxis)
       'Cardiólogo': 'cardiac',
-      'Neumólogo': 'respiratory',
+      'Alergólogo': 'respiratory', // Shock anafiláctico / crisis asmática
+      
+      // Mental Health (Crisis, panic attacks, suicide risk)
+      'Psiquiatra': 'mental_health',
+      'Psicólogo': 'mental_health',
+      'Psicoanalista': 'mental_health',
+      
+      // Trauma & Severe Pain (Accidents, fractures)
       'Traumatólogo': 'trauma',
       'Ortopedista': 'trauma',
-      'Psiquiatra': 'mental_health',
+      
+      // OBGYN (Severe bleeding, ectopic pregnancy)
       'Ginecólogo': 'obgyn_urgent',
-      'Urgenciólogo': 'general_urgent'
-      // You can add more specialties here as needed
+      
+      // General & Acute Pain (Appendicitis, severe infections, high fever)
+      'Médico general': 'general_urgent',
+      'Pediatra': 'general_urgent',
+      'Neonatólogo': 'general_urgent',
+      'Cirujano general': 'general_urgent',
+      'Cirujano pediátrico': 'general_urgent',
+      'Gastroenterólogo': 'general_urgent', // Hemorragias digestivas
+      'Neurocirujano': 'general_urgent',    // Derrames, trauma craneoencefálico
+      'Internista': 'general_urgent'
   };
+  // Extract the exact type expected by the EmergencyBanner component
+  type BannerCategory = React.ComponentProps<typeof EmergencyBanner>['category'];
   
-  const emergencyCategory = SPECIALTY_EMERGENCY_MAP[searchTerm] || null;
+  // Cast our dictionary result to perfectly match that type
+  const emergencyCategory = (SPECIALTY_EMERGENCY_MAP[searchTerm] || null) as BannerCategory;
 
   // Fetch Data
   const { data: rawDoctors } = await supabase
@@ -446,7 +466,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 <div className="mb-8">
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
                         <Activity className="w-7 h-7 text-[#0071e3]" />
-                        Problemas de Salud Tratados por un {searchTerm}
+                        Enfermedades que Trata un {searchTerm}
                     </h2>
                     <p className="text-lg text-[#86868b] max-w-3xl">
                         Conoce los síntomas, prevención y tratamiento recomendado para cada condición antes de consultar a un especialista en {cityName}.
