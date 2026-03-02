@@ -1,12 +1,13 @@
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity, Info, BookOpen} from 'lucide-react';
+import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity, Info, BookOpen, Building2, Bus, HeartPulse} from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS } from '../../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
+import EmergencyBanner from '@/components/EmergencyBanner';
 
 
 export const revalidate = 86400;
@@ -77,6 +78,42 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
   // NEW: Get the metro cities for the filter
   const metroCities = getMetroAreaForCity(cityName);
+  // NEW: Extract local health data
+  const cityHealthInfo = CITY_HEALTH_DATA[citySlug] || null;
+
+  // NEW: Map high-risk specialties to their emergency categories
+  const SPECIALTY_EMERGENCY_MAP: Record<string, string> = {
+      // Heart & Lungs (Heart attacks, anaphylaxis)
+      'Cardiólogo': 'cardiac',
+      'Alergólogo': 'respiratory', // Shock anafiláctico / crisis asmática
+      
+      // Mental Health (Crisis, panic attacks, suicide risk)
+      'Psiquiatra': 'mental_health',
+      'Psicólogo': 'mental_health',
+      'Psicoanalista': 'mental_health',
+      
+      // Trauma & Severe Pain (Accidents, fractures)
+      'Traumatólogo': 'trauma',
+      'Ortopedista': 'trauma',
+      
+      // OBGYN (Severe bleeding, ectopic pregnancy)
+      'Ginecólogo': 'obgyn_urgent',
+      
+      // General & Acute Pain (Appendicitis, severe infections, high fever)
+      'Médico general': 'general_urgent',
+      'Pediatra': 'general_urgent',
+      'Neonatólogo': 'general_urgent',
+      'Cirujano general': 'general_urgent',
+      'Cirujano pediátrico': 'general_urgent',
+      'Gastroenterólogo': 'general_urgent', // Hemorragias digestivas
+      'Neurocirujano': 'general_urgent',    // Derrames, trauma craneoencefálico
+      'Internista': 'general_urgent'
+  };
+  // Extract the exact type expected by the EmergencyBanner component
+  type BannerCategory = React.ComponentProps<typeof EmergencyBanner>['category'];
+
+  // Cast our dictionary result to perfectly match that type
+  const emergencyCategory = (SPECIALTY_EMERGENCY_MAP[searchTerm] || null) as BannerCategory;
 
   // Fetch Data
   const { data: rawDoctors } = await supabase
@@ -128,6 +165,17 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
           "acceptedAnswer": {
               "@type": "Answer",
               "text": `${specialtyComparison.text} Muchos de nuestros especialistas en ${cityName} trabajan en conjunto para ofrecer un tratamiento integral.`
+          }
+      });
+  }
+
+  if (cityHealthInfo && cityHealthInfo.hospitals.length > 0) {
+      faqSchema.mainEntity.push({
+          "@type": "Question",
+          "name": `¿Cuáles son los principales hospitales y clínicas en ${cityName}?`,
+          "acceptedAnswer": {
+              "@type": "Answer",
+              "text": `Algunos de los principales centros de salud en ${cityName} incluyen: ${cityHealthInfo.hospitals.join(', ')}. Recuerda consultar el perfil del ${searchTerm} para ver en qué clínica u hospital específico atiende.`
           }
       });
   }
@@ -206,8 +254,8 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       {doctors.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
@@ -231,6 +279,13 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             {description}
             </p>
         </div>
+
+        {/* NEW: Emergency Banner Component */}
+        <EmergencyBanner 
+            diseaseName={searchTerm} 
+            cityName={cityName} 
+            category={emergencyCategory} 
+        />
 
 
         {/* NEW: Metro Area Sub-filters */}
@@ -278,42 +333,67 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                </p>
             </div>
 
-            {/* 2. What you should know */}
-            <div>
-                <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center">Lo que debes saber</h3>
-                <div className="grid md:grid-cols-3 gap-8">
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <ShieldCheck className="w-5 h-5" />
+            {/* NEW: Guía Local de Salud (Dynamic City Data) */}
+            {cityHealthInfo && (
+                <div>
+                    <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
+                        <MapPin className="w-6 h-6 text-[#0071e3]" />
+                        Guía de Salud Local en {cityName}
+                    </h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Panorama */}
+                        <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                                <HeartPulse className="w-5 h-5" />
+                            </div>
+                            <h4 className="font-bold text-[#1d1d1f] mb-2">Panorama Médico</h4>
+                            <p className="text-[#86868b] text-sm leading-relaxed">{cityHealthInfo.overview}</p>
                         </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Sin costos ocultos</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">MediBusca no te cobra nada por buscar o contactar a un especialista.</p>
-                    </div>
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <Phone className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Contacto directo</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">Hablas directamente con el consultorio del doctor para agendar tu cita.</p>
-                    </div>
-                    <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100">
-                        <div className="w-10 h-10 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-4">
-                            <CheckCircle className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-[#1d1d1f] mb-2">Perfiles reales</h4>
-                        <p className="text-[#86868b] text-sm leading-relaxed">Verificamos que los especialistas sean profesionales certificados en {cityName}.</p>
-                    </div>
-                </div>
-            </div>
 
+                        {/* Hospitales */}
+                        <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mb-4">
+                                <Building2 className="w-5 h-5" />
+                            </div>
+                            <h4 className="font-bold text-[#1d1d1f] mb-2">Hospitales de Referencia</h4>
+                            <ul className="text-[#86868b] text-sm leading-relaxed space-y-1.5 list-disc list-inside">
+                                {cityHealthInfo.hospitals.map((hospital, i) => (
+                                    <li key={i} className="truncate" title={hospital}>{hospital}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Transporte */}
+                        <div className="bg-[#f5f5f7] p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-4">
+                                <Bus className="w-5 h-5" />
+                            </div>
+                            <h4 className="font-bold text-[#1d1d1f] mb-2">Movilidad para tus Citas</h4>
+                            <p className="text-[#86868b] text-sm leading-relaxed">{cityHealthInfo.transport}</p>
+                        </div>
+                    </div>
+
+                </div>
+            )}
+
+            
+
+            
+
+          </div>
+        </section>
+
+
+        <section>
             {/* 3. Localized FAQs */}
-            <div>
+            <div className="mt-12">
                 <h3 className="text-2xl font-bold text-[#1d1d1f] mb-8 text-center flex items-center justify-center gap-2">
                     <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                     Preguntas Frecuentes sobre {searchTerm} en {cityName}
                 </h3>
                 
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 gap-4">
 
                     {/* Dynamic Specialty Comparison FAQ */}
                     {specialtyComparison && (
@@ -345,12 +425,10 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
                 </div>
             </div>
-
-          </div>
         </section>
 
         {/* Nearby Cities Section */}
-        <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
+        <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
                 También disponible en ciudades cercanas
             </h2>
@@ -389,7 +467,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 <div className="mb-8">
                     <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
                         <Activity className="w-7 h-7 text-[#0071e3]" />
-                        Problemas de Salud que Atiende
+                        Enfermedades que Trata un {searchTerm}
                     </h2>
                     <p className="text-lg text-[#86868b] max-w-3xl">
                         Conoce los síntomas, prevención y tratamiento recomendado para cada condición antes de consultar a un especialista en {cityName}.
@@ -451,7 +529,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 <Link href={`/especialidad/${searchTerm}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <BookOpen className="w-5 h-5" /> Guía de {searchTerm}
                 </Link>
-                <Link href="/enfermedad" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                <Link href="/enfermedades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <Activity className="w-5 h-5" /> Padecimientos Comunes
                 </Link>
                 <Link href="/enciclopedia" className="bg-[#0071e3] text-white px-6 py-4 rounded-full font-medium hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">

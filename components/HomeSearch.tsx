@@ -10,15 +10,17 @@ export default function HomeSearch() {
   const [city, setCity] = useState('Ciudad de México');
   const [specialty, setSpecialty] = useState('');
   
-  // Autocomplete state
+  // Autocomplete & Focus state
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
+        setIsFocused(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -33,6 +35,21 @@ export default function HomeSearch() {
       .replace(/\-\-+/g, '-')
       .replace(/^-+/, '')
       .replace(/-+$/, '');
+  };
+
+  const executeSearch = (searchCity: string, searchTerm: string) => {
+    if (searchCity && searchTerm.trim()) {
+      const citySlug = slugify(searchCity);
+      const termSlug = slugify(searchTerm.trim()); 
+      
+      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
+
+      if (isDisease) {
+        router.push(`/enfermedad/${termSlug}/${citySlug}`);
+      } else {
+        router.push(`/doctores/${citySlug}/${termSlug}`);
+      }
+    }
   };
 
   const handleSpecialtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,28 +75,35 @@ export default function HomeSearch() {
   };
 
   const handleSelectSuggestion = (suggestion: string) => {
-    setSpecialty(suggestion);
-    setShowSuggestions(false);
+    setSpecialty(suggestion); // Update input visually
+    setShowSuggestions(false); // Hide dropdown
+    setIsFocused(false); // Reset mobile focus layout
+    
+    // --- NEW: Check if screen is mobile (< 768px, matching Tailwind's 'md' breakpoint) ---
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      // Mobile: Trigger search immediately since there is no button
+      executeSearch(city, suggestion); 
+    }
+    // Desktop: Do nothing else, let the user click the "Buscar" button manually
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (city && specialty.trim()) {
-      const citySlug = slugify(city);
-      const termSlug = slugify(specialty.trim()); 
-      
-      const isDisease = ALL_DISEASES.some(d => slugify(d) === termSlug);
-
-      if (isDisease) {
-        router.push(`/enfermedad/${termSlug}/${citySlug}`);
-      } else {
-        router.push(`/doctores/${citySlug}/${termSlug}`);
-      }
-    }
+    setIsFocused(false);
+    
+    // Trigger search with the currently typed specialty
+    executeSearch(city, specialty);
   };
 
   return (
-    <div className="mt-10 md:mt-12 mx-auto max-w-3xl relative" ref={wrapperRef}>
+    <div 
+      ref={wrapperRef}
+      className={`mx-auto max-w-3xl w-full z-50 transition-all duration-300 ${
+        isFocused 
+          ? 'fixed top-0 left-0 right-0 p-4 bg-white/95 backdrop-blur-md shadow-lg md:relative md:p-0 md:bg-transparent md:shadow-none md:mt-12' 
+          : 'relative mt-10 md:mt-12'
+      }`} 
+    >
       <form 
         onSubmit={handleSearch} 
         className="
@@ -98,6 +122,7 @@ export default function HomeSearch() {
             id="city-select"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            onFocus={() => setIsFocused(true)}
             className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-base appearance-none cursor-pointer pr-4 truncate"
           >
             {ALL_CITIES.map(c => (
@@ -116,7 +141,10 @@ export default function HomeSearch() {
             type="text" 
             value={specialty}
             onChange={handleSpecialtyChange}
-            onFocus={() => specialty.length > 0 && setShowSuggestions(true)}
+            onFocus={() => { 
+              setIsFocused(true);
+              if (specialty.length > 0) setShowSuggestions(true); 
+            }}
             placeholder="Especialidad (ej. Cardiólogo) o Padecimiento" 
             className="w-full h-full bg-transparent border-none outline-none text-[#1d1d1f] font-medium text-base placeholder-gray-500"
             autoComplete="off"
@@ -127,10 +155,10 @@ export default function HomeSearch() {
           type="submit" 
           aria-label="Buscar doctores"
           className="
-             h-14 w-full md:w-auto px-8
+             hidden md:flex h-14 w-full md:w-auto px-8
              bg-[#0071e3] hover:bg-[#0077ED] active:scale-95
              text-white font-medium text-base rounded-xl md:rounded-[1.5rem]
-             transition-all shadow-md flex items-center justify-center shrink-0
+             transition-all shadow-md items-center justify-center shrink-0
           "
         >
           Buscar
