@@ -71,7 +71,7 @@ export default async function EncyclopediaIndexPage() {
         
         {/* SEO / Informational Content Section (Static Server Content passed as children) */}
         <section className="mt-24 pt-16 border-t border-slate-200">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4">
                      <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
                         Biblioteca de Salud y Divulgación Médica

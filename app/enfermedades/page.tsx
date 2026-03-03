@@ -102,7 +102,7 @@ export default function DiseasesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
 
-      <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
+      <div className="max-w-6xl mx-auto px-4 py-12 md:py-20">
         
         {/* Header */}
         <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-2">
@@ -115,7 +115,7 @@ export default function DiseasesIndexPage() {
         </div>
 
         {/* EDUCATIONAL INTRO (Add value beyond just links) */}
-        <section className="max-w-4xl mx-auto mb-20 animate-in fade-in slide-in-from-bottom-3">
+        <section className="max-w-6xl mx-auto mb-20 animate-in fade-in slide-in-from-bottom-3">
             <div className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">¿Cuándo acudir a un especialista?</h2>
                 <div className="prose prose-lg text-[#86868b] leading-relaxed">

@@ -770,7 +770,6 @@ export default async function CityPage({ params }: { params: { city: string } })
             {/* Other Cities */}
             <div>
                 <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4 flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-[#86868b]" />
                     Explora doctores en otras ciudades populares
                 </h3>
                 <div className="flex flex-wrap gap-3">
@@ -786,8 +785,8 @@ export default async function CityPage({ params }: { params: { city: string } })
                                 transition-all duration-300
                             "
                         >
-                            {city}
-                            <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity -ml-1 group-hover:ml-0" />
+                            <MapPin className="w-4 h-4 text-[#86868b]" />
+                            <span>Doctores en {city}</span>
                         </Link>
                     ))}
                 </div>
@@ -803,7 +802,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                           <Link 
                               key={idx}
                                href={`/doctores/${citySlug}/${slugify(spec)}`}
-                              className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                              className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                           >
                               <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                               <span>{spec} en {cityName}</span>

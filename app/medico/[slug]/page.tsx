@@ -324,7 +324,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4">
         
         {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
@@ -474,7 +474,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* Related Articles Section */}
       {relatedArticles.length > 0 && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 mt-8">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 mt-8">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-[#86868b]" />
                 Artículos Relacionados con {doctor.specialties[0]}
@@ -512,7 +512,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* Related Doctors Section */}
       {relatedDoctors.length > 0 && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
                 Otros {doctor.specialties[0]}s en {doctor.cities[0]}
             </h2>
@@ -580,7 +580,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       )}
 
       {/* Disclaimer Note & Last Updated */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-200 mt-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-200 mt-8">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
              <div className="flex gap-3 max-w-2xl">
                 <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
@@ -596,32 +596,32 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       </div>
 
       {/* SEO Cross-Linking Section */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
             Búsquedas Relacionadas
         </h2>
         <div className="flex flex-wrap gap-x-3 gap-y-3">
-             {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla']
+             {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Benito Juárez', 'Cuauhtémoc', 'Pachuca', 'Zapopan']
                 .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
                 .map((city, idx) => (
                  <Link
                     key={`spec-${idx}`}
                     href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
-                    className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                  >
-                  <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                  <MapPin className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                   <span>{doctor.specialties[0]} en {city}</span>
                  </Link>
              ))}
 
              {doctor.cities.length > 0 && POPULAR_SPECIALTIES
                 .filter(s => slugify(s) !== slugify(doctor.specialties[0]))
-                .slice(0, 5)
+                .slice(0, 8)
                 .map((spec, idx) => (
                  <Link
                     key={`city-${idx}`}
                     href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
-                    className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                  >
                  <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                  <span>{spec} en {doctor.cities[0]}</span>  
@@ -629,6 +629,21 @@ export default async function DoctorProfile({ params }: { params: { slug: string
              ))}
         </div>
       </section>
+
+
+      {/* 7️⃣ CTA */}
+                      <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+                          <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
+                          <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
+                              Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
+                          </p>
+                          <Link 
+                              href="/buscar" 
+                              className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
+                          >
+                              Buscar un especialista <Search className="w-5 h-5" />
+                          </Link>
+              </section>
 
       {/* MOBILE ACTION DOCK */}
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">

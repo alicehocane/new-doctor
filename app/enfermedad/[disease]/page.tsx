@@ -459,10 +459,10 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         {relatedSpecialties.length > 0 && (
             <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
                 <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-2 flex items-center gap-2">
-                    Especialidades que tratan {diseaseName}
+                    Especialistas que Tratan la {diseaseName}
                 </h2>
                 <p className="text-[#86868b] mb-8 max-w-2xl text-[17px]">
-                    Dependiendo de tus síntomas y la etapa de la condición, diferentes enfoques médicos pueden ser necesarios para un tratamiento integral de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>.
+                    Dependiendo de tus síntomas y la etapa de la <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>, diferentes especialistas pueden intervenir para brindarte un tratamiento integral y personalizado.
                 </p>
                 
                 <div className="flex flex-wrap gap-3">
@@ -470,7 +470,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         <Link 
                             key={spec} 
                             href={`/especialidad/${slugify(spec)}`}
-                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group"
+                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group border border-[#d2d2d7]/60 rounded-full"
                         >
                             <Search className="w-4 h-4 text-[#86868b] group-hover:text-[#0066cc]" />
                             <span>{spec}</span>
@@ -487,8 +487,8 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                         {spec.startsWith('Medicina') || spec.includes('Cirujano') 
-                            ? `Expertos en ${spec} cerca de ti`
-                            : `Mejores ${spec}s por ciudad`
+                            ? `Expertos en ${spec} para el Tratamiento de ${diseaseName} por Ciudad`
+                            : `Encuentra los mejores ${spec}s para la ${diseaseName} por Ciudad`
                         }
                     </h2>
                     <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
@@ -500,7 +500,12 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                             <Link 
                                 key={city}
                                 href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
+                                className="gap-2 px-4 py-2.5 inline-flex items-center px-5 py-2.5
+                            bg-white border border-[#d2d2d7]/60 rounded-full
+                            text-[#1d1d1f] font-medium text-[15px]
+                            hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
+                            active:scale-[0.98] transition-all duration-200
+                            shadow-sm hover:shadow-md"
                             >
                                 <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
                                 <span>{spec} en {city}</span>
@@ -512,17 +517,17 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         ) : (
             <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                 <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                    Encuentra especialistas en las principales ciudades
+                    Encuentra Doctores y Especialistas por Ciudad
                 </h2>
                 <p className="text-[#86868b] mb-8 text-[17px]">
-                    Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
+                    Encuentra doctores y especialistas en {diseaseName} en las principales ciudades. 
                 </p>
                 <div className="flex flex-wrap gap-3">
                     {TOP_CITIES.slice(0, 8).map((city) => (
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}`}
-                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all border border-[#d2d2d7]/60 rounded-full"
                         >
                             <MapPin className="w-4 h-4 text-[#86868b]" />
                             <span>Doctores en {city}</span>

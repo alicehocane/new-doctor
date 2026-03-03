@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale, Activity } from 'lucide-react';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale, Activity, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
@@ -322,14 +322,10 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                            className="
-                                inline-flex items-center gap-2.5 px-6 py-4
-                                bg-[#e8e8ed] rounded-full
-                                text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#d2d2d7] transition-all group
-                            "
+                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
                         >
-                            {searchTerm} en {city}
+                            <MapPin className="w-4 h-4 text-[#86868b]" />
+                            <span>{searchTerm} en {city}</span>
                         </Link>
                     ))
                 }
@@ -388,7 +384,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     <Link 
                         key={idx}
                         href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
-                        className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                        className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                     >
                         <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                         <span>{item.spec} en {item.city}</span>
@@ -400,7 +396,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
 
         {/* 7️⃣ CTA */}
-                <section className="mt-16 pt-12 text-center py-12 animate-in fade-in slide-in-from-bottom-8 border-t border-[#d2d2d7]/30 pb-12">
+                <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
                     <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
                     <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
                         Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.

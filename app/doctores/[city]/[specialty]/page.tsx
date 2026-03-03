@@ -446,13 +446,10 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                             key={city}
                             href={`/doctores/${slugify(city)}/${specialtySlug}`}
                             className="
-                                inline-flex items-center gap-2.5 px-6 py-4
-                                bg-[#e8e8ed] rounded-full
-                                text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#d2d2d7] hover:shadow-sm transition-all group
-                            "
+                                flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
                         >
-                        {searchTerm} en {city}
+                        <MapPin className="w-4 h-4 text-[#86868b]" />
+                        <span>{searchTerm} en {city}</span>
                         </Link>
                     ))
                 }
@@ -503,12 +500,12 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             <div className="flex flex-wrap gap-x-3 gap-y-3">
                 {POPULAR_SPECIALTIES
                     .filter(s => s !== searchTerm)
-                    .slice(0, 7)
+                    .slice(0, 12)
                     .map((spec, idx) => (
                         <Link 
                             key={idx}
                             href={`/doctores/${citySlug}/${slugify(spec)}`}
-                            className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                            className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                         >
                             <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                             <span>{spec} en {cityName}</span>

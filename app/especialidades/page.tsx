@@ -80,7 +80,7 @@ export default function SpecialtiesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
-      <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
+      <div className="max-w-6xl mx-auto px-4 py-12 md:py-20">
         
         {/* Header */}
         <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-2">
@@ -93,7 +93,7 @@ export default function SpecialtiesIndexPage() {
         </div>
 
         {/* Introduction & Responsibility Section */}
-        <div className="max-w-4xl mx-auto mb-16 animate-in fade-in slide-in-from-bottom-3">
+        <div className="max-w-6xl mx-auto mb-16 animate-in fade-in slide-in-from-bottom-3">
             <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
                 {/* Decorative top border */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#0071e3] to-transparent opacity-20"></div>
