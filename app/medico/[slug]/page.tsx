@@ -630,6 +630,21 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </div>
       </section>
 
+
+      {/* 7️⃣ CTA */}
+                      <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+                          <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
+                          <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
+                              Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
+                          </p>
+                          <Link 
+                              href="/buscar" 
+                              className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
+                          >
+                              Buscar un especialista <Search className="w-5 h-5" />
+                          </Link>
+              </section>
+
       {/* MOBILE ACTION DOCK */}
       <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
         <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
