@@ -470,7 +470,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         <Link 
                             key={spec} 
                             href={`/especialidad/${slugify(spec)}`}
-                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group"
+                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group border border-[#d2d2d7]/60 rounded-full"
                         >
                             <Search className="w-4 h-4 text-[#86868b] group-hover:text-[#0066cc]" />
                             <span>{spec}</span>
@@ -515,14 +515,12 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 </section>
             ))
         ) : (
-        )}
-
             <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                 <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                     Encuentra Doctores y Especialistas por Ciudad
                 </h2>
                 <p className="text-[#86868b] mb-8 text-[17px]">
-                    Encuentra doctores y especialistas en {diseaseName} en las principales ciudades.
+                    Encuentra doctores y especialistas en {diseaseName} en las principales ciudades. 
                 </p>
                 <div className="flex flex-wrap gap-3">
                     {TOP_CITIES.slice(0, 8).map((city) => (
@@ -537,6 +535,8 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     ))}
                 </div>
             </section>
+        )}
+
 
         {/* 🔟 Related Resources */}
         <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-8 mt-16 pt-12">
