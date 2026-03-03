@@ -441,7 +441,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
             </p>
             <div className="flex flex-wrap gap-3">
-                {TOP_CITIES.slice(0, 8).map((city) => (
+                {POPULAR_CITIES.slice(0, 8).map((city) => (
                     <Link 
                         key={city}
                         href={`/doctores/${slugify(city)}`}
