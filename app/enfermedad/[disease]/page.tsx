@@ -500,7 +500,12 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                             <Link 
                                 key={city}
                                 href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-[#f5f5f7] border border-transparent rounded-full text-[#1d1d1f] text-[14px] hover:bg-[#e8e8ed] hover:border-[#d2d2d7] transition-all"
+                                className="gap-2 px-4 py-2.5 inline-flex items-center px-5 py-2.5
+                            bg-white border border-[#d2d2d7]/60 rounded-full
+                            text-[#1d1d1f] font-medium text-[15px]
+                            hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
+                            active:scale-[0.98] transition-all duration-200
+                            shadow-sm hover:shadow-md"
                             >
                                 <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
                                 <span>{spec} en {city}</span>
@@ -522,7 +527,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}`}
-                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all border border-[#d2d2d7]/60 rounded-full"
                         >
                             <MapPin className="w-4 h-4 text-[#86868b]" />
                             <span>Doctores en {city}</span>
