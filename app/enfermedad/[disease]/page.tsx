@@ -459,10 +459,10 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         {relatedSpecialties.length > 0 && (
             <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
                 <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-2 flex items-center gap-2">
-                    Especialidades que tratan {diseaseName}
+                    Especialistas que Tratan la {diseaseName}
                 </h2>
                 <p className="text-[#86868b] mb-8 max-w-2xl text-[17px]">
-                    Dependiendo de tus síntomas y la etapa de la condición, diferentes enfoques médicos pueden ser necesarios para un tratamiento integral de <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>.
+                    Dependiendo de tus síntomas y la etapa de la <span className="text-[#1d1d1f] font-medium">{diseaseName}</span>, diferentes especialistas pueden intervenir para brindarte un tratamiento integral y personalizado.
                 </p>
                 
                 <div className="flex flex-wrap gap-3">
@@ -487,8 +487,8 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 <section key={spec} className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                         {spec.startsWith('Medicina') || spec.includes('Cirujano') 
-                            ? `Expertos en ${spec} cerca de ti`
-                            : `Mejores ${spec}s por ciudad`
+                            ? `Expertos en ${spec} para el Tratamiento de ${diseaseName} por Ciudad`
+                            : `Mejores ${spec}s para Tratar ${diseaseName} por Ciudad`
                         }
                     </h2>
                     <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
@@ -515,12 +515,14 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 </section>
             ))
         ) : (
+        )}
+
             <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
                 <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                    Encuentra especialistas en las principales ciudades
+                    Encuentra Doctores y Especialistas por Ciudad
                 </h2>
                 <p className="text-[#86868b] mb-8 text-[17px]">
-                    Explora nuestro directorio médico para encontrar la atención adecuada en tu ubicación actual.
+                    Encuentra doctores y especialistas en {diseaseName} en las principales ciudades.
                 </p>
                 <div className="flex flex-wrap gap-3">
                     {TOP_CITIES.slice(0, 8).map((city) => (
@@ -535,8 +537,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     ))}
                 </div>
             </section>
-        )}
-
 
         {/* 🔟 Related Resources */}
         <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-8 mt-16 pt-12">
