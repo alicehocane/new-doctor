@@ -632,7 +632,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
 
       {/* 7️⃣ CTA */}
-                      <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+                      <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
                           <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
                           <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
                               Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
