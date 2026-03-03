@@ -417,7 +417,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                         key={city}
                         href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
                         className="
-                            inline-flex items-center px-5 py-2.5
+                            gap-2 px-4 py-2.5 inline-flex items-center px-5 py-2.5
                             bg-white border border-[#d2d2d7]/60 rounded-full
                             text-[#1d1d1f] font-medium text-[15px]
                             hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
