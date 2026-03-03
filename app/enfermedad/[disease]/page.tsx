@@ -488,7 +488,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                         {spec.startsWith('Medicina') || spec.includes('Cirujano') 
                             ? `Expertos en ${spec} para el Tratamiento de ${diseaseName} por Ciudad`
-                            : `Mejores ${spec}s para Tratar la ${diseaseName} por Ciudad`
+                            : `Encuentra los mejores ${spec}s para la ${diseaseName} por Ciudad`
                         }
                     </h2>
                     <p className="text-[#86868b] mb-8 max-w-3xl text-[17px]">
