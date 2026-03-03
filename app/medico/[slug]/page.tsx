@@ -601,7 +601,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             Búsquedas Relacionadas
         </h2>
         <div className="flex flex-wrap gap-x-3 gap-y-3">
-             {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla']
+             {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Benito Juárez', 'Cuauhtémoc', 'Pachuca', 'Zapopan']
                 .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
                 .map((city, idx) => (
                  <Link
@@ -616,12 +616,12 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
              {doctor.cities.length > 0 && POPULAR_SPECIALTIES
                 .filter(s => slugify(s) !== slugify(doctor.specialties[0]))
-                .slice(0, 5)
+                .slice(0, 8)
                 .map((spec, idx) => (
                  <Link
                     key={`city-${idx}`}
                     href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
-                    className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                  >
                  <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                  <span>{spec} en {doctor.cities[0]}</span>  
