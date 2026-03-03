@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale, Activity } from 'lucide-react';
+import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale, Activity, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
@@ -322,14 +322,10 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}/${slugify(searchTerm)}`}
-                            className="
-                                inline-flex items-center gap-2.5 px-6 py-4
-                                bg-[#e8e8ed] rounded-full
-                                text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#d2d2d7] transition-all group
-                            "
+                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
                         >
-                            {searchTerm} en {city}
+                            <MapPin className="w-4 h-4 text-[#86868b]" />
+                            <span>{searchTerm} en {city}</span>
                         </Link>
                     ))
                 }
