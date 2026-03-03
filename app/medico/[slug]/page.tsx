@@ -474,7 +474,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* Related Articles Section */}
       {relatedArticles.length > 0 && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 mt-8">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 mt-8">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-[#86868b]" />
                 Artículos Relacionados con {doctor.specialties[0]}
@@ -512,7 +512,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* Related Doctors Section */}
       {relatedDoctors.length > 0 && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
             <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
                 Otros {doctor.specialties[0]}s en {doctor.cities[0]}
             </h2>
@@ -580,7 +580,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       )}
 
       {/* Disclaimer Note & Last Updated */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-200 mt-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-200 mt-8">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
              <div className="flex gap-3 max-w-2xl">
                 <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
@@ -596,7 +596,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       </div>
 
       {/* SEO Cross-Linking Section */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
         <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
             Búsquedas Relacionadas
         </h2>
