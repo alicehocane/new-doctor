@@ -265,7 +265,7 @@ export default function HomePage() {
 
       {/* SEO / Informational Content Section */}
       <section className="py-12 md:py-24 bg-[#f5f5f7] w-full border-t border-slate-200">
-        <div className="max-w-5xl mx-auto px-4 md:px-6 space-y-10 md:space-y-20">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 space-y-10 md:space-y-20">
           
           {/* Main Intro */}
           <div className="text-center space-y-4 md:space-y-6">
