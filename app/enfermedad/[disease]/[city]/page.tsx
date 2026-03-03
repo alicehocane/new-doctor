@@ -425,7 +425,8 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                             shadow-sm hover:shadow-md
                         "
                     >
-                        {diseaseName} en {city}
+                        <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
+                        <span>{diseaseName} en {city}</span>
                     </Link>
                 ))}
             </div>
