@@ -445,13 +445,10 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                             key={city}
                             href={`/doctores/${slugify(city)}/${specialtySlug}`}
                             className="
-                                inline-flex items-center gap-2.5 px-6 py-4
-                                bg-[#e8e8ed] rounded-full
-                                text-[#1d1d1f] font-medium text-[15px]
-                                hover:bg-[#d2d2d7] hover:shadow-sm transition-all group
-                            "
+                                flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
                         >
-                        {searchTerm} en {city}
+                        <MapPin className="w-4 h-4 text-[#86868b]" />
+                        <span>{searchTerm} en {city}</span>
                         </Link>
                     ))
                 }
