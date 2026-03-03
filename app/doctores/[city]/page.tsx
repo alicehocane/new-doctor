@@ -802,7 +802,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                           <Link 
                               key={idx}
                                href={`/doctores/${citySlug}/${slugify(spec)}`}
-                              className="flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                              className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
                           >
                               <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                               <span>{spec} en {cityName}</span>
