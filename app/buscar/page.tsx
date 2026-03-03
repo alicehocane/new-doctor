@@ -74,6 +74,7 @@ export default function SearchPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
 
+
       {/* Header */}
       <div className="w-full max-w-2xl text-left md:text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <h1 className="text-4xl md:text-6xl font-semibold tracking-tight mb-3">
@@ -88,7 +89,7 @@ export default function SearchPage() {
       <SearchForm />
 
       {/* Verification Process Section (Trust Building) */}
-      <section className="w-full max-w-4xl mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-6">
+      <section className="w-full max-w-6xl mt-20 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-6">
           <div className="text-center mb-10">
               <span className="text-[#0071e3] font-semibold text-sm uppercase tracking-wider mb-2 block">Seguridad y Confianza</span>
               <h2 className="text-3xl font-bold text-[#1d1d1f] flex items-center justify-center gap-2">
@@ -143,7 +144,7 @@ export default function SearchPage() {
       </section>
 
       {/* Patient Success Guide (Tips) */}
-      <section className="w-full max-w-4xl mt-16 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
+      <section className="w-full max-w-6xl mt-16 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
           <div className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 shadow-sm">
               <div className="flex flex-col md:flex-row gap-12">
                   <div className="flex-1">
@@ -198,7 +199,7 @@ export default function SearchPage() {
       </section>
 
       {/* NEW SECTION: Safety Guide & "Thickness" Content */}
-      <section className="w-full max-w-4xl mt-16 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
+      <section className="w-full max-w-6xl mt-16 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
           <div className="flex flex-col gap-8">
               <div>
                   <h2 className="text-3xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-2">
@@ -243,7 +244,7 @@ export default function SearchPage() {
       </section>
 
       {/* Popular Diseases by City (SEO Cross-Linking) */}
-      <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8 w-full max-w-4xl">
+      <section className="mt-16 pt-16 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8 w-full max-w-6xl">
            <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-8 flex items-center gap-2">
               Encuentra tratamiento en tu ciudad
           </h2>
@@ -281,7 +282,7 @@ export default function SearchPage() {
       </section>
 
       {/* Why Choose MediBusca */}
-      <section className="w-full max-w-4xl mt-24 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
+      <section className="w-full max-w-6xl mt-24 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-[#1d1d1f] tracking-tight mb-4">
             La forma más segura de encontrar doctores
