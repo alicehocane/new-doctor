@@ -403,7 +403,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
         {/* Nearby Cities Section */}
         <section className="mt-24 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
-                Encuentra especialistas cerca de ti
+                También disponible en ciudades cercanas
             </h2>
             <p className="text-lg text-[#86868b] mb-8 max-w-3xl">
                 Si no encuentras lo que buscas en <span className="text-[#1d1d1f] font-medium">{cityName}</span>, 
