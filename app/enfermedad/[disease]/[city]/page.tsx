@@ -22,23 +22,6 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export async function generateStaticParams() {
-  const topDiseases = ALL_DISEASES.slice(0, 1);
-  const topCities = POPULAR_CITIES;
-
-  const paths = [];
-  for (const disease of topDiseases) {
-    for (const city of topCities) {
-      paths.push({
-        // Ensure these match the folder names exactly: [disease] and [city]
-        disease: slugify(disease),
-        city: slugify(city),
-      });
-    }
-  }
-  return paths;
-}
-
 const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
@@ -67,23 +50,17 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const specialtyComparison = targetSpecialty ? SPECIALTY_COMPARISONS[targetSpecialty] : null;
 
   // NEW: Generate the dynamic treatment text
-  // --- CRASH PROOF TREATMENT LOGIC ---
-  const treatmentSubsections = detailedInfo?.treatment?.subsections || [];
-  const treatmentItems = (treatmentSubsections.length > 0 && treatmentSubsections[0]?.items) 
-    ? treatmentSubsections[0].items 
-    : [];
-
+  const treatmentItems = detailedInfo?.treatment?.subsections?.[0]?.items;
   let dynamicTreatmentText = null;
-  if (Array.isArray(treatmentItems) && treatmentItems.length > 0) {
+  
+  if (treatmentItems && treatmentItems.length > 0) {
       const treatmentList = treatmentItems.join(', ').toLowerCase();
-      const treatmentNote = detailedInfo?.treatment?.note ? ` ${detailedInfo.treatment.note}` : '';
-      dynamicTreatmentText = `Especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. El tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
+      const treatmentNote = detailedInfo.treatment.note ? ` ${detailedInfo.treatment.note}` : '';
+      dynamicTreatmentText = `Especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
   }
 
   // 1. Fetch Initial Data Server-Side
-  let query = supabase.from('doctors')
-  .select('id, full_name, slug, specialties, has_phone, medical_profile, cities')
-  .contains('cities', [cityName]);
+  let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
 
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);
@@ -98,7 +75,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
        // .order('full_name', { ascending: true });  // 2. Alphabetical secondary sort
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = (rawDoctors as unknown as Doctor[]) || [];
+  const doctors = rawDoctors as Doctor[] || [];
 
   // Logic to prevent Thin Content indexing
   // If no doctors are found AND (disease is unknown OR city is unknown), return 404.

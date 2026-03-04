@@ -21,18 +21,6 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
-export async function generateStaticParams() {
-  const { data: topDoctors } = await supabase
-    .from('doctors')
-    .select('slug')
-    .limit(100);
-
-  // Tell TS that topDoctors is an array of Doctors
-  return (topDoctors as Doctor[] || []).map((doc: Doctor) => ({
-    slug: doc.slug,
-  }));
-}
-
 const formatDate = (dateString?: string) => {
     if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
     return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -42,10 +30,10 @@ const formatDate = (dateString?: string) => {
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { data: doctor } = await supabase
-  .from('doctors')
-  .select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
-  .eq('slug', params.slug)
-  .single();
+    .from('doctors')
+    .select('full_name, specialties, cities, medical_profile')
+    .eq('slug', params.slug)
+    .single();
 
   if (!doctor) {
     return {
@@ -93,7 +81,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   // 1. Fetch Main Doctor Data
   const { data: currentDoctor } = await supabase
     .from('doctors')
-    .select('id, full_name, slug, specialties, cities, license_numbers, medical_profile, contact_info, updated_at')
+    .select('*')
     .eq('slug', params.slug)
     .single();
 
@@ -107,25 +95,34 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   // 3. Parallel Data Fetching for Related Content
   const relatedDoctorsPromise = (async () => {
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
-    const { data: related } = await supabase
-      .from('doctors')
-      .select('id, full_name, slug, specialties, cities, license_numbers, contact_info') // Lean select
-      .contains('cities', [doctor.cities[0]])
-      .contains('specialties', [doctor.specialties[0]])
-      .neq('id', doctor.id)
-      .limit(4); // Let the DB limit it instead of slicing in JS
-    
-    return (related as unknown as Doctor[]) || [];
-  }
-  return [];
-})();
+      const { data: related } = await supabase
+        .from('doctors')
+        .select('*')
+        .contains('cities', [doctor.cities[0]])
+        .contains('specialties', [doctor.specialties[0]])
+        .neq('id', doctor.id)
+        .limit(20);
+      
+      if (related) {
+        return (related as Doctor[])
+          .sort((a, b) => {
+            const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
+            const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
+            if (aHas === bHas) return 0;
+            return aHas ? -1 : 1;
+          })
+          .slice(0, 4);
+      }
+    }
+    return [];
+  })();
 
   const relatedArticlesPromise = (async () => {
     if (doctor.specialties.length > 0) {
       const mainSpecialty = doctor.specialties[0];
       const { data: articlesData } = await supabase
         .from('articles')
-        .select('id, slug, title, excerpt, category, author, read_time') // Specific columns
+        .select('*')
         .ilike('category', `%${mainSpecialty}%`)
         .limit(3);
       return articlesData as Article[] || [];
@@ -520,7 +517,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 Otros {doctor.specialties[0]}s en {doctor.cities[0]}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedDoctors.map((doc: Doctor) => (
+                {relatedDoctors.map((doc) => (
                     <div 
                         key={doc.id}
                         className="bg-white p-6 rounded-[24px] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 border border-transparent hover:border-[#0071e3]/20 flex flex-col justify-between"

@@ -14,7 +14,6 @@ const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', '
 export const revalidate = 86400;
 // --- Helpers ---
 
-
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -24,14 +23,6 @@ const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
-
-// This will pre-build the disease pages for your top cities at build time
-export async function generateStaticParams() {
-  // Pre-render the most popular diseases (e.g., top 40)
-  return ALL_DISEASES.slice(0, 1).map((disease) => ({
-    disease: slugify(disease),
-  }));
-}
 
 // --- Metadata ---
 
@@ -56,7 +47,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, detailedInfo } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Doctors
-  let query = supabase.from('doctors').select('id, full_name, slug, specialties, has_phone, medical_profile');
+  let query = supabase.from('doctors').select('*');
 
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);
@@ -70,7 +61,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
        // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = (rawDoctors as unknown as Doctor[]) || [];
+  const doctors = rawDoctors as Doctor[] || [];
 
   // Logic to prevent Thin Content indexing
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
@@ -81,7 +72,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   // 2. Fetch Related Articles
   const { data: articlesData } = await supabase
     .from('articles')
-    .select('id, slug, title, excerpt, category, read_time, published_at')
+    .select('*')
     .or(`title.ilike.%${diseaseName}%,category.ilike.%${diseaseName}%,excerpt.ilike.%${diseaseName}%`)
     .order('published_at', { ascending: false })
     .limit(3);
@@ -114,28 +105,17 @@ export default async function DiseasePage({ params }: { params: { disease: strin
     ]
   };
 
-  // Safe signs and symptoms extraction
-  const signOrSymptom = detailedInfo?.symptoms?.groups 
-    ? detailedInfo.symptoms.groups.flatMap((g: any) => 
-        (g.items || []).map((i: string) => ({ "@type": "MedicalSymptom", "name": i }))
-      ) 
-    : [];
-
-  const riskFactor = detailedInfo?.causes?.items 
-    ? detailedInfo.causes.items.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c })) 
-    : [];
-
   const medicalConditionSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalCondition",
     "name": diseaseName,
-    "description": detailedInfo?.intro || `Información sobre especialistas para ${diseaseName}.`,
+    "description": detailedInfo?.intro || `Información sobre síntomas, causas y especialistas para ${diseaseName}.`,
     "possibleTreatment": targetSpecialty ? {
       "@type": "MedicalTherapy",
       "name": `Consulta con ${targetSpecialty}`
     } : undefined,
-    "signOrSymptom": signOrSymptom,
-    "riskFactor": riskFactor
+    "signOrSymptom": detailedInfo?.symptoms?.groups?.flatMap((g: any) => g.items.map((i: string) => ({ "@type": "MedicalSymptom", "name": i }))) || [],
+    "riskFactor": detailedInfo?.causes?.items?.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c })) || []
   };
 
   const webPageSchema = {
