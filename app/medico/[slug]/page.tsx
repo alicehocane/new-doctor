@@ -454,7 +454,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                   Llamar
                 </a>
                 <a 
-                  href={`https://wa.me/${waPhone}`}
+                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
