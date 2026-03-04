@@ -600,7 +600,7 @@ export default async function CityPage({ params }: { params: { city: string } })
             {/* Left Side: Text */}
             <div className="flex-1 max-w-3xl">
                 <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-                    Doctores en {cityName}
+                    Médicos en {cityName}
                 </h1>
                 <p className="text-xl text-[#86868b] font-normal leading-relaxed">
                     Explora los mejores especialistas médicos verificados en {cityName}. Accede a información sobre especialidades y enfermedades y descubre doctores recomendados.
