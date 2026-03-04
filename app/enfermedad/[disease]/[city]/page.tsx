@@ -23,7 +23,7 @@ const slugify = (text: string) => {
 };
 
 export async function generateStaticParams() {
-  const topDiseases = ALL_DISEASES.slice(0, 10);
+  const topDiseases = ALL_DISEASES.slice(0, 1);
   const topCities = POPULAR_CITIES;
 
   const paths = [];
@@ -67,10 +67,11 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const specialtyComparison = targetSpecialty ? SPECIALTY_COMPARISONS[targetSpecialty] : null;
 
   // NEW: Generate the dynamic treatment text
-  // REINFORCED: Dynamic treatment text extraction
-  const treatmentSubsections = detailedInfo?.treatment?.subsections;
-  const hasItems = treatmentSubsections && treatmentSubsections[0] && treatmentSubsections[0].items;
-  const treatmentItems = hasItems ? treatmentSubsections[0].items : [];
+  // --- CRASH PROOF TREATMENT LOGIC ---
+  const treatmentSubsections = detailedInfo?.treatment?.subsections || [];
+  const treatmentItems = (treatmentSubsections.length > 0 && treatmentSubsections[0]?.items) 
+    ? treatmentSubsections[0].items 
+    : [];
 
   let dynamicTreatmentText = null;
   if (Array.isArray(treatmentItems) && treatmentItems.length > 0) {

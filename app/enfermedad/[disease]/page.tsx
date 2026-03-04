@@ -28,7 +28,7 @@ const slugify = (text: string) => {
 // This will pre-build the disease pages for your top cities at build time
 export async function generateStaticParams() {
   // Pre-render the most popular diseases (e.g., top 40)
-  return ALL_DISEASES.slice(0, 40).map((disease) => ({
+  return ALL_DISEASES.slice(0, 1).map((disease) => ({
     disease: slugify(disease),
   }));
 }
