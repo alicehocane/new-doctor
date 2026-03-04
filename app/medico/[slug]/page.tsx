@@ -115,7 +115,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       .neq('id', doctor.id)
       .limit(4); // Let the DB limit it instead of slicing in JS
     
-    return (related as Doctor[]) || [];
+    return (related as unknown as Doctor[]) || [];
   }
   return [];
 })();

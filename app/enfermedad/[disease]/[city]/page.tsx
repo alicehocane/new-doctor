@@ -94,7 +94,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
        // .order('full_name', { ascending: true });  // 2. Alphabetical secondary sort
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = rawDoctors as Doctor[] || [];
+  const doctors = (rawDoctors as unknown as Doctor[]) || [];
 
   // Logic to prevent Thin Content indexing
   // If no doctors are found AND (disease is unknown OR city is unknown), return 404.
