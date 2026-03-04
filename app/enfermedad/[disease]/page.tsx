@@ -123,9 +123,13 @@ export default async function DiseasePage({ params }: { params: { disease: strin
       "@type": "MedicalTherapy",
       "name": `Consulta con ${targetSpecialty}`
     } : undefined,
-    "signOrSymptom": detailedInfo?.symptoms?.groups?.flatMap((g: any) => g.items.map((i: string) => ({ "@type": "MedicalSymptom", "name": i }))) || [],
-    "riskFactor": detailedInfo?.causes?.items?.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c })) || []
-  };
+   "signOrSymptom": detailedInfo?.symptoms?.groups 
+    ? detailedInfo.symptoms.groups.flatMap((g: any) => g.items.map((i: string) => ({ "@type": "MedicalSymptom", "name": i }))) 
+    : [], // Fallback to empty array
+  "riskFactor": detailedInfo?.causes?.items 
+    ? detailedInfo.causes.items.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c })) 
+    : []  // Fallback to empty array
+};
 
   const webPageSchema = {
     "@context": "https://schema.org",
