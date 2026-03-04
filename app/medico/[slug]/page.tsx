@@ -669,7 +669,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             {mainPhone ? (
               <>
                 <a 
-                  href={`https://wa.me/${waPhone}`}
+                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
                   className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
                   aria-label="WhatsApp"
                 >
