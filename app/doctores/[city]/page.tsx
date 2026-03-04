@@ -595,7 +595,6 @@ export default async function CityPage({ params }: { params: { city: string } })
         </nav>
 
         {/* Header */}
-        {/* Header */}
         <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700 flex flex-col md:flex-row md:items-center justify-between gap-8">
             
             {/* Left Side: Text */}
