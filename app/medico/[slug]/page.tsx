@@ -230,7 +230,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const phones = doctor.contact_info?.phones || [];
   const mainPhone = phones[0];
   const waPhone = mainPhone?.replace(/\D/g, '');
-  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, encontré su perfil en MediBusca. Quisiera realizar una consulta sobre su especialidad en ${doctor.specialties[0]}.`);
+  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, Encontré su perfil en MediBusca y me gustaría realizar una consulta con usted sobre un tema relacionado con su especialidad en ${doctor.specialties[0]}. Podría indicarme su disponibilidad para agendar una cita?.`);
   
   // --- Render ---
   return (
@@ -454,7 +454,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                   Llamar
                 </a>
                 <a 
-                  href={`https://wa.me/${waPhone}`}
+                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
@@ -660,13 +660,16 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             <span className="block text-[12px] font-bold text-white truncate leading-none">
               {doctor.full_name}
             </span>
+            <span className="block text-[10px] text-white truncate leading-none">
+              {doctor.specialties[0]}
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
             {mainPhone ? (
               <>
                 <a 
-                  href={`https://wa.me/${waPhone}`}
+                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
                   className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
                   aria-label="WhatsApp"
                 >

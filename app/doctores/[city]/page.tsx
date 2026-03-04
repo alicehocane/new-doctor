@@ -6,7 +6,7 @@ import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCir
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA, POPULAR_SPECIALTIES } from '../../../lib/constants';
+import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA, POPULAR_SPECIALTIES, getStateForCity } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 
 
@@ -472,6 +472,7 @@ export async function generateMetadata({ params }: { params: { city: string } })
 export default async function CityPage({ params }: { params: { city: string } }) {
   const citySlug = params.city;
   const cityName = getCanonicalCity(citySlug);
+  const stateName = getStateForCity(cityName);
   const medicalZones = CITY_MEDICAL_ZONES[citySlug] || [];
   const healthData = getCityHealthData(citySlug, cityName);
 
@@ -594,13 +595,31 @@ export default async function CityPage({ params }: { params: { city: string } })
         </nav>
 
         {/* Header */}
-        <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
-            <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
-            Doctores en {cityName}
-            </h1>
-            <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            Explora los mejores especialistas médicos verificados en {cityName}. Accede a información sobre especialidades y enfermedades y descubre doctores recomendados.
-            </p>
+        <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            
+            {/* Left Side: Text */}
+            <div className="flex-1 max-w-3xl">
+                <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
+                    Doctores en {cityName}
+                </h1>
+                <p className="text-xl text-[#86868b] font-normal leading-relaxed">
+                    Explora los mejores especialistas médicos verificados en {cityName}. Accede a información sobre especialidades y enfermedades y descubre doctores recomendados.
+                </p>
+            </div>
+
+            {/* Right Side: Location Badge (Based on your drawing) */}
+            <div className="flex flex-col items-center justify-center shrink-0 bg-white p-6 rounded-[24px] border border-slate-200/80 shadow-sm min-w-[200px]">
+                <div className="w-16 h-16 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-3">
+                    <MapPin className="w-8 h-8" strokeWidth={1.5} />
+                </div>
+                <span className="text-[#1d1d1f] font-semibold text-lg text-center leading-tight">
+                    {cityName}
+                </span>
+                <span className="text-[#86868b] text-sm text-center mt-0.5">
+                    {stateName}, Mexico
+                </span>
+            </div>
+            
         </div>
 
         {/* Local Healthcare Overview - Added Section */}
@@ -747,7 +766,7 @@ export default async function CityPage({ params }: { params: { city: string } })
 
       {/* FAQ Section */}
       <section className="py-16 bg-white border-t border-slate-200">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
             <div className="flex items-center gap-3 mb-8 justify-center">
                 <HelpCircle className="w-6 h-6 text-[#0071e3]" />
                 <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f]">Preguntas Frecuentes</h2>

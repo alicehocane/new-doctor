@@ -106,8 +106,6 @@ export const DoctorUploader: React.FC = () => {
       // JSONB Fields mapped strictly to Typed Objects
       contact_info: raw.contact,
       medical_profile: raw.medical_info,
-      seo_metadata: raw.seo,
-      schema_data: raw.schema_json_ld,
       updated_at: new Date().toISOString(), // Update timestamp on upsert
     };
   };

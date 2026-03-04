@@ -18,12 +18,6 @@ export interface RawDoctorRecord {
     sub_specialties: string[];
     diseases_treated: string[];
   };
-  seo: {
-    meta_title: string;
-    meta_description: string;
-    keywords: string;
-  };
-  schema_json_ld: any;
 }
 
 // Matching the provided "Hybrid Model" TypeScript definition
@@ -52,14 +46,6 @@ export type Doctor = {
     sub_specialties: string[];
     diseases_treated: string[];
   };
-  
-  seo_metadata: {
-    meta_title: string;
-    meta_description: string;
-    keywords: string;
-  };
-  
-  schema_data: Record<string, any>;
   
   created_at: string;
   updated_at: string;

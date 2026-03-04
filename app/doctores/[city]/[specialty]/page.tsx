@@ -5,7 +5,7 @@ import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA } from '../../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA, getStateForCity } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
 import EmergencyBanner from '@/components/EmergencyBanner';
 
@@ -64,6 +64,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   const specialtySlug = params.specialty;
   
   const cityName = getCanonicalCity(citySlug);
+  const stateName = getStateForCity(cityName);
   const decodedSpecialty = decodeURIComponent(specialtySlug);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
@@ -270,15 +271,35 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             <span className="text-[#1d1d1f] capitalize">{cityName}</span>
         </nav>
 
+
         {/* Header */}
-        <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700">
-            <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 capitalize tracking-tight">
-            {searchTerm}s En {cityName}
-            </h1>
-            <p className="text-xl text-[#86868b] font-normal max-w-3xl leading-relaxed">
-            {description}
-            </p>
+        <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-700 flex flex-col md:flex-row md:items-center justify-between gap-8">
+            
+            {/* Left Side: Text */}
+            <div className="flex-1 max-w-3xl">
+                <h1 className="text-3xl md:text-5xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
+                    {searchTerm}s En {cityName}
+                </h1>
+                <p className="text-xl text-[#86868b] font-normal leading-relaxed">
+                    {description}
+                </p>
+            </div>
+
+            {/* Right Side: Location Badge (Based on your drawing) */}
+            <div className="flex flex-col items-center justify-center shrink-0 bg-white p-6 rounded-[24px] border border-slate-200/80 shadow-sm min-w-[200px]">
+                <div className="w-16 h-16 bg-[#0071e3]/10 text-[#0071e3] rounded-full flex items-center justify-center mb-3">
+                    <MapPin className="w-8 h-8" strokeWidth={1.5} />
+                </div>
+                <span className="text-[#1d1d1f] font-semibold text-lg text-center leading-tight">
+                    {cityName}
+                </span>
+                <span className="text-[#86868b] text-sm text-center mt-0.5">
+                    {stateName}, Mexico
+                </span>
+            </div>
+            
         </div>
+
 
         {/* NEW: Emergency Banner Component */}
         <EmergencyBanner 
@@ -376,9 +397,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
                 </div>
             )}
-
-            
-
             
 
           </div>
