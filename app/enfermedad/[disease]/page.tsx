@@ -222,7 +222,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
         {/* Informational Content Section - Dynamic Render based on DISEASE_INFORMATION */}
         {detailedInfo && (
             <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
-                <div className="max-w-4xl mx-auto space-y-16">
+                <div className="max-w-5xl mx-auto space-y-16">
                     
                     {/* What Is */}
                     {detailedInfo.whatIs && (

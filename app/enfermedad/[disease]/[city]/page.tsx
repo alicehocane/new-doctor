@@ -278,7 +278,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
         {/* Informational Content Section */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
-          <div className="max-w-4xl mx-auto space-y-16">
+          <div className="max-w-5xl mx-auto space-y-16">
             
             {/* 1. Intro */}
             <div className="text-center space-y-6">

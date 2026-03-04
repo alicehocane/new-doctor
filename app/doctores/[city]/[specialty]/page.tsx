@@ -323,7 +323,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
         {/* NEW: Dynamic Informational Section */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
-          <div className="max-w-4xl mx-auto space-y-16">
+          <div className="max-w-5xl mx-auto space-y-16">
             
             {/* 1. How to Choose */}
             <div className="text-center space-y-6">
@@ -373,6 +373,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                             <p className="text-[#86868b] text-sm leading-relaxed">{cityHealthInfo.transport}</p>
                         </div>
                     </div>
+
                 </div>
             )}
 

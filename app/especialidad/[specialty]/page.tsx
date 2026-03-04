@@ -256,7 +256,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* Existing Educational Content Section (Refined) */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
-            <div className="max-w-4xl mx-auto space-y-12">
+            <div className="max-w-5xl mx-auto space-y-12">
                 
                 <div className="text-center space-y-4">
                     <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] tracking-tight">
