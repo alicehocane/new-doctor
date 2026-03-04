@@ -660,6 +660,9 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             <span className="block text-[12px] font-bold text-white truncate leading-none">
               {doctor.full_name}
             </span>
+            <span className="block text-[10px] text-white truncate leading-none">
+              {doctor.specialties[0]}
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
