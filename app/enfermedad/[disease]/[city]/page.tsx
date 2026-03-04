@@ -67,13 +67,16 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const specialtyComparison = targetSpecialty ? SPECIALTY_COMPARISONS[targetSpecialty] : null;
 
   // NEW: Generate the dynamic treatment text
-  const treatmentItems = detailedInfo?.treatment?.subsections?.[0]?.items;
+  // REINFORCED: Dynamic treatment text extraction
+  const treatmentSubsections = detailedInfo?.treatment?.subsections;
+  const hasItems = treatmentSubsections && treatmentSubsections[0] && treatmentSubsections[0].items;
+  const treatmentItems = hasItems ? treatmentSubsections[0].items : [];
+
   let dynamicTreatmentText = null;
-  
-  if (treatmentItems && treatmentItems.length > 0) {
+  if (Array.isArray(treatmentItems) && treatmentItems.length > 0) {
       const treatmentList = treatmentItems.join(', ').toLowerCase();
-      const treatmentNote = detailedInfo.treatment.note ? ` ${detailedInfo.treatment.note}` : '';
-      dynamicTreatmentText = `Especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
+      const treatmentNote = detailedInfo?.treatment?.note ? ` ${detailedInfo.treatment.note}` : '';
+      dynamicTreatmentText = `Especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. El tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
   }
 
   // 1. Fetch Initial Data Server-Side

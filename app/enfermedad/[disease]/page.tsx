@@ -114,22 +114,28 @@ export default async function DiseasePage({ params }: { params: { disease: strin
     ]
   };
 
+  // Safe signs and symptoms extraction
+  const signOrSymptom = detailedInfo?.symptoms?.groups 
+    ? detailedInfo.symptoms.groups.flatMap((g: any) => 
+        (g.items || []).map((i: string) => ({ "@type": "MedicalSymptom", "name": i }))
+      ) 
+    : [];
+
+  const riskFactor = detailedInfo?.causes?.items 
+    ? detailedInfo.causes.items.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c })) 
+    : [];
+
   const medicalConditionSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalCondition",
     "name": diseaseName,
-    "description": detailedInfo?.intro || `Información sobre síntomas, causas y especialistas para ${diseaseName}.`,
+    "description": detailedInfo?.intro || `Información sobre especialistas para ${diseaseName}.`,
     "possibleTreatment": targetSpecialty ? {
       "@type": "MedicalTherapy",
       "name": `Consulta con ${targetSpecialty}`
     } : undefined,
-    // CRASH PROOF ARRAYS:
-    "signOrSymptom": detailedInfo?.symptoms?.groups 
-        ? detailedInfo.symptoms.groups.flatMap((g: any) => (g.items || []).map((i: string) => ({ "@type": "MedicalSymptom", "name": i }))) 
-        : [],
-    "riskFactor": detailedInfo?.causes?.items 
-        ? detailedInfo.causes.items.map((c: string) => ({ "@type": "MedicalRiskFactor", "name": c })) 
-        : []
+    "signOrSymptom": signOrSymptom,
+    "riskFactor": riskFactor
   };
 
   const webPageSchema = {
