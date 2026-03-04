@@ -616,7 +616,7 @@ export default async function CityPage({ params }: { params: { city: string } })
                     {stateName}
                 </span>
                 <span className="text-[#86868b] text-sm text-center mt-0.5">
-                    México
+                    {cityName}, Mexico
                 </span>
             </div>
             
