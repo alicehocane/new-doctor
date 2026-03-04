@@ -81,7 +81,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   // 2. Fetch Related Articles
   const { data: articlesData } = await supabase
     .from('articles')
-    .select('*')
+    .select('id, slug, title, excerpt, category, read_time, published_at')
     .or(`title.ilike.%${diseaseName}%,category.ilike.%${diseaseName}%,excerpt.ilike.%${diseaseName}%`)
     .order('published_at', { ascending: false })
     .limit(3);

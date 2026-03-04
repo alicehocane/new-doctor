@@ -93,7 +93,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   // 1. Fetch Main Doctor Data
   const { data: currentDoctor } = await supabase
     .from('doctors')
-    .select('*')
+    .select('id, full_name, slug, specialties, cities, license_numbers, medical_profile, contact_info, updated_at')
     .eq('slug', params.slug)
     .single();
 
@@ -125,7 +125,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       const mainSpecialty = doctor.specialties[0];
       const { data: articlesData } = await supabase
         .from('articles')
-        .select('*')
+        .select('id, slug, title, excerpt, category, author, read_time') // Specific columns
         .ilike('category', `%${mainSpecialty}%`)
         .limit(3);
       return articlesData as Article[] || [];

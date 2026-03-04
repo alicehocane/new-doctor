@@ -23,8 +23,6 @@ const slugify = (text: string) => {
 };
 
 export async function generateStaticParams() {
-  // Pre-render the "Power Couples": Top 10 diseases in your 6 main cities
-  // This creates 60 static pages that cost 0ms of CPU time.
   const topDiseases = ALL_DISEASES.slice(0, 10);
   const topCities = POPULAR_CITIES;
 
@@ -32,6 +30,7 @@ export async function generateStaticParams() {
   for (const disease of topDiseases) {
     for (const city of topCities) {
       paths.push({
+        // Ensure these match the folder names exactly: [disease] and [city]
         disease: slugify(disease),
         city: slugify(city),
       });
