@@ -22,6 +22,27 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+
+// This tells Vercel to pre-build the most valuable city/disease combinations for free
+export async function generateStaticParams() {
+  const params = [];
+
+  // Pre-build the top 10 cities and top 10 diseases (100 static pages)
+  const topCities = POPULAR_CITIES.slice(0, 10);
+  const topDiseases = ALL_DISEASES.slice(0, 10);
+
+  for (const city of topCities) {
+    for (const disease of topDiseases) {
+      params.push({
+        disease: slugify(disease),
+        city: slugify(city),
+      });
+    }
+  }
+
+  return params;
+}
+
 const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
@@ -41,10 +62,22 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   const diseaseSlug = params.disease;
   const citySlug = params.city;
   const cityName = getCanonicalCity(citySlug);
-  const stateName = getStateForCity(cityName);
   
   // Use helper to get disease info
   const { name: diseaseName, primarySpecialty: targetSpecialty, emergencyCategory, detailedInfo } = getDiseaseInfo(diseaseSlug);
+
+  // 1. VALIDATE IMMEDIATELY (Costs 0 CPU time)
+  const isKnownCity = ALL_CITIES.includes(cityName);
+  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
+
+  // If a bot guesses a fake city or disease, kill the process before touching the database
+  if (!isKnownCity || !isKnownDisease) {
+    notFound();
+  }
+
+  // 2. Safe to proceed with valid data
+  const stateName = getStateForCity(cityName);
+  const metroCities = getMetroAreaForCity(cityName);
 
   // Get the dynamic comparison text if a primary specialty exists
   const specialtyComparison = targetSpecialty ? SPECIALTY_COMPARISONS[targetSpecialty] : null;
@@ -59,7 +92,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
       dynamicTreatmentText = `Especialistas en ${cityName} manejan diversos enfoques para tratar la ${diseaseName.toLowerCase()}. Dependiendo de la gravedad, el tratamiento puede incluir: ${treatmentList}.${treatmentNote}`;
   }
 
-  // 1. Fetch Initial Data Server-Side
+  // 3. Fetch Initial Data Server-Side (Only runs for valid URLs!)
   let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
 
   if (targetSpecialty) {
@@ -70,25 +103,10 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   }
 
   // Tell Supabase to sort by has_phone first, then alphabetically
-  query = query
-      .order('has_phone', { ascending: false });
-       // .order('full_name', { ascending: true });  // 2. Alphabetical secondary sort
+  query = query.order('has_phone', { ascending: false });
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors as Doctor[] || [];
-
-  // Logic to prevent Thin Content indexing
-  // If no doctors are found AND (disease is unknown OR city is unknown), return 404.
-  // This prevents URL manipulation like /enfermedad/foobar/fake-city from generating indexable pages.
-  const isKnownCity = ALL_CITIES.includes(cityName);
-  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
-  const metroCities = getMetroAreaForCity(cityName);
-
-  
-
-  if (doctors.length === 0 && (!isKnownCity || !isKnownDisease)) {
-    notFound();
-  }
 
 
   const faqSchema = {

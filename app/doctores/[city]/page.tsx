@@ -440,6 +440,16 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+
+// This tells Vercel to pre-build your top city pages for free during deployment
+export async function generateStaticParams() {
+  // Pre-build the top 20 most popular cities
+  return POPULAR_CITIES.slice(0, 20).map((city) => ({
+    city: slugify(city),
+  }));
+}
+
+
 const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
@@ -472,26 +482,29 @@ export async function generateMetadata({ params }: { params: { city: string } })
 export default async function CityPage({ params }: { params: { city: string } }) {
   const citySlug = params.city;
   const cityName = getCanonicalCity(citySlug);
+
+  // 1. VALIDATE IMMEDIATELY (Costs 0 CPU time)
+  const isKnownCity = ALL_CITIES.includes(cityName);
+  
+  // If a bot guesses a fake city, kill the process before touching the database
+  if (!isKnownCity) {
+    notFound();
+  }
+
+  // 2. Safe to proceed with valid data
   const stateName = getStateForCity(cityName);
   const medicalZones = CITY_MEDICAL_ZONES[citySlug] || [];
   const healthData = getCityHealthData(citySlug, cityName);
 
-  // Fetch initial batch of doctors
+  // 3. Fetch initial batch of doctors
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
     .contains('cities', [cityName])
     .order('has_phone', { ascending: false }) // 1. Doctors with phones first
-    // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors as Doctor[] || [];
-
-  // Logic to prevent Thin Content indexing
-  const isKnownCity = ALL_CITIES.includes(cityName);
-  if (doctors.length === 0 && !isKnownCity) {
-    notFound();
-  }
 
   // FAQs
   const faqs = [

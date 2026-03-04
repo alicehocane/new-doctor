@@ -25,6 +25,26 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+// This tells Vercel to pre-build the most valuable city/specialty combinations for free
+export async function generateStaticParams() {
+  const params = [];
+
+  // Pre-build the top 10 cities and top 10 specialties (100 static pages)
+  const topCities = POPULAR_CITIES.slice(0, 10);
+  const topSpecialties = POPULAR_SPECIALTIES.slice(0, 10);
+
+  for (const city of topCities) {
+    for (const specialty of topSpecialties) {
+      params.push({
+        city: slugify(city),
+        specialty: slugify(specialty),
+      });
+    }
+  }
+
+  return params;
+}
+
 const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
@@ -64,76 +84,62 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   const specialtySlug = params.specialty;
   
   const cityName = getCanonicalCity(citySlug);
-  const stateName = getStateForCity(cityName);
   const decodedSpecialty = decodeURIComponent(specialtySlug);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
-  
+
+  // 1. VALIDATE IMMEDIATELY (Costs 0 CPU time)
+  const isKnownCity = ALL_CITIES.includes(cityName);
+  const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
+
+  // If a bot guesses a fake city or specialty, kill the process before touching the database
+  if (!isKnownCity || !isKnownSpecialty) {
+    notFound();
+  }
+
+  // 2. Safe to proceed with valid data
+  const stateName = getStateForCity(cityName);
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en ${cityName}.`;
   
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || [];
   const conditionText = conditions.slice(0, 2).join(', ').toLowerCase() || 'tus síntomas';
 
-
-  // NEW: Get the dynamic comparison text
   const specialtyComparison = SPECIALTY_COMPARISONS[searchTerm] || null;
-
-  // NEW: Get the metro cities for the filter
   const metroCities = getMetroAreaForCity(cityName);
-  // NEW: Extract local health data
   const cityHealthInfo = CITY_HEALTH_DATA[citySlug] || null;
 
-  // NEW: Map high-risk specialties to their emergency categories
+  // Map high-risk specialties to their emergency categories
   const SPECIALTY_EMERGENCY_MAP: Record<string, string> = {
-      // Heart & Lungs (Heart attacks, anaphylaxis)
       'Cardiólogo': 'cardiac',
-      'Alergólogo': 'respiratory', // Shock anafiláctico / crisis asmática
-      
-      // Mental Health (Crisis, panic attacks, suicide risk)
+      'Alergólogo': 'respiratory',
       'Psiquiatra': 'mental_health',
       'Psicólogo': 'mental_health',
       'Psicoanalista': 'mental_health',
-      
-      // Trauma & Severe Pain (Accidents, fractures)
       'Traumatólogo': 'trauma',
       'Ortopedista': 'trauma',
-      
-      // OBGYN (Severe bleeding, ectopic pregnancy)
       'Ginecólogo': 'obgyn_urgent',
-      
-      // General & Acute Pain (Appendicitis, severe infections, high fever)
       'Médico general': 'general_urgent',
       'Pediatra': 'general_urgent',
       'Neonatólogo': 'general_urgent',
       'Cirujano general': 'general_urgent',
       'Cirujano pediátrico': 'general_urgent',
-      'Gastroenterólogo': 'general_urgent', // Hemorragias digestivas
-      'Neurocirujano': 'general_urgent',    // Derrames, trauma craneoencefálico
+      'Gastroenterólogo': 'general_urgent',
+      'Neurocirujano': 'general_urgent',    
       'Internista': 'general_urgent'
   };
-  // Extract the exact type expected by the EmergencyBanner component
+  
   type BannerCategory = React.ComponentProps<typeof EmergencyBanner>['category'];
-
-  // Cast our dictionary result to perfectly match that type
   const emergencyCategory = (SPECIALTY_EMERGENCY_MAP[searchTerm] || null) as BannerCategory;
 
-  // Fetch Data
+  // 3. Fetch Data (Only runs for valid URLs!)
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
     .contains('cities', [cityName])
     .contains('specialties', [searchTerm])
-    .order('has_phone', { ascending: false }) // 1. Doctors with phones first
-     // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
+    .order('has_phone', { ascending: false })
     .range(0, PAGE_SIZE - 1);
 
   const doctors = rawDoctors as Doctor[] || [];
-
-  // Logic to prevent Thin Content indexing
-  // If no doctors are found AND the specialty is not in our known list (meaning it's likely gibberish or a typo), return 404.
-  const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
-  if (doctors.length === 0 && !isKnownSpecialty) {
-    notFound();
-  }
 
 
   const faqSchema = {

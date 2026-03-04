@@ -26,6 +26,16 @@ const slugify = (text: string) => {
 
 // --- Metadata ---
 
+
+// This tells Vercel to pre-build your most popular disease pages for free
+export async function generateStaticParams() {
+  // Pre-build the top 20 diseases. Adjust this number based on your total disease count.
+  // We slice it so it doesn't take too long during your Vercel deployment build.
+  return ALL_DISEASES.slice(0, 20).map((disease) => ({
+    disease: slugify(disease),
+  }));
+}
+
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
   const { name: diseaseName, detailedInfo } = getDiseaseInfo(params.disease);
   
@@ -46,7 +56,15 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const diseaseSlug = params.disease;
   const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, detailedInfo } = getDiseaseInfo(diseaseSlug);
 
-  // 1. Fetch Initial Doctors
+  // 1. VALIDATE IMMEDIATELY (Costs 0 CPU time)
+  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
+  
+  // If a bot guesses a fake disease, kill the process before touching the database
+  if (!isKnownDisease) {
+    notFound(); 
+  }
+
+  // 2. Fetch Initial Doctors (Only runs if the URL is valid!)
   let query = supabase.from('doctors').select('*');
 
   if (targetSpecialty) {
@@ -56,20 +74,12 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   }
 
   // Tell Supabase to sort by has_phone first, then alphabetically
-  query = query
-      .order('has_phone', { ascending: false });
-       // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
+  query = query.order('has_phone', { ascending: false });
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
   const doctors = rawDoctors as Doctor[] || [];
 
-  // Logic to prevent Thin Content indexing
-  const isKnownDisease = ALL_DISEASES.includes(diseaseName);
-  if (doctors.length === 0 && !isKnownDisease) {
-    notFound();
-  }
-
-  // 2. Fetch Related Articles
+  // 3. Fetch Related Articles
   const { data: articlesData } = await supabase
     .from('articles')
     .select('*')

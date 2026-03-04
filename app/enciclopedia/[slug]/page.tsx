@@ -9,8 +9,35 @@ import { Metadata } from 'next';
 
 export const revalidate = 43200;
 
+
+// This tells Vercel to pre-build your top articles for free during deployment
+export async function generateStaticParams() {
+  // Fetch the slugs of your 50 most recent/popular articles
+  const { data: articles } = await supabase
+    .from('articles')
+    .select('slug')
+    .order('published_at', { ascending: false })
+    .limit(50);
+
+  if (!articles) return [];
+
+  // Tell TypeScript the exact shape of the returned data
+  return articles.map((article: { slug: string }) => ({
+    slug: article.slug,
+  }));
+}
+
 // Generate Metadata
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  // 1. EARLY EXIT (Block junk URLs before querying the database)
+  const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
+  if (!isValidSlugFormat) {
+    return {
+      title: 'Artículo no encontrado',
+      description: 'URL inválida o artículo no disponible.'
+    };
+  }
+
   const { data: article } = await supabase
     .from('articles')
     .select('title, excerpt')
@@ -36,7 +63,13 @@ const formatDate = (dateString?: string) => {
 };
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  // 1. Fetch Main Article
+  // 1. EARLY EXIT FOR MAIN COMPONENT
+  const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
+  if (!isValidSlugFormat) {
+    notFound();
+  }
+
+  // 2. Fetch Main Article (Only runs if the slug looks normal)
   const { data: currentArticle } = await supabase
     .from('articles')
     .select('*')
