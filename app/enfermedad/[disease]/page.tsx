@@ -70,7 +70,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
        // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  const doctors = rawDoctors as Doctor[] || [];
+  const doctors = (rawDoctors as unknown as Doctor[]) || [];
 
   // Logic to prevent Thin Content indexing
   const isKnownDisease = ALL_DISEASES.includes(diseaseName);
