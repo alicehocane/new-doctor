@@ -613,10 +613,10 @@ export default async function CityPage({ params }: { params: { city: string } })
                     <MapPin className="w-8 h-8" strokeWidth={1.5} />
                 </div>
                 <span className="text-[#1d1d1f] font-semibold text-lg text-center leading-tight">
-                    {stateName}
+                    {cityName}
                 </span>
                 <span className="text-[#86868b] text-sm text-center mt-0.5">
-                    {cityName}, Mexico
+                    {stateName}, Mexico
                 </span>
             </div>
             
