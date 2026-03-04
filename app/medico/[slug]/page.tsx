@@ -21,6 +21,23 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+// This tells Vercel to pre-build your top 100 doctor profiles for free
+export async function generateStaticParams() {
+  // Fetch just the slugs of your top 100 doctors
+  const { data: doctors } = await supabase
+    .from('doctors')
+    .select('slug')
+    .order('has_phone', { ascending: false })
+    .limit(100);
+
+  if (!doctors) return [];
+
+  // FIX: Explicitly tell TypeScript that 'doc' is an object containing a string called 'slug'
+  return doctors.map((doc: { slug: string }) => ({
+    slug: doc.slug,
+  }));
+}
+
 const formatDate = (dateString?: string) => {
     if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
     return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -29,6 +46,16 @@ const formatDate = (dateString?: string) => {
 // --- SEO Metadata Generation ---
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  // 1. EARLY EXIT FOR METADATA (Crucial to block bots before they hit Supabase)
+  const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
+  if (!isValidSlugFormat) {
+    return {
+      title: 'Perfil no encontrado',
+      description: 'URL inválida o perfil no disponible.'
+    };
+  }
+
+  // 2. Fetch doctor ONLY if the slug format is valid
   const { data: doctor } = await supabase
     .from('doctors')
     .select('full_name, specialties, cities, medical_profile')
@@ -78,7 +105,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 // --- Server Component ---
 
 export default async function DoctorProfile({ params }: { params: { slug: string } }) {
-  // 1. Fetch Main Doctor Data
+  // 1. BASIC VALIDATION (Costs 0 CPU time)
+  // Check if the slug contains only valid characters (lowercase letters, numbers, hyphens)
+  // This instantly blocks bots trying to inject SQL, uppercase letters, or weird symbols.
+  const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
+  
+  if (!isValidSlugFormat) {
+      notFound();
+  }
+
+  // 2. Fetch Main Doctor Data (Only runs if the slug format looks normal)
   const { data: currentDoctor } = await supabase
     .from('doctors')
     .select('*')

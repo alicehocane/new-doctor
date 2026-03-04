@@ -5,6 +5,7 @@ import { Doctor, Article } from '../../../types';
 import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, ClipboardList, Check, Clock, ArrowRight, UserCheck, Scale, Activity, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
@@ -20,6 +21,15 @@ const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
+
+
+// This tells Vercel to pre-build the top specialty pages as free static HTML
+export async function generateStaticParams() {
+  // Pre-build the 20 most popular specialties
+  return POPULAR_SPECIALTIES.slice(0, 20).map((specialty) => ({
+    specialty: slugify(specialty),
+  }));
+}
 
 const getCanonicalSpecialty = (input: string) => {
     // Try to find exact match by slug
@@ -55,13 +65,23 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   const decodedSpecialty = decodeURIComponent(params.specialty);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
   
+  // 1. VALIDATE IMMEDIATELY (Costs 0 CPU time)
+  // Check if the requested specialty actually exists in our master list
+  const isKnownSpecialty = COMMON_SPECIALTIES.includes(searchTerm);
+  
+  // If it's a fake or junk URL, stop processing immediately and return a 404
+  if (!isKnownSpecialty) {
+    notFound();
+  }
+
+  // 2. Safe to proceed with data extraction for valid specialties
   const description = SPECIALTY_DESCRIPTIONS[searchTerm] || `Encuentra a los mejores especialistas en ${searchTerm} verificados en México.`;
   const conditions = SPECIALTY_CONDITIONS[searchTerm] || ['Diagnóstico general', 'Tratamiento especializado', 'Seguimiento de padecimientos', 'Consultas preventivas'];
   const procedures = SPECIALTY_PROCEDURES[searchTerm] || ['Evaluación clínica', 'Diagnóstico especializado', 'Plan de tratamiento', 'Seguimiento médico'];
   const firstVisitText = SPECIALTY_FIRST_VISIT[searchTerm] || 'Durante la primera consulta, el especialista realizará una historia clínica detallada para entender tus síntomas y antecedentes. Se llevará a cabo un examen físico enfocado en tu motivo de consulta para determinar el mejor plan de diagnóstico y tratamiento.';
   const comparison = SPECIALTY_COMPARISONS[searchTerm];
 
-  // 1. Fetch Initial Data Server-Side (Doctors)
+  // 3. Fetch Initial Data Server-Side (Doctors)
   const { data: rawDoctors } = await supabase
     .from('doctors')
     .select('*')
