@@ -14,6 +14,7 @@ const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', '
 export const revalidate = 86400;
 // --- Helpers ---
 
+
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -23,6 +24,14 @@ const slugify = (text: string) => {
     .replace(/^-+/, '')
     .replace(/-+$/, '');
 };
+
+// This will pre-build the disease pages for your top cities at build time
+export async function generateStaticParams() {
+  // Pre-render the most popular diseases (e.g., top 40)
+  return ALL_DISEASES.slice(0, 40).map((disease) => ({
+    disease: slugify(disease),
+  }));
+}
 
 // --- Metadata ---
 
@@ -47,7 +56,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   const { name: diseaseName, primarySpecialty: targetSpecialty, relatedSpecialties, detailedInfo } = getDiseaseInfo(diseaseSlug);
 
   // 1. Fetch Initial Doctors
-  let query = supabase.from('doctors').select('*');
+  let query = supabase.from('doctors').select('id, full_name, slug, specialties, has_phone, medical_profile');
 
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);

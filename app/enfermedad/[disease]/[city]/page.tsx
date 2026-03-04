@@ -22,6 +22,24 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+export async function generateStaticParams() {
+  // Pre-render the "Power Couples": Top 10 diseases in your 6 main cities
+  // This creates 60 static pages that cost 0ms of CPU time.
+  const topDiseases = ALL_DISEASES.slice(0, 10);
+  const topCities = POPULAR_CITIES;
+
+  const paths = [];
+  for (const disease of topDiseases) {
+    for (const city of topCities) {
+      paths.push({
+        disease: slugify(disease),
+        city: slugify(city),
+      });
+    }
+  }
+  return paths;
+}
+
 const getCanonicalCity = (slug: string) => {
   return ALL_CITIES.find(c => slugify(c) === slug) || slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
@@ -60,7 +78,9 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   }
 
   // 1. Fetch Initial Data Server-Side
-  let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
+  let query = supabase.from('doctors')
+  .select('id, full_name, slug, specialties, has_phone, medical_profile, cities')
+  .contains('cities', [cityName]);
 
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);
