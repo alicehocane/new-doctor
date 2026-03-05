@@ -1,5 +1,26 @@
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Anthropic-ai
+User-agent: Claude-Web
+User-agent: CCBot
+User-agent: omgili
+User-agent: omgilibot
+User-agent: FacebookBot
+User-agent: Bytespider
+Disallow: /
+
+
 User-agent: *
 Allow: /
+
+
+Disallow: /*?*
+
+
+Disallow: /api/
+Disallow: /_next/
+
+Crawl-delay: 2
 
 # Sitemaps
 Sitemap: https://medibusca.com/sitemap-index.xml
