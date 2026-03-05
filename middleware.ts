@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 // List of 2-letter ISO country codes you want to block
 // CN = China, RU = Russia, IN = India
-const BLOCKED_COUNTRIES = ['CN', 'RU', 'IN'];
+const BLOCKED_COUNTRIES = ['CN', 'RU', 'IN', 'PK'];
 
 export function middleware(request: NextRequest) {
   // Vercel populates request.geo.country automatically
