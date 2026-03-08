@@ -348,6 +348,35 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         {/* Doctor Grid (Interactive Component) */}
         <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
 
+        {/* Nearby Cities Section */}
+        <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
+            <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
+                También disponible en ciudades cercanas
+            </h2>
+            <p className="text-lg text-[#86868b] mb-8 max-w-3xl">
+                Si no encuentras lo que buscas en <span className="text-[#1d1d1f] font-medium">{cityName}</span>, 
+                explora <span className="text-[#1d1d1f] font-medium">{searchTerm}s</span> en otras ciudades.
+            </p>
+            
+            <div className="flex flex-wrap gap-3 md:gap-4">
+                {POPULAR_CITIES
+                    .filter(c => slugify(c) !== citySlug)
+                    .slice(0, 8)
+                    .map((city) => (
+                        <Link 
+                            key={city}
+                            href={`/doctores/${slugify(city)}/${specialtySlug}`}
+                            className="
+                                flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
+                        >
+                        <MapPin className="w-4 h-4 text-[#86868b]" />
+                        <span>{searchTerm} en {city}</span>
+                        </Link>
+                    ))
+                }
+            </div>
+        </section>
+
         {/* NEW: Dynamic Informational Section */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-slate-200 mt-20 animate-in fade-in slide-in-from-bottom-8">
           <div className="max-w-5xl mx-auto space-y-16">
@@ -448,35 +477,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                     </div>
 
                 </div>
-            </div>
-        </section>
-
-        {/* Nearby Cities Section */}
-        <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
-            <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-4 tracking-tight">
-                También disponible en ciudades cercanas
-            </h2>
-            <p className="text-lg text-[#86868b] mb-8 max-w-3xl">
-                Si no encuentras lo que buscas en <span className="text-[#1d1d1f] font-medium">{cityName}</span>, 
-                explora <span className="text-[#1d1d1f] font-medium">{searchTerm}s</span> en otras ciudades.
-            </p>
-            
-            <div className="flex flex-wrap gap-3 md:gap-4">
-                {POPULAR_CITIES
-                    .filter(c => slugify(c) !== citySlug)
-                    .slice(0, 8)
-                    .map((city) => (
-                        <Link 
-                            key={city}
-                            href={`/doctores/${slugify(city)}/${specialtySlug}`}
-                            className="
-                                flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
-                        >
-                        <MapPin className="w-4 h-4 text-[#86868b]" />
-                        <span>{searchTerm} en {city}</span>
-                        </Link>
-                    ))
-                }
             </div>
         </section>
 

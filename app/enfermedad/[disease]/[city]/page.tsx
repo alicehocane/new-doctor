@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info, ArrowRight } from 'lucide-react';
+import { MapPin, ShieldCheck, Phone, CheckCircle, HelpCircle, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -107,25 +106,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   query = query.order('has_phone', { ascending: false });
 
   const { data: rawDoctors } = await query.range(0, PAGE_SIZE - 1);
-  let doctors = rawDoctors as Doctor[] || [];
-
-  let isFallback = false;
-
-  // 4. NEW FALLBACK LOGIC: If no exact matches are found, look for the parent specialty instead
-  if (doctors.length === 0 && targetSpecialty) {
-      const { data: fallbackData } = await supabase
-          .from('doctors')
-          .select('*')
-          .contains('cities', [cityName])
-          .contains('specialties', [targetSpecialty])
-          .order('has_phone', { ascending: false })
-          .limit(8);
-          
-      if (fallbackData && fallbackData.length > 0) {
-          doctors = fallbackData as Doctor[];
-          isFallback = true;
-      }
-  }
+  const doctors = rawDoctors as Doctor[] || [];
 
 
   const faqSchema = {
@@ -176,6 +157,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
       });
   }
   
+
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -325,20 +307,6 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
           </div>
         )}
 
-        {/* NEW: Fallback Notification Banner */}
-        {isFallback && (
-          <div className="bg-blue-50 border border-blue-200 p-5 rounded-2xl mb-8 flex items-start gap-4 animate-in fade-in">
-            <Info className="w-6 h-6 text-blue-600 shrink-0 mt-0.5" />
-            <div>
-              <h3 className="text-blue-900 font-bold mb-1">Búsqueda ampliada</h3>
-              <p className="text-blue-800 text-sm leading-relaxed">
-                En este momento no encontramos doctores registrados específicamente para <strong>{diseaseName}</strong> en {cityName}. 
-                Sin embargo, a continuación te mostramos especialistas en <strong>{targetSpecialty}</strong> locales que podrían brindarte orientación.
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Doctor Grid (Client Component) */}
         <DiseaseDoctorList 
             initialDoctors={doctors} 
@@ -440,6 +408,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
                 
+                {/* FIXED: Added 'grid', made it 1 column on mobile, 2 on desktop, with a clean gap of 24px (gap-6) */}
                 <div className="grid grid-cols-1 gap-4">
 
                     {/* NEW: Dynamic Treatment FAQ */}
@@ -487,7 +456,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
 
         {/* Educational Cross-Link Banner */}
-        <section className="mt-16 mb-24 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+        <section className="mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
             <h3 className="text-2xl font-semibold text-[#1d1d1f] mb-3">
                 Aprende más sobre la {diseaseName}
             </h3>
@@ -502,8 +471,9 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             </Link>
         </section>
 
+
         {/* General Cities Section (Standalone & Always Visible) */}
-        <section className="pt-12 border-t border-[#d2d2d7]/30">
+        <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30">
             <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-3 tracking-tight">
                 Encuentra especialistas en las principales ciudades
             </h2>
