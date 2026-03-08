@@ -12,6 +12,8 @@ const FEATURED_CITIES = [
   'Monterrey'
 ];
 
+export const revalidate = 604800;
+
 const TOP_SPECIALTIES_DATA = [
   { name: 'Dentista - Odontólogo', tag: 'Salud Bucal', description: 'Cuidado dental y encías' },
   { name: 'Psicólogo', tag: 'Salud Mental', description: 'Terapia emocional' },

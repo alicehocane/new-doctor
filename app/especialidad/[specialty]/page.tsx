@@ -10,7 +10,7 @@ import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESC
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
 const PAGE_SIZE = 12;
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()
