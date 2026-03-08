@@ -331,14 +331,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     <Link 
                         key={city}
                         href={`/enfermedad/${diseaseSlug}/${slugify(city)}`}
-                        className="
-                            gap-2 px-4 py-2.5 inline-flex items-center px-5 py-2.5
-                            bg-white border border-[#d2d2d7]/60 rounded-full
-                            text-[#1d1d1f] font-medium text-[15px]
-                            hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
-                            active:scale-[0.98] transition-all duration-200
-                            shadow-sm hover:shadow-md
-                        "
+                        className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] border border-[#d2d2d7]/60 rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all"
                     >
                         <MapPin className="w-3.5 h-3.5 text-[#86868b]" />
                         <span>{diseaseName} en {city}</span>
