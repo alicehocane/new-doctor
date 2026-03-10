@@ -1,29 +1,32 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// List of 2-letter ISO country codes you want to block
-// CN = China, RU = Russia, IN = India
-const BLOCKED_COUNTRIES = ['CN', 'RU', 'IN', 'PK'];
-
 export function middleware(request: NextRequest) {
-  // Vercel populates request.geo.country automatically
+  // 1. Block Bad Countries (If you implemented this earlier)
   const country = request.geo?.country || 'US';
-
-  if (BLOCKED_COUNTRIES.includes(country)) {
-    // Instantly return a 403 Forbidden error. 
-    // This costs 0 CPU and almost 0 Bandwidth.
+  if (['CN', 'RU', 'IN'].includes(country)) {
     return new NextResponse('Access Denied', { status: 403 });
+  }
+
+  // 2. STOP CACHE BUSTING: Strip query parameters on dynamic SEO routes
+  if (request.nextUrl.search) {
+    // Clone the URL and remove all query parameters (?sort=..., ?ref=...)
+    const cleanUrl = request.nextUrl.clone();
+    cleanUrl.search = '';
+    
+    // Redirect them to the clean, cached version of the page (301 Permanent)
+    return NextResponse.redirect(cleanUrl, 301);
   }
 
   return NextResponse.next();
 }
 
-// Only run this middleware on your heavy pages (saves even more CPU)
 export const config = {
   matcher: [
+    // Only apply this to your heavy SEO pages, NOT your API or search forms
     '/doctores/:path*',
     '/enfermedad/:path*',
-    '/medico/:path*',
-    '/especialidad/:path*'
+    '/especialidad/:path*',
+    '/medico/:path*'
   ],
 };
