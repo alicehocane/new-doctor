@@ -61,7 +61,7 @@ export default function HomePage() {
     "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer support",
-        "email": "contacto@medibusca.com"
+        "email": "medibusca.info@gmail.com"
     }
   };
 

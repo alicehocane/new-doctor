@@ -17,7 +17,6 @@ export default function ContactForm() {
     
     try {
       // Send the data to Web3Forms API
-      console.log("My Key is:", process.env.NEXT_PUBLIC_WEB3FORMS_KEY);
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -25,7 +24,7 @@ export default function ContactForm() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY, // Replace with your key
+          access_key: "ba99dc68-56b0-4b41-9670-790319310e1b", // Replace with your key
           name: formData.name,
           email: formData.email,
           subject: formData.subject,

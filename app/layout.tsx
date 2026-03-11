@@ -108,7 +108,7 @@ export default function RootLayout({
       {/* NEW: Physical Trust Signal */}
       <div className="text-[11px] space-y-1">
         <p>Ciudad de México, México</p>
-        <p>Contacto: contacto@medibusca.com</p>
+        <p>Contacto: medibusca.info@gmail.com</p>
       </div>
     </div>
 
