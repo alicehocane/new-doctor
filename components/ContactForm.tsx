@@ -12,14 +12,44 @@ export default function ContactForm() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setSubmitted(true);
-    setTimeout(() => {
-        setSubmitted(false);
+    
+    try {
+      // Send the data to Web3Forms API
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY, // Replace with your key
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          from_name: "MediBusca Contact Form",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitted(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 5000);
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+            setSubmitted(false);
+        }, 5000);
+      } else {
+        alert("Hubo un error al enviar el mensaje. Inténtalo de nuevo.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Hubo un error de conexión.");
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
