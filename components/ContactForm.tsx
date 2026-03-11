@@ -17,6 +17,7 @@ export default function ContactForm() {
     
     try {
       // Send the data to Web3Forms API
+      console.log("My Key is:", process.env.NEXT_PUBLIC_WEB3FORMS_KEY);
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {

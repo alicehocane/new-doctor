@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-  /* Custom Scrollbar for specific containers if neeed */
+  /* Custom Scrollbar for specific containers if needed */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
