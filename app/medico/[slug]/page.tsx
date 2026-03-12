@@ -281,7 +281,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           
           {/* Breadcrumb */}
-          <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1">
+          <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             {doctor.cities && doctor.cities.length > 0 && (
               <>
@@ -292,7 +292,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               </>
             )}
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <span className="text-[#1d1d1f] truncate max-w-[150px] sm:max-w-md">{doctor.full_name}</span>
+            <span className="text-[#1d1d1f] capitalize">{doctor.full_name}</span>
           </nav>
 
           <div className="flex flex-col md:flex-row gap-8 items-start animate-in fade-in slide-in-from-bottom-2">
