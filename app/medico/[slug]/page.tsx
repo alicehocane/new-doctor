@@ -1,7 +1,7 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -475,38 +475,80 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
         </div>
 
-        {/* Desktop Sidebar: Contact */}
+        {/* Desktop Sidebar: Contact & Helper */}
         <div className="hidden md:block md:col-span-1">
-        <div className="bg-white rounded-[24px] shadow-sm p-6 sticky top-24">
-          <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
-          <div className="space-y-3">
-            {mainPhone && (
-              <>
-                <a 
-                  href={`tel:${mainPhone}`} 
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
-                >
-                  <Phone className="w-4 h-4 fill-current" />
-                  Llamar
-                </a>
-                <a 
-                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
-                >
-                  <MessageCircle className="w-4 h-4 fill-current" />
-                  WhatsApp
-                </a>
-              </>
-            )}
-            <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
-              Al contactar, menciona que lo viste en MediBusca para mejor atención.
+          <div className="sticky top-24 space-y-6">
+            
+            {/* 1. Contact Card */}
+            <div className="bg-white rounded-[24px] shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
+              <div className="space-y-3">
+                {mainPhone && (
+                  <>
+                    <a 
+                      href={`tel:${mainPhone}`} 
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
+                    >
+                      <Phone className="w-4 h-4 fill-current" />
+                      Llamar
+                    </a>
+                    <a 
+                      href={`https://wa.me/${waPhone}?text=${waMessage}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-current" />
+                      WhatsApp
+                    </a>
+                  </>
+                )}
+                <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
+                  Al contactar, menciona que lo viste en MediBusca para mejor atención.
+                </div>
+              </div>
             </div>
+
+            {/* 2. NEW: Prepara tu Consulta Card */}
+            <div className="bg-white rounded-[24px] shadow-sm p-6 animate-in fade-in slide-in-from-bottom-6">
+              <h2 className="text-lg font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-[#0071e3]" />
+                Prepara tu cita
+              </h2>
+              <p className="text-[13px] text-[#86868b] mb-4 leading-relaxed">
+                Te sugerimos confirmar estos detalles al contactar al consultorio:
+              </p>
+              
+              <ul className="space-y-3.5">
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Aseguradoras:</strong> ¿Trabajan con seguros de Gastos Médicos Mayores (GMM) o aplica pago directo?
+                  </span>
+                </li>
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Formas de pago:</strong> ¿Aceptan tarjeta de crédito/débito o requiere transferencia / efectivo?
+                  </span>
+                </li>
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Estudios previos:</strong> ¿Es necesario llevar algún análisis de laboratorio o imagen a la primera consulta?
+                  </span>
+                </li>
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Seguimiento:</strong> ¿La tarifa cubre la revisión de estudios médicos posteriores?
+                  </span>
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
-      </div>
-      </div>
 
       {/* Related Articles Section */}
       {relatedArticles.length > 0 && (

@@ -53,9 +53,7 @@ export default function HomePage() {
     "url": "https://medibusca.com",
     "logo": "https://medibusca.com/icon-512.png",
     "sameAs": [
-        "https://www.facebook.com/medibusca",
-        "https://twitter.com/medibusca",
-        "https://www.linkedin.com/company/medibusca"
+        "https://www.instagram.com/medibusc"
     ],
     "description": "Plataforma informativa de salud y directorio médico en México.",
     "contactPoint": {

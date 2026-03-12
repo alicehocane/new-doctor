@@ -2,15 +2,9 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // 1. Block Bad Countries (If you implemented this earlier)
-  const country = request.geo?.country || 'US';
-  if (['CN', 'RU', 'IN'].includes(country)) {
-    return new NextResponse('Access Denied', { status: 403 });
-  }
-
-  // 2. STOP CACHE BUSTING: Strip query parameters on dynamic SEO routes
+  // STOP CACHE BUSTING: Strip query parameters on dynamic SEO routes
+  // This prevents Cloudflare from creating duplicate caches for URLs with tracking tags
   if (request.nextUrl.search) {
-    // Clone the URL and remove all query parameters (?sort=..., ?ref=...)
     const cleanUrl = request.nextUrl.clone();
     cleanUrl.search = '';
     
@@ -23,7 +17,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Only apply this to your heavy SEO pages, NOT your API or search forms
+    // Only apply this to your heavy SEO pages. 
+    // Ensure you don't use ?page= or ?filter= on these routes!
     '/doctores/:path*',
     '/enfermedad/:path*',
     '/especialidad/:path*',
