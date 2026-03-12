@@ -16,7 +16,7 @@ export default function ContactForm() {
     e.preventDefault();
     
     try {
-      // Send the data to Web3Forms API
+      // Send the data to Web3Forms APIs
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
