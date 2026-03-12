@@ -549,6 +549,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
           </div>
         </div>
+      </div>
 
       {/* Related Articles Section */}
       {relatedArticles.length > 0 && (
