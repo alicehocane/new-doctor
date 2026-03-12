@@ -10,7 +10,7 @@ import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 
 const PAGE_SIZE = 12;
-export const revalidate = false;
+export const revalidate = 0;
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()

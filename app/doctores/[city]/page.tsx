@@ -10,7 +10,7 @@ import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_
 import CityDoctorList from '../../../components/CityDoctorList';
 
 
-export const revalidate = false;
+export const revalidate = 0;
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;
 

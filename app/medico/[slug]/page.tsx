@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES } from '../../../lib/constants';
 
-export const revalidate = false;
+export const revalidate = 0;
 
 // --- Utility Function ---
 

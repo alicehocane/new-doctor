@@ -7,7 +7,7 @@ import { Article } from '../../../types';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
-export const revalidate = false;
+export const revalidate = 0;
 
 
 // This tells Vercel to pre-build your top articles for free during deployment

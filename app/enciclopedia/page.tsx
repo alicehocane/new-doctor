@@ -7,7 +7,7 @@ import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
 import { Metadata } from 'next';
 
 const PAGE_SIZE = 9;
-export const revalidate = false;
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Enciclopedia Médica y Artículos de Salud",

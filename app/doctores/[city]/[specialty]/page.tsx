@@ -10,7 +10,7 @@ import CityDoctorList from '../../../../components/CityDoctorList';
 import EmergencyBanner from '@/components/EmergencyBanner';
 
 
-export const revalidate = false;
+export const revalidate = 0;
 const PAGE_SIZE = 12;
 
 // --- Constants & Helpers ---
