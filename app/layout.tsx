@@ -119,6 +119,7 @@ export default function RootLayout({
         <li><Link href="/politica-editorial" className="hover:text-[#0071e3] transition-colors">Política Editorial y Verificación</Link></li>
         <li><Link href="/privacidad" className="hover:text-[#0071e3] transition-colors">Privacidad</Link></li>
         <li><Link href="/terminos" className="hover:text-[#0071e3] transition-colors">Términos</Link></li>
+        <li><Link href="/contacto" className="hover:text-[#0071e3] transition-colors">Contacto</Link></li>
       </ul>
     </div>
 
