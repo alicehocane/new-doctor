@@ -18,7 +18,7 @@ Allow: /
 # This prevents them from crawling infinite variations of the same page
 Disallow: /*?*
 
-# Block internal API routes and Next.js system files
+# Block internal API routes and Next.js system file
 Disallow: /api/
 Disallow: /_next/
 
