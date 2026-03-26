@@ -482,8 +482,8 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                     rel="noopener noreferrer" 
                     className="flex items-center justify-center gap-2 w-full py-3.5 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[15px] hover:bg-slate-50 transition-all active:scale-95 shadow-sm"
                   >
-                    <ExternalLink className="w-4 h-4 text-[#0071e3]" /> 
-                    Buscar teléfono en Google
+                    <Search className="w-4 h-4 text-[#0071e3]" /> 
+                    Buscar en Google
                   </a>
                 </div>
               )}
