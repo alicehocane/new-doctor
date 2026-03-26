@@ -482,8 +482,8 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                     rel="noopener noreferrer" 
                     className="flex items-center justify-center gap-2 w-full py-3.5 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[15px] hover:bg-slate-50 transition-all active:scale-95 shadow-sm"
                   >
-                    <Search className="w-4 h-4 text-[#0071e3]" /> 
-                    Buscar en Google
+                    <ExternalLink className="w-4 h-4 text-[#0071e3]" /> 
+                    Buscar teléfono en Google
                   </a>
                 </div>
               )}
@@ -756,7 +756,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </div>
       </section>
 
-
       {/* 7️⃣ CTA */}
       <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
           <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
@@ -771,57 +770,47 @@ export default async function DoctorProfile({ params }: { params: { slug: string
           </Link>
       </section>
 
-      {/* MOBILE ACTION DOCK */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
-        <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
-          <Link 
-            href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
-            className="w-11 h-11 shrink-0 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
-            aria-label="Volver"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </Link>
-          
-          <div className="flex-1 min-w-0 px-1">
-            <span className="block text-[12px] font-bold text-white truncate leading-none">
-              {doctor.full_name}
-            </span>
-            <span className="block text-[10px] text-white truncate leading-none mt-1">
-              {doctor.specialties[0]}
-            </span>
-          </div>
+      {/* MOBILE ACTION DOCK - ONLY RENDERED IF mainPhone EXISTS */}
+      {mainPhone && (
+        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
+          <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
+            <Link 
+              href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
+              className="w-11 h-11 shrink-0 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+              aria-label="Volver"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Link>
+            
+            <div className="flex-1 min-w-0 px-1">
+              <span className="block text-[12px] font-bold text-white truncate leading-none">
+                {doctor.full_name}
+              </span>
+              <span className="block text-[10px] text-white truncate leading-none mt-1">
+                {doctor.specialties[0]}
+              </span>
+            </div>
 
-          <div className="flex items-center gap-2">
-            {mainPhone ? (
-              <>
-                <a 
-                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
-                  className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
-                  aria-label="WhatsApp"
-                >
-                  <MessageCircle className="w-5 h-5 fill-current" />
-                </a>
-                <a 
-                  href={`tel:${mainPhone}`}
-                  className="w-11 h-11 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
-                  aria-label="Llamar"
-                >
-                  <Phone className="w-5 h-5 fill-current" />
-                </a>
-              </>
-            ) : (
-                <a 
-                  href={googleSearchUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center gap-1.5 px-4 h-10 rounded-full bg-[#0071e3] text-white hover:bg-[#0077ED] text-[13px] font-bold active:scale-95 transition-all shadow-lg"
-                >
-                  <Search className="w-4 h-4" /> Buscar teléfono
-                </a>
-            )}
+            <div className="flex items-center gap-2">
+              <a 
+                href={`https://wa.me/${waPhone}?text=${waMessage}`}
+                className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="w-5 h-5 fill-current" />
+              </a>
+              <a 
+                href={`tel:${mainPhone}`}
+                className="w-11 h-11 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                aria-label="Llamar"
+              >
+                <Phone className="w-5 h-5 fill-current" />
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
     </div>
   );
 }
