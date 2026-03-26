@@ -200,10 +200,15 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const diseases = getEnfermedades(doctor);
   const generatedDescription = generarBiografiaDinamica(doctor);
 
+  // Formatting sub-specialties for the first FAQ
+  const subSpecialtiesText = doctor.medical_profile?.sub_specialties?.length 
+    ? `, con enfoque en ${doctor.medical_profile.sub_specialties.join(', ')}` 
+    : '';
+
   const faqs = [
     {
       question: `¿Cuál es la especialidad de ${doctor.full_name}?`,
-      answer: `${doctor.full_name} se especializa en ${doctor.specialties.join(' y ')}, ofreciendo diagnóstico y tratamiento profesional en esta área médica.`
+      answer: `${doctor.full_name} se especializa en ${doctor.specialties.join(' y ')}${subSpecialtiesText}, ofreciendo diagnóstico y atención profesional en esta área médica.`
     },
     {
       question: `¿Qué enfermedades trata ${doctor.full_name}?`,
