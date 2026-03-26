@@ -786,7 +786,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             <span className="block text-[12px] font-bold text-white truncate leading-none">
               {doctor.full_name}
             </span>
-            <span className="block text-[10px] text-white truncate leading-none">
+            <span className="block text-[10px] text-white truncate leading-none mt-1">
               {doctor.specialties[0]}
             </span>
           </div>
@@ -814,9 +814,9 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                   href={googleSearchUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="flex items-center gap-1.5 px-3 h-9 rounded-full bg-white/10 text-white/90 hover:text-white text-[11px] font-medium active:scale-95 transition-all"
+                  className="flex items-center gap-1.5 px-4 h-10 rounded-full bg-[#0071e3] text-white hover:bg-[#0077ED] text-[13px] font-bold active:scale-95 transition-all shadow-lg"
                 >
-                  <Search className="w-3.5 h-3.5" /> Buscar
+                  <Search className="w-4 h-4" /> Buscar teléfono
                 </a>
             )}
           </div>
