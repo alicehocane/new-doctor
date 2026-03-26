@@ -14,11 +14,14 @@ Disallow: /
 User-agent: *
 Allow: /
 
+# Allow Google to read CSS and JS to render the page properly
+Allow: /_next/static/
+
 # Block bots from crawling URLs with query parameters (e.g., ?sort=price)
 # This prevents them from crawling infinite variations of the same page
 Disallow: /*?*
 
-# Block internal API routes and Next.js system file
+# Block internal API routes and Next.js system files (except static assets allowed above)
 Disallow: /api/
 Disallow: /_next/
 
