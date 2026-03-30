@@ -6,7 +6,8 @@ import { POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 
-export const revalidate = 0;
+export const revalidate = 604800;
+
 
 
 export const metadata: Metadata = {

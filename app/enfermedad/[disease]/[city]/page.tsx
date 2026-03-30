@@ -9,8 +9,9 @@ import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, getMetroAreaF
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 
+export const revalidate = 604800;
+
 const PAGE_SIZE = 12;
-export const revalidate = 0;
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()

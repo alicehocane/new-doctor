@@ -8,6 +8,7 @@ import HomeSearch from '../components/HomeSearch';
 
 export const revalidate = 604800;
 
+
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
