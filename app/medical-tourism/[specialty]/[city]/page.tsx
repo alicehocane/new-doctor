@@ -25,13 +25,18 @@ export default async function MedicalTourismCityPage({ params }: { params: { spe
 
   if (!spanishSpecialty || !spanishCity) notFound();
 
-  // Fetch verified doctors
-  const { data: doctors } = await supabase
+  // Fetch verified doctors (Updated to match your exact Supabase schema)
+  const { data: doctors, error } = await supabase
     .from('doctors')
-    .select('id, name, address, phone')
-    .eq('specialty', spanishSpecialty)
-    .ilike('city', `%${spanishCity}%`)
+    .select('id, full_name, address, phone, slug') // Changed 'name' to 'full_name' and added 'slug'
+    .contains('specialties', [spanishSpecialty])   // Changed .eq to .contains
+    .contains('cities', [spanishCity])             // Changed .ilike to .contains
     .limit(30);
+
+  // Quick debug log just in case it fails again
+  if (error) {
+    console.error("Supabase Error in Medical Tourism:", error.message);
+  }
 
   const englishSpecialty = formatEnglishText(params.specialty);
   const englishCity = formatEnglishText(params.city);
@@ -101,16 +106,18 @@ export default async function MedicalTourismCityPage({ params }: { params: { spe
           {doctors && doctors.length > 0 ? (
             doctors.map((doctor) => (
               <article key={doctor.id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-blue-900 mb-2">{doctor.name}</h3>
+                {/* Changed doctor.name to doctor.full_name */}
+                <h3 className="text-xl font-bold text-blue-900 mb-2">{doctor.full_name}</h3> 
                 <p className="text-gray-600 mb-1">📍 {doctor.address}</p>
                 <p className="text-gray-600 font-medium mb-4">📞 {doctor.phone}</p>
                 <div className="flex gap-2 mb-4">
                   <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">SEP Verified</span>
                   <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold">English Speaking</span>
                 </div>
-                <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700">
+                {/* Optional: You can now link directly to their profile using doctor.slug! */}
+                <a href={`/medico/${doctor.slug}`} className="block w-full text-center bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition">
                   View Contact Details
-                </button>
+                </a>
               </article>
             ))
           ) : (
