@@ -22,7 +22,7 @@ export default function MedicalTourismHub() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-5xl my-8"><AdBanner dataAdSlot="YOUR_TOP_AD_SLOT_ID" /></div>
+      {/* <div className="container mx-auto px-4 max-w-5xl my-8"><AdBanner dataAdSlot="YOUR_TOP_AD_SLOT_ID" /></div> */}
 
       <section className="bg-gray-50 py-16 border-t border-b">
         <div className="container mx-auto px-4 max-w-5xl">
