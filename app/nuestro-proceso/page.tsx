@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { Database, ShieldCheck, MonitorCheck, FileCheck, CheckCircle, Info } from 'lucide-react';
 import { Metadata } from 'next';
 
+export const revalidate = 604800;
+
+
 export const metadata: Metadata = {
   title: 'Nuestro Proceso de Verificación Médica | MediBusca',
   description: 'Conoce cómo MediBusca recopila, verifica y publica la información de médicos y especialistas en México. Transparencia y seguridad para el paciente.',

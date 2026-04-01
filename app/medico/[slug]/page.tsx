@@ -1,13 +1,13 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_SPECIALTIES } from '../../../lib/constants';
+import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '../../../lib/constants';
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 // --- Utility Function ---
 
@@ -21,9 +21,51 @@ const slugify = (text: string) => {
     .replace(/-+$/, '');
 };
 
+const formatDate = (dateString?: string) => {
+    if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
+// --- NEW: SEO INJECTIONS: Semantic Fallbacks & Spintax ---
+
+// 1. Function to guarantee diseases exist for SEO using your constants fallback
+function getEnfermedades(doctor: Doctor): string[] {
+    const dbDiseases = doctor.medical_profile?.diseases_treated;
+    if (dbDiseases && dbDiseases.length > 0) return dbDiseases;
+    
+    const specialty = doctor.specialties?.[0] || "";
+    
+    if (SPECIALTY_CONDITIONS[specialty]) {
+        return SPECIALTY_CONDITIONS[specialty].slice(0, 6);
+    }
+
+    for (const key in SPECIALTY_CONDITIONS) {
+        if (specialty.toLowerCase().includes(key.toLowerCase())) {
+            return SPECIALTY_CONDITIONS[key].slice(0, 6);
+        }
+    }
+
+    return ["Evaluación diagnóstica", "Tratamiento médico especializado", "Prevención de enfermedades", "Seguimiento clínico", "Asesoría médica"];
+}
+
+// 2. Spintax: Dynamic Biography Generation (Informational only)
+function generarBiografiaDinamica(doctor: Doctor) {
+  const nombre = doctor.full_name || 'Este especialista';
+  const especialidad = doctor.specialties?.[0] || 'médico especialista';
+  const ciudad = doctor.cities?.[0] || 'México';
+  
+  const variaciones = [
+    `Conoce al ${nombre}, especialista en ${especialidad}. Actualmente brinda atención a sus pacientes en su consultorio ubicado en ${ciudad}. Revisa sus servicios médicos y contacta directamente para solicitar más información.`,
+    `El ${nombre} cuenta con amplia experiencia como ${especialidad}. Si te encuentras en ${ciudad} y buscas atención médica de calidad, aquí encontrarás la información detallada de su clínica, tratamientos y contacto directo.`,
+    `Para quienes buscan un experto en ${especialidad} dentro de ${ciudad}, el ${nombre} es una excelente opción médica. Consulta su perfil, ubicación, enfermedades tratadas y datos de contacto en este directorio verificado.`
+  ];
+
+  const indice = nombre.length % variaciones.length;
+  return variaciones[indice];
+}
+
 // This tells Vercel to pre-build your top 100 doctor profiles for free
 export async function generateStaticParams() {
-  // Fetch just the slugs of your top 100 doctors
   const { data: doctors } = await supabase
     .from('doctors')
     .select('slug')
@@ -32,21 +74,14 @@ export async function generateStaticParams() {
 
   if (!doctors) return [];
 
-  // FIX: Explicitly tell TypeScript that 'doc' is an object containing a string called 'slug'
   return doctors.map((doc: { slug: string }) => ({
     slug: doc.slug,
   }));
 }
 
-const formatDate = (dateString?: string) => {
-    if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
-    return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
-};
-
 // --- SEO Metadata Generation ---
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  // 1. EARLY EXIT FOR METADATA (Crucial to block bots before they hit Supabase)
   const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
   if (!isValidSlugFormat) {
     return {
@@ -55,7 +90,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  // 2. Fetch doctor ONLY if the slug format is valid
   const { data: doctor } = await supabase
     .from('doctors')
     .select('full_name, specialties, cities, medical_profile')
@@ -70,19 +104,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   const doc = doctor as Doctor;
-  
-  // 1. Extract base variables
   const cityDisp = doc.cities?.[0] || "Monterrey";
   const specDisp = doc.specialties?.[0] || "";
-  const diseases = doc.medical_profile?.diseases_treated || [];
+  
+  // SEO FIX: Use guaranteed fallback diseases
+  const diseases = getEnfermedades(doc);
 
-  // 2. Generate Title
   const metaTitle = specDisp 
     ? `${doc.full_name} - ${specDisp} en ${cityDisp}` 
     : `${doc.full_name} en ${cityDisp}`;
 
-  // 3. Generate Description
-  let metaDesc = `Agenda cita con ${doc.full_name}`;
+  // SEO FIX: Informational text instead of scheduling
+  let metaDesc = `Contacta a ${doc.full_name}`;
   if (specDisp) metaDesc += `, especialista en ${specDisp}`;
   metaDesc += ` en ${cityDisp}.`;
   
@@ -90,7 +123,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     metaDesc += ` Experto en ${diseases.slice(0, 3).join(', ')}.`;
   }
 
-  // 4. Generate Keywords
   const keywords = [];
   if (specDisp) keywords.push(specDisp);
   if (diseases.length > 0) keywords.push(...diseases.slice(0, 9));
@@ -105,30 +137,23 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 // --- Server Component ---
 
 export default async function DoctorProfile({ params }: { params: { slug: string } }) {
-  // 1. BASIC VALIDATION (Costs 0 CPU time)
-  // Check if the slug contains only valid characters (lowercase letters, numbers, hyphens)
-  // This instantly blocks bots trying to inject SQL, uppercase letters, or weird symbols.
   const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
-  
   if (!isValidSlugFormat) {
       notFound();
   }
 
-  // 2. Fetch Main Doctor Data (Only runs if the slug format looks normal)
   const { data: currentDoctor } = await supabase
     .from('doctors')
     .select('*')
     .eq('slug', params.slug)
     .single();
 
-  // 2. Handle 404
   if (!currentDoctor) {
     notFound();
   }
 
   const doctor = currentDoctor as Doctor;
   
-  // 3. Parallel Data Fetching for Related Content
   const relatedDoctorsPromise = (async () => {
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
       const { data: related } = await supabase
@@ -168,37 +193,34 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
   const [relatedDoctors, relatedArticles] = await Promise.all([relatedDoctorsPromise, relatedArticlesPromise]);
 
-  // --- Dynamic SEO Description for UI & Schema ---
   const cityDisp = doctor.cities?.[0] || "Monterrey";
   const specDisp = doctor.specialties?.[0] || "";
-  const diseases = doctor.medical_profile?.diseases_treated || [];
   
-  let generatedDescription = `Conoce a ${doctor.full_name}`;
-  if (specDisp) generatedDescription += `, especialista en ${specDisp}`;
-  generatedDescription += ` en ${cityDisp}.`;
-  if (diseases.length > 0) {
-    generatedDescription += ` Experto en ${diseases.slice(0, 3).join(', ')}.`;
-  }
+  // SEO FIX: Use fallback and dynamic spintax
+  const diseases = getEnfermedades(doctor);
+  const generatedDescription = generarBiografiaDinamica(doctor);
 
-  // --- Logic & Schema Generation ---
+  // Formatting sub-specialties for the first FAQ
+  const subSpecialtiesText = doctor.medical_profile?.sub_specialties?.length 
+    ? `, con enfoque en ${doctor.medical_profile.sub_specialties.join(', ')}` 
+    : '';
+
   const faqs = [
     {
       question: `¿Cuál es la especialidad de ${doctor.full_name}?`,
-      answer: `${doctor.full_name} se especializa en ${doctor.specialties.join(' y ')}, ofreciendo diagnóstico y tratamiento profesional en esta área médica.`
+      answer: `${doctor.full_name} se especializa en ${doctor.specialties.join(' y ')}${subSpecialtiesText}, ofreciendo diagnóstico y atención profesional en esta área médica.`
     },
     {
       question: `¿Qué enfermedades trata ${doctor.full_name}?`,
-      answer: doctor.medical_profile?.diseases_treated && doctor.medical_profile.diseases_treated.length > 0
-        ? `Algunas de las principales enfermedades que trata incluyen: ${doctor.medical_profile.diseases_treated.slice(0, 8).join(', ')}, entre otras condiciones relacionadas con su especialidad.`
-        : `${doctor.full_name} trata una amplia gama de condiciones médicas relacionadas con ${doctor.specialties[0]}.`
+      answer: `Algunas de las principales enfermedades o condiciones que trata incluyen: ${diseases.slice(0, 5).join(', ')}, brindando atención integral a sus pacientes.`
     },
     {
       question: `¿Dónde se encuentran los consultorios de ${doctor.full_name}?`,
-      answer: `${doctor.full_name} ofrece consulta en: ${doctor.contact_info?.locations?.map(l => `${l.clinic_name} en ${l.address}`).join('; ')}.`
+      answer: `${doctor.full_name} ofrece consulta en: ${doctor.contact_info?.locations?.map(l => `${l.clinic_name} en ${l.address}`).join('; ') || cityDisp}.`
     },
     {
-      question: `¿Cómo puedo agendar una cita con ${doctor.full_name}?`,
-      answer: `Puedes agendar una cita llamando al teléfono ${doctor.contact_info?.phones?.[0] || 'de contacto'} o visitando directamente sus instalaciones.`
+      question: `¿Cómo puedo contactar a ${doctor.full_name}?`,
+      answer: `Puedes comunicarte llamando al teléfono ${doctor.contact_info?.phones?.[0] || 'de contacto'} o visitando directamente sus instalaciones en ${cityDisp}.`
     }
   ];
 
@@ -215,10 +237,8 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     }))
   };
 
-  // 1. Sort cities by length (longest first) for smart matching
   const sortedCities = [...(doctor.cities || [])].sort((a, b) => b.length - a.length);
 
-  // 2. Build the locations (worksFor) with Smart City Detection
   const worksFor = doctor.contact_info?.locations?.map(loc => {
     let matchedCity = sortedCities.find(city => 
       loc.address.toLowerCase().includes(city.toLowerCase())
@@ -239,13 +259,11 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     };
   });
 
-  // 3. Build the diseases array
-  const conditionsTreated = doctor.medical_profile?.diseases_treated?.map(disease => ({
+  const conditionsTreated = diseases.map(disease => ({
     "@type": "MedicalCondition",
     "name": disease
   }));
 
-  // 4. Assemble the final Physician Schema
   const physicianSchema = {
     "@context": "https://schema.org",
     "@type": "Physician",
@@ -258,7 +276,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       "name": s
     })),
     ...(doctor.contact_info?.phones?.[0] && { "telephone": doctor.contact_info.phones[0] }),
-    ...(conditionsTreated?.length > 0 && { "medicalConditionTreated": conditionsTreated }),
+    "medicalConditionTreated": conditionsTreated,
     ...(worksFor?.length > 0 && { "worksFor": worksFor }),
     "dateModified": doctor.updated_at
   };
@@ -266,8 +284,12 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const phones = doctor.contact_info?.phones || [];
   const mainPhone = phones[0];
   const waPhone = mainPhone?.replace(/\D/g, '');
-  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, Encontré su perfil en MediBusca y me gustaría realizar una consulta con usted sobre un tema relacionado con su especialidad en ${doctor.specialties[0]}. Podría indicarme su disponibilidad para agendar una cita?.`);
+  const waMessage = encodeURIComponent(`Hola ${doctor.full_name}, Encontré su perfil en MediBusca y me gustaría solicitar más información sobre un tema relacionado con su especialidad en ${doctor.specialties[0]}. Podría brindarme más detalles sobre sus consultas?`);
   
+  // --- UX FIX: Smart Search Fallback URL ---
+  const searchQuery = encodeURIComponent(`${doctor.full_name} ${doctor.specialties[0] || ''} ${doctor.cities[0] || ''} teléfono consultorio`);
+  const googleSearchUrl = `https://www.google.com/search?q=${searchQuery}`;
+
   // --- Render ---
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
@@ -281,7 +303,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           
           {/* Breadcrumb */}
-          <nav className="text-sm font-medium text-[#86868b] mb-6 flex items-center animate-in fade-in slide-in-from-bottom-1">
+          <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             {doctor.cities && doctor.cities.length > 0 && (
               <>
@@ -292,7 +314,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               </>
             )}
             <span className="mx-2 text-[#d2d2d7]">/</span>
-            <span className="text-[#1d1d1f] truncate max-w-[150px] sm:max-w-md">{doctor.full_name}</span>
+            <span className="text-[#1d1d1f] capitalize">{doctor.full_name}</span>
           </nav>
 
           <div className="flex flex-col md:flex-row gap-8 items-start animate-in fade-in slide-in-from-bottom-2">
@@ -372,20 +394,18 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               Información Médica
             </h2>
             <div className="space-y-4">
-              {doctor.medical_profile?.diseases_treated?.length > 0 ? (
                 <div>
-                  <h3 className="text-[13px] font-semibold text-[#86868b] mb-3 uppercase tracking-wider">Enfermedades Tratadas</h3>
+                  <h3 className="text-[13px] font-semibold text-[#86868b] mb-3 uppercase tracking-wider">
+                    {doctor.medical_profile?.diseases_treated?.length ? "Enfermedades Tratadas" : "Condiciones comunes tratadas"}
+                  </h3>
                   <div className="flex flex-wrap gap-2">
-                    {doctor.medical_profile.diseases_treated.map((d, i) => (
-                      <span key={i} className="px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg text-[14px] font-medium">
+                    {diseases.map((d, i) => (
+                      <span key={i} className="px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg text-[14px] font-medium border border-slate-100">
                         {d}
                       </span>
                     ))}
                   </div>
                 </div>
-              ) : (
-                <p className="text-[#86868b]">Información detallada sobre enfermedades tratadas no disponible.</p>
-              )}
             </div>
           </section>
 
@@ -417,7 +437,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             </div>
           </section>
 
-          {/* NEW: MOBILE-ONLY CONTACT SECTION (Shown only on mobile) */}
+          {/* MOBILE-ONLY CONTACT SECTION */}
           <section className="md:hidden bg-white rounded-[24px] shadow-sm p-8">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
               <Phone className="w-5 h-5 text-[#86868b]" />
@@ -452,7 +472,20 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                   );
                 })
               ) : (
-                <p className="text-sm text-[#86868b]">No hay números de contacto disponibles.</p>
+                <div className="p-6 bg-[#f5f5f7] rounded-2xl text-center flex flex-col items-center">
+                  <p className="text-[14px] text-[#1d1d1f]/80 leading-relaxed mb-4">
+                    Aún no tenemos el teléfono registrado, pero te ayudamos a encontrarlo rápidamente en la web.
+                  </p>
+                  <a 
+                    href={googleSearchUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center justify-center gap-2 w-full py-3.5 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[15px] hover:bg-slate-50 transition-all active:scale-95 shadow-sm"
+                  >
+                    <Search className="w-4 h-4 text-[#0071e3]" /> 
+                    Buscar en Google
+                  </a>
+                </div>
               )}
             </div>
           </section>
@@ -475,37 +508,94 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
         </div>
 
-        {/* Desktop Sidebar: Contact */}
+        {/* Desktop Sidebar: Contact & Helper */}
         <div className="hidden md:block md:col-span-1">
-        <div className="bg-white rounded-[24px] shadow-sm p-6 sticky top-24">
-          <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
-          <div className="space-y-3">
-            {mainPhone && (
-              <>
-                <a 
-                  href={`tel:${mainPhone}`} 
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
-                >
-                  <Phone className="w-4 h-4 fill-current" />
-                  Llamar
-                </a>
-                <a 
-                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
-                >
-                  <MessageCircle className="w-4 h-4 fill-current" />
-                  WhatsApp
-                </a>
-              </>
-            )}
-            <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
-              Al contactar, menciona que lo viste en MediBusca para mejor atención.
+          <div className="sticky top-24 space-y-6">
+            
+            {/* 1. Contact Card */}
+            <div className="bg-white rounded-[24px] shadow-sm p-6">
+              <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
+              {mainPhone ? (
+                <div className="space-y-3">
+                  <a 
+                    href={`tel:${mainPhone}`} 
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
+                  >
+                    <Phone className="w-4 h-4 fill-current" /> Llamar
+                  </a>
+                  <a 
+                    href={`https://wa.me/${waPhone}?text=${waMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-current" /> WhatsApp
+                  </a>
+                  <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
+                    Al contactar, menciona que lo viste en MediBusca para mejor atención.
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center text-center pt-2">
+                  <div className="w-12 h-12 bg-[#f5f5f7] rounded-full flex items-center justify-center mb-4">
+                    <Search className="w-5 h-5 text-[#86868b]" />
+                  </div>
+                  <p className="text-[13px] text-[#1d1d1f]/80 leading-relaxed mb-5">
+                    Actualmente no contamos con el teléfono directo de este especialista.
+                  </p>
+                  <a 
+                    href={googleSearchUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[14px] hover:bg-[#f5f5f7] transition-all active:scale-95 shadow-sm"
+                  >
+                    <Search className="w-4 h-4 text-[#0071e3]" /> 
+                    Buscar en Google
+                  </a>
+                </div>
+              )}
             </div>
+
+            {/* 2. Prepara tu Consulta Card */}
+            <div className="bg-white rounded-[24px] shadow-sm p-6 animate-in fade-in slide-in-from-bottom-6">
+              <h2 className="text-lg font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-[#0071e3]" />
+                Prepara tu cita
+              </h2>
+              <p className="text-[13px] text-[#86868b] mb-4 leading-relaxed">
+                Te sugerimos confirmar estos detalles al contactar al consultorio:
+              </p>
+              
+              <ul className="space-y-3.5">
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Aseguradoras:</strong> ¿Trabajan con seguros de Gastos Médicos Mayores (GMM) o aplica pago directo?
+                  </span>
+                </li>
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Formas de pago:</strong> ¿Aceptan tarjeta de crédito/débito o requiere transferencia / efectivo?
+                  </span>
+                </li>
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Estudios previos:</strong> ¿Es necesario llevar algún análisis de laboratorio o imagen a la primera consulta?
+                  </span>
+                </li>
+                <li className="flex gap-2.5 items-start">
+                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                    <strong>Seguimiento:</strong> ¿La tarifa cubre la revisión de estudios médicos posteriores?
+                  </span>
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
-      </div>
       </div>
 
       {/* Related Articles Section */}
@@ -666,65 +756,61 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </div>
       </section>
 
-
       {/* 7️⃣ CTA */}
-                      <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
-                          <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
-                          <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
-                              Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
-                          </p>
-                          <Link 
-                              href="/buscar" 
-                              className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
-                          >
-                              Buscar un especialista <Search className="w-5 h-5" />
-                          </Link>
-              </section>
-
-      {/* MOBILE ACTION DOCK */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
-        <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
+      <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+          <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
+          <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
+              Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
+          </p>
           <Link 
-            href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
-            className="w-11 h-11 shrink-0 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
-            aria-label="Volver"
+              href="/buscar" 
+              className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
           >
-            <ChevronLeft className="w-5 h-5" />
+              Buscar un especialista <Search className="w-5 h-5" />
           </Link>
-          
-          <div className="flex-1 min-w-0 px-1">
-            <span className="block text-[12px] font-bold text-white truncate leading-none">
-              {doctor.full_name}
-            </span>
-            <span className="block text-[10px] text-white truncate leading-none">
-              {doctor.specialties[0]}
-            </span>
-          </div>
+      </section>
 
-          <div className="flex items-center gap-2">
-            {mainPhone ? (
-              <>
-                <a 
-                  href={`https://wa.me/${waPhone}?text=${waMessage}`}
-                  className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
-                  aria-label="WhatsApp"
-                >
-                  <MessageCircle className="w-5 h-5 fill-current" />
-                </a>
-                <a 
-                  href={`tel:${mainPhone}`}
-                  className="w-11 h-11 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
-                  aria-label="Llamar"
-                >
-                  <Phone className="w-5 h-5 fill-current" />
-                </a>
-              </>
-            ) : (
-               <div className="text-white/30 text-xs pr-4 italic">No hay contacto</div>
-            )}
+      {/* MOBILE ACTION DOCK - ONLY RENDERED IF mainPhone EXISTS */}
+      {mainPhone && (
+        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
+          <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
+            <Link 
+              href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
+              className="w-11 h-11 shrink-0 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+              aria-label="Volver"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Link>
+            
+            <div className="flex-1 min-w-0 px-1">
+              <span className="block text-[12px] font-bold text-white truncate leading-none">
+                {doctor.full_name}
+              </span>
+              <span className="block text-[10px] text-white truncate leading-none mt-1">
+                {doctor.specialties[0]}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <a 
+                href={`https://wa.me/${waPhone}?text=${waMessage}`}
+                className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="w-5 h-5 fill-current" />
+              </a>
+              <a 
+                href={`tel:${mainPhone}`}
+                className="w-11 h-11 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                aria-label="Llamar"
+              >
+                <Phone className="w-5 h-5 fill-current" />
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
     </div>
   );
 }

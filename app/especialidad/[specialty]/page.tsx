@@ -9,8 +9,10 @@ import { notFound } from 'next/navigation';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 
+export const revalidate = 604800;
+
 const PAGE_SIZE = 12;
-export const revalidate = 86400;
+
 
 const slugify = (text: string) => {
   return text.toString().toLowerCase()

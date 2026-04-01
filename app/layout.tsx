@@ -105,11 +105,6 @@ export default function RootLayout({
       <p className="leading-relaxed">
         MediBusca es el directorio informativo líder en México para la validación de credenciales médicas y localización de especialistas.
       </p>
-      {/* NEW: Physical Trust Signal */}
-      <div className="text-[11px] space-y-1">
-        <p>Ciudad de México, México</p>
-        <p>Contacto: contacto@medibusca.com</p>
-      </div>
     </div>
 
     <div className="space-y-4">
@@ -119,6 +114,7 @@ export default function RootLayout({
         <li><Link href="/politica-editorial" className="hover:text-[#0071e3] transition-colors">Política Editorial y Verificación</Link></li>
         <li><Link href="/privacidad" className="hover:text-[#0071e3] transition-colors">Privacidad</Link></li>
         <li><Link href="/terminos" className="hover:text-[#0071e3] transition-colors">Términos</Link></li>
+        <li><Link href="/contacto" className="hover:text-[#0071e3] transition-colors">Contacto</Link></li>
       </ul>
     </div>
 

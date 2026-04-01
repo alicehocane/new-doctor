@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { Scale, AlertCircle, FileText, Shield, Globe, Lock, Info, Mail, CheckCircle, Gavel } from 'lucide-react';
 import { Metadata } from 'next';
 
+
+export const revalidate = 604800;
+
+
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
   description: "Términos y condiciones de uso de la plataforma MediBusca. Información legal, responsabilidades y uso del sitio.",

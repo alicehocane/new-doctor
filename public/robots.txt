@@ -1,5 +1,32 @@
+# 1. Block Aggressive AI & Scraping Bots (Save CPU)
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Anthropic-ai
+User-agent: Claude-Web
+User-agent: CCBot
+User-agent: omgili
+User-agent: omgilibot
+User-agent: FacebookBot
+User-agent: Bytespider
+Disallow: /
+
+# 2. General Rules for Good Bots (Google, Bing, etc.)
 User-agent: *
 Allow: /
+
+# Allow Google to read CSS and JS to render the page properly
+Allow: /_next/static/
+
+# Block bots from crawling URLs with query parameters (e.g., ?sort=price)
+# This prevents them from crawling infinite variations of the same page
+Disallow: /*?*
+
+# Block internal API routes and Next.js system files (except static assets allowed above)
+Disallow: /api/
+Disallow: /_next/
+
+# 3. Slow down crawling (Respected by Bing, Yandex, Ahrefs, etc.)
+Crawl-delay: 2
 
 # Sitemaps
 Sitemap: https://medibusca.com/sitemap-index.xml

@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { Users, Target, ShieldCheck, Heart, Database, Search } from 'lucide-react';
 import { Metadata } from 'next';
 
+export const revalidate = 604800;
+
+
 export const metadata: Metadata = {
   title: "Nosotros",
   description: "Conoce al equipo detrás de MediBusca. Nuestra misión es democratizar el acceso a la información de salud en México con transparencia y tecnología.",

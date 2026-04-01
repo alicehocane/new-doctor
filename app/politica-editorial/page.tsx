@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { FileText, ShieldCheck, Brain, BookOpen, UserCheck, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Metadata } from 'next';
 
+export const revalidate = 604800;
+
+
 export const metadata: Metadata = {
   title: "Política Editorial Médica | MediBusca",
   description: "Conoce nuestros estándares de calidad, fuentes de información y política sobre el uso de tecnología en la información médica de MediBusca.",

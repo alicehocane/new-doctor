@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 
+export const revalidate = 604800;
 
 
 const FEATURED_CITIES = [
@@ -53,15 +54,13 @@ export default function HomePage() {
     "url": "https://medibusca.com",
     "logo": "https://medibusca.com/icon-512.png",
     "sameAs": [
-        "https://www.facebook.com/medibusca",
-        "https://twitter.com/medibusca",
-        "https://www.linkedin.com/company/medibusca"
+        "https://www.instagram.com/medibusc"
     ],
     "description": "Plataforma informativa de salud y directorio médico en México.",
     "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer support",
-        "email": "contacto@medibusca.com"
+        "email": "medibusca.info@gmail.com"
     }
   };
 

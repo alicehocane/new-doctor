@@ -6,11 +6,15 @@ import { ALL_DISEASES, COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES }
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 
+export const revalidate = 604800;
+
 const FEATURED_CITIES = [
   'Ciudad de México',
   'Guadalajara',
   'Monterrey'
 ];
+
+
 
 const TOP_SPECIALTIES_DATA = [
   { name: 'Dentista - Odontólogo', tag: 'Salud Bucal', description: 'Cuidado dental y encías' },

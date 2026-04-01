@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ShieldCheck, Lock, Eye, FileText, CheckCircle, AlertTriangle, ExternalLink, XCircle } from 'lucide-react';
 import { Metadata } from 'next';
 
+export const revalidate = 604800;
+
 export const metadata: Metadata = {
   title: "Política de Privacidada",
   description: "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información y el uso de datos en nuestra plataforma informativa de salud.",
