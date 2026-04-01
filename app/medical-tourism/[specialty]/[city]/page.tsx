@@ -72,7 +72,7 @@ export default async function MedicalTourismCityPage({ params }: { params: { spe
         </div>
       </header>
 
-      <AdBanner dataAdSlot="YOUR_TOP_AD_SLOT_ID" />
+      {/* <AdBanner dataAdSlot="YOUR_TOP_AD_SLOT_ID" /> */}
 
       {/* INTERACTIVE DWELL-TIME CALCULATOR */}
       {sData.popularProcedures && sData.popularProcedures.length > 0 && (
