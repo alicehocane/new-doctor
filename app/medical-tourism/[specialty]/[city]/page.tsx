@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { specialtyMap, cityMap, formatEnglishText, specialtyRichData, cityRichData } from '@/lib/tourism-config';
 import { notFound } from 'next/navigation';
-import AdBanner from '@/components/AdBanner';
+// import AdBanner from '@/components/AdBanner';
 import CostCalculator from '@/components/CostCalculator';
 
 export const revalidate = 604800; // 7 Days Cache
