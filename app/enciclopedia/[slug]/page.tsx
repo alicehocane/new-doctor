@@ -7,7 +7,7 @@ import { Article } from '../../../types';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 
 

@@ -9,7 +9,7 @@ import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, getMetroAreaF
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 const PAGE_SIZE = 12;
 
