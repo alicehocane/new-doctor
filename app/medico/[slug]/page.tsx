@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '../../../lib/constants';
+import ArticleRecommendation from '../../../components/ArticleRecommendation';
 
 export const revalidate = 0;
 
@@ -290,9 +291,15 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const searchQuery = encodeURIComponent(`${doctor.full_name} ${doctor.specialties[0] || ''} ${doctor.cities[0] || ''} teléfono consultorio`);
   const googleSearchUrl = `https://www.google.com/search?q=${searchQuery}`;
 
+  // Extract the first article to use for the popup
+  const recommendedArticle = relatedArticles.length > 0 ? relatedArticles[0] : null;
+
   // --- Render ---
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
+
+      {/* MOBILE TOP BANNER: Article Recommendation */}
+      <ArticleRecommendation article={recommendedArticle} />
       
       {/* Schema Scripts (Server Injected) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
