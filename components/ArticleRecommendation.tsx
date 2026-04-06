@@ -4,32 +4,29 @@ import { useState, useEffect, TouchEvent } from 'react';
 import { X, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
-interface Article {
-  title: string;
-  slug: string;
-  read_time: string;
-}
-
 interface ArticleRecommendationProps {
-  articles: Article[]; // Now accepts the full list
+  articles: {
+    title: string;
+    slug: string;
+    read_time: string;
+  }[];
 }
 
 export default function ArticleRecommendation({ articles }: ArticleRecommendationProps) {
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
-    // If no articles or already dismissed, stop
+    // 1. Safety checks
     if (!articles || articles.length === 0 || isDismissed) return;
     
-    // Pick a random article from the list on the client side
-    // This ensures true randomness on every refresh
+    // 2. PICK RANDOM: This runs in the browser, so it's fresh every refresh
     const randomIndex = Math.floor(Math.random() * articles.length);
     setSelectedArticle(articles[randomIndex]);
-    
-    // 4-second delay before sliding down
+
+    // 3. DELAY: Wait 4 seconds after landing
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 4000);
@@ -37,18 +34,12 @@ export default function ArticleRecommendation({ articles }: ArticleRecommendatio
     return () => clearTimeout(timer);
   }, [articles, isDismissed]);
 
-  // --- Swipe Gesture Logic ---
-  const onTouchStart = (e: TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
+  // --- Mobile Swipe Logic ---
+  const onTouchStart = (e: TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
   const onTouchEnd = (e: TouchEvent) => {
     if (!touchStart) return;
     const touchEnd = e.changedTouches[0].clientX;
-    const distance = touchStart - touchEnd;
-    if (Math.abs(distance) > 50) {
-      handleDismiss();
-    }
+    if (Math.abs(touchStart - touchEnd) > 50) handleDismiss();
   };
 
   const handleDismiss = () => {
@@ -56,7 +47,6 @@ export default function ArticleRecommendation({ articles }: ArticleRecommendatio
     setTimeout(() => setIsDismissed(true), 500); 
   };
 
-  // Only render if we have a selected article and it's not dismissed
   if (!selectedArticle || isDismissed) return null;
 
   return (
@@ -82,17 +72,14 @@ export default function ArticleRecommendation({ articles }: ArticleRecommendatio
             <Link 
               href={`/enciclopedia/${selectedArticle.slug}`} 
               className="text-white font-medium text-[13px] leading-snug line-clamp-2 mt-0.5"
-              onClick={() => setIsVisible(false)}
+              onClick={() => setIsVisible(false)} 
             >
               {selectedArticle.title}
             </Link>
           </div>
         </div>
 
-        <button 
-          onClick={handleDismiss}
-          className="p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
-        >
+        <button onClick={handleDismiss} className="p-2 hover:bg-white/10 rounded-full transition-colors shrink-0">
           <X className="w-4 h-4 text-slate-400" />
         </button>
       </div>
