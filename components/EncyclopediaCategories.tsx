@@ -34,13 +34,13 @@ const CATEGORIES = [
     articles: [
       { name: "Caries Dentales: Síntomas, Prevención y Tratamientos Clínicos", slug: "guia-caries-dentales-sintomas-prevencion" },
       { name: "Dolor de Muelas: Causas, Síntomas y Atención de Urgencia Dental", slug: "guia-dolor-de-muelas-sintomas-remedios" },
-      { name: "Bruxismo: Síntomas, Consecuencias y Tratamiento con Férula Dental", slug: "guia-bruxismo-sintomas-tratamiento-dental" }
+      { name: "Bruxismo: Síntomas, Consecuencias y Tratamiento con Férula Dental", slug: "guia-bruxismo-sintomas-tratamiento-dental" },
       { name: "Gingivitis: Síntomas, Causas y Tratamiento Odontológico Efectivo", slug: "guia-gingivitis-sintomas-tratamiento" },
       { name: "Periodontitis (Piorrea): Síntomas y Tratamiento Periodontal Avanzado", slug: "periodontitis-sintomas-tratamiento-hueso" },
       { name: "Absceso Dental: Síntomas, Infección y Tratamiento de Urgencia", slug: "guia-absceso-dental-sintomas-tratamiento-urgente" },
       { name: "Sensibilidad Dentaria: Síntomas, Causas y Tratamiento Clínico", slug: "sensibilidad-dentaria-sintomas-tratamiento" },
       { name: "Desgaste Dental: Síntomas, Causas y Tratamientos de Reconstrucción", slug: "desgaste-dental-sintomas-tratamiento" },
-      { name: "Dientes Apiñados: Síntomas, Causas y Tratamientos de Ortodoncia", slug: "dientes-apinados-sintomas-tratamiento-ortodoncia" }
+      { name: "Dientes Apiñados: Síntomas, Causas y Tratamientos de Ortodoncia", slug: "dientes-apinados-sintomas-tratamiento-ortodoncia" },
       { name: "Diente Impactado: Síntomas, Riesgos y Cirugía de Extracción", slug: "diente-impactado-sintomas-tratamiento" },
       { name: "Muelas del Juicio: Síntomas, Dolor y Cuándo Requieren Extracción", slug: "muelas-del-juicio-sintomas-cirugia" },
       { name: "Halitosis (Mal Aliento): Causas, Síntomas y Tratamiento Definitivo", slug: "halitosis-sintomas-aliento-fresco" },
