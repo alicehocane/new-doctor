@@ -305,7 +305,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
 
-      /* MOBILE POPUP: Passes the full array to be randomized on the phone */}
+      {/* MOBILE POPUP: Passes the full array to be randomized on the phone */}
       <ArticleRecommendation articles={relatedArticles} />
       
       {/* Schema Scripts (Server Injected) */}
