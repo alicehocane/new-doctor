@@ -291,15 +291,13 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const searchQuery = encodeURIComponent(`${doctor.full_name} ${doctor.specialties[0] || ''} ${doctor.cities[0] || ''} teléfono consultorio`);
   const googleSearchUrl = `https://www.google.com/search?q=${searchQuery}`;
 
-  // Extract the first article to use for the popup
-  const recommendedArticle = relatedArticles.length > 0 ? relatedArticles[0] : null;
 
   // --- Render ---
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
 
       {/* MOBILE TOP BANNER: Article Recommendation */}
-      <ArticleRecommendation article={recommendedArticle} />
+      <ArticleRecommendation articles={relatedArticles} />
       
       {/* Schema Scripts (Server Injected) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />

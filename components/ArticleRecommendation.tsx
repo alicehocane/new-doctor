@@ -4,22 +4,30 @@ import { useState, useEffect, TouchEvent } from 'react';
 import { X, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
-interface ArticleRecommendationProps {
-  article: {
-    title: string;
-    slug: string;
-    read_time: string;
-  } | null;
+interface Article {
+  title: string;
+  slug: string;
+  read_time: string;
 }
 
-export default function ArticleRecommendation({ article }: ArticleRecommendationProps) {
+interface ArticleRecommendationProps {
+  articles: Article[]; // Now accepts the full list
+}
+
+export default function ArticleRecommendation({ articles }: ArticleRecommendationProps) {
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
-    // If there is no article, or the user already dismissed it, do nothing
-    if (!article || isDismissed) return;
+    // If no articles or already dismissed, stop
+    if (!articles || articles.length === 0 || isDismissed) return;
+    
+    // Pick a random article from the list on the client side
+    // This ensures true randomness on every refresh
+    const randomIndex = Math.floor(Math.random() * articles.length);
+    setSelectedArticle(articles[randomIndex]);
     
     // 4-second delay before sliding down
     const timer = setTimeout(() => {
@@ -27,7 +35,7 @@ export default function ArticleRecommendation({ article }: ArticleRecommendation
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [article, isDismissed]);
+  }, [articles, isDismissed]);
 
   // --- Swipe Gesture Logic ---
   const onTouchStart = (e: TouchEvent) => {
@@ -38,8 +46,6 @@ export default function ArticleRecommendation({ article }: ArticleRecommendation
     if (!touchStart) return;
     const touchEnd = e.changedTouches[0].clientX;
     const distance = touchStart - touchEnd;
-    
-    // If the user swiped left or right more than 50px, dismiss the banner
     if (Math.abs(distance) > 50) {
       handleDismiss();
     }
@@ -47,16 +53,14 @@ export default function ArticleRecommendation({ article }: ArticleRecommendation
 
   const handleDismiss = () => {
     setIsVisible(false);
-    // Wait for the slide-up animation to finish before removing from DOM
     setTimeout(() => setIsDismissed(true), 500); 
   };
 
-  if (!article || isDismissed) return null;
+  // Only render if we have a selected article and it's not dismissed
+  if (!selectedArticle || isDismissed) return null;
 
   return (
     <div 
-      // md:hidden ensures it NEVER shows on desktop
-      // z-[300] ensures it sits above your mobile action dock
       className={`md:hidden fixed top-4 left-4 right-4 z-[300] transition-transform duration-500 ease-in-out ${
         isVisible ? 'translate-y-0' : '-translate-y-[150%]'
       }`}
@@ -73,14 +77,14 @@ export default function ArticleRecommendation({ article }: ArticleRecommendation
           
           <div className="flex flex-col flex-1 min-w-0">
             <span className="text-[10px] font-bold text-[#47a1ff] uppercase tracking-wider leading-tight">
-              Sugerencia de lectura • {article.read_time}
+              Sugerencia de lectura • {selectedArticle.read_time}
             </span>
             <Link 
-              href={`/enciclopedia/${article.slug}`} 
+              href={`/enciclopedia/${selectedArticle.slug}`} 
               className="text-white font-medium text-[13px] leading-snug line-clamp-2 mt-0.5"
-              onClick={() => setIsVisible(false)} // Close immediately if clicked
+              onClick={() => setIsVisible(false)}
             >
-              {article.title}
+              {selectedArticle.title}
             </Link>
           </div>
         </div>
@@ -88,7 +92,6 @@ export default function ArticleRecommendation({ article }: ArticleRecommendation
         <button 
           onClick={handleDismiss}
           className="p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
-          aria-label="Cerrar sugerencia"
         >
           <X className="w-4 h-4 text-slate-400" />
         </button>
