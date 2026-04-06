@@ -51,63 +51,43 @@ const CATEGORIES = [
 ];
 
 export default function EncyclopediaCategories() {
-  const [openCategory, setOpenCategory] = useState<number | null>(null);
-
-  const toggleCategory = (index: number) => {
-    setOpenCategory(openCategory === index ? null : index);
-  };
-
   return (
-    <div className="w-full max-w-4xl mx-auto my-12 px-4 sm:px-6">
-      <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6 flex items-center gap-2">
+    <div className="w-full max-w-7xl mx-auto my-12 px-4 sm:px-6">
+      <h2 className="text-2xl font-bold text-[#1d1d1f] mb-8 flex items-center gap-2">
         <Activity className="w-6 h-6 text-[#0071e3]" />
-        Explorar por Categorías
+        Índice Médico Completo
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-        {CATEGORIES.map((cat, index) => {
-          const isOpen = openCategory === index;
-          
-          return (
-            <div 
-              key={index} 
-              className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all duration-300"
-            >
-              <button 
-                onClick={() => toggleCategory(index)}
-                className="w-full text-left p-5 flex justify-between items-start gap-4 hover:bg-slate-50 transition-colors focus:outline-none"
-              >
-                <div>
-                  <h3 className="font-semibold text-[#1d1d1f] text-lg leading-tight mb-1">{cat.title}</h3>
-                  <p className="text-sm text-[#86868b] leading-relaxed line-clamp-2">{cat.description}</p>
-                </div>
-                <div className={`mt-1 shrink-0 p-1 rounded-full bg-[#f5f5f7] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-                  <ChevronDown className="w-5 h-5 text-[#86868b]" />
-                </div>
-              </button>
-
-              <div 
-                className={`transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}
-              >
-                <div className="border-t border-slate-100 bg-slate-50/50">
-                  {cat.articles.map((article, i) => (
-                    <Link 
-                      key={i}
-                      // Uses the exact database slug from the object!
-                      href={`/enciclopedia/${article.slug}`} 
-                      className="flex items-center justify-between p-4 pl-6 border-b border-slate-100 last:border-0 hover:bg-white transition-colors group"
-                    >
-                      <span className="text-[15px] font-medium text-[#1d1d1f]/90 group-hover:text-[#0071e3] transition-colors">
-                        {article.name}
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
+      {/* Upgraded to 3 columns on large screens to handle the fully expanded lists beautifully */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+        {CATEGORIES.map((cat, index) => (
+          <div 
+            key={index} 
+            className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full"
+          >
+            {/* Static Header (No longer a button) */}
+            <div className="p-5 border-b border-slate-100 bg-[#f8fafc]">
+              <h3 className="font-semibold text-[#1d1d1f] text-lg leading-tight mb-1">{cat.title}</h3>
+              <p className="text-[13px] text-[#86868b] leading-relaxed line-clamp-2">{cat.description}</p>
             </div>
-          );
-        })}
+
+            {/* Always Visible Article List */}
+            <div className="flex-1 bg-white">
+              {cat.articles.map((article, i) => (
+                <Link 
+                  key={i}
+                  href={`/enciclopedia/${article.slug}`} 
+                  className="flex items-center justify-between p-3.5 pl-5 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors group"
+                >
+                  <span className="text-[14px] font-medium text-[#1d1d1f]/80 group-hover:text-[#0071e3] transition-colors line-clamp-1 pr-4">
+                    {article.name}
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors shrink-0" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
