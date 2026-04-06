@@ -162,7 +162,7 @@ const CATEGORIES = [
         { name: "Tendinitis: Síntomas, Causas y Terapia de Rehabilitación Física", slug: "tendinitis-sintomas-causas-y-tratamientos-efectivos" },
         { name: "Osteoporosis: Síntomas, Riesgo de Fractura y Tratamiento Médico", slug: "osteoporosis-sintomas-causas-y-prevencion-de-fracturas" },
         { name: "Dolor de Ciática: Síntomas, Causas y Tratamiento Especializado del Dolor", slug: "ciatica-sintomas-causas-y-ejercicios-de-alivio" },
-        { name: "Lesiones Deportivas: Síntomas, Diagnóstico y Rehabilitación Traumatológica", slug: "lesiones-deportivas-sintomas-prevencion-y-recuperacion-física" },
+        { name: "Lesiones Deportivas: Síntomas, Diagnóstico y Rehabilitación Traumatológica", slug: "lesiones-deportivas-sintomas-prevencion-y-recuperacion-fisica" },
         { name: "Fracturas Óseas: Síntomas, Tipos y Tratamiento Traumatológico", slug: "fracturas-oseas-sintomas-tipos-y-primeros-auxilios" }
     ]    
   },
