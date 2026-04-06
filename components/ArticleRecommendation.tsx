@@ -5,52 +5,58 @@ import { X, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 interface ArticleRecommendationProps {
-  articles: {
+  article: {
     title: string;
     slug: string;
     read_time: string;
-  }[];
+  } | null;
 }
 
-export default function ArticleRecommendation({ articles }: ArticleRecommendationProps) {
-  const [selectedArticle, setSelectedArticle] = useState<any>(null);
+export default function ArticleRecommendation({ article }: ArticleRecommendationProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
-    // 1. Safety checks
-    if (!articles || articles.length === 0 || isDismissed) return;
+    // If there is no article, or the user already dismissed it, do nothing
+    if (!article || isDismissed) return;
     
-    // 2. PICK RANDOM: This runs in the browser, so it's fresh every refresh
-    const randomIndex = Math.floor(Math.random() * articles.length);
-    setSelectedArticle(articles[randomIndex]);
-
-    // 3. DELAY: Wait 4 seconds after landing
+    // 4-second delay before sliding down
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [articles, isDismissed]);
+  }, [article, isDismissed]);
 
-  // --- Mobile Swipe Logic ---
-  const onTouchStart = (e: TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+  // --- Swipe Gesture Logic ---
+  const onTouchStart = (e: TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
   const onTouchEnd = (e: TouchEvent) => {
     if (!touchStart) return;
     const touchEnd = e.changedTouches[0].clientX;
-    if (Math.abs(touchStart - touchEnd) > 50) handleDismiss();
+    const distance = touchStart - touchEnd;
+    
+    // If the user swiped left or right more than 50px, dismiss the banner
+    if (Math.abs(distance) > 50) {
+      handleDismiss();
+    }
   };
 
   const handleDismiss = () => {
     setIsVisible(false);
+    // Wait for the slide-up animation to finish before removing from DOM
     setTimeout(() => setIsDismissed(true), 500); 
   };
 
-  if (!selectedArticle || isDismissed) return null;
+  if (!article || isDismissed) return null;
 
   return (
     <div 
+      // md:hidden ensures it NEVER shows on desktop
+      // z-[300] ensures it sits above your mobile action dock
       className={`md:hidden fixed top-4 left-4 right-4 z-[300] transition-transform duration-500 ease-in-out ${
         isVisible ? 'translate-y-0' : '-translate-y-[150%]'
       }`}
@@ -67,19 +73,23 @@ export default function ArticleRecommendation({ articles }: ArticleRecommendatio
           
           <div className="flex flex-col flex-1 min-w-0">
             <span className="text-[10px] font-bold text-[#47a1ff] uppercase tracking-wider leading-tight">
-              Sugerencia de lectura • {selectedArticle.read_time}
+              Sugerencia de lectura • {article.read_time}
             </span>
             <Link 
-              href={`/enciclopedia/${selectedArticle.slug}`} 
+              href={`/enciclopedia/${article.slug}`} 
               className="text-white font-medium text-[13px] leading-snug line-clamp-2 mt-0.5"
-              onClick={() => setIsVisible(false)} 
+              onClick={() => setIsVisible(false)} // Close immediately if clicked
             >
-              {selectedArticle.title}
+              {article.title}
             </Link>
           </div>
         </div>
 
-        <button onClick={handleDismiss} className="p-2 hover:bg-white/10 rounded-full transition-colors shrink-0">
+        <button 
+          onClick={handleDismiss}
+          className="p-2 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
+          aria-label="Cerrar sugerencia"
+        >
           <X className="w-4 h-4 text-slate-400" />
         </button>
       </div>

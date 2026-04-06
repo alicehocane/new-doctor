@@ -182,20 +182,11 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const relatedArticlesPromise = (async () => {
     if (doctor.specialties.length > 0) {
       const mainSpecialty = doctor.specialties[0];
-      const diseases = getEnfermedades(doctor).slice(0, 3); // Get top 3 diseases
-      
-      // Build a smart query: Match Specialty OR any of the top diseases
-      let orQuery = `category.ilike.%${mainSpecialty}%`;
-      diseases.forEach(d => {
-        orQuery += `,title.ilike.%${d}%,category.ilike.%${d}%`;
-      });
-
       const { data: articlesData } = await supabase
         .from('articles')
-        .select('title, slug, read_time')
-        .or(orQuery)
-        .limit(10); // Fetch up to 10 articles for a great random pool
-        
+        .select('*')
+        .ilike('category', `%${mainSpecialty}%`)
+        .limit(3);
       return articlesData as Article[] || [];
     }
     return [];
@@ -300,13 +291,15 @@ export default async function DoctorProfile({ params }: { params: { slug: string
   const searchQuery = encodeURIComponent(`${doctor.full_name} ${doctor.specialties[0] || ''} ${doctor.cities[0] || ''} teléfono consultorio`);
   const googleSearchUrl = `https://www.google.com/search?q=${searchQuery}`;
 
+  // Extract the first article to use for the popup
+  const recommendedArticle = relatedArticles.length > 0 ? relatedArticles[0] : null;
 
   // --- Render ---
   return (
     <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
 
-      {/* MOBILE POPUP: Passes the full array to be randomized on the phone */}
-      <ArticleRecommendation articles={relatedArticles} />
+      {/* MOBILE TOP BANNER: Article Recommendation */}
+      <ArticleRecommendation article={recommendedArticle} />
       
       {/* Schema Scripts (Server Injected) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
