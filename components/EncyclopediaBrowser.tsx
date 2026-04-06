@@ -6,6 +6,7 @@ import NextLink from 'next/link';
 import { BookOpen, Clock, ChevronRight, Bookmark, Loader2, Search, X, Plus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Article } from '../types';
+import EncyclopediaCategories from './EncyclopediaCategories';
 
 const PAGE_SIZE = 9;
 const POPULAR_TOPICS = ['Diabetes', 'Ansiedad', 'Hipertensión', 'Nutrición', 'Embarazo', 'Pediatría'];
@@ -226,6 +227,16 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
             </div>
         </div>
       </div>
+
+
+      {/* --- ADD THE CATEGORIES HERE --- */}
+      {/* It will automatically hide if the user is typing a search or using the alphabet filter */}
+      {!isSearchActive && (
+          <div className="bg-[#f5f5f7]">
+              <EncyclopediaCategories />
+          </div>
+      )}
+      {/* ------------------------------- */}
 
       <div className="max-w-6xl mx-auto px-6 py-12 md:py-16">
         
