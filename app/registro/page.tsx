@@ -126,8 +126,7 @@ export default function PaginaRegistro() {
           sub_specialties: datos.sub_especialidades_text.split(',').map(s => s.trim()).filter(Boolean) 
         },
         image_url: urlImagen,
-        status: 'pending',
-        has_phone: true
+        status: 'pending'
       });
 
       if (error) throw error;
