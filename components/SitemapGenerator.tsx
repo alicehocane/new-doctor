@@ -199,7 +199,8 @@ export const SitemapGenerator: React.FC = () => {
       // Get exact count first
       const { count: doctorCount, error: countError } = await supabase
         .from('doctors')
-        .select('*', { count: 'exact', head: true });
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'published');
         
       if (countError) {
          console.warn("Could not fetch doctor count", countError);
@@ -216,6 +217,7 @@ export const SitemapGenerator: React.FC = () => {
           const { data, error } = await supabase
             .from('doctors')
             .select('slug, updated_at')
+            .eq('status', 'published')
             .order('slug', { ascending: true }) // Stable ordering for pagination
             .range(doctorBatchFrom, doctorBatchFrom + DOCTOR_BATCH_SIZE - 1);
 

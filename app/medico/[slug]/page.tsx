@@ -95,6 +95,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     .from('doctors')
     .select('full_name, specialties, cities, medical_profile')
     .eq('slug', params.slug)
+    .eq('status', 'published')
     .single();
 
   if (!doctor) {
@@ -147,6 +148,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     .from('doctors')
     .select('*')
     .eq('slug', params.slug)
+    .eq('status', 'published')
     .single();
 
   if (!currentDoctor) {
@@ -271,7 +273,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     "@id": `https://medibusca.com/medico/${params.slug}`,
     "name": doctor.full_name,
     "description": generatedDescription,
-    "image": "https://medibusca.com/icon-512.png",
+    "image": doctor.image_url || "https://medibusca.com/icon-512.png",
     "medicalSpecialty": doctor.specialties?.map(s => ({
       "@type": "MedicalSpecialty",
       "name": s

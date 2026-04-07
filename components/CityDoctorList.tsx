@@ -32,6 +32,7 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
         .from('doctors')
         .select('*')
         .contains('cities', [city])
+        .eq('status', 'published')
         // 1. Tell Supabase to sort by has_phone first, then alphabetically
         .order('has_phone', { ascending: false })
         // .order('full_name', { ascending: true });

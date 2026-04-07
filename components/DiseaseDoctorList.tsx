@@ -29,7 +29,7 @@ export default function DiseaseDoctorList({ initialDoctors, diseaseName, targetS
     const from = nextPage * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
 
-    let query = supabase.from('doctors').select('*');
+    let query = supabase.from('doctors').select('*').eq('status', 'published');
 
     // Filter by City if provided
     if (city) {

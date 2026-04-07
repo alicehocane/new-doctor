@@ -92,17 +92,30 @@ export default function PaginaRegistro() {
   };
 
   const manejarEnvio = async () => {
-    setCargando(true);
-    try {
-      let urlImagen = null;
-      if (datos.foto) {
-        const fileName = `${Date.now()}.webp`;
-        const imageBlob = new Blob([datos.foto], { type: 'image/webp' });
-        const { error: upErr } = await supabase.storage.from('avatars').upload(fileName, imageBlob, { contentType: 'image/webp', upsert: true });
-        if (upErr) throw upErr;
+  setCargando(true);
+  try {
+    let urlImagen = null;
+
+    // 1. GENERATE THE SLUG ONCE (THE SOURCE OF TRUTH)
+    const slugFinal = generarSlug(datos.nombre, datos.especialidades);
+
+    // 2. UPLOAD IMAGE (USING THE SLUG)
+    if (datos.foto) {
+      // Use the slug as the filename for maximum SEO
+      // We add a short timestamp just to prevent browser cache issues
+      const fileName = `${slugFinal}-${Date.now()}.webp`;
+
+      const { error: upErr } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, datos.foto, { 
+          contentType: 'image/webp'
+        });
+
+      if (!upErr) {
         const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
         urlImagen = data.publicUrl;
       }
+    }
 
       const info_contacto = {
         phones: datos.telefonos.map(t => formatearTelefono(t)).filter(Boolean),
@@ -114,9 +127,10 @@ export default function PaginaRegistro() {
         }))
       };
 
+      // 3. INSERT INTO DATABASE (USING THE SAME SLUG)
       const { error } = await supabase.from('doctors').insert({
         full_name: datos.nombre,
-        slug: generarSlug(datos.nombre, datos.especialidades),
+        slug: slugFinal, // <--- Using the same variable here
         specialties: datos.especialidades,
         cities: Array.from(new Set(datos.ubicaciones.map(u => u.city))),
         license_numbers: datos.cedulas.filter(c => c.trim() !== ''),
@@ -127,12 +141,16 @@ export default function PaginaRegistro() {
         },
         image_url: urlImagen,
         status: 'pending'
+        // Remember: has_phone is omitted as it's a generated column
       });
 
       if (error) throw error;
       setPaso(9);
-    } catch (err: any) { alert("Error: " + err.message); }
-    finally { setCargando(false); }
+    } catch (err: any) {
+      alert("Error: " + err.message);
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
