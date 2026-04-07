@@ -6,7 +6,7 @@ import { ALL_DISEASES, COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES }
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 const FEATURED_CITIES = [
   'Ciudad de México',

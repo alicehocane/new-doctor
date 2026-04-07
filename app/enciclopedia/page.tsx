@@ -7,7 +7,7 @@ import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
 import { Metadata } from 'next';
 
 
-export const revalidate = 604800;
+export const revalidate = 0;
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

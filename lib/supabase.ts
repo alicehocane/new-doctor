@@ -1,10 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// Configuration provided by user
+// SECURED: Relying 100% on Environment Variables. No hardcoded fallback strings.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-
-// UPDATED: Using Anon Key. Service Role Key must NOT be used on client side.
-// Ensure your Supabase RLS policies are configured to allow the authenticated admin user to write data.
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = () => {
@@ -12,7 +9,6 @@ export const isSupabaseConfigured = () => {
 }
 
 // Helper to prevent runtime crashes if Supabase is not configured
-// This returns a dummy client that rejects promises instead of throwing "undefined is not a function"
 const createDummyClient = (): SupabaseClient => {
   const dummyPromise = () => Promise.resolve({ data: null, error: { message: 'Supabase is not configured in lib/supabase.ts' } });
   
@@ -45,7 +41,6 @@ const createDummyClient = (): SupabaseClient => {
 }
 
 // Initialize Supabase client
-// We check configuration status to ensure we don't pass empty strings to createClient
 export const supabase = isSupabaseConfigured()
   ? createClient(supabaseUrl, supabaseKey)
   : createDummyClient();

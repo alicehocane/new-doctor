@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Database, ShieldCheck, MonitorCheck, FileCheck, CheckCircle, Info } from 'lucide-react';
 import { Metadata } from 'next';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 
 export const metadata: Metadata = {

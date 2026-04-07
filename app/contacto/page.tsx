@@ -3,7 +3,7 @@ import { HelpCircle, ChevronDown } from 'lucide-react';
 import ContactForm from '../../components/ContactForm';
 import { Metadata } from 'next';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 
 export const metadata: Metadata = {

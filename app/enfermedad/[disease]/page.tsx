@@ -10,7 +10,7 @@ import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, ALL_CITIES } from '../../
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];

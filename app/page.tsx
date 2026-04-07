@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 
-export const revalidate = 604800;
+export const revalidate = 0;
 
 
 const FEATURED_CITIES = [

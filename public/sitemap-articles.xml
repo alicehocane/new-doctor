@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://medibusca.com/enciclopedia/guia-ansiedad-sintomas-tratamiento</loc>
-    <lastmod>2026-02-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://medibusca.com/enciclopedia/guia-completa-depresion-sintomas-ayuda</loc>
     <lastmod>2026-02-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -121,7 +115,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://medibusca.com/enciclopedia/sintomas-tratamiento-urgente</loc>
+    <loc>https://medibusca.com/enciclopedia/guia-absceso-dental-sintomas-tratamiento-urgente</loc>
     <lastmod>2026-02-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -571,7 +565,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://medibusca.com/enciclopedia/lesiones-deportivas-sintomas-prevencion-y-recuperacion-física</loc>
+    <loc>https://medibusca.com/enciclopedia/lesiones-deportivas-sintomas-prevencion-y-recuperacion-fisica</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -613,6 +607,12 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://medibusca.com/enciclopedia/tumor-cerebral-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://medibusca.com/enciclopedia/dermatitis-atopica-sintomas-causas-y-cuidados-diarios</loc>
     <lastmod>2026-03-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -643,8 +643,260 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://medibusca.com/enciclopedia/guia-ansiedad-sintomas-tratamiento</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/epilepsia-sintomas-causas-y-tratamientos-neurologicos</loc>
+    <lastmod>2026-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/demencia-sintomas-causas-y-cuidados-familiares</loc>
+    <lastmod>2026-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/parkinson-sintomas-causas-y-tratamientos-neurologicos</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/esclerosis-multiple-sintomas-causas-y-tratamientos-avanzados</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://medibusca.com/enciclopedia/cicatrices-sintomas-tipos-y-tratamientos-piel</loc>
     <lastmod>2026-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/migrana-sintomas-causas-y-tratamientos-efectivos</loc>
+    <lastmod>2026-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/derrame-cerebral-sintomas-causas-y-primeros-auxilios</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/infeccion-urinaria-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/calculos-renales-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/insuficiencia-renal-sintomas-causas-y-tratamientos-guia</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/nefropatia-diabetica-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/cistitis-sintomas-causas-y-remedios-efectivos</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/vph-sintomas-causas-y-vacuna-prevencion</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/ets-sintomas-prevencion-y-tratamientos-sexualidad</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/hepatitis-sintomas-tipos-causas-y-tratamientos</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/gastroenteritis-sintomas-causas-y-dieta-recuperacion</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/faringitis-bacteriana-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/conjuntivitis-sintomas-causas-y-tratamientos-ojo-rojo</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/otitis-sintomas-causas-y-tratamientos-dolor-oido</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/desnutricion-sintomas-causas-y-tratamientos-salud</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/anorexia-nervosa-sintomas-causas-y-tratamiento</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/bulimia-sintomas-causas-y-tratamiento-guia</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/trastorno-por-atracon-sintomas-causas-y-tratamiento</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/nutricion-inadecuada-sintomas-causas-y-consecuencias</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/obesidad-morbida-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/cancer-de-mama-guia-facil-sintomas-prevencion</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/cancer-de-pulmon-sintomas-causas-y-tratamientos</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/cancer-de-colon-sintomas-prevencion-y-tratamientos</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/cancer-de-piel-guia-facil-sintomas</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/cancer-de-tiroides-guia-facil-sintomas-y-cura</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/linfoma-guia-facil-sintomas-y-tratamiento</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/miopia-guia-facil-ver-bien-de-lejos</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/astigmatismo-guia-facil-ver-bien-formas</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/glaucoma-guia-facil-presion-ojos-sintomas</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/conjuntivitis-guia-facil-sintomas-y-cuidados</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/desprendimiento-de-retina-guia-facil-sintomas-urgencia</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/hipoacusia-guia-facil-problemas-para-oir</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/heridas-guia-facil-primeros-auxilios-y-cicatrizacion</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/quemaduras-guia-facil-primeros-auxilios-en-casa</loc>
+    <lastmod>2026-03-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/traumatismo-facial-guia-facil-golpes-cara-primeros-auxilios</loc>
+    <lastmod>2026-03-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/fracturas-guia-facil-huesos-rotos-primeros-auxilios</loc>
+    <lastmod>2026-03-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/enciclopedia/luxaciones-guia-facil-sintomas-primeros-auxilios</loc>
+    <lastmod>2026-03-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
