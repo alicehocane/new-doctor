@@ -73,10 +73,15 @@ export default function PaginaRegistro() {
   const [cargando, setCargando] = useState(false);
   const [esHumano, setEsHumano] = useState(false);
   const [datos, setDatos] = useState({
-    nombre: '', especialidad: '', sub_especialidad: '',
-    cedula: '', ubicacion: '', telefono: '',
-    enfermedades: '', foto: null as File | null,
-  });
+  nombre: '',
+  especialidad: '',
+  sub_specialidad: '', // <--- Spelled with 'd' at the end
+  cedula: '',
+  ubicacion: '',
+  telefono: '',
+  enfermedades: '',
+  foto: null as File | null,
+});
 
   // Optimize and Convert to WebP
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,50 +120,57 @@ export default function PaginaRegistro() {
   };
 
   const manejarEnvio = async () => {
-    if (!esHumano) return;
-    setCargando(true);
-    try {
-      let urlImagen = null;
+  if (!esHumano) return;
+  setCargando(true);
+  try {
+    let urlImagen = null;
 
-      if (datos.foto) {
-        const path = `perfiles/${Date.now()}.webp`;
-        const { error: upErr } = await supabase.storage.from('avatars').upload(path, datos.foto);
-        if (!upErr) {
-          const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-          urlImagen = data.publicUrl;
-        }
+    // 1. Upload logic (Ensures WebP extension)
+    if (datos.foto) {
+      const path = `perfiles/${Date.now()}.webp`;
+      const { error: upErr } = await supabase.storage.from('avatars').upload(path, datos.foto);
+      if (!upErr) {
+        const { data } = supabase.storage.from('avatars').getPublicUrl(path);
+        urlImagen = data.publicUrl;
       }
-
-      const info_contacto = {
-        phones: [formatearTelefono(datos.telefono)].filter(Boolean),
-        locations: procesarUbicaciones(datos.ubicacion)
-      };
-
-      const perfil_medico = {
-        sub_specialties: datos.sub_specialidad.split(',').map(s => s.trim()).filter(Boolean),
-        diseases_treated: datos.enfermedades.split(',').map(c => c.trim()).filter(Boolean)
-      };
-
-      const { error } = await supabase.from('doctors').insert({
-        full_name: datos.nombre,
-        slug: generarSlug(datos.nombre, datos.especialidad),
-        specialties: [datos.especialidad],
-        license_numbers: [datos.cedula],
-        contact_info: info_contacto,
-        medical_profile: perfil_medico,
-        image_url: urlImagen,
-        status: 'pending', // Important for admin review
-        has_phone: info_contacto.phones.length > 0,
-      });
-
-      if (error) throw error;
-      setPaso(9);
-    } catch (err: any) {
-      alert("Error: " + err.message);
-    } finally {
-      setCargando(false);
     }
-  };
+
+    // 2. Format Contact Info (Matches your JSONB structure exactly)
+    const info_contacto = {
+      phones: [formatearTelefono(datos.telefono)].filter(Boolean),
+      locations: procesarUbicaciones(datos.ubicacion)
+    };
+
+    // 3. Format Medical Profile (Matches your JSONB structure exactly)
+    // Using default empty strings "" to prevent the .split() build error
+    const perfil_medico = {
+      sub_specialties: (datos.sub_specialidad || "").split(',').map(s => s.trim()).filter(Boolean),
+      diseases_treated: (datos.enfermedades || "").split(',').map(c => c.trim()).filter(Boolean)
+    };
+
+    // 4. Final Insert
+    const { error } = await supabase.from('doctors').insert({
+      full_name: datos.nombre,
+      slug: generarSlug(datos.nombre, datos.especialidad),
+      specialties: [datos.especialidad],
+      cities: [datos.ubicacion.split(',').pop()?.trim() || "México"], // Extracts city from address
+      license_numbers: [datos.cedula],
+      contact_info: info_contacto, // Supabase SDK handles the object to JSONB conversion
+      medical_profile: perfil_medico,
+      image_url: urlImagen,
+      status: 'pending',
+      has_phone: info_contacto.phones.length > 0,
+      created_at: new Date().toISOString()
+    });
+
+    if (error) throw error;
+    setPaso(9);
+  } catch (err: any) {
+    alert("Error: " + err.message);
+  } finally {
+    setCargando(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center">
