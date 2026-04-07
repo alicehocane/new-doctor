@@ -27,9 +27,29 @@ export function DoctorReviewer() {
     if (!error) fetchPending();
   }
 
-  async function remove(id: string) {
+  // --- UPDATED REMOVE FUNCTION ---
+  async function remove(doc: any) {
     if (confirm("¿Confirmar eliminación permanente?")) {
-      const { error } = await supabase.from('doctors').delete().eq('id', id);
+      
+      // 1. If the doctor has an image, delete it from the bucket first
+      if (doc.image_url) {
+        // Extract just the filename from the end of the URL
+        const fileName = doc.image_url.split('/').pop(); 
+        
+        if (fileName) {
+          const { error: storageError } = await supabase.storage
+            .from('avatars')
+            .remove([fileName]);
+            
+          if (storageError) {
+             console.error("Error al borrar la imagen:", storageError);
+             // We still continue to delete the DB record even if image deletion fails
+          }
+        }
+      }
+
+      // 2. Delete the record from the database
+      const { error } = await supabase.from('doctors').delete().eq('id', doc.id);
       if (!error) fetchPending();
     }
   }
@@ -61,7 +81,8 @@ export function DoctorReviewer() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-bold text-slate-900">{doc.full_name}</h3>
-                    <a href={`/medico/${doc.slug}`} target="_blank" className="text-slate-400 hover:text-indigo-600 transition-colors">
+                    {/* BUG FIXED HERE: Changed doctor.slug to doc.slug */}
+                    <a href={`/medico/${doc.slug}?preview=admin-preview`} target="_blank" className="text-slate-400 hover:text-indigo-600 transition-colors">
                       <ExternalLink className="w-4 h-4" />
                     </a>
                   </div>
@@ -79,7 +100,8 @@ export function DoctorReviewer() {
                 <button onClick={() => approve(doc.id)} className="flex-1 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-indigo-100">
                   <Check className="w-4 h-4" /> Aprobar
                 </button>
-                <button onClick={() => remove(doc.id)} className="flex-1 bg-white text-red-600 border border-red-100 px-4 py-2.5 rounded-xl font-bold hover:bg-red-50 flex items-center justify-center gap-2 transition-all active:scale-95">
+                {/* UPDATED HERE: Passing the entire 'doc' object instead of just the ID */}
+                <button onClick={() => remove(doc)} className="flex-1 bg-white text-red-600 border border-red-100 px-4 py-2.5 rounded-xl font-bold hover:bg-red-50 flex items-center justify-center gap-2 transition-all active:scale-95">
                   <X className="w-4 h-4" /> Rechazar
                 </button>
               </div>
