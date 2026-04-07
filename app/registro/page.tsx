@@ -159,7 +159,6 @@ export default function PaginaRegistro() {
       medical_profile: perfil_medico,
       image_url: urlImagen,
       status: 'pending',
-      has_phone: info_contacto.phones.length > 0,
       created_at: new Date().toISOString()
     });
 
