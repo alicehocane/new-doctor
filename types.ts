@@ -46,6 +46,9 @@ export type Doctor = {
     sub_specialties: string[];
     diseases_treated: string[];
   };
+
+  image_url?: string | null;
+  status?: 'published' | 'pending';
   
   created_at: string;
   updated_at: string;
