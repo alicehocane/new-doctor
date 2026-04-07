@@ -156,7 +156,6 @@ export default async function DoctorProfile({ params, searchParams }: { params: 
     }
 
   const { data: currentDoctor } = await query.single();
-    .single();
 
   if (!currentDoctor) {
     notFound();
