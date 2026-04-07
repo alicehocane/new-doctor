@@ -96,12 +96,28 @@ export default function PaginaRegistro() {
     try {
       let urlImagen = null;
       if (datos.foto) {
-        const path = `${Date.now()}.webp`;
-        const { error: upErr } = await supabase.storage.from('avatars').upload(path, datos.foto, { contentType: 'image/webp' });
-        if (!upErr) {
-          const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-          urlImagen = data.publicUrl;
+        const fileName = `${Date.now()}.webp`;
+
+        // Force convert to a clean Blob
+        const imageBlob = new Blob([datos.foto], { type: 'image/webp' });
+
+        const { data: uploadData, error: upErr } = await supabase.storage
+          .from('avatars') // Confirm this is lowercase 'avatars'
+          .upload(fileName, imageBlob, {
+            contentType: 'image/webp',
+            upsert: true
+          });
+
+        if (upErr) {
+          // If this alerts "Object not found", check your NEXT_PUBLIC_SUPABASE_URL
+          alert("DETALLE DEL ERROR: " + upErr.message);
+          setCargando(false);
+          return;
         }
+
+        const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(fileName);
+        urlImagen = urlData.publicUrl;
+        console.log("Imagen subida con éxito:", urlImagen);
       }
 
       const info_contacto = {
