@@ -33,24 +33,41 @@ export function DoctorReviewer() {
       
       // 1. If the doctor has an image, delete it from the bucket first
       if (doc.image_url) {
-        // Extract just the filename from the end of the URL
-        const fileName = doc.image_url.split('/').pop(); 
-        
-        if (fileName) {
-          const { error: storageError } = await supabase.storage
-            .from('avatars')
-            .remove([fileName]);
-            
-          if (storageError) {
-             console.error("Error al borrar la imagen:", storageError);
-             // We still continue to delete the DB record even if image deletion fails
+        try {
+          // STEP A: Remove any random query parameters (like ?t=1234)
+          const cleanUrl = doc.image_url.split('?')[0];
+
+          // STEP B: Safely extract exactly what comes after '/avatars/'
+          // This ensures if it's in a subfolder, we grab the whole path.
+          const urlParts = cleanUrl.split('/avatars/');
+          const filePath = urlParts.length > 1 ? urlParts[1] : cleanUrl.split('/').pop();
+          
+          if (filePath) {
+            // STEP C: Decode the URL in case there are spaces (%20)
+            const decodedPath = decodeURIComponent(filePath);
+
+            const { data, error: storageError } = await supabase.storage
+              .from('avatars')
+              .remove([decodedPath]);
+              
+            if (storageError) {
+               console.error("Storage Error Details:", storageError);
+               alert(`Atención: El registro se borrará, pero el bucket bloqueó la eliminación de la imagen. Revisa tus políticas RLS de Storage.\n\nError: ${storageError.message}`);
+            }
           }
+        } catch (e) {
+          console.error("Error processing image URL:", e);
         }
       }
 
       // 2. Delete the record from the database
       const { error } = await supabase.from('doctors').delete().eq('id', doc.id);
-      if (!error) fetchPending();
+      
+      if (!error) {
+        fetchPending();
+      } else {
+        alert("Error al borrar el médico de la base de datos.");
+      }
     }
   }
 
@@ -81,7 +98,6 @@ export function DoctorReviewer() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-bold text-slate-900">{doc.full_name}</h3>
-                    {/* BUG FIXED HERE: Changed doctor.slug to doc.slug */}
                     <a href={`/admin/preview/${doc.slug}`} target="_blank" className="text-slate-400 hover:text-indigo-600 transition-colors">
                       <ExternalLink className="w-4 h-4" />
                     </a>
@@ -100,7 +116,6 @@ export function DoctorReviewer() {
                 <button onClick={() => approve(doc.id)} className="flex-1 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all active:scale-95 shadow-md shadow-indigo-100">
                   <Check className="w-4 h-4" /> Aprobar
                 </button>
-                {/* UPDATED HERE: Passing the entire 'doc' object instead of just the ID */}
                 <button onClick={() => remove(doc)} className="flex-1 bg-white text-red-600 border border-red-100 px-4 py-2.5 rounded-xl font-bold hover:bg-red-50 flex items-center justify-center gap-2 transition-all active:scale-95">
                   <X className="w-4 h-4" /> Rechazar
                 </button>
