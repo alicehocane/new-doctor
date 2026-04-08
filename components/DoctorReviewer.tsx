@@ -82,7 +82,7 @@ export function DoctorReviewer() {
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-bold text-slate-900">{doc.full_name}</h3>
                     {/* BUG FIXED HERE: Changed doctor.slug to doc.slug */}
-                    <a href={`/medico/${doc.slug}?preview=admin-preview`} target="_blank" className="text-slate-400 hover:text-indigo-600 transition-colors">
+                    <a href={`/admin/preview/${doc.slug}`} target="_blank" className="text-slate-400 hover:text-indigo-600 transition-colors">
                       <ExternalLink className="w-4 h-4" />
                     </a>
                   </div>

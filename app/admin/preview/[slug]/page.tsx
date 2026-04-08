@@ -1,0 +1,591 @@
+import React from 'react';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
+import { Doctor } from '@/types'; // Adjust path if needed
+import { ChevronLeft, AlertTriangle } from 'lucide-react';
+import Link from 'next/link';
+
+export default async function AdminPreviewProfile({ params }: { params: { slug: string } }) {
+  
+  // 1. Await the cookies (Required for Next.js 15 compatibility)
+  const cookieStore = await cookies();
+
+  // 2. Create an authenticated server client that reads your browser's login session
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+      },
+    }
+  );
+
+  // 3. Fetch the doctor WITHOUT the 'status = published' filter.
+  // Because we passed the cookies, Supabase reads your JWT, sees your admin email,
+  // matches it against your brilliant RLS policy, and lets this pass!
+  const { data: currentDoctor } = await supabase
+    .from('doctors')
+    .select('*')
+    .eq('slug', params.slug)
+    .single();
+
+  if (!currentDoctor) {
+    notFound();
+  }
+
+  const doctor = currentDoctor as Doctor;
+
+  // --- Render the Preview ---
+  return (
+    <div className="bg-[#f5f5f7] min-h-screen">
+      
+      {/* ADMIN BANNER - So you never confuse it with the live site */}
+      <div className="bg-amber-500 text-amber-950 px-4 py-3 flex items-center justify-center gap-2 font-bold text-sm tracking-wide sticky top-0 z-50 shadow-md">
+        <AlertTriangle className="w-5 h-5" />
+        VISTA PREVIA DE ADMINISTRADOR - {doctor.status === 'pending' ? 'PERFIL PENDIENTE' : 'PERFIL PUBLICADO'}
+      </div>
+
+      <div className="p-4 max-w-6xl mx-auto">
+        <Link href="/admin" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 mb-8">
+            <ChevronLeft className="w-4 h-4" /> Volver al panel
+        </Link>
+        
+       <div className="bg-[#f5f5f7] min-h-screen pb-24 md:pb-12">
+       
+             {/* MOBILE TOP BANNER: Article Recommendation */}
+             <ArticleRecommendation article={recommendedArticle} />
+             
+             {/* Schema Scripts (Server Injected) */}
+             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
+             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+       
+             {/* Header Profile */}
+             <div className="bg-white border-b border-slate-200/50">
+               <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+                 
+                 {/* Breadcrumb */}
+                 <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
+                   <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
+                   {doctor.cities && doctor.cities.length > 0 && (
+                     <>
+                       <span className="mx-2 text-[#d2d2d7]">/</span>
+                       <Link href={`/doctores/${slugify(doctor.cities[0])}`} className="hover:text-[#0071e3] transition-colors">
+                         {doctor.cities[0]}
+                       </Link>
+                     </>
+                   )}
+                   <span className="mx-2 text-[#d2d2d7]">/</span>
+                   <span className="text-[#1d1d1f] capitalize">{doctor.full_name}</span>
+                 </nav>
+       
+                 <div className="flex flex-col md:flex-row gap-8 items-start animate-in fade-in slide-in-from-bottom-2">
+                   
+                   <div className="flex-1 space-y-4">
+                     <div>
+                       <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-[#1d1d1f] leading-tight mb-4">
+                         {doctor.full_name}
+                       </h1>
+                       <div className="flex flex-wrap gap-2">
+                         {doctor.specialties.map((spec, i) => (
+                           <span key={i} className="px-3 py-1 bg-[#0071e3]/10 text-[#0071e3] font-medium rounded-full text-[14px]">
+                             {spec}
+                           </span>
+                         ))}
+                       </div>
+                     </div>
+                     
+                     {/* Licenses & Validation Block */}
+                     {doctor.license_numbers && doctor.license_numbers.length > 0 && (
+                       <div className="space-y-3">
+                           <div className="text-[14px] text-[#86868b] flex items-center gap-2 font-medium">
+                               <Award className="w-4 h-4 text-[#86868b]" />
+                               <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
+                           </div>
+                           
+                           {/* Verification Tooltip/Block */}
+                           <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 max-w-xl">
+                               <div className="flex gap-3">
+                                   <ShieldCheck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                                   <div>
+                                       <h4 className="text-xs font-bold text-green-800 uppercase tracking-wide mb-1">
+                                           Verificación de Credenciales
+                                       </h4>
+                                       <p className="text-xs text-green-900/80 leading-relaxed">
+                                           La <strong>Cédula Profesional</strong> de este especialista ha sido cotejada con registros públicos, como el Registro Nacional de Profesionistas de la SEP. Este proceso asegura que el médico cuenta con la autorización legal para ejercer su especialidad en territorio mexicano.
+                                       </p>
+                                       <Link href="/nuestro-proceso" className="text-[10px] text-green-700 underline font-medium mt-1 inline-flex items-center gap-1 hover:text-green-900">
+                                           Conoce nuestro proceso de validación <ExternalLink className="w-3 h-3" />
+                                       </Link>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                     )}
+       
+                     {/* Sub Specialties */}
+                     {doctor.medical_profile?.sub_specialties && doctor.medical_profile.sub_specialties.length > 0 && (
+                       <div className="flex flex-wrap gap-2 items-center pt-2">
+                           <Activity className="w-4 h-4 text-[#86868b]" />
+                           {doctor.medical_profile.sub_specialties.map((sub, i) => (
+                               <span key={i} className="text-[14px] text-[#1d1d1f] font-medium bg-slate-100 px-2 py-0.5 rounded text-slate-700">
+                               {sub}
+                               </span>
+                           ))}
+                       </div>
+                     )}
+       
+                     {/* Description */}
+                     <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
+                       {generatedDescription}
+                     </p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+       
+             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4">
+               
+               {/* Main Content */}
+               <div className="md:col-span-2 space-y-6">
+                 
+                 {/* Medical Profile Card */}
+                 <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
+                   <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                     <FileText className="w-5 h-5 text-[#86868b]" />
+                     Información Médica
+                   </h2>
+                   <div className="space-y-4">
+                       <div>
+                         <h3 className="text-[13px] font-semibold text-[#86868b] mb-3 uppercase tracking-wider">
+                           {doctor.medical_profile?.diseases_treated?.length ? "Enfermedades Tratadas" : "Condiciones comunes tratadas"}
+                         </h3>
+                         <div className="flex flex-wrap gap-2">
+                           {diseases.map((d, i) => (
+                             <span key={i} className="px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg text-[14px] font-medium border border-slate-100">
+                               {d}
+                             </span>
+                           ))}
+                         </div>
+                       </div>
+                   </div>
+                 </section>
+       
+                 {/* Locations Card */}
+                 <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
+                    <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                     <MapPin className="w-5 h-5 text-[#86868b]" />
+                     Ubicaciones
+                   </h2>
+                   <div className="space-y-6">
+                     {doctor.contact_info?.locations?.map((loc, idx) => (
+                       <div key={idx} className="flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-start p-5 bg-[#f5f5f7] rounded-2xl">
+                         <div>
+                           <h3 className="font-semibold text-[#1d1d1f] text-lg">{loc.clinic_name}</h3>
+                           <p className="text-[#86868b] text-[15px] mt-1 leading-relaxed">{loc.address}</p>
+                         </div>
+                         {loc.map_url && (
+                           <a 
+                             href={loc.map_url} 
+                             target="_blank" 
+                             rel="noopener noreferrer"
+                             className="inline-flex items-center justify-center px-4 py-2 bg-white text-[#0071e3] rounded-full text-[14px] font-medium shadow-sm hover:bg-slate-50 transition-colors shrink-0"
+                           >
+                             Ver en Mapa
+                           </a>
+                         )}
+                       </div>
+                     ))}
+                   </div>
+                 </section>
+       
+                 {/* MOBILE-ONLY CONTACT SECTION */}
+                 <section className="md:hidden bg-white rounded-[24px] shadow-sm p-8">
+                   <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                     <Phone className="w-5 h-5 text-[#86868b]" />
+                     Contacto Directo
+                   </h2>
+                   <div className="space-y-4">
+                     {phones.length > 0 ? (
+                       phones.map((phone, idx) => {
+                         const cleanPhone = phone.replace(/\D/g, '');
+                         return (
+                           <div key={idx} className="flex flex-col gap-3 p-4 bg-[#f5f5f7] rounded-2xl">
+                             <p className="text-sm font-bold text-[#1d1d1f] flex items-center gap-2">
+                                Teléfono {phones.length > 1 ? idx + 1 : ''}: <span className="text-[#0071e3] font-medium">{phone}</span>
+                             </p>
+                             <div className="flex gap-2">
+                               <a 
+                                 href={`tel:${phone}`}
+                                 className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#0071e3] text-white rounded-xl text-sm font-medium active:scale-95 transition-all"
+                               >
+                                 <Phone className="w-4 h-4" /> Llamar
+                               </a>
+                               <a 
+                                 href={`https://wa.me/${cleanPhone}?text=${waMessage}`}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white rounded-xl text-sm font-medium active:scale-95 transition-all"
+                               >
+                                 <MessageCircle className="w-4 h-4" /> WhatsApp
+                               </a>
+                             </div>
+                           </div>
+                         );
+                       })
+                     ) : (
+                       <div className="p-6 bg-[#f5f5f7] rounded-2xl text-center flex flex-col items-center">
+                         <p className="text-[14px] text-[#1d1d1f]/80 leading-relaxed mb-4">
+                           Aún no tenemos el teléfono registrado, pero te ayudamos a encontrarlo rápidamente en la web.
+                         </p>
+                         <a 
+                           href={googleSearchUrl} 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           className="flex items-center justify-center gap-2 w-full py-3.5 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[15px] hover:bg-slate-50 transition-all active:scale-95 shadow-sm"
+                         >
+                           <Search className="w-4 h-4 text-[#0071e3]" /> 
+                           Buscar en Google
+                         </a>
+                       </div>
+                     )}
+                   </div>
+                 </section>
+       
+                 {/* FAQ Section */}
+                 <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
+                    <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                     <HelpCircle className="w-5 h-5 text-[#86868b]" />
+                     Preguntas Frecuentes
+                   </h2>
+                   <div className="space-y-6 divide-y divide-slate-100">
+                     {faqs.map((faq, idx) => (
+                       <div key={idx} className={idx > 0 ? 'pt-5' : ''}>
+                         <h3 className="font-medium text-[#1d1d1f] text-[16px] mb-2">{faq.question}</h3>
+                         <p className="text-[#86868b] text-[15px] leading-relaxed">{faq.answer}</p>
+                       </div>
+                     ))}
+                   </div>
+                 </section>
+       
+               </div>
+       
+               {/* Desktop Sidebar: Contact & Helper */}
+               <div className="hidden md:block md:col-span-1">
+                 <div className="sticky top-24 space-y-6">
+                   
+                   {/* 1. Contact Card */}
+                   <div className="bg-white rounded-[24px] shadow-sm p-6">
+                     <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
+                     {mainPhone ? (
+                       <div className="space-y-3">
+                         <a 
+                           href={`tel:${mainPhone}`} 
+                           className="flex items-center justify-center gap-2 w-full py-3 bg-[#0071e3] text-white rounded-full font-medium hover:bg-[#0077ED] transition-all active:scale-95"
+                         >
+                           <Phone className="w-4 h-4 fill-current" /> Llamar
+                         </a>
+                         <a 
+                           href={`https://wa.me/${waPhone}?text=${waMessage}`}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
+                         >
+                           <MessageCircle className="w-4 h-4 fill-current" /> WhatsApp
+                         </a>
+                         <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
+                           Al contactar, menciona que lo viste en MediBusca para mejor atención.
+                         </div>
+                       </div>
+                     ) : (
+                       <div className="flex flex-col items-center text-center pt-2">
+                         <div className="w-12 h-12 bg-[#f5f5f7] rounded-full flex items-center justify-center mb-4">
+                           <Search className="w-5 h-5 text-[#86868b]" />
+                         </div>
+                         <p className="text-[13px] text-[#1d1d1f]/80 leading-relaxed mb-5">
+                           Actualmente no contamos con el teléfono directo de este especialista.
+                         </p>
+                         <a 
+                           href={googleSearchUrl} 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[14px] hover:bg-[#f5f5f7] transition-all active:scale-95 shadow-sm"
+                         >
+                           <Search className="w-4 h-4 text-[#0071e3]" /> 
+                           Buscar en Google
+                         </a>
+                       </div>
+                     )}
+                   </div>
+       
+                   {/* 2. Prepara tu Consulta Card */}
+                   <div className="bg-white rounded-[24px] shadow-sm p-6 animate-in fade-in slide-in-from-bottom-6">
+                     <h2 className="text-lg font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
+                       <ClipboardList className="w-5 h-5 text-[#0071e3]" />
+                       Prepara tu cita
+                     </h2>
+                     <p className="text-[13px] text-[#86868b] mb-4 leading-relaxed">
+                       Te sugerimos confirmar estos detalles al contactar al consultorio:
+                     </p>
+                     
+                     <ul className="space-y-3.5">
+                       <li className="flex gap-2.5 items-start">
+                         <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                         <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                           <strong>Aseguradoras:</strong> ¿Trabajan con seguros de Gastos Médicos Mayores (GMM) o aplica pago directo?
+                         </span>
+                       </li>
+                       <li className="flex gap-2.5 items-start">
+                         <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                         <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                           <strong>Formas de pago:</strong> ¿Aceptan tarjeta de crédito/débito o requiere transferencia / efectivo?
+                         </span>
+                       </li>
+                       <li className="flex gap-2.5 items-start">
+                         <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                         <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                           <strong>Estudios previos:</strong> ¿Es necesario llevar algún análisis de laboratorio o imagen a la primera consulta?
+                         </span>
+                       </li>
+                       <li className="flex gap-2.5 items-start">
+                         <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
+                         <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
+                           <strong>Seguimiento:</strong> ¿La tarifa cubre la revisión de estudios médicos posteriores?
+                         </span>
+                       </li>
+                     </ul>
+                   </div>
+       
+                 </div>
+               </div>
+             </div>
+       
+             {/* Related Articles Section */}
+             {relatedArticles.length > 0 && (
+               <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200 mt-8">
+                   <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                       <BookOpen className="w-5 h-5 text-[#86868b]" />
+                       Artículos Relacionados con {doctor.specialties[0]}
+                   </h2>
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                       {relatedArticles.map((article) => (
+                           <Link key={article.id} href={`/enciclopedia/${article.slug}`}>
+                               <div className="group bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all border border-slate-200 cursor-pointer h-full flex flex-col">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="px-2.5 py-0.5 bg-[#0071e3]/10 text-[#0071e3] text-[10px] font-bold uppercase tracking-wider rounded-full truncate max-w-[150px]">
+                                            {article.category.split(',')[0].trim()}
+                                        </span>
+                                        <span className="text-[11px] text-[#86868b] flex items-center gap-1 ml-auto shrink-0">
+                                           <Clock className="w-3 h-3" /> {article.read_time}
+                                       </span>
+                                    </div>
+                                    <h3 className="font-bold text-[#1d1d1f] mb-2 leading-snug group-hover:text-[#0071e3] transition-colors line-clamp-2">
+                                        {article.title}
+                                    </h3>
+                                    <p className="text-sm text-[#86868b] line-clamp-3 mb-4 flex-1 leading-relaxed">
+                                        {article.excerpt}
+                                    </p>
+                                    <div className="flex items-center gap-2 text-xs font-medium text-[#1d1d1f] mt-auto">
+                                        <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 text-[10px] shrink-0">
+                                            {article.author.charAt(0)}
+                                        </div>
+                                        <span className="truncate">{article.author}</span>
+                                    </div>
+                               </div>
+                           </Link>
+                       ))}
+                   </div>
+               </section>
+             )}
+       
+             {/* Related Doctors Section */}
+             {relatedDoctors.length > 0 && (
+               <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
+                   <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
+                       Otros {doctor.specialties[0]}s en {doctor.cities[0]}
+                   </h2>
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                       {relatedDoctors.map((doc) => (
+                           <div 
+                               key={doc.id}
+                               className="bg-white p-6 rounded-[24px] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 border border-transparent hover:border-[#0071e3]/20 flex flex-col justify-between"
+                           >
+                                <div className="flex-1 min-w-0 mb-5">
+                                   <div className="flex justify-between items-start gap-3">
+                                       <Link href={`/medico/${doc.slug}`} className="flex-1">
+                                           <h3 className="text-lg font-bold text-[#1d1d1f] leading-snug hover:text-[#0071e3] transition-colors cursor-pointer">
+                                               {doc.full_name}
+                                           </h3>
+                                       </Link>
+                                       {doc.license_numbers && doc.license_numbers.length > 0 && (
+                                           <CheckCircle className="w-5 h-5 text-[#0071e3] shrink-0 mt-1" />
+                                       )}
+                                   </div>
+                                   
+                                   <div className="flex flex-wrap gap-2 mt-3 mb-4">
+                                       {doc.specialties.slice(0, 2).map(s => (
+                                           <span key={s} className="px-2.5 py-1 bg-[#f5f5f7] text-[#86868b] text-[11px] font-bold rounded-lg uppercase tracking-wide">
+                                               {s}
+                                           </span>
+                                       ))}
+                                   </div>
+       
+                                   <div className="flex items-center gap-1.5 text-sm font-medium text-[#86868b]">
+                                       <MapPin className="w-4 h-4 text-[#86868b]/70" /> 
+                                       {doc.cities[0]}
+                                   </div>
+                               </div>
+       
+                               {/* Action Buttons */}
+                               <div className="flex gap-3 pt-4 border-t border-slate-100">
+                                 <Link 
+                                   href={`/medico/${doc.slug}`}
+                                   className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#f5f5f7] text-[#1d1d1f] rounded-xl font-medium text-sm hover:bg-[#e5e5ea] transition-colors active:scale-95"
+                                 >
+                                   <User className="w-4 h-4" />
+                                   Ver Perfil
+                                 </Link>
+                                 
+                                 {doc.contact_info?.phones?.[0] ? (
+                                   <a 
+                                     href={`tel:${doc.contact_info.phones[0]}`}
+                                     className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#0071e3] text-white rounded-xl font-medium text-sm hover:bg-[#0077ED] transition-colors active:scale-95"
+                                   >
+                                     <Phone className="w-4 h-4" />
+                                     Llamar
+                                   </a>
+                                 ) : (
+                                   <button disabled className="flex-1 flex items-center justify-center gap-2 h-10 bg-slate-100 text-slate-400 rounded-xl font-medium text-sm cursor-not-allowed">
+                                      <Phone className="w-4 h-4" />
+                                      Llamar
+                                   </button>
+                                 )}
+                               </div>
+                           </div>
+                       ))}
+                   </div>
+               </section>
+             )}
+       
+             {/* Disclaimer Note & Last Updated */}
+             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 border-t border-slate-200 mt-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="flex gap-3 max-w-2xl">
+                       <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+                       <p className="text-xs text-slate-500 leading-relaxed">
+                         <strong>Descargo de responsabilidad:</strong> Este perfil es informativo. MediBusca no ofrece atención médica ni reemplaza la consulta profesional. Recomendamos siempre validar las credenciales del médico presencialmente antes de iniciar cualquier tratamiento.
+                       </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-400 whitespace-nowrap">
+                       <CalendarDays className="w-4 h-4" />
+                       <span>Última actualización: {formatDate(doctor.updated_at)}</span>
+                    </div>
+                </div>
+             </div>
+       
+             {/* SEO Cross-Linking Section */}
+             <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 border-t border-slate-200">
+               <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
+                   Búsquedas Relacionadas
+               </h2>
+               <div className="flex flex-wrap gap-x-3 gap-y-3">
+                    {['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Benito Juárez', 'Cuauhtémoc', 'Pachuca', 'Zapopan']
+                       .filter(c => doctor.cities.length === 0 || slugify(c) !== slugify(doctor.cities[0])) 
+                       .map((city, idx) => (
+                        <Link
+                           key={`spec-${idx}`}
+                           href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
+                           className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                        >
+                         <MapPin className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                         <span>{doctor.specialties[0]} en {city}</span>
+                        </Link>
+                    ))}
+       
+                    {doctor.cities.length > 0 && POPULAR_SPECIALTIES
+                       .filter(s => slugify(s) !== slugify(doctor.specialties[0]))
+                       .slice(0, 8)
+                       .map((spec, idx) => (
+                        <Link
+                           key={`city-${idx}`}
+                           href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
+                           className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                        >
+                        <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
+                        <span>{spec} en {doctor.cities[0]}</span>  
+                        </Link>
+                    ))}
+               </div>
+             </section>
+       
+             {/* 7️⃣ CTA */}
+             <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">
+                 <h2 className="text-3xl font-bold text-[#1d1d1f] mb-4">¿Buscas un especialista en tu ciudad?</h2>
+                 <p className="text-[#86868b] text-lg mb-8 max-w-2xl mx-auto">
+                     Comienza tu búsqueda ahora y encuentra doctores certificados según tu necesidad médica.
+                 </p>
+                 <Link 
+                     href="/buscar" 
+                     className="bg-[#0071e3] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#0077ED] transition-all shadow-lg hover:shadow-xl active:scale-95 inline-flex items-center gap-2"
+                 >
+                     Buscar un especialista <Search className="w-5 h-5" />
+                 </Link>
+             </section>
+       
+             {/* MOBILE ACTION DOCK - ONLY RENDERED IF mainPhone EXISTS */}
+             {mainPhone && (
+               <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[440px] z-[200]">
+                 <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2 rounded-[2.5rem] shadow-2xl flex items-center gap-2 border border-white/10">
+                   <Link 
+                     href={doctor.cities.length > 0 ? `/doctores/${slugify(doctor.cities[0])}/${slugify(doctor.specialties[0])}` : '/'}
+                     className="w-11 h-11 shrink-0 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+                     aria-label="Volver"
+                   >
+                     <ChevronLeft className="w-5 h-5" />
+                   </Link>
+                   
+                   <div className="flex-1 min-w-0 px-1">
+                     <span className="block text-[12px] font-bold text-white truncate leading-none">
+                       {doctor.full_name}
+                     </span>
+                     <span className="block text-[10px] text-white truncate leading-none mt-1">
+                       {doctor.specialties[0]}
+                     </span>
+                   </div>
+       
+                   <div className="flex items-center gap-2">
+                     <a 
+                       href={`https://wa.me/${waPhone}?text=${waMessage}`}
+                       className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                       aria-label="WhatsApp"
+                     >
+                       <MessageCircle className="w-5 h-5 fill-current" />
+                     </a>
+                     <a 
+                       href={`tel:${mainPhone}`}
+                       className="w-11 h-11 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+                       aria-label="Llamar"
+                     >
+                       <Phone className="w-5 h-5 fill-current" />
+                     </a>
+                   </div>
+                 </div>
+               </div>
+             )}
+       
+           </div>
+           
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
+            <h1 className="text-4xl font-bold text-[#1d1d1f] mb-2">{doctor.full_name}</h1>
+            <p className="text-indigo-600 font-bold uppercase tracking-wide">{doctor.specialties?.join(', ')}</p>
+            <p className="text-slate-500 mt-4">Slug: {doctor.slug}</p>
+            <p className="text-slate-500">Estado actual: <span className="font-bold">{doctor.status}</span></p>
+        </div>
+
+      </div>
+    </div>
+  );
+}

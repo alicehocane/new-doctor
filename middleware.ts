@@ -2,14 +2,9 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // 1. VIP PASS: If the URL has our secret admin preview, let it through untouched!
-  if (request.nextUrl.searchParams.get('preview') === 'admin-preview') {
-    return NextResponse.next();
-  }
-
   // STOP CACHE BUSTING: Strip query parameters on dynamic SEO routes
   // This prevents Cloudflare from creating duplicate caches for URLs with tracking tags
-  if (request.nextUrl.search && request.nextUrl.search !== '') {
+  if (request.nextUrl.search) {
     const cleanUrl = request.nextUrl.clone();
     cleanUrl.search = '';
     

@@ -138,24 +138,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 // --- Server Component ---
 
-export default async function DoctorProfile({ params, searchParams }: { params: { slug: string }; searchParams: { preview?: string };}) {
+export default async function DoctorProfile({ params }: { params: { slug: string } }) {
   const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
   if (!isValidSlugFormat) {
       notFound();
   }
 
-  // 3. Build the query dynamically
-  let query = supabase
+  const { data: currentDoctor } = await supabase
     .from('doctors')
     .select('*')
-    .eq('slug', params.slug);
-
-    // 4. The Secret Handshake: Only filter by 'published' if the preview code is missing
-    if (searchParams.preview !== 'admin-preview') {
-      query = query.eq('status', 'published');
-    }
-
-  const { data: currentDoctor } = await query.single();
+    .eq('slug', params.slug)
+    .eq('status', 'published')
+    .single();
 
   if (!currentDoctor) {
     notFound();
