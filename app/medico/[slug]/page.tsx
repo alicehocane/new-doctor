@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '../../../lib/constants';
 import ArticleRecommendation from '../../../components/ArticleRecommendation';
+import AdUnit from '../../../components/AdUnit';
 
 export const revalidate = 0;
 
@@ -300,6 +301,15 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* MOBILE TOP BANNER: Article Recommendation */}
       <ArticleRecommendation article={recommendedArticle} />
+
+      {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+          // No layout prop here because it's a standard banner
+        />
+      </div>
       
       {/* Schema Scripts (Server Injected) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
@@ -380,6 +390,16 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 </div>
               )}
 
+              {/* Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
+
               {/* Description */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
                 {generatedDescription}
@@ -415,6 +435,9 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 </div>
             </div>
           </section>
+
+          {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit slot="YOUR_MID_CONTENT_SLOT_ID" format="rectangle" />
 
           {/* Locations Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
@@ -601,6 +624,14 @@ export default async function DoctorProfile({ params }: { params: { slug: string
               </ul>
             </div>
 
+            {/* 4. DESKTOP SIDEBAR AD */}
+            <div className="bg-white rounded-[24px] shadow-sm p-4 text-center">
+              <AdUnit 
+                slot="8436175249" 
+                format="vertical" 
+              />
+            </div>
+
           </div>
         </div>
       </div>
@@ -762,6 +793,14 @@ export default async function DoctorProfile({ params }: { params: { slug: string
              ))}
         </div>
       </section>
+
+      {/* 5. BOTTOM AD (Before Final CTA) */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+        <AdUnit 
+          slot="4009845073" // Replace with your new 10-digit Slot ID
+          format="auto" 
+        />
+      </div>
 
       {/* 7️⃣ CTA */}
       <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">

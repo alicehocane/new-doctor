@@ -154,6 +154,14 @@ export default function RootLayout({
 </footer>
 
 <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388571116414842"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+
+
+<Script
     src="https://www.googletagmanager.com/gtag/js?id=G-GM3L4PKEQV"
     strategy="afterInteractive"
   />
