@@ -3,11 +3,11 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Doctor, Article } from '../../../../types'; // Adjusted path for 4 levels deep
+import { Doctor, Article } from '@/types'; // Adjusted path for 4 levels deep
 import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
-import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '../../../../lib/constants'; // Adjusted path
-import ArticleRecommendation from '../../../../components/ArticleRecommendation'; // Adjusted path
+import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '@/lib/constants'; // Adjusted path
+import ArticleRecommendation from '@/components/ArticleRecommendation'; // Adjusted path
 
 // Never cache the admin preview
 export const dynamic = 'force-dynamic';
