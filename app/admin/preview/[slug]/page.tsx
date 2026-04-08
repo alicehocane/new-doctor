@@ -1,16 +1,11 @@
-import React from 'react';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import { Doctor, Article } from '@/types'; // Adjusted path for 4 levels deep
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList, AlertTriangle } from 'lucide-react';
+'use client';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase'; // Using your standard client
+import { Doctor, Article } from '@/types'; 
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList, AlertTriangle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '@/lib/constants'; // Adjusted path
-import ArticleRecommendation from '@/components/ArticleRecommendation'; // Adjusted path
-
-// Never cache the admin preview
-export const dynamic = 'force-dynamic';
+import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '@/lib/constants'; 
+import ArticleRecommendation from '@/components/ArticleRecommendation'; 
 
 // --- Utility Functions ---
 const slugify = (text: string) => {
@@ -62,109 +57,94 @@ function generarBiografiaDinamica(doctor: Doctor) {
   return variaciones[indice];
 }
 
-// --- SEO Metadata (Strictly blocked for Admin Route) ---
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  return {
-    title: `Vista Previa Admin - ${params.slug}`,
-    robots: {
-      index: false,
-      follow: false,
-      nocache: true,
-    }
-  };
-}
+export default function AdminPreviewProfile({ params }: { params: { slug: string } }) {
+  const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
+  const [doctor, setDoctor] = useState<Doctor | null>(null);
+  const [relatedDoctors, setRelatedDoctors] = useState<Doctor[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
 
-// --- Server Component ---
-export default async function AdminPreviewProfile({ params }: { params: { slug: string } }) {
-  const isValidSlugFormat = /^[a-z0-9\-]+$/.test(params.slug);
-  if (!isValidSlugFormat) {
-      notFound();
-  }
+  useEffect(() => {
+    async function verifyAndFetch() {
+      // 1. Verify Admin Session from LocalStorage
+      const { data: { user } } = await supabase.auth.getUser();
 
-  // 1. Create the SSR Auth Client
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-      },
-    }
-  );
+      if (!user || user.email !== 'hereyouth@gmail.com') {
+        setAuthorized(false);
+        setLoading(false);
+        return;
+      }
 
-  // =================================================================
-  // 🚨 STRICT ADMIN VERIFICATION
-  // =================================================================
-  const { data: { user } } = await supabase.auth.getUser();
+      setAuthorized(true);
 
-  if (!user || user.email !== 'hereyouth@gmail.com') {
-      // If logged out, or not the admin, block them completely.
-      notFound(); 
-  }
-  // =================================================================
-
-  // 2. Fetch the doctor using the authenticated client. 
-  // Your RLS allows this because the user verified above is the admin!
-  const { data: currentDoctor } = await supabase
-    .from('doctors')
-    .select('*')
-    .eq('slug', params.slug)
-    .single();
-
-  if (!currentDoctor) {
-    notFound();
-  }
-
-  const doctor = currentDoctor as Doctor;
-  
-  // 3. Fetch related data using the authenticated client
-  const relatedDoctorsPromise = (async () => {
-    if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
-      const { data: related } = await supabase
+      // 2. Fetch the doctor (Bypasses 'published' filter naturally because you are authenticated)
+      const { data: currentDoctor } = await supabase
         .from('doctors')
         .select('*')
-        .contains('cities', [doctor.cities[0]])
-        .contains('specialties', [doctor.specialties[0]])
-        .eq('status', 'published') // Only show published ones in the related section
-        .neq('id', doctor.id)
-        .limit(20);
-      
-      if (related) {
-        return (related as Doctor[])
-          .sort((a, b) => {
-            const aHas = Boolean(a.contact_info?.phones?.some(p => p && p.trim().length > 0));
-            const bHas = Boolean(b.contact_info?.phones?.some(p => p && p.trim().length > 0));
-            if (aHas === bHas) return 0;
-            return aHas ? -1 : 1;
-          })
-          .slice(0, 4);
+        .eq('slug', params.slug)
+        .single();
+
+      if (currentDoctor) {
+        setDoctor(currentDoctor as Doctor);
+        
+        // 3. Fetch Related Data
+        if (currentDoctor.cities?.length > 0 && currentDoctor.specialties?.length > 0) {
+          const { data: rDocs } = await supabase
+            .from('doctors')
+            .select('*')
+            .contains('cities', [currentDoctor.cities[0]])
+            .contains('specialties', [currentDoctor.specialties[0]])
+            .eq('status', 'published')
+            .neq('id', currentDoctor.id)
+            .limit(4);
+            
+          if (rDocs) setRelatedDoctors(rDocs as Doctor[]);
+        }
+
+        if (currentDoctor.specialties?.length > 0) {
+          const { data: rArts } = await supabase
+            .from('articles')
+            .select('*')
+            .ilike('category', `%${currentDoctor.specialties[0]}%`)
+            .limit(3);
+            
+          if (rArts) setRelatedArticles(rArts as Article[]);
+        }
       }
+      
+      setLoading(false);
     }
-    return [];
-  })();
 
-  const relatedArticlesPromise = (async () => {
-    if (doctor.specialties.length > 0) {
-      const mainSpecialty = doctor.specialties[0];
-      const { data: articlesData } = await supabase
-        .from('articles')
-        .select('*')
-        .ilike('category', `%${mainSpecialty}%`)
-        .limit(3);
-      return articlesData as Article[] || [];
-    }
-    return [];
-  })();
+    verifyAndFetch();
+  }, [params.slug]);
 
-  const [relatedDoctors, relatedArticles] = await Promise.all([relatedDoctorsPromise, relatedArticlesPromise]);
+  // --- Render States ---
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
+        <Loader2 className="w-10 h-10 animate-spin text-[#0071e3]" />
+      </div>
+    );
+  }
+
+  if (!authorized || !doctor) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center p-4">
+        <div className="bg-white p-12 rounded-3xl shadow-sm text-center max-w-lg border border-slate-200">
+            <FileText className="w-16 h-16 text-slate-300 mx-auto mb-6" />
+            <h1 className="text-3xl font-bold text-slate-900 mb-4">Página no encontrada</h1>
+            <p className="text-slate-500 mb-8">Lo sentimos, no pudimos encontrar la página que buscas o no tienes permisos de administrador.</p>
+            <Link href="/" className="bg-slate-900 text-white px-6 py-3 rounded-full font-medium hover:bg-slate-800 transition-colors">
+                Volver al Inicio
+            </Link>
+        </div>
+      </div>
+    );
+  }
 
   // --- UI Variables Preparation ---
   const cityDisp = doctor.cities?.[0] || "Monterrey";
   const specDisp = doctor.specialties?.[0] || "";
-  
   const diseases = getEnfermedades(doctor);
   const generatedDescription = generarBiografiaDinamica(doctor);
 
@@ -217,14 +197,12 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
         </Link>
       </div>
 
-      {/* MOBILE TOP BANNER: Article Recommendation */}
       <ArticleRecommendation article={recommendedArticle} />
 
       {/* Header Profile */}
       <div className="bg-white border-b border-slate-200/50 mt-6">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           
-          {/* Breadcrumb */}
           <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
             <Link href="/" className="hover:text-[#0071e3] transition-colors">Inicio</Link> 
             {doctor.cities && doctor.cities.length > 0 && (
@@ -240,7 +218,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
           </nav>
 
           <div className="flex flex-col md:flex-row gap-8 items-start animate-in fade-in slide-in-from-bottom-2">
-            
             <div className="flex-1 space-y-4">
               <div>
                 <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-[#1d1d1f] leading-tight mb-4">
@@ -255,7 +232,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                 </div>
               </div>
               
-              {/* Licenses & Validation Block */}
               {doctor.license_numbers && doctor.license_numbers.length > 0 && (
                 <div className="space-y-3">
                     <div className="text-[14px] text-[#86868b] flex items-center gap-2 font-medium">
@@ -263,7 +239,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                         <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
                     </div>
                     
-                    {/* Verification Tooltip/Block */}
                     <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 max-w-xl">
                         <div className="flex gap-3">
                             <ShieldCheck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
@@ -272,7 +247,7 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                                     Verificación de Credenciales
                                 </h4>
                                 <p className="text-xs text-green-900/80 leading-relaxed">
-                                    La <strong>Cédula Profesional</strong> de este especialista ha sido cotejada con registros públicos, como el Registro Nacional de Profesionistas de la SEP. Este proceso asegura que el médico cuenta con la autorización legal para ejercer su especialidad en territorio mexicano.
+                                    La <strong>Cédula Profesional</strong> de este especialista ha sido cotejada con registros públicos.
                                 </p>
                             </div>
                         </div>
@@ -280,7 +255,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                 </div>
               )}
 
-              {/* Sub Specialties */}
               {doctor.medical_profile?.sub_specialties && doctor.medical_profile.sub_specialties.length > 0 && (
                 <div className="flex flex-wrap gap-2 items-center pt-2">
                     <Activity className="w-4 h-4 text-[#86868b]" />
@@ -292,7 +266,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                 </div>
               )}
 
-              {/* Description */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
                 {generatedDescription}
               </p>
@@ -303,10 +276,7 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4">
         
-        {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
-          
-          {/* Medical Profile Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#86868b]" />
@@ -328,7 +298,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
             </div>
           </section>
 
-          {/* Locations Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
              <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-[#86868b]" />
@@ -356,7 +325,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
             </div>
           </section>
 
-          {/* MOBILE-ONLY CONTACT SECTION */}
           <section className="md:hidden bg-white rounded-[24px] shadow-sm p-8">
             <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
               <Phone className="w-5 h-5 text-[#86868b]" />
@@ -378,14 +346,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                         >
                           <Phone className="w-4 h-4" /> Llamar
                         </a>
-                        <a 
-                          href={`https://wa.me/${cleanPhone}?text=${waMessage}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white rounded-xl text-sm font-medium active:scale-95 transition-all"
-                        >
-                          <MessageCircle className="w-4 h-4" /> WhatsApp
-                        </a>
                       </div>
                     </div>
                   );
@@ -393,23 +353,13 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
               ) : (
                 <div className="p-6 bg-[#f5f5f7] rounded-2xl text-center flex flex-col items-center">
                   <p className="text-[14px] text-[#1d1d1f]/80 leading-relaxed mb-4">
-                    Aún no tenemos el teléfono registrado, pero te ayudamos a encontrarlo rápidamente en la web.
+                    Aún no tenemos el teléfono registrado.
                   </p>
-                  <a 
-                    href={googleSearchUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center justify-center gap-2 w-full py-3.5 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[15px] hover:bg-slate-50 transition-all active:scale-95 shadow-sm"
-                  >
-                    <Search className="w-4 h-4 text-[#0071e3]" /> 
-                    Buscar en Google
-                  </a>
                 </div>
               )}
             </div>
           </section>
 
-          {/* FAQ Section */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
              <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-[#86868b]" />
@@ -424,14 +374,10 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
               ))}
             </div>
           </section>
-
         </div>
 
-        {/* Desktop Sidebar: Contact & Helper */}
         <div className="hidden md:block md:col-span-1">
           <div className="sticky top-24 space-y-6">
-            
-            {/* 1. Contact Card */}
             <div className="bg-white rounded-[24px] shadow-sm p-6">
               <h2 className="text-lg font-semibold text-[#1d1d1f] mb-4">Contacto</h2>
               {mainPhone ? (
@@ -442,17 +388,6 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                   >
                     <Phone className="w-4 h-4 fill-current" /> Llamar
                   </a>
-                  <a 
-                    href={`https://wa.me/${waPhone}?text=${waMessage}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white rounded-full font-medium hover:bg-[#22c35e] transition-all active:scale-95"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-current" /> WhatsApp
-                  </a>
-                  <div className="text-[11px] text-center text-[#86868b] mt-4 px-4 leading-tight">
-                    Al contactar, menciona que lo viste en MediBusca para mejor atención.
-                  </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center text-center pt-2">
@@ -462,61 +397,12 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
                   <p className="text-[13px] text-[#1d1d1f]/80 leading-relaxed mb-5">
                     Actualmente no contamos con el teléfono directo de este especialista.
                   </p>
-                  <a 
-                    href={googleSearchUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-xl font-medium text-[14px] hover:bg-[#f5f5f7] transition-all active:scale-95 shadow-sm"
-                  >
-                    <Search className="w-4 h-4 text-[#0071e3]" /> 
-                    Buscar en Google
-                  </a>
                 </div>
               )}
             </div>
-
-            {/* 2. Prepara tu Consulta Card */}
-            <div className="bg-white rounded-[24px] shadow-sm p-6 animate-in fade-in slide-in-from-bottom-6">
-              <h2 className="text-lg font-semibold text-[#1d1d1f] mb-3 flex items-center gap-2">
-                <ClipboardList className="w-5 h-5 text-[#0071e3]" />
-                Prepara tu cita
-              </h2>
-              <p className="text-[13px] text-[#86868b] mb-4 leading-relaxed">
-                Te sugerimos confirmar estos detalles al contactar al consultorio:
-              </p>
-              
-              <ul className="space-y-3.5">
-                <li className="flex gap-2.5 items-start">
-                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
-                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
-                    <strong>Aseguradoras:</strong> ¿Trabajan con seguros de Gastos Médicos Mayores (GMM) o aplica pago directo?
-                  </span>
-                </li>
-                <li className="flex gap-2.5 items-start">
-                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
-                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
-                    <strong>Formas de pago:</strong> ¿Aceptan tarjeta de crédito/débito o requiere transferencia / efectivo?
-                  </span>
-                </li>
-                <li className="flex gap-2.5 items-start">
-                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
-                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
-                    <strong>Estudios previos:</strong> ¿Es necesario llevar algún análisis de laboratorio o imagen a la primera consulta?
-                  </span>
-                </li>
-                <li className="flex gap-2.5 items-start">
-                  <CheckCircle className="w-4 h-4 text-[#0071e3] shrink-0 mt-0.5" />
-                  <span className="text-[13px] text-[#1d1d1f]/80 leading-snug">
-                    <strong>Seguimiento:</strong> ¿La tarifa cubre la revisión de estudios médicos posteriores?
-                  </span>
-                </li>
-              </ul>
-            </div>
-
           </div>
         </div>
       </div>
-
     </div>
   );
 }
