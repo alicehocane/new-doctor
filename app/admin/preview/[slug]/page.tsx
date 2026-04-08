@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase'; // Using your standard client
 import { Doctor, Article } from '@/types'; 
-import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList, AlertTriangle, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Award, FileText, HelpCircle, User, CheckCircle, Search, BookOpen, Clock, Activity, ChevronLeft, Info, ShieldCheck, ExternalLink, CalendarDays, MessageCircle, ClipboardList, AlertTriangle, Loader2, Camera } from 'lucide-react';
 import Link from 'next/link';
 import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '@/lib/constants'; 
 import ArticleRecommendation from '@/components/ArticleRecommendation'; 
@@ -63,6 +63,7 @@ export default function AdminPreviewProfile({ params }: { params: { slug: string
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [relatedDoctors, setRelatedDoctors] = useState<Doctor[]>([]);
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     async function verifyAndFetch() {
@@ -219,16 +220,31 @@ export default function AdminPreviewProfile({ params }: { params: { slug: string
 
           <div className="flex flex-col md:flex-row gap-8 items-start animate-in fade-in slide-in-from-bottom-2">
             
-            {/* 🚨 UPDATED: Profile Image */}
-            {doctor.image_url && (
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2rem] overflow-hidden border border-slate-200 shadow-sm shrink-0 bg-white">
+           {/* 🚨 UPDATED: Smart Profile Image Placeholder with Spanish UI */}
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-[2rem] overflow-hidden border border-slate-200 shadow-sm shrink-0 bg-white flex items-center justify-center">
+              {doctor.image_url && !imgError ? (
                 <img 
                   src={doctor.image_url} 
                   alt={`Perfil de ${doctor.full_name}`} 
                   className="w-full h-full object-cover" 
+                  onError={() => setImgError(true)} 
                 />
-              </div>
-            )}
+              ) : (
+                <a 
+                  href={`mailto:medibusca.info@gmail.com?subject=${encodeURIComponent(`Fotografía para perfil: ${doctor.full_name}`)}&body=${encodeURIComponent(`Hola equipo de MediBusca,\n\nAdjunto la fotografía oficial para el perfil de ${doctor.full_name}.\n\nEnlace del perfil: https://medibusca.com/medico/${doctor.slug}\n\nGracias.`)}`}
+                  className="w-full h-full bg-slate-50 hover:bg-[#0071e3]/5 flex flex-col items-center justify-center transition-colors group p-2 text-center decoration-transparent"
+                  title="Enviar fotografía por correo"
+                >
+                  <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                    <Camera className="w-5 h-5 text-slate-400 group-hover:text-[#0071e3] transition-colors" />
+                  </div>
+                  <span className="text-[10px] md:text-xs font-bold text-slate-500 group-hover:text-[#0071e3] leading-tight">
+                    ¿Eres el médico?<br/>Añadir Foto
+                  </span>
+                </a>
+              )}
+            </div>
+
 
             <div className="flex-1 space-y-4">
               <div>
