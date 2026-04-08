@@ -1,5 +1,5 @@
 import React from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -81,13 +81,34 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
       notFound();
   }
 
-  // USE THE VIP KEY TO BYPASS THE COOKIE ISSUE
-  const supabaseAdmin = createClient(
+  // 1. Create the SSR Auth Client
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY! // Make sure this is in your Vercel Environment Variables!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+      },
+    }
   );
 
-  const { data: currentDoctor } = await supabaseAdmin
+  // =================================================================
+  // 🚨 STRICT ADMIN VERIFICATION
+  // =================================================================
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user || user.email !== 'hereyouth@gmail.com') {
+      // If logged out, or not the admin, block them completely.
+      notFound(); 
+  }
+  // =================================================================
+
+  // 2. Fetch the doctor using the authenticated client. 
+  // Your RLS allows this because the user verified above is the admin!
+  const { data: currentDoctor } = await supabase
     .from('doctors')
     .select('*')
     .eq('slug', params.slug)
@@ -102,7 +123,7 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
   // 3. Fetch related data using the authenticated client
   const relatedDoctorsPromise = (async () => {
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
-      const { data: related } = await supabaseAdmin
+      const { data: related } = await supabase
         .from('doctors')
         .select('*')
         .contains('cities', [doctor.cities[0]])
@@ -128,7 +149,7 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
   const relatedArticlesPromise = (async () => {
     if (doctor.specialties.length > 0) {
       const mainSpecialty = doctor.specialties[0];
-      const { data: articlesData } = await supabaseAdmin
+      const { data: articlesData } = await supabase
         .from('articles')
         .select('*')
         .ilike('category', `%${mainSpecialty}%`)
@@ -191,7 +212,7 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
-        <Link href="/admin" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+        <Link href="/admin/upload" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
             <ChevronLeft className="w-4 h-4" /> Volver al panel de administración
         </Link>
       </div>
