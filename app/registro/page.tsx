@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, X, Check, Upload, ArrowLeft, User, Stethoscope, 
-  Activity, Award, MapPin, Phone, CheckCircle, Loader2, AlertCircle 
+  Activity, Award, MapPin, Phone, CheckCircle, Loader2, AlertCircle, Search 
 } from 'lucide-react';
 import Link from 'next/link';
 import { supabase } from '../../lib/supabase';
@@ -41,6 +41,10 @@ export default function PaginaRegistro() {
   const [paso, setPaso] = useState(1);
   const [cargando, setCargando] = useState(false);
   const [esHumano, setEsHumano] = useState(false);
+
+  // --- NEW: Search States ---
+  const [busquedaEspecialidad, setBusquedaEspecialidad] = useState('');
+  const [busquedaEnfermedad, setBusquedaEnfermedad] = useState('');
 
   const [datos, setDatos] = useState({
     nombre: '',
@@ -101,8 +105,6 @@ export default function PaginaRegistro() {
 
     // 2. UPLOAD IMAGE (USING THE SLUG)
     if (datos.foto) {
-      // Use the slug as the filename for maximum SEO
-      // We add a short timestamp just to prevent browser cache issues
       const fileName = `${slugFinal}-${Date.now()}.webp`;
 
       const { error: upErr } = await supabase.storage
@@ -130,7 +132,7 @@ export default function PaginaRegistro() {
       // 3. INSERT INTO DATABASE (USING THE SAME SLUG)
       const { error } = await supabase.from('doctors').insert({
         full_name: datos.nombre,
-        slug: slugFinal, // <--- Using the same variable here
+        slug: slugFinal,
         specialties: datos.especialidades,
         cities: Array.from(new Set(datos.ubicaciones.map(u => u.city))),
         license_numbers: datos.cedulas.filter(c => c.trim() !== ''),
@@ -141,7 +143,6 @@ export default function PaginaRegistro() {
         },
         image_url: urlImagen,
         status: 'pending'
-        // Remember: has_phone is omitted as it's a generated column
       });
 
       if (error) throw error;
@@ -152,6 +153,15 @@ export default function PaginaRegistro() {
       setCargando(false);
     }
   };
+
+  // --- FILTERED LISTS ---
+  const especialidadesFiltradas = COMMON_SPECIALTIES.filter(s => 
+    s.toLowerCase().includes(busquedaEspecialidad.toLowerCase())
+  );
+
+  const enfermedadesFiltradas = ALL_DISEASES.filter(d => 
+    d.toLowerCase().includes(busquedaEnfermedad.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center">
@@ -173,13 +183,30 @@ export default function PaginaRegistro() {
 
             {paso === 2 && (
               <Step icon={<Stethoscope/>} label="Especialidades" q="Seleccione sus especialidades">
-                <div className="flex flex-wrap gap-2 max-h-[350px] overflow-y-auto p-1">
-                  {COMMON_SPECIALTIES.map(s => (
-                    <button key={s} onClick={() => {
-                      const next = datos.especialidades.includes(s) ? datos.especialidades.filter(i => i !== s) : [...datos.especialidades, s];
-                      setDatos({...datos, especialidades: next});
-                    }} className={`chip ${datos.especialidades.includes(s) ? 'active' : ''}`}>{s}</button>
-                  ))}
+                
+                {/* 🚨 NEW: Search Bar for Specialties */}
+                <div className="relative mb-6">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Buscar especialidad..."
+                    className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl outline-none focus:border-[#0071e3] transition-colors text-[15px] shadow-sm"
+                    value={busquedaEspecialidad}
+                    onChange={(e) => setBusquedaEspecialidad(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-2 max-h-[350px] overflow-y-auto p-1 scrollbar-hide">
+                  {especialidadesFiltradas.length > 0 ? (
+                    especialidadesFiltradas.map(s => (
+                      <button key={s} onClick={() => {
+                        const next = datos.especialidades.includes(s) ? datos.especialidades.filter(i => i !== s) : [...datos.especialidades, s];
+                        setDatos({...datos, especialidades: next});
+                      }} className={`chip ${datos.especialidades.includes(s) ? 'active' : ''}`}>{s}</button>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-400 w-full text-center py-4">No se encontraron resultados.</p>
+                  )}
                 </div>
               </Step>
             )}
@@ -246,13 +273,30 @@ export default function PaginaRegistro() {
 
             {paso === 7 && (
               <Step icon={<CheckCircle/>} label="Padecimientos" q="¿Qué enfermedades trata?">
-                <div className="flex flex-wrap gap-2 max-h-[350px] overflow-y-auto p-1">
-                  {ALL_DISEASES.map(d => (
-                    <button key={d} onClick={() => {
-                      const next = datos.enfermedades.includes(d) ? datos.enfermedades.filter(i => i !== d) : [...datos.enfermedades, d];
-                      setDatos({...datos, enfermedades: next});
-                    }} className={`chip ${datos.enfermedades.includes(d) ? 'active' : ''}`}>{d}</button>
-                  ))}
+                
+                {/* 🚨 NEW: Search Bar for Diseases */}
+                <div className="relative mb-6">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Buscar padecimiento..."
+                    className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-2xl outline-none focus:border-[#0071e3] transition-colors text-[15px] shadow-sm"
+                    value={busquedaEnfermedad}
+                    onChange={(e) => setBusquedaEnfermedad(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-2 max-h-[350px] overflow-y-auto p-1 scrollbar-hide">
+                  {enfermedadesFiltradas.length > 0 ? (
+                    enfermedadesFiltradas.map(d => (
+                      <button key={d} onClick={() => {
+                        const next = datos.enfermedades.includes(d) ? datos.enfermedades.filter(i => i !== d) : [...datos.enfermedades, d];
+                        setDatos({...datos, enfermedades: next});
+                      }} className={`chip ${datos.enfermedades.includes(d) ? 'active' : ''}`}>{d}</button>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-400 w-full text-center py-4">No se encontraron resultados.</p>
+                  )}
                 </div>
               </Step>
             )}
@@ -306,6 +350,8 @@ export default function PaginaRegistro() {
         .chip { padding: 10px 20px; border-radius: 16px; background: white; border: 1.5px solid #e5e7eb; font-size: 13px; font-weight: 600; color: #4b5563; transition: all 0.2s; }
         .chip.active { background: #0071e3; color: white; border-color: #0071e3; box-shadow: 0 4px 12px rgba(0,113,227,0.25); }
         .add-btn { display: flex; align-items: center; gap: 6px; color: #0071e3; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 0; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
   );
