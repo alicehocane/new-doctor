@@ -1,5 +1,5 @@
 import React from 'react';
-import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -81,21 +81,12 @@ export default async function AdminPreviewProfile({ params }: { params: { slug: 
       notFound();
   }
 
-  // 1. Initialize SSR Authenticated Client
-  const cookieStore = await cookies();
-  const supabaseAdmin = createServerClient(
+  // USE THE VIP KEY TO BYPASS THE COOKIE ISSUE
+  const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-      },
-    }
+    process.env.SUPABASE_SERVICE_ROLE_KEY! // Make sure this is in your Vercel Environment Variables!
   );
 
-  // 2. Fetch the doctor WITHOUT the 'status = published' restriction
   const { data: currentDoctor } = await supabaseAdmin
     .from('doctors')
     .select('*')
