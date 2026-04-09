@@ -122,6 +122,43 @@ export default function PrivacyPage() {
             </p>
           </section>
 
+
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Uso de Cookies y Publicidad</h2>
+            
+            <p className="mb-4 text-[#1d1d1f]">
+              MediBusca utiliza cookies y tecnologías similares para mejorar la experiencia de navegación, analizar el tráfico y ofrecer anuncios personalizados.
+            </p>
+
+            <ul className="list-disc pl-5 space-y-2 mb-6 text-[#1d1d1f]">
+              <li><strong>Cookies esenciales:</strong> Necesarias para que el sitio funcione correctamente y recordar tus preferencias.</li>
+              <li><strong>Cookies analíticas:</strong> Nos ayudan a entender qué secciones de MediBusca son más útiles para nuestra comunidad médica.</li>
+              <li><strong>Cookies de publicidad:</strong> Utilizadas por proveedores externos para mostrar anuncios basados en tus intereses.</li>
+            </ul>
+
+            {/* AdSense Compliance Box */}
+            <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm mb-6">
+              <h3 className="font-semibold text-[#1d1d1f] mb-3">Publicidad y Cookies de Terceros</h3>
+              <p className="text-[#1d1d1f] leading-relaxed mb-0">
+                MediBusca utiliza a <strong>Google</strong> como proveedor externo para servir anuncios en nuestro sitio. 
+                Google utiliza cookies para mostrar anuncios a nuestros usuarios en función de su visita a MediBusca y otros sitios en Internet. 
+                Los usuarios pueden inhabilitar el uso de la cookie de publicidad personalizada visitando la{' '}
+                <a 
+                  href="https://www.google.com/settings/ads" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#0071e3] hover:underline"
+                >
+                  Configuración de anuncios de Google
+                </a>.
+              </p>
+            </div>
+
+            <p className="text-sm text-[#86868b]">
+              Puedes gestionar o desactivar las cookies en la configuración de tu navegador en cualquier momento, aunque esto podría afectar algunas funcionalidades del sitio.
+            </p>
+          </section>
+
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-2">
               <ExternalLink className="w-5 h-5 text-[#86868b]" />
