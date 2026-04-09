@@ -12,7 +12,7 @@ export default function EmergencyBanner({ diseaseName, cityName, category }: Eme
   // If there is no emergency category, do not render the banner
   if (!category) return null;
 
-  // Configuration map for different emergency types
+  // Configuration map for different emergency type
   const contentMap = {
     mental_health: {
       icon: <Phone className="w-6 h-6" />,
