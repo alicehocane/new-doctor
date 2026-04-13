@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, Activity } from 'lucide-react';
 import Link from 'next/link';
+import AdUnit from './AdUnit';
+
 
 
 // 1. The Curated Static Data
