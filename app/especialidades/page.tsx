@@ -83,7 +83,7 @@ export default function SpecialtiesIndexPage() {
     <div className="min-h-screen bg-[#f5f5f7]">
 
         {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="w-full max-w-6xl mx-auto px-4 pt-4">
         <AdUnit 
           slot="5853870449" 
           format="auto" 

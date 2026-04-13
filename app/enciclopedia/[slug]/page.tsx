@@ -198,7 +198,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         <div className="flex items-center gap-2 text-xs text-[#86868b] font-medium">
                             <span>{article.author_role}</span>
                             <span>•</span>
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-1" suppressHydrationWarning>
                                 {formatDate(article.published_at)}
                             </span>
                         </div>
@@ -324,11 +324,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
                 {/* 2. Inject the Mid-Article Ad (Only if the article is long enough) */}
                 {hasEnoughContent && (
-                    <div className="my-10">
+                    <div className="my-12 py-8 border-y border-slate-100">
                         <AdUnit 
-                        slot="7109718921" 
-                        layout="in-article" 
-                        format="fluid" 
+                            slot="7109718921" 
+                            layout="in-article" 
+                            format="fluid" 
                         />
                     </div>
                 )}
@@ -340,7 +340,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             {/* Footer / Disclaimer */}
             <div className="mt-20 pt-10 border-t border-slate-200">
                 <div className="flex justify-end mb-6 text-xs text-slate-400 font-medium">
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1" suppressHydrationWarning>
                         <CalendarDays className="w-3.5 h-3.5" />
                         Última actualización: {formatDate(article.published_at)}
                     </span>
