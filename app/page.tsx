@@ -5,6 +5,7 @@ import { MapPin, Stethoscope, ChevronRight, Activity, ArrowUpRight, Check, Searc
 import { Metadata } from 'next';
 import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -82,6 +83,15 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col font-sans overflow-x-hidden">
+
+    {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+        />
+      </div>
+
       {/* Schemas */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
@@ -230,6 +240,13 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+
+      {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
 
       {/* Common Diseases/Symptoms Section */}
       <section className="py-12 md:py-24 bg-white w-full border-t border-slate-100">
@@ -429,6 +446,14 @@ export default function HomePage() {
               <p className="text-sm font-semibold text-[#0071e3] mt-2">No es necesario registrarse para acceder al contenido.</p>
             </div>
           </div>
+
+          {/* 5. BOTTOM AD (Before Final CTA) */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+        <AdUnit 
+          slot="4009845073" 
+          format="auto" 
+        />
+      </div>
 
           {/* Footer Disclaimer & Links */}
           <div className="bg-[#1d1d1f] text-white rounded-3xl p-8 md:p-12 text-center space-y-8">

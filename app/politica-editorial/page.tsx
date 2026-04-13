@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { FileText, ShieldCheck, Brain, BookOpen, UserCheck, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Metadata } from 'next';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -25,6 +26,16 @@ export default function EditorialPolicyPage() {
 
   return (
     <div className="min-h-screen bg-white font-sans">
+
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+        />
+      </div>
+
+
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />

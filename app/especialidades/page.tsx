@@ -5,6 +5,7 @@ import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck, Us
 import { ALL_DISEASES, COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -80,11 +81,23 @@ export default function SpecialtiesIndexPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+          // No layout prop here because it's a standard banner
+        />
+      </div>
+      
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 py-12 md:py-20">
+
+        
         
         {/* Header */}
         <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-2">
@@ -152,8 +165,20 @@ export default function SpecialtiesIndexPage() {
             </div>
         </section>
 
+        {/* Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
         {/* Interactive List Component */}
         <SpecialtiesList specialties={allSpecialties} />
+
+
+
 
         {/* How It Works Section */}
         <section className="mt-24 py-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-6">
@@ -260,7 +285,11 @@ export default function SpecialtiesIndexPage() {
             </div>
         </section>
 
-
+{/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" // Replace with your real 10-digit Slot ID
+            format="auto" 
+          />
 
         {/* 4️⃣ Local Bridge */}
         <section className="mb-20 border-t border-slate-200 pt-16 animate-in fade-in slide-in-from-bottom-6">

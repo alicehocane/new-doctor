@@ -7,6 +7,7 @@ import { BookOpen, Clock, ChevronRight, Bookmark, Loader2, Search, X, Plus } fro
 import { supabase } from '../lib/supabase';
 import { Article } from '../types';
 import EncyclopediaCategories from './EncyclopediaCategories';
+import AdUnit from './AdUnit';
 
 const PAGE_SIZE = 9;
 const POPULAR_TOPICS = ['Diabetes', 'Ansiedad', 'Hipertensión', 'Nutrición', 'Embarazo', 'Pediatría'];
@@ -228,6 +229,14 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
         </div>
       </div>
 
+      {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+        />
+      </div>
+
 
       {/* --- ADD THE CATEGORIES HERE --- */}
       {/* It will automatically hide if the user is typing a search or using the alphabet filter */}
@@ -237,6 +246,14 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
           </div>
       )}
       {/* ------------------------------- */}
+
+          {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
+
+
 
       <div className="max-w-6xl mx-auto px-6 py-12 md:py-16">
         

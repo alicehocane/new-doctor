@@ -88,12 +88,7 @@ export default function RootLayout({
     <html lang="es" className={inter.variable}>
       <head>
         {/* Place it here */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388571116414842"
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388571116414842" crossOrigin="anonymous"></script>
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-[#f5f5f7] antialiased selection:bg-[#0071e3]/20 selection:text-[#0071e3]">
         

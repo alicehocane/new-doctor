@@ -2,6 +2,7 @@ import React from 'react';
 import { HelpCircle, ChevronDown } from 'lucide-react';
 import ContactForm from '../../components/ContactForm';
 import { Metadata } from 'next';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -72,6 +73,15 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-white">
+
+      {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+        />
+      </div>
+
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }} />

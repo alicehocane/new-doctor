@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, ALL_CITIES, ALL_DISEASES, getDiseaseInfo, getMetroAreaForCity, SPECIALTY_COMPARISONS, getStateForCity } from '../../../../lib/constants';
 import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -217,6 +218,15 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+        />
+      </div>
+      
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
@@ -267,6 +277,15 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             
         </div>
 
+        {/* 2. Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
 
         {/* EmergencyBanner Component */}
         <EmergencyBanner 
@@ -315,6 +334,13 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             targetSpecialty={targetSpecialty}
             city={cityName}
         />
+
+
+        {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
 
         {/* REORDERED: Nearby Cities Section (Moved UP so it's immediately visible if empty or fallback) */}
         <section className="mt-16 mb-16 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
@@ -464,6 +490,14 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                 Leer guía médica completa
             </Link>
         </section>
+
+        {/* 5. BOTTOM AD (Before Final CTA) */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+        <AdUnit 
+          slot="4009845073" 
+          format="auto" 
+        />
+      </div>
 
 
         {/* General Cities Section (Standalone & Always Visible) */}

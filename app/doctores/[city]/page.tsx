@@ -592,6 +592,15 @@ export default async function CityPage({ params }: { params: { city: string } })
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+                <AdUnit 
+                  slot="5853870449" 
+                  format="auto" 
+                  // No layout prop here because it's a standard banner
+                />
+              </div>
+
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
@@ -602,13 +611,7 @@ export default async function CityPage({ params }: { params: { city: string } })
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
 
-        <div className="max-w-6xl mx-auto px-4 pt-4">
-                <AdUnit 
-                  slot="5853870449" 
-                  format="auto" 
-                  // No layout prop here because it's a standard banner
-                />
-              </div>
+        
         
         {/* Breadcrumb */}
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
@@ -655,6 +658,13 @@ export default async function CityPage({ params }: { params: { city: string } })
                 {healthData.overview}
             </p>
         </section>
+
+      {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" // Replace with your real 10-digit Slot ID
+            format="auto" 
+          />
+
 
         {/* Client Side List & Pagination */}
         <CityDoctorList initialDoctors={doctors} city={cityName} />

@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, ALL_CITIES } from '../../../lib/constants';
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
+import AdUnit from '@/components/AdUnit';
 
 
 export const revalidate = 0;
@@ -160,6 +161,16 @@ export default async function DiseasePage({ params }: { params: { disease: strin
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+          // No layout prop here because it's a standard banner
+        />
+      </div>
+      
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalConditionSchema) }} />
@@ -211,6 +222,15 @@ export default async function DiseasePage({ params }: { params: { disease: strin
           </p>
         </div>
 
+        {/* Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
         {/* Show alert ONLY if NO specialty mapped AND NO doctors found via fallback */}
         {!targetSpecialty && doctors.length === 0 && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8 text-amber-800 flex gap-3 animate-in fade-in">
@@ -225,12 +245,21 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
         )}
 
+
+
         {/* Doctor Grid (Client Component) */}
         <DiseaseDoctorList 
             initialDoctors={doctors} 
             diseaseName={diseaseName} 
             targetSpecialty={targetSpecialty} 
         />
+
+
+        {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" // Replace with your real 10-digit Slot ID
+            format="auto" 
+          />
 
         {/* Informational Content Section - Dynamic Render based on DISEASE_INFORMATION */}
         {detailedInfo && (
@@ -325,6 +354,15 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         </div>
                     )}
 
+                    {/* Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
                     {/* Diagnosis & Treatment */}
                     <div className="grid md:grid-cols-2 gap-12 pt-8 border-t border-[#f5f5f7]">
                         {detailedInfo.diagnosis && (
@@ -365,6 +403,14 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                             </div>
                         )}
                     </div>
+
+
+                    
+              {/* 3. CONTENT AD (Between Cards) */}
+                    <AdUnit 
+                    slot="5217938782" 
+                    format="auto" 
+                    />
 
                     {/* When to Seek Help */}
                     {detailedInfo.whenToSeekHelp && (
@@ -467,6 +513,16 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                 })}
             </div>
         </section>
+
+
+        {/* 2. Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
 
         {/* Specialties that treat {Disease} Section */}
         {relatedSpecialties.length > 0 && (

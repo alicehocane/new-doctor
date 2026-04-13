@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, React } from 'react';
 import { ChevronDown, ChevronRight, Activity } from 'lucide-react';
 import Link from 'next/link';
+
 
 // 1. The Curated Static Data
 const CATEGORIES = [
@@ -275,35 +276,44 @@ export default function EncyclopediaCategories() {
         Índice Médico Completo
       </h2>
       
-      {/* Upgraded to 3 columns on large screens to handle the fully expanded lists beautifully */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
         {CATEGORIES.map((cat, index) => (
-          <div 
-            key={index} 
-            className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full"
-          >
-            {/* Static Header (No longer a button) */}
-            <div className="p-5 border-b border-slate-100 bg-[#f8fafc]">
-              <h3 className="font-semibold text-[#1d1d1f] text-lg leading-tight mb-1">{cat.title}</h3>
-              <p className="text-[13px] text-[#86868b] leading-relaxed line-clamp-2">{cat.description}</p>
+          <React.Fragment key={index}>
+            {/* The Original Category Card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
+              <div className="p-5 border-b border-slate-100 bg-[#f8fafc]">
+                <h3 className="font-semibold text-[#1d1d1f] text-lg leading-tight mb-1">{cat.title}</h3>
+                <p className="text-[13px] text-[#86868b] leading-relaxed line-clamp-2">{cat.description}</p>
+              </div>
+
+              <div className="flex-1 bg-white">
+                {cat.articles.map((article, i) => (
+                  <Link 
+                    key={i}
+                    href={`/enciclopedia/${article.slug}`} 
+                    className="flex items-center justify-between p-3.5 pl-5 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors group"
+                  >
+                    <span className="text-[14px] font-medium text-[#1d1d1f]/80 group-hover:text-[#0071e3] transition-colors line-clamp-1 pr-4">
+                      {article.name}
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors shrink-0" />
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {/* Always Visible Article List */}
-            <div className="flex-1 bg-white">
-              {cat.articles.map((article, i) => (
-                <Link 
-                  key={i}
-                  href={`/enciclopedia/${article.slug}`} 
-                  className="flex items-center justify-between p-3.5 pl-5 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors group"
-                >
-                  <span className="text-[14px] font-medium text-[#1d1d1f]/80 group-hover:text-[#0071e3] transition-colors line-clamp-1 pr-4">
-                    {article.name}
-                  </span>
-                  <ChevronRight className="w-4 h-4 text-[#d2d2d7] group-hover:text-[#0071e3] transition-colors shrink-0" />
-                </Link>
-              ))}
-            </div>
-          </div>
+            {/* INJECT VERTICAL AD CARD AFTER THE 3rd and 9th ITEMS */}
+            {/* On Desktop this puts them at the end of the 1st and 3rd rows */}
+            {((index + 1) === 3 || (index + 1) === 9) && (
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col items-center justify-center h-full min-h-[450px] p-4 text-center">
+                 {/* Using your specific Sidebar Slot for vertical height */}
+                <AdUnit 
+                  slot="8436175249" 
+                  format="vertical" 
+                />
+              </div>
+            )}
+          </React.Fragment>
         ))}
       </div>
     </div>

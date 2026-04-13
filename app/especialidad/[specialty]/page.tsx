@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -152,6 +153,17 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+
+
+        {/* 1. TOP AD - Standard Display Ad */}
+            <div className="max-w-6xl mx-auto px-4 pt-4">
+                <AdUnit 
+                slot="5853870449" 
+                format="auto" 
+                // No layout prop here because it's a standard banner
+                />
+            </div>
+            
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalSpecialtySchema) }} />
@@ -160,6 +172,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
       )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+
         
         {/* Breadcrumb */}
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
@@ -231,6 +244,15 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
             </div>
         )}
 
+        {/* Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
         {/* Interactive Doctor List */}
         <SpecialtyDoctorList initialDoctors={doctors} specialty={searchTerm} />
 
@@ -275,6 +297,11 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
             </section>
         )}
 
+        {/* 3. CONTENT AD (Between Cards) */}
+          <AdUnit 
+            slot="5217938782" // Replace with your real 10-digit Slot ID
+            format="auto" 
+          />
 
         {/* Existing Educational Content Section (Refined) */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">
@@ -389,6 +416,16 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     </section>
                 )}
 
+
+                {/* Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
         {/* Other Popular Specialties in Cities */}
         <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">
             <h3 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
@@ -430,6 +467,15 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         Buscar un especialista <Search className="w-5 h-5" />
                     </Link>
         </section>
+
+
+        {/* 5. BOTTOM AD (Before Final CTA) */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+        <AdUnit 
+          slot="4009845073" // Replace with your new 10-digit Slot ID
+          format="auto" 
+        />
+      </div>
 
       </div>
     </div>
