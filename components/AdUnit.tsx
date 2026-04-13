@@ -2,6 +2,13 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
+// 1. THIS IS THE FIX: Tell TypeScript window.adsbygoogle is allowed
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
+
 interface AdUnitProps {
   slot: string;
   format?: string;
@@ -12,19 +19,19 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 1. Small delay to ensure the DOM has calculated the 'w-full' width
     const timer = setTimeout(() => {
       try {
+        // Now TypeScript won't complain about 'adsbygoogle'
         if (typeof window !== 'undefined' && window.adsbygoogle) {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         }
       } catch (err) {
         console.error('AdSense error:', err);
       }
-    }, 150); // 150ms is the sweet spot for Next.js hydration
+    }, 150);
 
     return () => clearTimeout(timer);
-  }, [slot, pathname]); // Re-run if the user navigates to a different doctor profile
+  }, [slot, pathname]);
 
   return (
     <div className="w-full flex flex-col items-center my-8 overflow-hidden">
@@ -32,7 +39,6 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
         Publicidad
       </span>
       
-      {/* 2. Forced width and min-height prevents 'availableWidth=0' */}
       <div style={{ width: '100%', textAlign: 'center', minHeight: '280px' }}>
         <ins
           className="adsbygoogle"
