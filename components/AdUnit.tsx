@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 // 1. THIS IS THE FIX: Tell TypeScript window.adsbygoogle is allowed
