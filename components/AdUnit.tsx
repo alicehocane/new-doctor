@@ -17,11 +17,13 @@ interface AdUnitProps {
 
 export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
   const pathname = usePathname();
+  const [hasMounted, setHasMounted] = useState(false); // Track mounting
 
   useEffect(() => {
+    setHasMounted(true); // Tell React we are now on the client
+    
     const timer = setTimeout(() => {
       try {
-        // Now TypeScript won't complain about 'adsbygoogle'
         if (typeof window !== 'undefined' && window.adsbygoogle) {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         }
@@ -40,15 +42,19 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
       </span>
       
       <div style={{ width: '100%', textAlign: 'center', minHeight: '280px' }}>
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block', width: '100%' }}
-          data-ad-client="ca-pub-3388571116414842"
-          data-ad-slot={slot}
-          data-ad-format={format}
-          {...(layout ? { 'data-ad-layout': layout } : {})}
-          data-full-width-responsive="true"
-        />
+        {/* Only render the <ins> tag once we are on the client */}
+        {hasMounted && (
+          <ins
+            key={pathname}
+            className="adsbygoogle"
+            style={{ display: 'block', width: '100%' }}
+            data-ad-client="ca-pub-3388571116414842"
+            data-ad-slot={slot}
+            data-ad-format={format}
+            {...(layout ? { 'data-ad-layout': layout } : {})}
+            data-full-width-responsive="true"
+          />
+        )}
       </div>
     </div>
   );
