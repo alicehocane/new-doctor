@@ -51,6 +51,7 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
       
       <div style={{ width: '100%', textAlign: 'center', minHeight: '280px' }}>
         <ins
+          key={pathname}
           className="adsbygoogle"
           style={{ display: 'block', width: '100%' }}
           data-ad-client="ca-pub-3388571116414842"
