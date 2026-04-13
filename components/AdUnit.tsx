@@ -19,19 +19,12 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      try {
-        // Now TypeScript won't complain about 'adsbygoogle'
-        if (typeof window !== 'undefined' && window.adsbygoogle) {
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      } catch (err) {
-        console.error('AdSense error:', err);
-      }
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [slot, pathname]);
+  try {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  } catch (e) {
+    console.error(e);
+  }
+}, [pathname]);
 
   return (
     <div className="w-full flex flex-col items-center my-8 overflow-hidden">
