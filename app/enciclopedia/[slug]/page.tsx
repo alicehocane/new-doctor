@@ -84,19 +84,6 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
   const article = currentArticle as Article;
 
-  // --- AUTOMATIC AD INJECTION LOGIC ---
-  // We split the content into an array of paragraphs
-  const paragraphs = article.content.split('</p>');
-  
-  // We define the "sweet spot" for the ad (after the 2nd paragraph)
-  const injectAfter = 2;
-  
-  // Create the two halves of the content
-  // We add the </p> back because .split() removes it
-  const firstHalf = paragraphs.slice(0, injectAfter).join('</p>') + '</p>';
-  const secondHalf = paragraphs.slice(injectAfter).join('</p>');
-  const hasEnoughContent = paragraphs.length > injectAfter;
-
   // 2. Fetch Related Articles
   const firstCategory = (article.category || '').split(',')[0].trim();
   let relatedArticles: Article[] = [];
@@ -198,7 +185,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         <div className="flex items-center gap-2 text-xs text-[#86868b] font-medium">
                             <span>{article.author_role}</span>
                             <span>•</span>
-                            <span className="flex items-center gap-1" suppressHydrationWarning>
+                            <span className="flex items-center gap-1">
                                 {formatDate(article.published_at)}
                             </span>
                         </div>
@@ -317,30 +304,19 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             `}</style>
 
             {/* Content Body */}
-            <div className="article-content font-sans animate-in fade-in slide-in-from-bottom-8 duration-700">
-                
-                {/* 1. Render the beginning of the article */}
-                <div dangerouslySetInnerHTML={{ __html: firstHalf }} />
-
-                {/* 2. Inject the Mid-Article Ad (Only if the article is long enough) */}
-                {hasEnoughContent && (
-                    <div className="my-12 py-8 border-y border-slate-100">
-                        <AdUnit 
-                            slot="7109718921" 
-                            layout="in-article" 
-                            format="fluid" 
-                        />
-                    </div>
-                )}
-
-                {/* 3. Render the rest of the article */}
-                <div dangerouslySetInnerHTML={{ __html: secondHalf }} />
-            </div>
+            <div 
+                className="
+                    article-content
+                    font-sans
+                    animate-in fade-in slide-in-from-bottom-8 duration-700
+                "
+                dangerouslySetInnerHTML={{ __html: article.content }}
+            />
 
             {/* Footer / Disclaimer */}
             <div className="mt-20 pt-10 border-t border-slate-200">
                 <div className="flex justify-end mb-6 text-xs text-slate-400 font-medium">
-                    <span className="flex items-center gap-1" suppressHydrationWarning>
+                    <span className="flex items-center gap-1">
                         <CalendarDays className="w-3.5 h-3.5" />
                         Última actualización: {formatDate(article.published_at)}
                     </span>

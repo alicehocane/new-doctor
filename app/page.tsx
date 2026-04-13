@@ -84,13 +84,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col font-sans overflow-x-hidden">
 
-    {/* 1. TOP AD - Standard Display Ad */}
-    <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
-      <AdUnit 
-        slot="5853870449" 
-        format="auto" 
-      />
-    </div>
+    
 
       {/* Schemas */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
@@ -143,6 +137,14 @@ export default function HomePage() {
           
         </div>
       </section>
+
+      {/* 1. TOP AD - Standard Display Ad */}
+    <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
+      <AdUnit 
+        slot="5853870449" 
+        format="auto" 
+      />
+    </div>
 
       {/* Cities Section */}
       <section className="py-12 md:py-24 bg-white w-full">
