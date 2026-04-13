@@ -172,7 +172,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             <AdUnit slot="5853870449" format="auto" />
             </div>
 
-        <article className="max-w-2xl mx-auto px-6 py-12 md:py-16">
+        <article className="max-w-2xl mx-auto px-6 py-12 md:py-16" suppressHydrationWarning>
             
             {/* Header */}
             <header className="mb-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -180,7 +180,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     <span className="px-3 py-1 bg-[#0071e3] text-white text-[11px] font-bold uppercase tracking-widest rounded-full">
                         {primaryCategory}
                     </span>
-                    <span className="text-[13px] font-medium text-[#86868b] flex items-center gap-1.5 ml-2">
+                    <span className="text-[13px] font-medium text-[#86868b] flex items-center gap-1.5 ml-2" suppressHydrationWarning>
                         <Clock className="w-3.5 h-3.5" /> {article.read_time}
                     </span>
                 </div>
@@ -320,11 +320,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             <div className="article-content font-sans animate-in fade-in slide-in-from-bottom-8 duration-700">
                 
                 {/* 1. Render the beginning of the article */}
-                <div dangerouslySetInnerHTML={{ __html: firstHalf }} />
+                <div dangerouslySetInnerHTML={{ __html: firstHalf }} suppressHydrationWarning />
 
                 {/* 2. Inject the Mid-Article Ad (Only if the article is long enough) */}
                 {hasEnoughContent && (
-                    <div className="my-12 mx-auto px-4 sm:px-6 mt-8">
+                    <div className="my-12 mx-auto px-4 sm:px-6 mt-8" suppressHydrationWarning >
                         <AdUnit 
                             slot="7109718921" 
                             layout="in-article" 
@@ -334,7 +334,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                 )}
 
                 {/* 3. Render the rest of the article */}
-                <div dangerouslySetInnerHTML={{ __html: secondHalf }} />
+                <div dangerouslySetInnerHTML={{ __html: secondHalf }} suppressHydrationWarning />
             </div>
 
             {/* Footer / Disclaimer */}

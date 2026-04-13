@@ -18,12 +18,10 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
   const pathname = usePathname();
   const [hasMounted, setHasMounted] = useState(false);
 
-  // 1. Set mounted state to true once the browser takes over
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  // 2. Handle the AdSense push
   useEffect(() => {
     if (!hasMounted) return;
 
@@ -35,27 +33,20 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
       } catch (err) {
         console.error('AdSense error:', err);
       }
-    }, 200); // Slightly longer delay to be safe during hydration
+    }, 150);
 
     return () => clearTimeout(timer);
   }, [slot, pathname, hasMounted]);
 
-  // 3. Return null on the server to avoid hydration errors
+  // IMPORTANT: On the server, we only render an empty box to prevent Hydration Error #418
   if (!hasMounted) {
-    return (
-      <div 
-        className="w-full my-8" 
-        style={{ minHeight: '280px' }} 
-        aria-hidden="true" 
-      />
-    );
+    return <div className="w-full my-8 min-h-[280px] bg-transparent" />;
   }
 
   return (
-    <div className="w-full flex flex-col items-center my-8 overflow-hidden">
-      {/* Aesthetic Tweak: 'Anuncio' with Apple-style spacing */}
-      <span className="text-[9px] text-slate-300 mb-3 tracking-[0.2em] uppercase font-medium">
-        Anuncio
+    <div className="w-full flex flex-col items-center my-8 overflow-hidden" suppressHydrationWarning>
+      <span className="text-[10px] text-slate-400 mb-2 tracking-widest uppercase font-bold">
+        Publicidad
       </span>
       
       <div style={{ width: '100%', textAlign: 'center', minHeight: '280px' }}>
