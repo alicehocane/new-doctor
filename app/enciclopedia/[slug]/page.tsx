@@ -59,15 +59,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// FIX #425: Stable Date Formatting
 const formatDate = (dateString?: string) => {
-    if (!dateString) return "";
-    // Using 'sv-SE' (YYYY-MM-DD) or a fixed locale is safer for hydration
-    return new Date(dateString).toLocaleDateString('es-MX', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    });
+    if (!dateString) return new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+    return new Date(dateString).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
 };
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
@@ -89,14 +83,6 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   }
 
   const article = currentArticle as Article;
-
-  // --- CONTENT SPLITTING LOGIC ---
-  const paragraphs = article.content.split('</p>');
-  const injectAfter = 2;
-  // We ensure we don't break the HTML by checking for the existence of tags
-  const firstHalf = paragraphs.slice(0, injectAfter).join('</p>') + (paragraphs.length > injectAfter ? '</p>' : '');
-  const secondHalf = paragraphs.slice(injectAfter).join('</p>');
-  const hasEnoughContent = paragraphs.length > injectAfter;
 
   // 2. Fetch Related Articles
   const firstCategory = (article.category || '').split(',')[0].trim();
@@ -148,6 +134,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   return (
     <div className="min-h-screen bg-white pb-20">
         
+        {/* Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
         {/* Sticky Navigation Bar */}
@@ -168,10 +155,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </div>
         </div>
 
-        {/* TOP AD - Wrapper prevents layout shift */}
-        <div className="w-full max-w-2xl mx-auto px-6 pt-4">
+        <div className="max-w-2xl mx-auto px-6 pt-4">
             <AdUnit slot="5853870449" format="auto" />
-        </div>
+            </div>
 
         <article className="max-w-2xl mx-auto px-6 py-12 md:py-16">
             
@@ -181,7 +167,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     <span className="px-3 py-1 bg-[#0071e3] text-white text-[11px] font-bold uppercase tracking-widest rounded-full">
                         {primaryCategory}
                     </span>
-                    <span className="text-[13px] font-medium text-[#86868b] flex items-center gap-1.5 ml-2" suppressHydrationWarning>
+                    <span className="text-[13px] font-medium text-[#86868b] flex items-center gap-1.5 ml-2">
                         <Clock className="w-3.5 h-3.5" /> {article.read_time}
                     </span>
                 </div>
@@ -195,11 +181,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         <User className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="font-semibold text-[#1d1d1f] text-sm" suppressHydrationWarning>{article.author}</p>
+                        <p className="font-semibold text-[#1d1d1f] text-sm">{article.author}</p>
                         <div className="flex items-center gap-2 text-xs text-[#86868b] font-medium">
-                            <span suppressHydrationWarning>{article.author_role}</span>
+                            <span>{article.author_role}</span>
                             <span>•</span>
-                            <span suppressHydrationWarning>
+                            <span className="flex items-center gap-1">
                                 {formatDate(article.published_at)}
                             </span>
                         </div>
@@ -317,51 +303,38 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                 }
             `}</style>
 
-           {/* Content Body */}
-            <div className="article-content font-sans">
-                
-                {/* PART 1 - suppressHydrationWarning is key for split HTML */}
-                <div 
-                    dangerouslySetInnerHTML={{ __html: firstHalf }} 
-                    suppressHydrationWarning 
-                />
-
-                {/* MIDDLE AD - Logic to only show if there is more content */}
-                {hasEnoughContent && (
-                    <div className="w-full my-12" suppressHydrationWarning>
-                        <AdUnit 
-                            slot="7109718921" 
-                            layout="in-article" 
-                            format="fluid" 
-                        />
-                    </div>
-                )}
-
-                {/* PART 2 */}
-                <div 
-                    dangerouslySetInnerHTML={{ __html: secondHalf }} 
-                    suppressHydrationWarning 
-                />
-            </div>
+            {/* Content Body */}
+            <div 
+                className="
+                    article-content
+                    font-sans
+                    animate-in fade-in slide-in-from-bottom-8 duration-700
+                "
+                dangerouslySetInnerHTML={{ __html: article.content }}
+            />
 
             {/* Footer / Disclaimer */}
             <div className="mt-20 pt-10 border-t border-slate-200">
-                <div className="flex justify-end mb-6 text-xs text-slate-400 font-medium" suppressHydrationWarning>
+                <div className="flex justify-end mb-6 text-xs text-slate-400 font-medium">
                     <span className="flex items-center gap-1">
                         <CalendarDays className="w-3.5 h-3.5" />
                         Última actualización: {formatDate(article.published_at)}
                     </span>
                 </div>
                 <div className="bg-[#f5f5f7] rounded-2xl p-8">
-                    <p className="text-sm text-[#86868b] leading-relaxed">
-                        <strong>Nota Médica:</strong> La información contenida en este artículo es meramente informativa y educativa. No sustituye el consejo, diagnóstico o tratamiento médico profesional.
-                    </p>
+                    <div className="flex items-start gap-4">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#86868b] mt-2 shrink-0"></div>
+                        <p className="text-sm text-[#86868b] leading-relaxed">
+                            <strong>Nota Médica:</strong> La información contenida en este artículo es meramente informativa y educativa. No sustituye el consejo, diagnóstico o tratamiento médico profesional. Siempre busca el consejo de tu médico u otro proveedor de salud calificado ante cualquier duda sobre una condición médica.
+                        </p>
+                    </div>
                 </div>
             </div>
+
         </article>
 
-        {/* BOTTOM AD */}
-        <div className="w-full max-w-2xl mx-auto px-6 pb-12">
+
+        <div className="max-w-2xl mx-auto px-6 pb-12">
             <AdUnit slot="4009845073" format="auto" />
         </div>
 

@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
+// 1. THIS IS THE FIX: Tell TypeScript window.adsbygoogle is allowed
 declare global {
   interface Window {
     adsbygoogle: any[];
@@ -16,17 +17,11 @@ interface AdUnitProps {
 
 export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
   const pathname = usePathname();
-  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasMounted) return;
-
     const timer = setTimeout(() => {
       try {
+        // Now TypeScript won't complain about 'adsbygoogle'
         if (typeof window !== 'undefined' && window.adsbygoogle) {
           (window.adsbygoogle = window.adsbygoogle || []).push({});
         }
@@ -36,22 +31,16 @@ export default function AdUnit({ slot, format = 'auto', layout }: AdUnitProps) {
     }, 150);
 
     return () => clearTimeout(timer);
-  }, [slot, pathname, hasMounted]);
-
-  // IMPORTANT: On the server, we only render an empty box to prevent Hydration Error #418
-  if (!hasMounted) {
-    return <div className="w-full my-8 min-h-[280px] bg-transparent" />;
-  }
+  }, [slot, pathname]);
 
   return (
-    <div className="w-full flex flex-col items-center my-8 overflow-hidden" suppressHydrationWarning>
+    <div className="w-full flex flex-col items-center my-8 overflow-hidden">
       <span className="text-[10px] text-slate-400 mb-2 tracking-widest uppercase font-bold">
         Publicidad
       </span>
       
       <div style={{ width: '100%', textAlign: 'center', minHeight: '280px' }}>
         <ins
-          key={pathname}
           className="adsbygoogle"
           style={{ display: 'block', width: '100%' }}
           data-ad-client="ca-pub-3388571116414842"
