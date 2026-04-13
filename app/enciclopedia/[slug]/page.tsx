@@ -6,6 +6,7 @@ import { supabase } from '../../../lib/supabase';
 import { Article } from '../../../types';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -154,6 +155,10 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </div>
         </div>
 
+        <div className="max-w-2xl mx-auto px-6 pt-4">
+            <AdUnit slot="5853870449" format="auto" />
+            </div>
+
         <article className="max-w-2xl mx-auto px-6 py-12 md:py-16">
             
             {/* Header */}
@@ -187,6 +192,14 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     </div>
                 </div>
             </header>
+
+            {/* --- ADD IN-ARTICLE STYLE AD HERE --- */}
+            <AdUnit 
+                slot="7109718921" 
+                layout="in-article" 
+                format="fluid" 
+            />
+                          
 
             {/* Custom Styles for Raw HTML content */}
             <style>{`
@@ -319,6 +332,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </div>
 
         </article>
+
+
+        <div className="max-w-2xl mx-auto px-6 pb-12">
+            <AdUnit slot="4009845073" format="auto" />
+        </div>
 
         {/* Related Articles Section */}
         {relatedArticles.length > 0 && (

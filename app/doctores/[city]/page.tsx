@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA, POPULAR_SPECIALTIES, getStateForCity } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
+import AdUnit from '@/components/AdUnit';
 
 
 export const revalidate = 0;
@@ -600,6 +601,14 @@ export default async function CityPage({ params }: { params: { city: string } })
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+
+        <div className="max-w-6xl mx-auto px-4 pt-4">
+                <AdUnit 
+                  slot="5853870449" 
+                  format="auto" 
+                  // No layout prop here because it's a standard banner
+                />
+              </div>
         
         {/* Breadcrumb */}
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
@@ -651,6 +660,14 @@ export default async function CityPage({ params }: { params: { city: string } })
         <CityDoctorList initialDoctors={doctors} city={cityName} />
 
       </div>
+
+      <div className="my-10">
+                      <AdUnit 
+                        slot="7109718921" 
+                        layout="in-article" 
+                        format="fluid" 
+                      />
+                    </div>
 
       {/* Specialties in {City} */}
       <section className="bg-white py-16 border-t border-slate-200">
@@ -795,6 +812,14 @@ export default async function CityPage({ params }: { params: { city: string } })
             </div>
         </div>
       </section>
+
+      {/* 5. BOTTOM AD (Before Final CTA) */}
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+              <AdUnit 
+                slot="4009845073" // Replace with your new 10-digit Slot ID
+                format="auto" 
+              />
+            </div>
 
       {/* SEO & Other Cities Footer */}
       <section className="bg-[#f5f5f7] py-12 border-t border-slate-200">

@@ -437,7 +437,10 @@ export default async function DoctorProfile({ params }: { params: { slug: string
           </section>
 
           {/* 3. CONTENT AD (Between Cards) */}
-          <AdUnit slot="YOUR_MID_CONTENT_SLOT_ID" format="rectangle" />
+          <AdUnit 
+            slot="5217938782" // Replace with your real 10-digit Slot ID
+            format="auto" 
+          />
 
           {/* Locations Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">

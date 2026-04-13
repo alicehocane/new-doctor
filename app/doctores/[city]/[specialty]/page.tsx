@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, ALL_CITIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, getMetroAreaForCity, SPECIALTY_COMPARISONS, CITY_HEALTH_DATA, getStateForCity } from '../../../../lib/constants';
 import CityDoctorList from '../../../../components/CityDoctorList';
 import EmergencyBanner from '@/components/EmergencyBanner';
+import AdUnit from '@/components/AdUnit';
 
 
 export const revalidate = 0;
@@ -266,6 +267,15 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+
+        {/* 1. TOP AD - Standard Display Ad */}
+              <div className="max-w-6xl mx-auto px-4 pt-4">
+                <AdUnit 
+                  slot="5853870449" 
+                  format="auto" 
+                  // No layout prop here because it's a standard banner
+                />
+              </div>
         
         {/* Breadcrumb */}
         <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center flex-wrap animate-in fade-in slide-in-from-bottom-1">
@@ -348,6 +358,15 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
 
         {/* Doctor Grid (Interactive Component) */}
         <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
+
+        {/* Middle of the profile - Mobile Only or Desktop too */}
+                      <div className="my-10">
+                        <AdUnit 
+                          slot="7109718921" 
+                          layout="in-article" 
+                          format="fluid" 
+                        />
+                      </div>
 
         {/* Nearby Cities Section */}
         <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
@@ -540,6 +559,14 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </div>
         </section>
 
+        {/* 5. BOTTOM AD (Before Final CTA) */}
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+                <AdUnit 
+                  slot="4009845073" // Replace with your new 10-digit Slot ID
+                  format="auto" 
+                />
+              </div>
+
 
         {/* 5️⃣ Section: Recursos Adicionales */}
         <section className="bg-[#f5f5f7] rounded-[32px] p-8 md:p-12 border border-slate-200 text-center animate-in fade-in slide-in-from-bottom-6 mt-16 pt-12">
@@ -560,7 +587,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </div>
         </section>
 
-
+        
 
       </div>
     </div>
