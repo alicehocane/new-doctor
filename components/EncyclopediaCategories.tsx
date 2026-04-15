@@ -310,8 +310,8 @@ export default function EncyclopediaCategories() {
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col items-center justify-center h-full min-h-[450px] p-4 text-center">
                  {/* Using your specific Sidebar Slot for vertical height */}
                 <AdUnit 
-                  slot="9693350353" 
-                  format="autorelaxed" 
+                  slot="8436175249" 
+                  format="vertical" 
                 />
               </div>
             )}
