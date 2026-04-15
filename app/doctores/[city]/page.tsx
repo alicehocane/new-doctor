@@ -664,13 +664,13 @@ export default async function CityPage({ params }: { params: { city: string } })
 
       </div>
 
-      <div className="my-10">
+      
                       <AdUnit 
                         slot="7109718921" 
                         layout="in-article" 
                         format="fluid" 
                       />
-                    </div>
+                    
 
       {/* Specialties in {City} */}
       <section className="bg-white py-16 border-t border-slate-200">

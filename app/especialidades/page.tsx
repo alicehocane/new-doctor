@@ -135,13 +135,13 @@ export default function SpecialtiesIndexPage() {
         </div>
 
         {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      
         <AdUnit 
           slot="5853870449" 
           format="auto" 
           // No layout prop here because it's a standard banner
         />
-      </div>
+      
 
         {/* High Demand Specialties Grid */}
         <section className="mb-20 animate-in fade-in slide-in-from-bottom-4">
@@ -173,13 +173,13 @@ export default function SpecialtiesIndexPage() {
 
 
                 {/* Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
+             
                 <AdUnit 
                   slot="7109718921" 
                   layout="in-article" 
                   format="fluid" 
                 />
-              </div>
+              
 
         {/* How It Works Section */}
         <section className="mt-24 py-12 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-6">

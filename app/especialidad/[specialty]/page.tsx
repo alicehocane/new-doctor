@@ -223,13 +223,13 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         
          {/* 1. TOP AD - Standard Display Ad */}
-            <div className="max-w-6xl mx-auto px-4 pt-4">
+           
                 <AdUnit 
                 slot="5853870449" 
                 format="auto" 
                 // No layout prop here because it's a standard banner
                 />
-            </div>
+            
 
         {/* 1.5 Contextual Comparison (New Feature) */}
         {comparison && (
@@ -249,6 +249,13 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
         {/* Interactive Doctor List */}
         <SpecialtyDoctorList initialDoctors={doctors} specialty={searchTerm} />
+
+
+        <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
+
 
         {/* 2️⃣ Related Articles Section - Boosts internal linking and relevance */}
         {relatedArticles.length > 0 && (
@@ -292,13 +299,13 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
         )}
 
         {/* 2. Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
+             
                 <AdUnit 
                   slot="7109718921" 
                   layout="in-article" 
                   format="fluid" 
                 />
-              </div>
+             
 
         {/* Existing Educational Content Section (Refined) */}
         <section className="bg-white rounded-[32px] p-8 md:p-12 border border-[#d2d2d7]/50 mt-16 animate-in fade-in slide-in-from-bottom-8">

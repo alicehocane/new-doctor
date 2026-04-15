@@ -139,12 +139,12 @@ export default function HomePage() {
       </section>
 
       {/* 1. TOP AD - Standard Display Ad */}
-    <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
+    
       <AdUnit 
         slot="5853870449" 
         format="auto" 
       />
-    </div>
+    
 
       {/* Cities Section */}
       <section className="py-12 md:py-24 bg-white w-full">

@@ -321,13 +321,13 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         />
 
 {/* 1. TOP AD - Standard Display Ad */}
-              <div className="max-w-6xl mx-auto px-4 pt-4">
+             
                 <AdUnit 
                   slot="5853870449" 
                   format="auto" 
                   // No layout prop here because it's a standard banner
                 />
-              </div>
+              
 
 
         {/* NEW: Metro Area Sub-filters */}
@@ -364,13 +364,13 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
 
         {/* 2. Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
+              
                 <AdUnit 
                   slot="7109718921" 
                   layout="in-article" 
                   format="fluid" 
                 />
-              </div>
+              
 
 
         {/* Nearby Cities Section */}

@@ -349,12 +349,12 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                         <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
                     </div>
 
-                     <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
+                     
               <AdUnit 
                 slot="5853870449" 
                 format="auto" 
               />
-            </div>
+            
                     
                     {/* Verification Tooltip/Block */}
                     <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 max-w-xl">
