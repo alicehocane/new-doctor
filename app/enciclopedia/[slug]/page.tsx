@@ -335,7 +335,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
 
         <div className="max-w-2xl mx-auto px-6 pb-12">
-            <AdUnit slot="4009845073" format="auto" />
+            <AdUnit slot="9693350353" format="autorelaxed" />
         </div>
 
         {/* Related Articles Section */}

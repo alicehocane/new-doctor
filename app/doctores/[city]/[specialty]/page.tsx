@@ -259,16 +259,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
 
-
-        {/* 1. TOP AD - Standard Display Ad */}
-              <div className="max-w-6xl mx-auto px-4 pt-4">
-                <AdUnit 
-                  slot="5853870449" 
-                  format="auto" 
-                  // No layout prop here because it's a standard banner
-                />
-              </div>
-
               
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -330,12 +320,12 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             category={emergencyCategory} 
         />
 
-{/* Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
+{/* 1. TOP AD - Standard Display Ad */}
+              <div className="max-w-6xl mx-auto px-4 pt-4">
                 <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
+                  slot="5853870449" 
+                  format="auto" 
+                  // No layout prop here because it's a standard banner
                 />
               </div>
 
@@ -373,14 +363,15 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
         {/* Doctor Grid (Interactive Component) */}
         <CityDoctorList initialDoctors={doctors} city={cityName} specialty={searchTerm} />
 
-        {/* Middle of the profile - Mobile Only or Desktop too */}
-                      <div className="my-10">
-                        <AdUnit 
-                          slot="7109718921" 
-                          layout="in-article" 
-                          format="fluid" 
-                        />
-                      </div>
+        {/* 2. Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
 
         {/* Nearby Cities Section */}
         <section className="mt-12 pt-12 border-t border-[#d2d2d7]/30 animate-in fade-in slide-in-from-bottom-8">
@@ -549,13 +540,6 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
             </section>
         )}
 
-        {/* 5. BOTTOM AD (Before Final CTA) */}
-              <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
-                <AdUnit 
-                  slot="4009845073" // Replace with your new 10-digit Slot ID
-                  format="auto" 
-                />
-              </div>
 
         {/* Other Specialties in {City} */}
         <section className="mt-16 pt-12 border-t border-[#d2d2d7]/30 pb-12">

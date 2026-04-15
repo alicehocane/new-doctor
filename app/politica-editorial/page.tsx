@@ -28,7 +28,7 @@ export default function EditorialPolicyPage() {
     <div className="min-h-screen bg-white font-sans">
 
         {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
+      <div className="w-full max-w-6xl mx-auto px-4 pt-4">
         <AdUnit 
           slot="5853870449" 
           format="auto" 

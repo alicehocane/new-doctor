@@ -162,14 +162,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
 
-        {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
-        <AdUnit 
-          slot="5853870449" 
-          format="auto" 
-          // No layout prop here because it's a standard banner
-        />
-      </div>
+        
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -222,14 +215,14 @@ export default async function DiseasePage({ params }: { params: { disease: strin
           </p>
         </div>
 
-        {/* Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
-                <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
-              </div>
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+          // No layout prop here because it's a standard banner
+        />
+      </div>
 
         {/* Show alert ONLY if NO specialty mapped AND NO doctors found via fallback */}
         {!targetSpecialty && doctors.length === 0 && (
@@ -405,12 +398,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     </div>
 
 
-                    
-              {/* 3. CONTENT AD (Between Cards) */}
-                    <AdUnit 
-                    slot="5217938782" 
-                    format="auto" 
-                    />
 
                     {/* When to Seek Help */}
                     {detailedInfo.whenToSeekHelp && (
@@ -514,15 +501,6 @@ export default async function DiseasePage({ params }: { params: { disease: strin
             </div>
         </section>
 
-
-        {/* 2. Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
-                <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
-              </div>
 
         {/* Specialties that treat {Disease} Section */}
         {relatedSpecialties.length > 0 && (

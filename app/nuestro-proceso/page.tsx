@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Database, ShieldCheck, MonitorCheck, FileCheck, CheckCircle, Info } from 'lucide-react';
 import { Metadata } from 'next';
+import AdUnit from '@/components/AdUnit';
 
 export const revalidate = 0;
 
@@ -25,6 +26,13 @@ export default function VerificationProcessPage() {
 
   return (
     <div className="min-h-screen bg-white">
+
+        <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
+  <AdUnit 
+    slot="5853870449" 
+    format="auto" 
+  />
+</div>
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />

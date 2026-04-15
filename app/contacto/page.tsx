@@ -74,13 +74,6 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
-        <AdUnit 
-          slot="5853870449" 
-          format="auto" 
-        />
-      </div>
 
       
       {/* Schema Scripts */}

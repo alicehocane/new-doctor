@@ -66,15 +66,6 @@ export default async function EncyclopediaIndexPage() {
     <div className="min-h-screen bg-[#f5f5f7]">
 
 
-        {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
-        <AdUnit 
-          slot="5853870449" 
-          format="auto" 
-        />
-      </div>
-
-
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />

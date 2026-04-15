@@ -104,15 +104,6 @@ export default function DiseasesIndexPage() {
     <div className="min-h-screen bg-[#f5f5f7]">
 
 
-        {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
-        <AdUnit 
-          slot="5853870449" 
-          format="auto" 
-          // No layout prop here because it's a standard banner
-        />
-      </div>
-
 
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -148,7 +139,19 @@ export default function DiseasesIndexPage() {
             </div>
         </section>
 
-        {/* Middle of the profile - Mobile Only or Desktop too */}
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+          // No layout prop here because it's a standard banner
+        />
+      </div>
+
+        {/* Client Component for Interactive Search */}
+        <DiseaseList allDiseases={ALL_DISEASES} />
+
+{/* 2. Middle of the profile - Mobile Only or Desktop too */}
               <div className="my-10">
                 <AdUnit 
                   slot="7109718921" 
@@ -156,15 +159,6 @@ export default function DiseasesIndexPage() {
                   format="fluid" 
                 />
               </div>
-
-        {/* Client Component for Interactive Search */}
-        <DiseaseList allDiseases={ALL_DISEASES} />
-
-{/* 3. CONTENT AD (Between Cards) */}
-          <AdUnit 
-            slot="5217938782" // Replace with your real 10-digit Slot ID
-            format="auto" 
-          />
         
 
         {/* SEMANTIC CATEGORIZATION (Grouping for context) */}
@@ -239,14 +233,6 @@ export default function DiseasesIndexPage() {
             </div>
         </section>
 
-
-        {/* 5. BOTTOM AD (Before Final CTA) */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
-        <AdUnit 
-          slot="4009845073" // Replace with your new 10-digit Slot ID
-          format="auto" 
-        />
-      </div>
 
         {/* SYMPTOM CHECKER DISCLAIMER / SAFETY GUIDE */}
         <section className="mt-20 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">

@@ -449,14 +449,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 5. BOTTOM AD (Before Final CTA) */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
-        <AdUnit 
-          slot="4009845073" 
-          format="auto" 
-        />
-      </div>
-
           {/* Footer Disclaimer & Links */}
           <div className="bg-[#1d1d1f] text-white rounded-3xl p-8 md:p-12 text-center space-y-8">
             <div>

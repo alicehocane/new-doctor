@@ -247,11 +247,6 @@ export default function EncyclopediaBrowser({ initialArticles, children }: Encyc
       )}
       {/* ------------------------------- */}
 
-          {/* 3. CONTENT AD (Between Cards) */}
-          <AdUnit 
-            slot="5217938782" 
-            format="auto" 
-          />
 
 
 

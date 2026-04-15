@@ -301,14 +301,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
       {/* MOBILE TOP BANNER: Article Recommendation */}
       <ArticleRecommendation article={recommendedArticle} />
-
-      {/* 1. TOP AD - Standard Display Ad */}
-      <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
-        <AdUnit 
-          slot="5853870449" 
-          format="auto" 
-        />
-      </div>
       
       {/* Schema Scripts (Server Injected) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
@@ -356,6 +348,13 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                         <Award className="w-4 h-4 text-[#86868b]" />
                         <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
                     </div>
+
+                     <div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
+              <AdUnit 
+                slot="5853870449" 
+                format="auto" 
+              />
+            </div>
                     
                     {/* Verification Tooltip/Block */}
                     <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 max-w-xl">
@@ -376,6 +375,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                     </div>
                 </div>
               )}
+              
 
               {/* Sub Specialties */}
               {doctor.medical_profile?.sub_specialties && doctor.medical_profile.sub_specialties.length > 0 && (
@@ -389,15 +389,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 </div>
               )}
 
-              {/* Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
-                <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
-              </div>
-
 
               {/* Description */}
               <p className="text-[#1d1d1f]/80 max-w-3xl leading-relaxed text-[16px] pt-2">
@@ -407,6 +398,12 @@ export default async function DoctorProfile({ params }: { params: { slug: string
           </div>
         </div>
       </div>
+
+      <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
+
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4">
         
@@ -435,11 +432,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
             </div>
           </section>
 
-          {/* 3. CONTENT AD (Between Cards) */}
-          <AdUnit 
-            slot="5217938782" // Replace with your real 10-digit Slot ID
-            format="auto" 
-          />
 
           {/* Locations Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
@@ -676,6 +668,15 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </section>
       )}
 
+      {/* 2. Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
+
       {/* Related Doctors Section */}
       {relatedDoctors.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 border-t border-slate-200">
@@ -795,14 +796,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
              ))}
         </div>
       </section>
-
-      {/* 5. BOTTOM AD (Before Final CTA) */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
-        <AdUnit 
-          slot="4009845073" // Replace with your new 10-digit Slot ID
-          format="auto" 
-        />
-      </div>
 
       {/* 7️⃣ CTA */}
       <section className="max-w-6xl mx-auto mt-16 bg-[#0071e3]/5 border border-[#0071e3]/10 rounded-[24px] p-8 md:p-10 text-center animate-in fade-in slide-in-from-bottom-8">

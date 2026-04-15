@@ -209,14 +209,6 @@ export default function SearchPage() {
       </section>
 
 
-      {/* Middle of the profile - Mobile Only or Desktop too */}
-              <div className="w-full max-w-6xl mx-auto px-4 pt-4">
-                <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
-              </div>
 
       {/* NEW SECTION: Safety Guide & "Thickness" Content */}
       <section className="w-full max-w-6xl mt-16 pt-12 border-t border-slate-200/60 animate-in fade-in slide-in-from-bottom-8">
@@ -301,13 +293,6 @@ export default function SearchPage() {
           </div>
       </section>
 
-      {/* 1. TOP AD - Standard Display Ad */}
-<div className="w-full max-w-6xl mx-auto px-4 pt-4"> {/* Added w-full here */}
-  <AdUnit 
-    slot="5853870449" 
-    format="auto" 
-  />
-</div>
 
       {/* Why Choose MediBusca */}
       <section className="w-full max-w-6xl mt-24 pt-16 border-t border-slate-200 animate-in fade-in slide-in-from-bottom-8">

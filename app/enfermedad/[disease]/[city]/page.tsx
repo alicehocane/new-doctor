@@ -219,13 +219,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
 
-        {/* 1. TOP AD - Standard Display Ad */}
-      <div className="max-w-6xl mx-auto px-4 pt-4">
-        <AdUnit 
-          slot="5853870449" 
-          format="auto" 
-        />
-      </div>
+        
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -277,14 +271,13 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             
         </div>
 
-        {/* 2. Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
-                <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
-              </div>
+        {/* 1. TOP AD - Standard Display Ad */}
+      <div className="max-w-6xl mx-auto px-4 pt-4">
+        <AdUnit 
+          slot="5853870449" 
+          format="auto" 
+        />
+      </div>
 
 
         {/* EmergencyBanner Component */}
@@ -491,13 +484,14 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
             </Link>
         </section>
 
-        {/* 5. BOTTOM AD (Before Final CTA) */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
-        <AdUnit 
-          slot="4009845073" 
-          format="auto" 
-        />
-      </div>
+        {/* 2. Middle of the profile - Mobile Only or Desktop too */}
+              <div className="my-10">
+                <AdUnit 
+                  slot="7109718921" 
+                  layout="in-article" 
+                  format="fluid" 
+                />
+              </div>
 
 
         {/* General Cities Section (Standalone & Always Visible) */}
