@@ -399,10 +399,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </div>
       </div>
 
-      <AdUnit 
-            slot="5217938782" 
-            format="auto" 
-          />
 
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4">
@@ -668,14 +664,10 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </section>
       )}
 
-      {/* 2. Middle of the profile - Mobile Only or Desktop too */}
-              <div className="my-10">
-                <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
-              </div>
+     <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
 
       {/* Related Doctors Section */}
       {relatedDoctors.length > 0 && (
