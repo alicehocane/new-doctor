@@ -175,10 +175,10 @@ export default function SpecialtiesIndexPage() {
                 {/* Middle of the profile - Mobile Only or Desktop too */}
              
                 <AdUnit 
-                  slot="7109718921" 
-                  layout="in-article" 
-                  format="fluid" 
-                />
+            slot="5217938782" 
+            format="auto" 
+          />
+
               
 
         {/* How It Works Section */}

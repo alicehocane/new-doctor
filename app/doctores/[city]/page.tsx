@@ -654,9 +654,9 @@ export default async function CityPage({ params }: { params: { city: string } })
 
       {/* 3. CONTENT AD (Between Cards) */}
           <AdUnit 
-            slot="5217938782" // Replace with your real 10-digit Slot ID
-            format="auto" 
-          />
+    slot="5853870449" 
+    format="auto" 
+  />
 
 
         {/* Client Side List & Pagination */}
@@ -666,10 +666,9 @@ export default async function CityPage({ params }: { params: { city: string } })
 
       
                       <AdUnit 
-                        slot="7109718921" 
-                        layout="in-article" 
-                        format="fluid" 
-                      />
+            slot="5217938782" 
+            format="auto" 
+          />
                     
 
       {/* Specialties in {City} */}
