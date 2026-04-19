@@ -429,6 +429,12 @@ export default async function DoctorProfile({ params }: { params: { slug: string
           </section>
 
 
+          <AdUnit 
+            slot="5217938782" 
+            format="auto" 
+          />
+
+
           {/* Locations Card */}
           <section className="bg-white rounded-[24px] shadow-sm p-8 transition-transform hover:scale-[1.005]">
              <h2 className="text-xl font-semibold text-[#1d1d1f] mb-6 flex items-center gap-2">
@@ -664,10 +670,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
         </section>
       )}
 
-     <AdUnit 
-            slot="5217938782" 
-            format="auto" 
-          />
+     
 
       {/* Related Doctors Section */}
       {relatedDoctors.length > 0 && (
