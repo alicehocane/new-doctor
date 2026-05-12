@@ -30,7 +30,7 @@ export default function CityDoctorList({ initialDoctors, city, specialty }: City
 
     let query = supabase
         .from('doctors')
-        .select('*')
+        .select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
         .contains('cities', [city])
         // 1. Tell Supabase to sort by has_phone first, then alphabetically
         .order('has_phone', { ascending: false })

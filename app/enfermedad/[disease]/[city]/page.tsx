@@ -95,7 +95,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   }
 
   // 3. Fetch Initial Data Server-Side (Only runs for valid URLs!)
-  let query = supabase.from('doctors').select('*').contains('cities', [cityName]);
+  let query = supabase.from('doctors').select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at, has_phone').contains('cities', [cityName]);
 
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);

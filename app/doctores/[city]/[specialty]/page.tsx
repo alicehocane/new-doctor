@@ -135,7 +135,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
   // 3. Fetch Data (Only runs for valid URLs!)
   const { data: rawDoctors } = await supabase
     .from('doctors')
-    .select('*')
+    .select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
     .contains('cities', [cityName])
     .contains('specialties', [searchTerm])
     .order('has_phone', { ascending: false })

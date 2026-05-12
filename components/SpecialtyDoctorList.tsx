@@ -30,7 +30,7 @@ export default function SpecialtyDoctorList({ initialDoctors, specialty }: Speci
     // Filter strictly by specialty and SORT BY DATABASE
     const { data } = await supabase
         .from('doctors')
-        .select('*')
+        .select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
         .contains('specialties', [specialty])
         .order('has_phone', { ascending: false }) // 1. Doctors with phones first
         // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
