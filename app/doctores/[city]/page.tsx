@@ -501,7 +501,7 @@ export default async function CityPage({ params }: { params: { city: string } })
   // 3. Fetch initial batch of doctors
   const { data: rawDoctors } = await supabase
     .from('doctors')
-    .select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
+    .select('*')
     .contains('cities', [cityName])
     .order('has_phone', { ascending: false }) // 1. Doctors with phones first
     .range(0, PAGE_SIZE - 1);

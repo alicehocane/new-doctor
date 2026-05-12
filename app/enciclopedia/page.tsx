@@ -9,7 +9,6 @@ import AdUnit from '@/components/AdUnit';
 
 
 export const revalidate = 86400;
-
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
@@ -22,7 +21,7 @@ export default async function EncyclopediaIndexPage() {
   // 1. Fetch Initial Articles on Server
   const { data: articles } = await supabase
     .from('articles')
-    .select('id, slug, title, excerpt, category, read_time, author, published_at')
+    .select('*')
     .order('published_at', { ascending: false })
     .range(0, PAGE_SIZE - 1);
 

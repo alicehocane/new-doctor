@@ -69,7 +69,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   }
 
   // 2. Fetch Initial Doctors (Only runs if the URL is valid!)
-  let query = supabase.from('doctors').select('id, full_name, slug, specialties, cities, license_numbers, contact_info, updated_at, has_phone');
+  let query = supabase.from('doctors').select('*');
 
   if (targetSpecialty) {
       query = query.contains('specialties', [targetSpecialty]);
@@ -86,7 +86,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
   // 3. Fetch Related Articles
   const { data: articlesData } = await supabase
     .from('articles')
-    .select('id, slug, title, excerpt, category, read_time, published_at')
+    .select('*')
     .or(`title.ilike.%${diseaseName}%,category.ilike.%${diseaseName}%,excerpt.ilike.%${diseaseName}%`)
     .order('published_at', { ascending: false })
     .limit(3);

@@ -87,7 +87,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   // 3. Fetch Initial Data Server-Side (Doctors)
   const { data: rawDoctors } = await supabase
     .from('doctors')
-    .select('id, full_name, slug, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
+    .select('*')
     .contains('specialties', [searchTerm])
     .order('has_phone', { ascending: false }) // 1. Doctors with phones first
     // .order('full_name', { ascending: true })  // 2. Alphabetical secondary sort
