@@ -7,7 +7,7 @@ import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 const FEATURED_CITIES = [
   'Ciudad de México',

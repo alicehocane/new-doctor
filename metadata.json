@@ -1,5 +1,6 @@
 {
-  "name": "MediBusca Admin Uploader",
-  "description": "A specialized utility to upload and transform doctor JSON records into Supabase.",
+  "name": "MediBusca",
+  "description": "Conectando salud con tecnología. Facilitamos el acceso a especialistas verificados en todo México con una experiencia minimalista y eficiente.",
+  "manifesto": "Nuestra misión es democratizar la búsqueda de atención médica, eliminando la fricción entre el paciente y el especialista mediante un diseño centrado en el humano.",
   "requestFramePermissions": []
 }

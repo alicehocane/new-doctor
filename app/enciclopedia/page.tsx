@@ -8,7 +8,8 @@ import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
 
-export const revalidate = 0;
+export const revalidate = 86400;
+
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {

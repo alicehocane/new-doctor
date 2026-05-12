@@ -10,7 +10,7 @@ import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 const PAGE_SIZE = 12;
 
