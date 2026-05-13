@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://medibusca.com/medico/ortiz-feliciano-wong-oftalmologo</loc>
-    <lastmod>2026-03-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://medibusca.com/medico/ortiz-hector-lozano-medico-general</loc>
     <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -59997,6 +59991,12 @@
   <url>
     <loc>https://medibusca.com/medico/selene-maria-aguirre-martinez-nutricionista</loc>
     <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/medico/selene-maribel-delgado-ayala-internista</loc>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
