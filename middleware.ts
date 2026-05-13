@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     'adsense'
   ];
 
-  const hasProtectedParams = protectedParams.some(param => searchParams.has(item));
+  const hasProtectedParams = protectedParams.some(param => searchParams.has(param));
 
   // 2. Limpieza de parámetros basura (UTMs, etc.)
   // Solo ejecutamos si hay parámetros y NINGUNO es de la lista protegida
