@@ -1,26 +1,28 @@
-'use client';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
+  const url = request.nextUrl.clone();
+  const { searchParams } = url;
 
-  // 1. Define Protected Parameters
-  // 'google_vignette' is essential for AdSense full-screen ads.
-  // 'gclid' (Google Click ID) is essential if you ever run paid ads.
-  const hasProtectedParams = 
-    searchParams.has('google_vignette') || 
-    searchParams.has('gclid');
+  // 1. Lista expandida de parámetros protegidos (AdSense, Ads y Google Search)
+  const protectedParams = [
+    'google_vignette',
+    'gclid',
+    'srsltid', // Google Shopping / Organic tracking
+    'fbclid',  // Solo si quieres mantener track de Facebook
+    'adsense'
+  ];
 
-  // 2. Execute Cleanup only for "trash" parameters (UTMs, fbclid, etc.)
-  // We bypass the redirect if a protected parameter is detected.
-  if (request.nextUrl.search && !hasProtectedParams) {
-    const cleanUrl = request.nextUrl.clone();
-    cleanUrl.search = '';
+  const hasProtectedParams = protectedParams.some(param => searchParams.has(item));
+
+  // 2. Limpieza de parámetros basura (UTMs, etc.)
+  // Solo ejecutamos si hay parámetros y NINGUNO es de la lista protegida
+  if (url.search && !hasProtectedParams) {
+    url.search = '';
     
-    // We keep your 301 Permanent Redirect to consolidate SEO authority
-    // while protecting the ad experience.
-    return NextResponse.redirect(cleanUrl, 301);
+    // Usamos 308 (Permanent Redirect) para máxima autoridad SEO
+    return NextResponse.redirect(url, { status: 308 });
   }
 
   return NextResponse.next();
