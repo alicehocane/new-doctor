@@ -146,7 +146,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
 
   const { data: currentDoctor } = await supabase
     .from('doctors')
-    .select('*')
+    .select('id, slug, full_name, specialties, cities, license_numbers, contact_info, medical_profile, updated_at')
     .eq('slug', params.slug)
     .single();
 
@@ -160,11 +160,11 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     if (doctor.cities.length > 0 && doctor.specialties.length > 0) {
       const { data: related } = await supabase
         .from('doctors')
-        .select('*')
+        .select('id, slug, full_name, specialties, cities, license_numbers, contact_info')
         .contains('cities', [doctor.cities[0]])
         .contains('specialties', [doctor.specialties[0]])
         .neq('id', doctor.id)
-        .limit(20);
+        .limit(6); // you only show 4, no need to fetch 20 and sort in JS
       
       if (related) {
         return (related as Doctor[])
@@ -185,7 +185,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       const mainSpecialty = doctor.specialties[0];
       const { data: articlesData } = await supabase
         .from('articles')
-        .select('*')
+        .select('id, slug, title, excerpt, category, author, read_time')
         .ilike('category', `%${mainSpecialty}%`)
         .limit(3);
       return articlesData as Article[] || [];
