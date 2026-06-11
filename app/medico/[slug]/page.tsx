@@ -9,7 +9,7 @@ import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '../../../lib/constant
 import ArticleRecommendation from '../../../components/ArticleRecommendation';
 import AdUnit from '../../../components/AdUnit';
 
-export const revalidate = 86400;
+export const revalidate = false;
 
 // --- Utility Function ---
 
