@@ -11,7 +11,7 @@ import CityDoctorList from '../../../components/CityDoctorList';
 import AdUnit from '@/components/AdUnit';
 
 
-export const revalidate = 86400;
+export const revalidate = 2592000;
 
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;

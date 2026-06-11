@@ -5,7 +5,7 @@ import { Database, ShieldCheck, MonitorCheck, FileCheck, CheckCircle, Info } fro
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 0;
+export const revalidate = 2592000;
 
 
 export const metadata: Metadata = {
