@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 
 

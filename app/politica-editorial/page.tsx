@@ -5,7 +5,7 @@ import { FileText, ShieldCheck, Brain, BookOpen, UserCheck, AlertTriangle, Check
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 
 export const metadata: Metadata = {

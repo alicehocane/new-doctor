@@ -7,7 +7,7 @@ import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 
 

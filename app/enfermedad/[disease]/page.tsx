@@ -11,7 +11,7 @@ import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 import AdUnit from '@/components/AdUnit';
 
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];

@@ -10,7 +10,7 @@ import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESC
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 const PAGE_SIZE = 12;
 

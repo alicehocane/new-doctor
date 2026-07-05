@@ -5,7 +5,7 @@ import { Users, Target, ShieldCheck, Heart, Database, Search } from 'lucide-reac
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 
 export const metadata: Metadata = {

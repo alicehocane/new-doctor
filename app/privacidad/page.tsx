@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ShieldCheck, Lock, Eye, FileText, CheckCircle, AlertTriangle, ExternalLink, XCircle } from 'lucide-react';
 import { Metadata } from 'next';
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "Política de Privacidada",

@@ -8,7 +8,7 @@ import StartSearchButton from '../../components/StartSearchButton';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 0;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: 'Buscar Doctores y Especialistas',

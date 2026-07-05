@@ -7,7 +7,7 @@ import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = 0;
+export const revalidate = false;
 
 
 const FEATURED_CITIES = [

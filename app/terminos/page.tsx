@@ -4,7 +4,7 @@ import { Scale, AlertCircle, FileText, Shield, Globe, Lock, Info, Mail, CheckCir
 import { Metadata } from 'next';
 
 
-export const revalidate = 2592000;
+export const revalidate = false;
 
 
 export const metadata: Metadata = {
