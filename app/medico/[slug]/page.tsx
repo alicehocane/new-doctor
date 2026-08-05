@@ -309,6 +309,11 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       {/* Header Profile */}
       <div className="bg-white border-b border-slate-200/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+
+          <AdUnit 
+                slot="5853870449" 
+                format="auto" 
+              />
           
           {/* Breadcrumb */}
           <nav className="text-sm font-medium text-[#86868b] mb-8 flex items-center animate-in fade-in slide-in-from-bottom-1">
@@ -348,12 +353,6 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                         <Award className="w-4 h-4 text-[#86868b]" />
                         <span>Cédula(s): {doctor.license_numbers.join(', ')}</span>
                     </div>
-
-                     
-              <AdUnit 
-                slot="5853870449" 
-                format="auto" 
-              />
             
                     
                     {/* Verification Tooltip/Block */}
