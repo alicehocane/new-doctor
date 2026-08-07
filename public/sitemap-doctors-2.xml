@@ -37669,12 +37669,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://medibusca.com/medico/chio-gudino-medico-general</loc>
-    <lastmod>2026-03-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://medibusca.com/medico/christa-ovalle-escalera-diabetologo</loc>
     <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -59997,6 +59991,12 @@
   <url>
     <loc>https://medibusca.com/medico/david-gatica-castro-radiologo</loc>
     <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/medico/david-gerardo-sanchez-juarez-urologo</loc>
+    <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

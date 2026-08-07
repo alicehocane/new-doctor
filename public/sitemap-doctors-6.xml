@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://medibusca.com/medico/karen-santiago-g-psicologo</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://medibusca.com/medico/karen-sarahi-santos-salas-psicologo</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://medibusca.com/medico/karen-seinos-psicologo</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
@@ -416,7 +404,7 @@
   </url>
   <url>
     <loc>https://medibusca.com/medico/karime-berenice-ramos-santos-internista</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-06-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30901,12 +30889,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://medibusca.com/medico/luis-edgar-sanchez-aguilar-medico-general</loc>
-    <lastmod>2026-03-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://medibusca.com/medico/luis-edgar-teran-rantos-dentista-odontologo</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
@@ -44174,7 +44156,7 @@
   </url>
   <url>
     <loc>https://medibusca.com/medico/manuel-eduardo-jaime-calderon-pediatra</loc>
-    <lastmod>2026-02-17</lastmod>
+    <lastmod>2026-05-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -59997,6 +59979,24 @@
   <url>
     <loc>https://medibusca.com/medico/maria-fatima-chilaca-rosas-radio-oncologo</loc>
     <lastmod>2026-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/medico/maria-felicidad-chew-vargas-dentista-odontologo</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/medico/maria-felicitas-aguirre-psicologo</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://medibusca.com/medico/maria-felicitas-ludivina-fragoso-rivero-dentista-odontologo</loc>
+    <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
