@@ -75,10 +75,10 @@ export const SitemapGenerator: React.FC = () => {
       setStatus('Generating Main Pages...');
       const mainUrls: SitemapUrl[] = [
         { loc: `${SITE_URL}`, changefreq: 'daily', priority: '1.0' },
-        { loc: `${SITE_URL}/buscar`, changefreq: 'weekly', priority: '0.9' },
-        { loc: `${SITE_URL}/especialidades`, changefreq: 'monthly', priority: '0.8' },
-        { loc: `${SITE_URL}/enfermedades`, changefreq: 'monthly', priority: '0.8' },
-        { loc: `${SITE_URL}/enciclopedia`, changefreq: 'daily', priority: '0.8' },
+        { loc: `${SITE_URL}/buscar`, changefreq: 'monthly', priority: '0.5' },
+        { loc: `${SITE_URL}/especialidades`, changefreq: 'weekly', priority: '0.9' },
+        { loc: `${SITE_URL}/enfermedades`, changefreq: 'monthly', priority: '0.5' },
+        { loc: `${SITE_URL}/enciclopedia`, changefreq: 'weekly', priority: '0.9' },
         { loc: `${SITE_URL}/nosotros`, changefreq: 'monthly', priority: '0.5' },
         { loc: `${SITE_URL}/contacto`, changefreq: 'monthly', priority: '0.5' },
         { loc: `${SITE_URL}/privacidad`, changefreq: 'yearly', priority: '0.3' },
@@ -95,8 +95,8 @@ export const SitemapGenerator: React.FC = () => {
       
       const cityUrls = ALL_CITIES.map(city => ({
         loc: `${SITE_URL}/doctores/${slugify(city)}`,
-        changefreq: 'weekly',
-        priority: '0.9'
+        changefreq: 'monthly',
+        priority: '0.7'
       }));
       files.push({
         filename: 'sitemap-cities.xml',
@@ -106,8 +106,8 @@ export const SitemapGenerator: React.FC = () => {
 
       const specialtyUrls = COMMON_SPECIALTIES.map(spec => ({
         loc: `${SITE_URL}/especialidad/${slugify(spec)}`,
-        changefreq: 'weekly',
-        priority: '0.9'
+        changefreq: 'monthly',
+        priority: '0.7'
       }));
       files.push({
         filename: 'sitemap-specialties.xml',
@@ -117,8 +117,8 @@ export const SitemapGenerator: React.FC = () => {
 
       const diseaseUrls = ALL_DISEASES.map(disease => ({
         loc: `${SITE_URL}/enfermedad/${slugify(disease)}`,
-        changefreq: 'weekly',
-        priority: '0.9'
+        changefreq: 'monthly',
+        priority: '0.5'
       }));
       files.push({
         filename: 'sitemap-diseases.xml',
@@ -135,7 +135,7 @@ export const SitemapGenerator: React.FC = () => {
           COMMON_SPECIALTIES.forEach(spec => {
             citySpecUrls.push({
                   loc: `${SITE_URL}/doctores/${slugify(city)}/${slugify(spec)}`,
-                  changefreq: 'monthly',
+                  changefreq: 'weekly',
                   priority: '0.9'
               });
           });
@@ -157,7 +157,7 @@ export const SitemapGenerator: React.FC = () => {
             diseaseCityUrls.push({
                 loc: `${SITE_URL}/enfermedad/${slugify(disease)}/${slugify(city)}`,
                 changefreq: 'monthly',
-                priority: '0.9'
+                priority: '0.5'
             });
         });
       });
@@ -244,7 +244,7 @@ export const SitemapGenerator: React.FC = () => {
             loc: `${SITE_URL}/medico/${doc.slug}`,
             lastmod: doc.updated_at || new Date().toISOString(),
             changefreq: 'monthly',
-            priority: '0.5'
+            priority: '0.3'
         }));
 
         const doctorChunks = chunkArray(doctorUrls, MAX_URLS_PER_SITEMAP);
