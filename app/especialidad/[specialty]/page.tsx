@@ -6,7 +6,7 @@ import { Stethoscope, Search, BookOpen, AlertCircle, Info, ShieldCheck, Clipboar
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS } from '../../../lib/constants';
+import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESCRIPTIONS, SPECIALTY_CONDITIONS, SPECIALTY_PROCEDURES, SPECIALTY_FIRST_VISIT, SPECIALTY_COMPARISONS, DISEASE_RELATED_SPECIALTIES } from '../../../lib/constants';
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 import AdUnit from '@/components/AdUnit';
 
@@ -83,6 +83,9 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   const procedures = SPECIALTY_PROCEDURES[searchTerm] || ['Evaluación clínica', 'Diagnóstico especializado', 'Plan de tratamiento', 'Seguimiento médico'];
   const firstVisitText = SPECIALTY_FIRST_VISIT[searchTerm] || 'Durante la primera consulta, el especialista realizará una historia clínica detallada para entender tus síntomas y antecedentes. Se llevará a cabo un examen físico enfocado en tu motivo de consulta para determinar el mejor plan de diagnóstico y tratamiento.';
   const comparison = SPECIALTY_COMPARISONS[searchTerm];
+  const relatedDiseases = Object.entries(DISEASE_RELATED_SPECIALTIES)
+    .filter(([_, specialties]) => specialties.includes(searchTerm))
+    .map(([disease]) => disease);
 
   // 3. Fetch Initial Data Server-Side (Doctors)
   const { data: rawDoctors } = await supabase
@@ -388,7 +391,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
 
 
         {/* 3️⃣ Section: Padecimientos Comunes */}
-                {conditions.length > 0 && (
+                {relatedDiseases.length > 0 && (
                     <section className="animate-in fade-in slide-in-from-bottom-4 mt-16 pt-12 border-t border-[#d2d2d7]/30">
                         <div className="mb-8">
                             <h2 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-4 flex items-center gap-3">
@@ -401,18 +404,13 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                         </div>
         
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {conditions.slice(0, 9).map((condition) => (
+                            {relatedDiseases.slice(0, 9).map((disease) => (
                                 <Link 
-                                    key={condition}
-                                    // Link Logic: /padecimientos/[disease]/[state]/[city]
-                                    // Usually padecimientos routes are /padecimientos/[slug] or /padecimientos/[slug]/[city-slug]
-                                    // The requested structure was /padecimientos/[disease]/[state]/[city], but typical pattern in this app has been /padecimientos/[disease]/[city] (deducing state from city)
-                                    // We will follow existing pattern: /padecimientos/[disease-slug]/[city-slug]
-                                    // Note: State slug is usually implicit in city lookups or handled via redirection in the disease [city] page.
-                                    href={`/enfermedad/${slugify(condition)}`}
+                                    key={disease}
+                                    href={`/enfermedad/${slugify(disease)}`}
                                     className="flex items-center justify-between p-5 bg-white rounded-xl border border-slate-200 hover:border-[#0071e3] hover:shadow-sm transition-all group"
                                 >
-                                    <span className="font-medium text-[#1d1d1f]">{condition}</span>
+                                    <span className="font-medium text-[#1d1d1f]">{disease}</span>
                                     <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#0071e3] transition-colors" />
                                 </Link>
                             ))}
