@@ -2,16 +2,16 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor } from '../../../types';
-import { MapPin, Search, ShieldCheck, HeartPulse, ChevronDown, Building, HelpCircle, ArrowRight, Ambulance, Bus, Info } from 'lucide-react';
+import { MapPin, Search, HeartPulse, ChevronDown, Building, HelpCircle, Ambulance, Bus, Info } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, POPULAR_SPECIALTIES as GLOBAL_POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA, POPULAR_SPECIALTIES, getStateForCity } from '../../../lib/constants';
+import { POPULAR_CITIES, POPULAR_SPECIALTIES, ALL_CITIES, COMMON_SPECIALTIES, CITY_HEALTH_DATA, getStateForCity } from '../../../lib/constants';
 import CityDoctorList from '../../../components/CityDoctorList';
 import AdUnit from '@/components/AdUnit';
 
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 const PAGE_SIZE = 12;
 const INITIAL_SPECIALTIES_COUNT = 12;
@@ -473,9 +473,34 @@ const getCityHealthData = (citySlug: string, cityName: string) => {
 
 export async function generateMetadata({ params }: { params: { city: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
+
+  // Check if any doctors exist in this municipality
+  const { count } = await supabase
+    .from('doctors')
+    .select('id', { count: 'exact', head: true })
+    .contains('cities', [cityName]);
+
+  const hasDoctors = (count ?? 0) > 0;
+  const pageTitle = `Doctores en ${cityName}`;
+  const pageDesc = `Encuentra doctores y especialistas verificados en ${cityName}. Información sobre zonas médicas, emergencias y contacto directo sin comisiones.`;
+  const pageUrl = `https://medibusca.com/doctores/${params.city}`;
+
   return {
-    title: `Doctores en ${cityName} - Directorio Médico Verificado`,
-    description: `Encuentra los mejores doctores y hospitales en ${cityName}. Información sobre zonas médicas, emergencias y transporte. Contacta directamente sin comisiones.`,
+    title: pageTitle,
+    description: pageDesc,
+    alternates: {
+      canonical: pageUrl,
+    },
+    robots: {
+      index: hasDoctors,
+      follow: true,
+    },
+    openGraph: {
+      title: `${pageTitle} | MediBusca`,
+      description: pageDesc,
+      url: pageUrl,
+      type: 'website',
+    },
   };
 }
 
@@ -851,11 +876,11 @@ export default async function CityPage({ params }: { params: { city: string } })
                       Búsquedas populares en {cityName}
                   </h3>
                   <div className="flex flex-wrap gap-x-3 gap-y-3">
-                      {GLOBAL_POPULAR_SPECIALTIES.slice(0, 8).flatMap((spec, idx) => (
+                      {POPULAR_SPECIALTIES.slice(0, 8).map((spec, idx) => (
                           <Link 
                               key={idx}
                                href={`/doctores/${citySlug}/${slugify(spec)}`}
-                              className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                              className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 hover:bg-[#e8e8ed] transition-colors group"
                           >
                               <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                               <span>{spec} en {cityName}</span>

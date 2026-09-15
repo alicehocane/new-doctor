@@ -5,23 +5,55 @@ import { Database, ShieldCheck, MonitorCheck, FileCheck, CheckCircle, Info } fro
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 export const metadata: Metadata = {
-  title: 'Nuestro Proceso de Verificación Médica | MediBusca',
+  title: 'Nuestro Proceso de Verificación Médica',
   description: 'Conoce cómo MediBusca recopila, verifica y publica la información de médicos y especialistas en México. Transparencia y seguridad para el paciente.',
+  alternates: {
+    canonical: 'https://medibusca.com/nuestro-proceso',
+  },
+  openGraph: {
+    title: 'Nuestro Proceso de Verificación Médica | MediBusca',
+    description: 'Transparencia y rigor en la validación de credenciales médicas en México.',
+    url: 'https://medibusca.com/nuestro-proceso',
+    type: 'article',
+  },
 };
 
 export default function VerificationProcessPage() {
   
-  // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Proceso de Verificación",
+        "item": "https://medibusca.com/nuestro-proceso"
+      }
+    ]
+  };
+
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "Proceso de Verificación Médica | MediBusca",
     "description": "Explicación del proceso de validación de credenciales médicas en MediBusca.",
-    "url": "https://medibusca.com/nuestro-proceso"
+    "url": "https://medibusca.com/nuestro-proceso",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://medibusca.com/#organization",
+      "name": "MediBusca"
+    }
   };
 
   return (
@@ -36,6 +68,7 @@ export default function VerificationProcessPage() {
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="bg-[#f5f5f7] border-b border-slate-200 py-16 md:py-24 px-6 text-center">

@@ -9,7 +9,7 @@ import { POPULAR_SPECIALTIES, SPECIALTY_CONDITIONS } from '../../../lib/constant
 import ArticleRecommendation from '../../../components/ArticleRecommendation';
 import AdUnit from '../../../components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 // --- Utility Function ---
 
@@ -52,18 +52,25 @@ function getEnfermedades(doctor: Doctor): string[] {
 
 // 2. Spintax: Dynamic Biography Generation (Informational only)
 function generarBiografiaDinamica(doctor: Doctor) {
-  const nombre = doctor.full_name || 'Este especialista';
+  const nombre = doctor.full_name;
   const especialidad = doctor.specialties?.[0] || 'médico especialista';
   const ciudad = doctor.cities?.[0] || 'México';
-  
-  const variaciones = [
-    `Conoce al ${nombre}, especialista en ${especialidad}. Actualmente brinda atención a sus pacientes en su consultorio ubicado en ${ciudad}. Revisa sus servicios médicos y contacta directamente para solicitar más información.`,
-    `El ${nombre} cuenta con amplia experiencia como ${especialidad}. Si te encuentras en ${ciudad} y buscas atención médica de calidad, aquí encontrarás la información detallada de su clínica, tratamientos y contacto directo.`,
-    `Para quienes buscan un experto en ${especialidad} dentro de ${ciudad}, el ${nombre} es una excelente opción médica. Consulta su perfil, ubicación, enfermedades tratadas y datos de contacto en este directorio verificado.`
-  ];
+  const tieneCedula = doctor.license_numbers && doctor.license_numbers.length > 0;
+  const clinica = doctor.contact_info?.locations?.[0]?.clinic_name;
 
-  const indice = nombre.length % variaciones.length;
-  return variaciones[indice];
+  let bio = `${nombre} es especialista en ${especialidad} ejerciendo en ${ciudad}. `;
+  
+  if (tieneCedula) {
+    bio += `Cuenta con cédula profesional registrada ante la Dirección General de Profesiones (${doctor.license_numbers.join(', ')}), avalando su práctica clínica. `;
+  }
+  
+  if (clinica) {
+    bio += `Atiende a sus pacientes en ${clinica}. `;
+  }
+
+  bio += `Ofrece diagnóstico, manejo y seguimiento para diversas condiciones médicas dentro de su especialidad.`;
+  
+  return bio;
 }
 
 // This tells Vercel to pre-build your top 100 doctor profiles for free
@@ -133,6 +140,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: metaTitle,
     description: metaDesc,
     keywords: keywords.length > 0 ? keywords : undefined,
+    alternates: {
+      canonical: `https://medibusca.com/medico/${params.slug}`,
+    },
+    openGraph: {
+      title: metaTitle,
+      description: metaDesc,
+      url: `https://medibusca.com/medico/${params.slug}`,
+      type: 'profile',
+    },
   };
 }
 
@@ -273,6 +289,13 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     "name": doctor.full_name,
     "description": generatedDescription,
     "image": "https://medibusca.com/icon-512.png",
+    ...(doctor.license_numbers?.length > 0 && {
+    "identifier": {
+      "@type": "PropertyValue",
+      "name": "Cédula Profesional",
+      "value": doctor.license_numbers.join(', ')
+    }
+    }),
     "medicalSpecialty": doctor.specialties?.map(s => ({
       "@type": "MedicalSpecialty",
       "name": s
@@ -282,6 +305,18 @@ export default async function DoctorProfile({ params }: { params: { slug: string
     ...(worksFor?.length > 0 && { "worksFor": worksFor }),
     "dateModified": doctor.updated_at
   };
+
+  // Complete Breadcrumb Schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://medibusca.com" },
+    { "@type": "ListItem", "position": 2, "name": "Especialidades", "item": "https://medibusca.com/especialidades" },
+    { "@type": "ListItem", "position": 3, "name": specDisp, "item": `https://medibusca.com/especialidad/${slugify(specDisp)}` },
+    { "@type": "ListItem", "position": 4, "name": doctor.full_name, "item": `https://medibusca.com/medico/${params.slug}` }
+  ]
+};
 
   const phones = doctor.contact_info?.phones || [];
   const mainPhone = phones[0];
@@ -305,6 +340,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
       {/* Schema Scripts (Server Injected) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header Profile */}
       <div className="bg-white border-b border-slate-200/50">
@@ -337,11 +373,16 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                 <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-[#1d1d1f] leading-tight mb-4">
                   {doctor.full_name}
                 </h1>
+                
                 <div className="flex flex-wrap gap-2">
                   {doctor.specialties.map((spec, i) => (
-                    <span key={i} className="px-3 py-1 bg-[#0071e3]/10 text-[#0071e3] font-medium rounded-full text-[14px]">
+                    <Link 
+                      key={i} 
+                      href={`/especialidad/${slugify(spec)}`}
+                      className="px-3 py-1 bg-[#0071e3]/10 text-[#0071e3] font-medium rounded-full text-[14px] hover:bg-[#0071e3]/20 transition-colors"
+                    >
                       {spec}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -416,11 +457,17 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                   <h3 className="text-[13px] font-semibold text-[#86868b] mb-3 uppercase tracking-wider">
                     {doctor.medical_profile?.diseases_treated?.length ? "Enfermedades Tratadas" : "Condiciones comunes tratadas"}
                   </h3>
+
+
                   <div className="flex flex-wrap gap-2">
                     {diseases.map((d, i) => (
-                      <span key={i} className="px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg text-[14px] font-medium border border-slate-100">
+                      <Link 
+                        key={i} 
+                        href={`/enfermedad/${slugify(d)}`}
+                        className="px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] hover:text-[#0071e3] hover:border-[#0071e3]/40 rounded-lg text-[14px] font-medium border border-slate-100 transition-colors"
+                      >
                         {d}
-                      </span>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -768,7 +815,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                  <Link
                     key={`spec-${idx}`}
                     href={`/doctores/${slugify(city)}/${slugify(doctor.specialties[0])}`}
-                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 hover:bg-[#e8e8ed] transition-colors group"
                  >
                   <MapPin className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                   <span>{doctor.specialties[0]} en {city}</span>
@@ -782,7 +829,7 @@ export default async function DoctorProfile({ params }: { params: { slug: string
                  <Link
                     key={`city-${idx}`}
                     href={`/doctores/${slugify(doctor.cities[0])}/${slugify(spec)}`}
-                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                    className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 hover:bg-[#e8e8ed] transition-colors group"
                  >
                  <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                  <span>{spec} en {doctor.cities[0]}</span>  

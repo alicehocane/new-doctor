@@ -1,19 +1,27 @@
 
 import React from 'react';
-import { Activity, Search, ShieldCheck, CheckCircle, AlertCircle, FileText } from 'lucide-react';
+import { Activity, Search, ShieldCheck, CheckCircle, FileText } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Article } from '../../types';
 import EncyclopediaBrowser from '../../components/EncyclopediaBrowser';
 import { Metadata } from 'next';
-import AdUnit from '@/components/AdUnit';
 
 
-export const revalidate = false;
+export const revalidate = 2592000;
 const PAGE_SIZE = 9;
 
 export const metadata: Metadata = {
   title: "Enciclopedia Médica y Artículos de Salud",
   description: "Biblioteca de salud de MediBusca. Artículos verificados sobre bienestar, prevención y medicina escritos por expertos.",
+  alternates: {
+    canonical: 'https://medibusca.com/enciclopedia',
+  },
+  openGraph: {
+    title: "Enciclopedia Médica y Artículos de Salud | MediBusca",
+    description: "Guías de salud, artículos médicos y prevención verificada en MediBusca.",
+    url: "https://medibusca.com/enciclopedia",
+    type: "website",
+  },
 };
 
 export default async function EncyclopediaIndexPage() {
@@ -62,6 +70,18 @@ export default async function EncyclopediaIndexPage() {
     }
   };
 
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Artículos Recientes de Salud",
+    "itemListElement": initialArticles.map((article, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://medibusca.com/enciclopedia/${article.slug}`,
+      "name": article.title
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
 
@@ -69,6 +89,7 @@ export default async function EncyclopediaIndexPage() {
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       {/* Interactive Browser (Search, List, Pagination) */}
       <EncyclopediaBrowser initialArticles={initialArticles}>

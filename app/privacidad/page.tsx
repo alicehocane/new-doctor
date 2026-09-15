@@ -4,22 +4,54 @@ import Link from 'next/link';
 import { ShieldCheck, Lock, Eye, FileText, CheckCircle, AlertTriangle, ExternalLink, XCircle } from 'lucide-react';
 import { Metadata } from 'next';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 export const metadata: Metadata = {
-  title: "Política de Privacidada",
-  description: "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información y el uso de datos en nuestra plataforma informativa de salud.",
+  title: "Política de Privacidad",
+  description: "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información, el uso de cookies y el tratamiento de datos en nuestra plataforma médica.",
+  alternates: {
+    canonical: 'https://medibusca.com/privacidad',
+  },
+  openGraph: {
+    title: "Política de Privacidad | MediBusca",
+    description: "Conoce cómo protegemos tu información y el tratamiento de datos en MediBusca.",
+    url: "https://medibusca.com/privacidad",
+    type: "website",
+  },
 };
 
 export default function PrivacyPage() {
   
-  // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Privacidad",
+        "item": "https://medibusca.com/privacidad"
+      }
+    ]
+  };
+
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Política de Privacidad | MediBusca",
-    "description": "Política de Privacidad de MediBusca. Conoce cómo protegemos tu información y el uso de datos en nuestra plataforma informativa de salud.",
-    "url": "https://medibusca.com/privacidad"
+    "description": "Política de Privacidad y uso de datos en MediBusca.",
+    "url": "https://medibusca.com/privacidad",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://medibusca.com/#organization",
+      "name": "MediBusca"
+    }
   };
 
   return (
@@ -27,6 +59,7 @@ export default function PrivacyPage() {
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="bg-[#f5f5f7] border-b border-slate-200 py-16 md:py-24 px-6 text-center">
@@ -105,20 +138,6 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-4 text-sm text-[#86868b]">
               Estos datos se usan exclusivamente para análisis estadístico de rendimiento y mejora de la experiencia de usuario.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-[#1d1d1f] mb-4">Uso de Cookies</h2>
-            <p className="mb-4">
-              MediBusca puede utilizar cookies y tecnologías similares para mejorar la experiencia de navegación.
-            </p>
-            <ul className="list-disc pl-5 space-y-2 mb-4 text-[#1d1d1f]">
-              <li><strong>Cookies esenciales:</strong> Necesarias para que el sitio funcione correctamente.</li>
-              <li><strong>Cookies analíticas:</strong> Nos ayudan a entender qué secciones son más útiles para los usuarios.</li>
-            </ul>
-            <p className="text-sm text-[#86868b]">
-              Puedes desactivar las cookies en la configuración de tu navegador en cualquier momento, aunque esto podría afectar algunas funcionalidades.
             </p>
           </section>
 

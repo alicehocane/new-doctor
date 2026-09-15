@@ -1,19 +1,28 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, MapPin, ShieldCheck, BookOpen, Brain, HeartPulse, Stethoscope, Activity, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import { POPULAR_SPECIALTIES, ALL_DISEASES } from '../../lib/constants';
+import { MapPin, ShieldCheck, Brain, HeartPulse, Stethoscope, Activity, AlertTriangle } from 'lucide-react';
+import { ALL_DISEASES } from '../../lib/constants';
 import DiseaseList from '../../components/DiseaseList';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 
 export const metadata: Metadata = {
-  title: "Diccionario de Enfermedades y Guía de Síntomas",
+  title: "Diccionario de Enfermedades y Guía de Síntomas en México",
   description: "Guía médica completa de enfermedades y síntomas en México. Aprende a identificar cuándo acudir a un especialista y encuentra doctores verificados.",
+  alternates: {
+    canonical: 'https://medibusca.com/enfermedades',
+  },
+  openGraph: {
+    title: "Diccionario de Enfermedades y Guía de Síntomas | MediBusca",
+    description: "Guía médica completa de padecimientos, síntomas y especialistas certificados en México.",
+    url: "https://medibusca.com/enfermedades",
+    type: "website",
+  },
 };
 
 const FEATURED_CITIES = [
@@ -85,6 +94,19 @@ export default function DiseasesIndexPage() {
     ]
   };
 
+  const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Directorio Completo de Enfermedades y Padecimientos",
+  "numberOfItems": ALL_DISEASES.length,
+  "itemListElement": ALL_DISEASES.map((disease, idx) => ({
+    "@type": "ListItem",
+    "position": idx + 1,
+    "name": disease,
+    "url": `https://medibusca.com/enfermedad/${slugify(disease)}`
+  }))
+};
+
   const medicalWebPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
@@ -108,6 +130,7 @@ export default function DiseasesIndexPage() {
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       <div className="max-w-6xl mx-auto px-4 py-12 md:py-20">
         
@@ -192,9 +215,6 @@ export default function DiseasesIndexPage() {
                                     {disease}
                                 </Link>
                             ))}
-                            <Link href="/enfermedades" className="px-4 py-2 text-[#0071e3] text-sm font-medium hover:underline">
-                                Ver más...
-                            </Link>
                         </div>
                     </div>
                 ))}

@@ -1,27 +1,59 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { FileText, ShieldCheck, Brain, BookOpen, UserCheck, AlertTriangle, CheckCircle } from 'lucide-react';
+import { FileText, Brain, BookOpen, UserCheck, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 export const metadata: Metadata = {
-  title: "Política Editorial Médica | MediBusca",
+  title: "Política Editorial Médica",
   description: "Conoce nuestros estándares de calidad, fuentes de información y política sobre el uso de tecnología en la información médica de MediBusca.",
+  alternates: {
+    canonical: 'https://medibusca.com/politica-editorial',
+  },
+  openGraph: {
+    title: "Política Editorial Médica | MediBusca",
+    description: "Estándares editoriales, fuentes oficiales y rigor en la divulgación médica en México.",
+    url: "https://medibusca.com/politica-editorial",
+    type: "article",
+  },
 };
 
 export default function EditorialPolicyPage() {
   
-  // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Política Editorial",
+        "item": "https://medibusca.com/politica-editorial"
+      }
+    ]
+  };
+
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "Política Editorial Médica | MediBusca",
     "description": "Estándares editoriales y procesos de verificación de información médica en MediBusca.",
-    "url": "https://medibusca.com/politica-editorial"
+    "url": "https://medibusca.com/politica-editorial",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://medibusca.com/#organization",
+      "name": "MediBusca"
+    }
   };
 
   return (
@@ -39,6 +71,7 @@ export default function EditorialPolicyPage() {
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="bg-[#f5f5f7] border-b border-slate-200 py-16 md:py-24 px-6 text-center">

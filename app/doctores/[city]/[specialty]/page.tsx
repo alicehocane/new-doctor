@@ -1,7 +1,7 @@
 import React from 'react';
 import { supabase } from '../../../../lib/supabase';
 import { Doctor } from '../../../../types';
-import { CheckCircle, Phone, ShieldCheck, HelpCircle, ArrowRight, Search, MapPin, UserCheck, Stethoscope, Activity, Info, BookOpen, Building2, Bus, HeartPulse} from 'lucide-react';
+import { HelpCircle, ArrowRight, Search, MapPin, Activity, Info, BookOpen, Building2, Bus, HeartPulse} from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
@@ -12,7 +12,7 @@ import AdUnit from '@/components/AdUnit';
 
 
 // export const revalidate = 2592000;
-export const revalidate = false;
+export const revalidate = 2592000;
 
 const PAGE_SIZE = 12;
 
@@ -69,14 +69,40 @@ const getCanonicalSpecialty = (input: string) => {
 
 // --- Metadata ---
 
+// REPLACE your current generateMetadata with:
 export async function generateMetadata({ params }: { params: { city: string, specialty: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
   const decodedSpecialty = decodeURIComponent(params.specialty);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
 
+  // Fast count check to avoid thin empty indexations
+  const { count } = await supabase
+    .from('doctors')
+    .select('id', { count: 'exact', head: true })
+    .contains('cities', [cityName])
+    .contains('specialties', [searchTerm]);
+
+  const hasDoctors = (count ?? 0) > 0;
+  const pageTitle = `${searchTerm}s en ${cityName} | Directorio Verificado MediBusca`;
+  const pageDesc = `Encuentra información detallada sobre médicos ${searchTerm.toLowerCase()}s en ${cityName}. Explora especialistas verificados con cédula profesional, clínicas y contacto directo.`;
+  const pageUrl = `https://medibusca.com/doctores/${params.city}/${params.specialty}`;
+
   return {
-    title: `${searchTerm}s en ${cityName}`,
-    description: `Encuentra información detallada sobre médicos ${searchTerm.toLowerCase()}s en ${cityName}. Explora nuestro directorio de especialistas, conoce las enfermedades que tratan y obtén su contacto directo.`,
+    title: pageTitle,
+    description: pageDesc,
+    alternates: {
+      canonical: pageUrl,
+    },
+    robots: {
+      index: hasDoctors,
+      follow: true,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDesc,
+      url: pageUrl,
+      type: 'website',
+    },
   };
 }
 
@@ -573,7 +599,7 @@ export default async function CitySpecialtyPage({ params }: { params: { city: st
                 Aprovecha nuestros recursos educativos para tomar decisiones informadas sobre tu salud.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link href={`/especialidad/${searchTerm}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
+                <Link href={`/especialidad/${slugify(searchTerm)}`} className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">
                     <BookOpen className="w-5 h-5" /> Guía de {searchTerm}
                 </Link>
                 <Link href="/enfermedades" className="bg-white border border-slate-200 px-6 py-4 rounded-full font-medium text-[#1d1d1f] hover:border-[#0071e3] hover:text-[#0071e3] transition-all flex items-center justify-center gap-2">

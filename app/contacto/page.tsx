@@ -2,7 +2,7 @@ import React from 'react';
 import { HelpCircle, ChevronDown } from 'lucide-react';
 import ContactForm from '../../components/ContactForm';
 import { Metadata } from 'next';
-import AdUnit from '@/components/AdUnit';
+
 
 export const revalidate = false;
 
@@ -10,6 +10,15 @@ export const revalidate = false;
 export const metadata: Metadata = {
   title: "Contacto y Soporte",
   description: "Ponte en contacto con el equipo de MediBusca. Resolvemos tus dudas, recibimos comentarios y ayudamos a doctores a unirse a nuestra red médica.",
+  alternates: {
+    canonical: 'https://medibusca.com/contacto',
+  },
+  openGraph: {
+    title: "Contacto y Soporte | MediBusca",
+    description: "Atención a usuarios, soporte y registro médico en MediBusca.",
+    url: "https://medibusca.com/contacto",
+    type: "website",
+  },
 };
 
 const FAQS = [
@@ -71,6 +80,25 @@ export default function ContactPage() {
     }))
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Contacto",
+        "item": "https://medibusca.com/contacto"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-white">
 
@@ -79,6 +107,7 @@ export default function ContactPage() {
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="py-20 px-6 bg-[#f5f5f7] text-center border-b border-slate-200">

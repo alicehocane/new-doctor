@@ -10,7 +10,7 @@ import DiseaseDoctorList from '../../../../components/DiseaseDoctorList';
 import EmergencyBanner from '../../../../components/EmergencyBanner';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 const PAGE_SIZE = 12;
 
@@ -52,11 +52,41 @@ const getCanonicalCity = (slug: string) => {
 
 export async function generateMetadata({ params }: { params: { disease: string, city: string } }): Promise<Metadata> {
   const cityName = getCanonicalCity(params.city);
-  const { name: diseaseName } = getDiseaseInfo(params.disease);
-  
+  const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(params.disease);
+
+  let countQuery = supabase
+    .from('doctors')
+    .select('id', { count: 'exact', head: true })
+    .contains('cities', [cityName]);
+
+  if (targetSpecialty) {
+    countQuery = countQuery.contains('specialties', [targetSpecialty]);
+  } else {
+    countQuery = countQuery.contains('medical_profile', { diseases_treated: [diseaseName] });
+  }
+
+  const { count } = await countQuery;
+  const hasDoctors = (count ?? 0) > 0;
+  const pageTitle = `Especialistas en ${diseaseName} en ${cityName}`;
+  const pageDesc = `Encuentra doctores expertos en ${diseaseName} en ${cityName}. Consulta perfiles verificados con cédula profesional y teléfonos directos.`;
+  const pageUrl = `https://medibusca.com/enfermedad/${params.disease}/${params.city}`;
+
   return {
-    title: `Especialistas en ${diseaseName} en ${cityName}`,
-    description: `Encuentra doctores expertos en ${diseaseName} en ${cityName}. Consulta perfiles verificados, direcciones y teléfonos para agendar tu cita.`,
+    title: pageTitle,
+    description: pageDesc,
+    alternates: {
+      canonical: pageUrl,
+    },
+    robots: {
+      index: hasDoctors,
+      follow: true,
+    },
+    openGraph: {
+      title: `${pageTitle} | MediBusca`,
+      description: pageDesc,
+      url: pageUrl,
+      type: 'website',
+    },
   };
 }
 
@@ -160,6 +190,18 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
   }
   
 
+  const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": `Especialistas en ${diseaseName} en ${cityName}`,
+  "itemListElement": doctors.map((doc, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "url": `https://medibusca.com/medico/${doc.slug}`,
+    "name": doc.full_name
+  }))
+};
+
 
   // Schema Markup
   const breadcrumbSchema = {
@@ -225,6 +267,10 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
+      {doctors.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         
@@ -421,7 +467,7 @@ export default async function DiseaseCityPage({ params }: { params: { disease: s
                     Preguntas Frecuentes sobre {diseaseName} en {cityName}
                 </h3>
                 
-                {/* FIXED: Added 'grid', made it 1 column on mobile, 2 on desktop, with a clean gap of 24px (gap-6) */}
+               
                 <div className="grid grid-cols-1 gap-4">
 
                     {/* NEW: Dynamic Treatment FAQ */}

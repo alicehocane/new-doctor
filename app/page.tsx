@@ -7,7 +7,7 @@ import { ALL_DISEASES } from '../lib/constants';
 import HomeSearch from '../components/HomeSearch';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 const FEATURED_CITIES = [
@@ -31,8 +31,17 @@ const SPECIALTY_CONFIG: Record<string, { icon: React.ElementType, color: string,
 };
 
 export const metadata: Metadata = {
-  title: "MediBusca - Encuentra Doctores y Especialistas en México",
-  description: "Directorio médico líder en México. Encuentra doctores, clínicas y especialistas verificados. Accede a información sobre especialidades y enfermedades, descubre doctores recomendados y contacta directamente.",
+  title: "MediBusca - Directorio Médico y Especialistas en México",
+  description: "Directorio médico líder en México. Encuentra doctores verificados con cédula profesional ante la SEP, clínicas y especialistas. Contacta directamente sin intermediarios ni comisiones.",
+  alternates: {
+    canonical: 'https://medibusca.com',
+  },
+  openGraph: {
+    title: "MediBusca - Directorio Médico y Especialistas en México",
+    description: "Encuentra doctores verificados, clínicas y especialistas en México sin comisiones.",
+    url: "https://medibusca.com",
+    type: "website",
+  },
 };
 
 const slugify = (text: string) => {
@@ -51,33 +60,31 @@ export default function HomePage() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://medibusca.com/#organization",
     "name": "MediBusca",
     "url": "https://medibusca.com",
     "logo": "https://medibusca.com/icon-512.png",
     "sameAs": [
-        "https://www.instagram.com/medibusc"
+      "https://www.instagram.com/medibusc"
     ],
     "description": "Plataforma informativa de salud y directorio médico en México.",
     "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer support",
-        "email": "medibusca.info@gmail.com"
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "medibusca.info@gmail.com"
     }
   };
 
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": "https://medibusca.com/#website",
     "name": "MediBusca",
     "url": "https://medibusca.com",
     "description": "Directorio médico líder en México. Encuentra doctores verificados, clínicas y especialistas.",
     "publisher": {
-        "@type": "Organization",
-        "name": "MediBusca",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "https://medibusca.com/icon-512.png"
-        }
+      "@type": "Organization",
+      "@id": "https://medibusca.com/#organization"
     }
   };
 
@@ -288,10 +295,10 @@ export default function HomePage() {
           {/* Main Intro */}
           <div className="text-center space-y-4 md:space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight">
-              MediBusca
+              Directorio Médico Mexicano
             </h2>
             <p className="text-lg md:text-2xl text-[#1d1d1f] font-semibold px-2">
-              Directorio Médico Mexicano: Encuentra especialistas e información confiable
+              Encuentra especialistas verificados e información clínica confiable
             </p>
             <p className="text-base md:text-lg text-[#6e6e73] leading-relaxed max-w-3xl mx-auto">
               MediBusca es una plataforma informativa de salud que organiza la oferta médica de México. Ayudamos a las personas a encontrar consultorios, especialidades y contenido claro sobre salud para facilitar el primer paso en la atención médica.

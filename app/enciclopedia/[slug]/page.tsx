@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 
@@ -56,6 +56,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${article.title} | Enciclopedia MediBusca`,
     description: article.excerpt || `Lee sobre ${article.title} en la Enciclopedia Médica de MediBusca.`,
+    alternates: {
+      canonical: `https://medibusca.com/enciclopedia/${params.slug}`,
+    },
+    openGraph: {
+      title: article.title,
+      description: article.excerpt || `Lee sobre ${article.title} en MediBusca.`,
+      url: `https://medibusca.com/enciclopedia/${params.slug}`,
+      type: 'article',
+    },
   };
 }
 
@@ -101,7 +110,6 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     }
   }
 
-  const primaryCategory = article.category.split(',')[0].trim();
 
   // Schema Markup
   const articleSchema = {
@@ -131,11 +139,38 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     }
   };
 
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Enciclopedia",
+        "item": "https://medibusca.com/enciclopedia"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": article.title,
+        "item": `https://medibusca.com/enciclopedia/${article.slug}`
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-white pb-20">
         
         {/* Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
         {/* Sticky Navigation Bar */}
         <div className="sticky top-[48px] md:top-[52px] z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200 transition-all">
@@ -166,7 +201,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             <header className="mb-14 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <div className="flex flex-wrap items-center gap-2 mb-6">
                     <span className="px-3 py-1 bg-[#0071e3] text-white text-[11px] font-bold uppercase tracking-widest rounded-full">
-                        {primaryCategory}
+                        {firstCategory}
                     </span>
                     <span className="text-[13px] font-medium text-[#86868b] flex items-center gap-1.5 ml-2">
                         <Clock className="w-3.5 h-3.5" /> {article.read_time}

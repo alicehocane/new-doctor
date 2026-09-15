@@ -2,16 +2,16 @@
 import React from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Doctor, Article } from '../../../types';
-import { MapPin, CheckCircle, ArrowRight, AlertCircle, Info, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall, Brain, Stethoscope, HeartPulse, FileText } from 'lucide-react';
+import { MapPin, CheckCircle, ArrowRight, AlertCircle, BookOpen, ShieldCheck, Activity, Clock, ChevronRight, Search, PhoneCall, Stethoscope } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES, ALL_CITIES } from '../../../lib/constants';
+import { POPULAR_CITIES, getDiseaseInfo, ALL_DISEASES } from '../../../lib/constants';
 import DiseaseDoctorList from '../../../components/DiseaseDoctorList';
 import AdUnit from '@/components/AdUnit';
 
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 const PAGE_SIZE = 12;
 const TOP_CITIES = ['Ciudad de México', 'Monterrey', 'Guadalajara', 'Puebla', 'Tijuana', 'León'];
@@ -43,7 +43,6 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { disease: string } }): Promise<Metadata> {
   const { name: diseaseName, detailedInfo } = getDiseaseInfo(params.disease);
   
-  // Use intro from detailedInfo if available, otherwise generic
   const description = detailedInfo?.intro 
     ? detailedInfo.intro.substring(0, 160) + '...'
     : `Información sobre ${diseaseName}: síntomas, causas y tratamiento. Encuentra doctores especialistas en ${diseaseName} cerca de ti.`;
@@ -51,6 +50,15 @@ export async function generateMetadata({ params }: { params: { disease: string }
   return {
     title: `Tratamiento para ${diseaseName} - Especialistas y Causas`,
     description: description,
+    alternates: {
+      canonical: `https://medibusca.com/enfermedad/${params.disease}`,
+    },
+    openGraph: {
+      title: `Tratamiento para ${diseaseName} en México | MediBusca`,
+      description: description,
+      url: `https://medibusca.com/enfermedad/${params.disease}`,
+      type: 'article',
+    },
   };
 }
 
@@ -138,12 +146,21 @@ export default async function DiseasePage({ params }: { params: { disease: strin
     "name": `Tratamiento para ${diseaseName} - Especialistas y Causas | MediBusca`,
     "description": detailedInfo?.intro?.substring(0, 160) || `Información sobre ${diseaseName}.`,
     "url": `https://medibusca.com/enfermedad/${diseaseSlug}`,
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://medibusca.com/#organization",
+      "name": "MediBusca"
+    },
+    "about": {
+      "@type": "MedicalCondition",
+      "name": diseaseName
+    },
     "audience": {
-        "@type": "Patient",
-        "geographicArea": {
-            "@type": "Country",
-            "name": "Mexico"
-        }
+      "@type": "Patient",
+      "geographicArea": {
+        "@type": "Country",
+        "name": "Mexico"
+      }
     }
   };
 
@@ -517,7 +534,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                         <Link 
                             key={spec} 
                             href={`/especialidad/${slugify(spec)}`}
-                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group border border-[#d2d2d7]/60 rounded-full"
+                            className="flex items-center gap-2 px-5 py-3 bg-[#f5f5f7] rounded-full text-[#0066cc] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all group border border-[#d2d2d7]/60"
                         >
                             <Search className="w-4 h-4 text-[#86868b] group-hover:text-[#0066cc]" />
                             <span>{spec}</span>
@@ -547,7 +564,7 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                             <Link 
                                 key={city}
                                 href={`/doctores/${slugify(city)}/${slugify(spec)}`}
-                                className="gap-2 px-4 py-2.5 inline-flex items-center px-5 py-2.5
+                                className="gap-2 inline-flex items-center px-5 py-2.5
                             bg-white border border-[#d2d2d7]/60 rounded-full
                             text-[#1d1d1f] font-medium text-[15px]
                             hover:border-[#0071e3] hover:text-[#0071e3] hover:bg-white
@@ -570,11 +587,11 @@ export default async function DiseasePage({ params }: { params: { disease: strin
                     Encuentra doctores y especialistas en {diseaseName} en las principales ciudades. 
                 </p>
                 <div className="flex flex-wrap gap-3">
-                    {TOP_CITIES.slice(0, 8).map((city) => (
+                    {TOP_CITIES.slice(0, 6).map((city) => (
                         <Link 
                             key={city}
                             href={`/doctores/${slugify(city)}`}
-                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all border border-[#d2d2d7]/60 rounded-full"
+                            className="flex items-center gap-2 px-6 py-3.5 bg-[#f5f5f7] rounded-full text-[#1d1d1f] font-medium text-[15px] hover:bg-[#e8e8ed] transition-all border border-[#d2d2d7]/60"
                         >
                             <MapPin className="w-4 h-4 text-[#86868b]" />
                             <span>Doctores en {city}</span>

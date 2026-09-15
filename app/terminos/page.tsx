@@ -4,30 +4,64 @@ import { Scale, AlertCircle, FileText, Shield, Globe, Lock, Info, Mail, CheckCir
 import { Metadata } from 'next';
 
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
-  description: "Términos y condiciones de uso de la plataforma MediBusca. Información legal, responsabilidades y uso del sitio.",
+  description: "Términos y condiciones de uso de la plataforma MediBusca. Información legal, responsabilidades y uso del sitio de directorio médico.",
+  alternates: {
+    canonical: 'https://medibusca.com/terminos',
+  },
+  openGraph: {
+    title: "Términos y Condiciones | MediBusca",
+    description: "Términos legales y responsabilidades de uso de MediBusca.",
+    url: "https://medibusca.com/terminos",
+    type: "website",
+  },
 };
 
 export default function TermsPage() {
   
   // Schema Markup
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Términos y Condiciones",
+        "item": "https://medibusca.com/terminos"
+      }
+    ]
+  };
+
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Términos y Condiciones | MediBusca",
     "description": "Términos y condiciones de uso de la plataforma MediBusca.",
-    "url": "https://medibusca.com/terminos"
-  };
+    "url": "https://medibusca.com/terminos",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://medibusca.com/#organization",
+      "name": "MediBusca"
+    }
+    };
 
   return (
     <div className="min-h-screen bg-white font-sans">
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="bg-[#f5f5f7] border-b border-slate-200 py-16 md:py-24 px-6 text-center">

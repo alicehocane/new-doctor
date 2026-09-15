@@ -17,8 +17,6 @@ const inter = Inter({
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   themeColor: '#f5f5f7',
 };
 
@@ -39,7 +37,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: './', 
+    canonical: '/',
   },
 
   // Open Graph (Facebook / WhatsApp)
@@ -88,7 +86,6 @@ export default function RootLayout({
     <html lang="es" className={inter.variable}>
       <head>
         {/* Place it here */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388571116414842" crossOrigin="anonymous"></script>
       </head>
       <body className="min-h-screen flex flex-col font-sans bg-[#f5f5f7] antialiased selection:bg-[#0071e3]/20 selection:text-[#0071e3]">
         
@@ -149,7 +146,7 @@ export default function RootLayout({
   </div>
 
   <div className="max-w-6xl mx-auto px-6 border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-    <p>&copy; {new Date().getFullYear()} MediBusca. Información de salud verificada.</p>
+    <p>&copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> MediBusca. Información de salud verificada.</p>
     <div className="flex gap-6">
       {/* Add your social links here if you have them */}
       <span className="text-[11px] text-[#d2d2d7]">Hecho con rigor médico en México</span>
@@ -170,6 +167,8 @@ export default function RootLayout({
       gtag('config', 'G-GM3L4PKEQV');
     `}
   </Script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388571116414842" crossOrigin="anonymous"></script>
 
       </body>
     </html>

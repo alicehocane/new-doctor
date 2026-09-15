@@ -1,21 +1,13 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Activity, MapPin, Search, Phone, ShieldCheck, UserCheck, User, HelpCircle, HeartPulse } from 'lucide-react';
-import { ALL_DISEASES, COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../lib/constants';
+import { Activity, MapPin, Search, Phone, ShieldCheck, UserCheck, User, HelpCircle, HeartPulse } from 'lucide-react';
+import { COMMON_SPECIALTIES, POPULAR_CITIES, POPULAR_SPECIALTIES } from '../../lib/constants';
 import SpecialtiesList from '../../components/SpecialtiesList';
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
-
-const FEATURED_CITIES = [
-  'Ciudad de México',
-  'Guadalajara',
-  'Monterrey'
-];
-
-
+export const revalidate = 2592000;
 
 const TOP_SPECIALTIES_DATA = [
   { name: 'Dentista - Odontólogo', tag: 'Salud Bucal', description: 'Cuidado dental y encías' },
@@ -27,8 +19,17 @@ const TOP_SPECIALTIES_DATA = [
 ];
 
 export const metadata: Metadata = {
-  title: "Especialidades Médicas - Directorio Completo",
-  description: "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra expertos para cada necesidad de salud en México.",
+  title: "Especialidades Médicas en México - Directorio Completo",
+  description: "Explora todas las especialidades médicas disponibles en MediBusca. Encuentra doctores y especialistas verificados con cédula profesional en México.",
+  alternates: {
+    canonical: 'https://medibusca.com/especialidades',
+  },
+  openGraph: {
+    title: "Especialidades Médicas en México | MediBusca",
+    description: "Directorio médico de especialidades con cédula profesional verificada.",
+    url: "https://medibusca.com/especialidades",
+    type: "website",
+  }
 };
 
 const slugify = (text: string) => {
@@ -67,17 +68,18 @@ export default function SpecialtiesIndexPage() {
   };
 
   const itemListSchema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Especialidades Médicas Populares",
-    "description": "Lista de las especialidades médicas más buscadas en México.",
-    "itemListElement": TOP_SPECIALTIES_DATA.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      "url": `https://medibusca.com/especialidad/${slugify(item.name)}`
-    }))
-  };
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Directorio Completo de Especialidades Médicas en México",
+  "description": "Lista exhaustiva de especialidades médicas con especialistas verificados en MediBusca.",
+  "numberOfItems": allSpecialties.length,
+  "itemListElement": allSpecialties.map((spec, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": spec,
+    "url": `https://medibusca.com/especialidad/${slugify(spec)}`
+  }))
+};
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">

@@ -5,28 +5,57 @@ import { Users, Target, ShieldCheck, Heart, Database, Search } from 'lucide-reac
 import { Metadata } from 'next';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 
 export const metadata: Metadata = {
-  title: "Nosotros",
-  description: "Conoce al equipo detrás de MediBusca. Nuestra misión es democratizar el acceso a la información de salud en México con transparencia y tecnología.",
+  title: "Quiénes Somos",
+  description: "Conoce al equipo detrás de MediBusca. Nuestra misión es democratizar el acceso a la información de salud en México con transparencia, verificación y tecnología.",
+  alternates: {
+    canonical: 'https://medibusca.com/nosotros',
+  },
+  openGraph: {
+    title: "Quiénes Somos | MediBusca",
+    description: "Tecnología y datos al servicio de la salud en México.",
+    url: "https://medibusca.com/nosotros",
+    type: "website",
+  },
 };
 
 export default function AboutPage() {
   
-  // Schema Markup
+ const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://medibusca.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Quiénes Somos",
+        "item": "https://medibusca.com/nosotros"
+      }
+    ]
+  };
+
   const aboutSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "name": "Nosotros | MediBusca",
-    "description": "Misión, visión y equipo de MediBusca.",
+    "name": "Quiénes Somos | MediBusca",
+    "description": "Misión, visión y equipo detrás de MediBusca.",
     "url": "https://medibusca.com/nosotros",
     "mainEntity": {
       "@type": "Organization",
       "name": "MediBusca",
-      "foundingDate": "2023",
-      "description": "Plataforma tecnológica de información médica."
+      "url": "https://medibusca.com",
+      "logo": "https://medibusca.com/icon-512.png",
+      "foundingDate": "2026-02-18",
+      "description": "Plataforma tecnológica de información y directorio médico verificado en México."
     }
   };
 
@@ -42,6 +71,7 @@ export default function AboutPage() {
       
       {/* Schema Scripts */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Header */}
       <div className="bg-[#f5f5f7] border-b border-slate-200 py-16 md:py-24 px-6 text-center">

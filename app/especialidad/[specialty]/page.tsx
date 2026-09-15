@@ -10,7 +10,7 @@ import { POPULAR_CITIES, COMMON_SPECIALTIES, POPULAR_SPECIALTIES, SPECIALTY_DESC
 import SpecialtyDoctorList from '../../../components/SpecialtyDoctorList';
 import AdUnit from '@/components/AdUnit';
 
-export const revalidate = false;
+export const revalidate = 2592000;
 
 const PAGE_SIZE = 12;
 
@@ -52,13 +52,38 @@ const getCanonicalSpecialty = (input: string) => {
 
 // --- Metadata ---
 
-export async function generateMetadata({ params }: { params: { specialty: string } }): Promise<Metadata> {
-  const decodedSpecialty = decodeURIComponent(params.specialty);
+export async function generateMetadata({ params }: { params: Promise<{ specialty: string }> | { specialty: string } }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const decodedSpecialty = decodeURIComponent(resolvedParams.specialty);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
-  
+
+  // Fast count check to avoid thin empty indexations
+  const { count } = await supabase
+    .from('doctors')
+    .select('id', { count: 'exact', head: true })
+    .contains('specialties', [searchTerm]);
+
+  const hasDoctors = (count ?? 0) > 0;
+  const pageTitle = `${searchTerm}s en México - Procedimientos y Consulta`;
+  const pageDesc = `Guía completa sobre ${searchTerm}s. Qué esperar en la primera consulta, procedimientos comunes y lista de especialistas verificados en México.`;
+  const pageUrl = `https://medibusca.com/especialidad/${resolvedParams.specialty}`;
+
   return {
-    title: `${searchTerm}s en México - Procedimientos y Consulta`,
-    description: `Guía completa sobre ${searchTerm}s. Qué esperar en la primera consulta, procedimientos comunes y lista de especialistas verificados en México.`,
+    title: pageTitle,
+    description: pageDesc,
+    alternates: {
+      canonical: pageUrl,
+    },
+    robots: {
+      index: hasDoctors,
+      follow: true,
+    },
+    openGraph: {
+      title: `${pageTitle} | MediBusca`,
+      description: pageDesc,
+      url: pageUrl,
+      type: 'website',
+    },
   };
 }
 
@@ -134,12 +159,19 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
   };
 
   const medicalSpecialtySchema = {
-    "@context": "https://schema.org",
-    "@type": "MedicalSpecialty",
-    "name": searchTerm,
-    "description": description,
-    "url": `https://medibusca.com/especialidad/${params.specialty}`
-  };
+  "@context": "https://schema.org",
+  "@type": "MedicalSpecialty",
+  "name": searchTerm,
+  "description": description,
+  "url": `https://medibusca.com/especialidad/${params.specialty}`,
+  ...(relatedDiseases.length > 0 && {
+    "knowsAbout": relatedDiseases.map(d => ({
+      "@type": "MedicalCondition",
+      "name": d,
+      "url": `https://medibusca.com/enfermedad/${slugify(d)}`
+    }))
+  })
+};
 
   const itemListSchema = {
     "@context": "https://schema.org",
@@ -436,7 +468,7 @@ export default async function SpecialtyPage({ params }: { params: { specialty: s
                     <Link 
                         key={idx}
                         href={`/doctores/${slugify(item.city)}/${slugify(item.spec)}`}
-                        className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 rounded-full hover:bg-[#e8e8ed] transition-colors group"
+                        className="border border-[#d2d2d7]/60 rounded-full flex items-center gap-2 text-[14px] md:text-[13px] text-[#0066cc] bg-[#f5f5f7] px-3 py-2 hover:bg-[#e8e8ed] transition-colors group"
                     >
                         <Search className="w-3.5 h-3.5 text-[#86868b] group-hover:text-[#0066cc] transition-colors" />
                         <span>{item.spec} en {item.city}</span>

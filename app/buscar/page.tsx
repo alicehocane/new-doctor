@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Phone, UserCheck, Star, HeartPulse, FileCheck, Map, Wallet, HelpCircle, Check, AlertTriangle, BookOpen } from 'lucide-react';
+import { ShieldCheck, Phone, UserCheck, FileCheck, Map, Wallet, HelpCircle, Check, AlertTriangle, BookOpen } from 'lucide-react';
 import { ALL_DISEASES } from '../../lib/constants';
 import SearchForm from '../../components/SearchForm';
 import StartSearchButton from '../../components/StartSearchButton';
@@ -11,8 +11,15 @@ import AdUnit from '@/components/AdUnit';
 export const revalidate = false;
 
 export const metadata: Metadata = {
-  title: 'Buscar Doctores y Especialistas',
-  description: 'Explora nuestro directorio médico confiable. Busca especialistas por nombre, enfermedad o síntoma. Consulta información de salud y obtén contacto directo.',
+  title: 'Buscar Doctores y Especialistas en México',
+  description: 'Explora nuestro directorio médico confiable. Busca especialistas por nombre, especialidad médica o síntoma y contacta directamente sin comisiones.',
+  alternates: {
+    canonical: 'https://medibusca.com/buscar',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const FEATURED_CITIES = [
@@ -54,19 +61,29 @@ export default function SearchPage() {
   };
 
   const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": "Buscar Doctores y Especialistas",
-    "description": "Busca doctores por nombre, especialidad o enfermedad. Encuentra el especialista médico ideal cerca de ti.",
-    "url": "https://medibusca.com/buscar",
-    "audience": {
-        "@type": "Patient",
-        "geographicArea": {
-            "@type": "Country",
-            "name": "Mexico"
-        }
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "Buscador de Doctores y Especialistas en México | MediBusca",
+  "description": "Encuentra especialistas médicos y tratamientos por ciudad o padecimiento en México.",
+  "url": "https://medibusca.com/buscar",
+  "about": [
+    {
+      "@type": "MedicalSpecialty",
+      "name": "Directorio de Especialidades Médicas"
+    },
+    {
+      "@type": "MedicalCondition",
+      "name": "Directorio de Padecimientos"
     }
-  };
+  ],
+  "audience": {
+    "@type": "Patient",
+    "geographicArea": {
+      "@type": "Country",
+      "name": "Mexico"
+    }
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans flex flex-col pt-8 pb-12 px-4 md:items-center">
