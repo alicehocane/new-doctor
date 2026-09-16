@@ -76,13 +76,13 @@ export async function generateMetadata({ params }: { params: { city: string, spe
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
 
   // Fast count check to avoid thin empty indexations
-  const { count } = await supabase
-    .from('doctors')
-    .select('id', { count: 'exact', head: true })
-    .contains('cities', [cityName])
-    .contains('specialties', [searchTerm]);
+//   const { count } = await supabase
+//     .from('doctors')
+//     .select('id', { count: 'exact', head: true })
+//     .contains('cities', [cityName])
+//     .contains('specialties', [searchTerm]);
 
-  const hasDoctors = (count ?? 0) > 0;
+//   const hasDoctors = (count ?? 0) > 0;
   const pageTitle = `${searchTerm}s en ${cityName} | Directorio Verificado MediBusca`;
   const pageDesc = `Encuentra información detallada sobre médicos ${searchTerm.toLowerCase()}s en ${cityName}. Explora especialistas verificados con cédula profesional, clínicas y contacto directo.`;
   const pageUrl = `https://medibusca.com/doctores/${params.city}/${params.specialty}`;
@@ -92,10 +92,6 @@ export async function generateMetadata({ params }: { params: { city: string, spe
     description: pageDesc,
     alternates: {
       canonical: pageUrl,
-    },
-    robots: {
-      index: hasDoctors,
-      follow: true,
     },
     openGraph: {
       title: pageTitle,

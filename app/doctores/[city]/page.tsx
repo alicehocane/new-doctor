@@ -475,12 +475,12 @@ export async function generateMetadata({ params }: { params: { city: string } })
   const cityName = getCanonicalCity(params.city);
 
   // Check if any doctors exist in this municipality
-  const { count } = await supabase
-    .from('doctors')
-    .select('id', { count: 'exact', head: true })
-    .contains('cities', [cityName]);
+  // const { count } = await supabase
+  //   .from('doctors')
+  //   .select('id', { count: 'exact', head: true })
+  //   .contains('cities', [cityName]);
 
-  const hasDoctors = (count ?? 0) > 0;
+  // const hasDoctors = (count ?? 0) > 0;
   const pageTitle = `Doctores en ${cityName}`;
   const pageDesc = `Encuentra doctores y especialistas verificados en ${cityName}. Información sobre zonas médicas, emergencias y contacto directo sin comisiones.`;
   const pageUrl = `https://medibusca.com/doctores/${params.city}`;
@@ -490,10 +490,6 @@ export async function generateMetadata({ params }: { params: { city: string } })
     description: pageDesc,
     alternates: {
       canonical: pageUrl,
-    },
-    robots: {
-      index: hasDoctors,
-      follow: true,
     },
     openGraph: {
       title: `${pageTitle} | MediBusca`,

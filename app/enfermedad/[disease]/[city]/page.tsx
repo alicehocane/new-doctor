@@ -54,19 +54,19 @@ export async function generateMetadata({ params }: { params: { disease: string, 
   const cityName = getCanonicalCity(params.city);
   const { name: diseaseName, primarySpecialty: targetSpecialty } = getDiseaseInfo(params.disease);
 
-  let countQuery = supabase
-    .from('doctors')
-    .select('id', { count: 'exact', head: true })
-    .contains('cities', [cityName]);
+  // let countQuery = supabase
+  //   .from('doctors')
+  //   .select('id', { count: 'exact', head: true })
+  //   .contains('cities', [cityName]);
 
-  if (targetSpecialty) {
-    countQuery = countQuery.contains('specialties', [targetSpecialty]);
-  } else {
-    countQuery = countQuery.contains('medical_profile', { diseases_treated: [diseaseName] });
-  }
+  // if (targetSpecialty) {
+  //   countQuery = countQuery.contains('specialties', [targetSpecialty]);
+  // } else {
+  //   countQuery = countQuery.contains('medical_profile', { diseases_treated: [diseaseName] });
+  // }
 
-  const { count } = await countQuery;
-  const hasDoctors = (count ?? 0) > 0;
+  // const { count } = await countQuery;
+  // const hasDoctors = (count ?? 0) > 0;
   const pageTitle = `Especialistas en ${diseaseName} en ${cityName}`;
   const pageDesc = `Encuentra doctores expertos en ${diseaseName} en ${cityName}. Consulta perfiles verificados con cédula profesional y teléfonos directos.`;
   const pageUrl = `https://medibusca.com/enfermedad/${params.disease}/${params.city}`;
@@ -77,10 +77,10 @@ export async function generateMetadata({ params }: { params: { disease: string, 
     alternates: {
       canonical: pageUrl,
     },
-    robots: {
-      index: hasDoctors,
-      follow: true,
-    },
+    // robots: {
+    //   index: hasDoctors,
+    //   follow: true,
+    // },
     openGraph: {
       title: `${pageTitle} | MediBusca`,
       description: pageDesc,

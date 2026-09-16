@@ -57,13 +57,13 @@ export async function generateMetadata({ params }: { params: Promise<{ specialty
   const decodedSpecialty = decodeURIComponent(resolvedParams.specialty);
   const searchTerm = getCanonicalSpecialty(decodedSpecialty);
 
-  // Fast count check to avoid thin empty indexations
-  const { count } = await supabase
-    .from('doctors')
-    .select('id', { count: 'exact', head: true })
-    .contains('specialties', [searchTerm]);
+//   // Fast count check to avoid thin empty indexations
+//   const { count } = await supabase
+//     .from('doctors')
+//     .select('id', { count: 'exact', head: true })
+//     .contains('specialties', [searchTerm]);
 
-  const hasDoctors = (count ?? 0) > 0;
+//   const hasDoctors = (count ?? 0) > 0;
   const pageTitle = `${searchTerm}s en México - Procedimientos y Consulta`;
   const pageDesc = `Guía completa sobre ${searchTerm}s. Qué esperar en la primera consulta, procedimientos comunes y lista de especialistas verificados en México.`;
   const pageUrl = `https://medibusca.com/especialidad/${resolvedParams.specialty}`;
@@ -73,10 +73,6 @@ export async function generateMetadata({ params }: { params: Promise<{ specialty
     description: pageDesc,
     alternates: {
       canonical: pageUrl,
-    },
-    robots: {
-      index: hasDoctors,
-      follow: true,
     },
     openGraph: {
       title: `${pageTitle} | MediBusca`,
