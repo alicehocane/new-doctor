@@ -52,6 +52,11 @@ function getEnfermedades(doctor: Doctor): string[] {
 
 // 2. Spintax: Dynamic Biography Generation (Informational only)
 function generarBiografiaDinamica(doctor: Doctor) {
+  // Si se ingresó una descripción manual en Supabase, úsala prioritariamente
+  if (doctor.medical_profile?.description && doctor.medical_profile.description.trim().length > 0) {
+    return doctor.medical_profile.description.trim();
+  }
+
   const nombre = doctor.full_name;
   const especialidad = doctor.specialties?.[0] || 'médico especialista';
   const ciudad = doctor.cities?.[0] || 'México';
@@ -123,13 +128,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     ? `${doc.full_name} - ${specDisp} en ${cityDisp}` 
     : `${doc.full_name} en ${cityDisp}`;
 
-  // SEO FIX: Informational text instead of scheduling
-  let metaDesc = `Contacta a ${doc.full_name}`;
-  if (specDisp) metaDesc += `, especialista en ${specDisp}`;
-  metaDesc += ` en ${cityDisp}.`;
-  
-  if (diseases.length > 0) {
-    metaDesc += ` Experto en ${diseases.slice(0, 3).join(', ')}.`;
+  // Check if custom description exists, otherwise fallback to generated template
+  let metaDesc = '';
+  if (doc.medical_profile?.description && doc.medical_profile.description.trim().length > 0) {
+    const rawDesc = doc.medical_profile.description.trim();
+    metaDesc = rawDesc.length > 155 ? `${rawDesc.slice(0, 152)}...` : rawDesc;
+  } else {
+    metaDesc = `Contacta a ${doc.full_name}`;
+    if (specDisp) metaDesc += `, especialista en ${specDisp}`;
+    metaDesc += ` en ${cityDisp}.`;
+    
+    if (diseases.length > 0) {
+      metaDesc += ` Experto en ${diseases.slice(0, 3).join(', ')}.`;
+    }
   }
 
   const keywords = [];
@@ -627,6 +638,18 @@ const breadcrumbSchema = {
                 </div>
               )}
             </div>
+
+            {/* Botón Sitio Web Oficial si está presente */}
+            {doctor.contact_info?.website && (
+              <a 
+                href={doctor.contact_info.website} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center gap-2 w-full py-3 bg-white border border-[#d2d2d7] text-[#1d1d1f] rounded-full font-medium text-sm hover:bg-slate-50 transition-all active:scale-95 shadow-sm mt-3"
+              >
+                <ExternalLink className="w-4 h-4 text-[#0071e3]" /> Sitio Web Oficial
+              </a>
+            )}
 
             {/* 2. Prepara tu Consulta Card */}
             <div className="bg-white rounded-[24px] shadow-sm p-6 animate-in fade-in slide-in-from-bottom-6">

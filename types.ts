@@ -8,6 +8,7 @@ export interface RawDoctorRecord {
   cities: string[];
   contact: {
     phones: string[];
+    website?: string;
     locations: Array<{
       clinic_name: string;
       address: string;
@@ -15,6 +16,7 @@ export interface RawDoctorRecord {
     }>;
   };
   medical_info: {
+    description?: string;
     sub_specialties: string[];
     diseases_treated: string[];
   };
@@ -35,6 +37,7 @@ export type Doctor = {
   // Typed JSON objects
   contact_info: {
     phones: string[];
+    website?: string;
     locations: Array<{
       clinic_name: string;
       address: string;
@@ -43,6 +46,7 @@ export type Doctor = {
   };
   
   medical_profile: {
+    description?: string;
     sub_specialties: string[];
     diseases_treated: string[];
   };
